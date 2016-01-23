@@ -2,14 +2,20 @@ CC=javac
 SOURCE=src
 BIN=bin
 CFLAGS=-sourcepath $(SOURCE) -classpath $(BIN) -Xlint -d $(BIN)
-SOURCES=src/android/os/*.java
-CLASSES=$(SOURCES:.java=.class)
+SOURCES=$(wildcard src/android/os/*.java)
 
 all: classes
+.PHONY: all clean
 
-classes: 
-	mkdir -p $(BIN)
+#Compile all classes
+classes: $(BIN)
+	
 	$(CC) $(CFLAGS) $(SOURCES)
 
+$(BIN):
+	mkdir -p $(BIN)
+
+
+#Clean the bin directory
 clean:
 	rm -rf $(BIN)/*
