@@ -20,10 +20,11 @@ clean:
 
 compiletest:
 	mkdir -p $(TESTBIN)
-	$(CC) $(TESTCFLAGS) $(TESTSOURCES)
+	#$(CC) $(TESTCFLAGS) $(TESTSOURCES) #TODO: Compile test here!
 
 test:
 	echo "Let's run the test here!"
 	make all
 	make compiletest
+  #make runtest!!!
 	echo "testing!!!"
