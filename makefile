@@ -13,3 +13,6 @@ classes:
 
 clean:
 	rm -rf $(BIN)/*
+
+test:
+	echo "Let's run the test here!"
