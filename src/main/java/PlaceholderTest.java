@@ -1,12 +1,11 @@
-package libraryTests;
+package test;
 
 import library.Placeholder;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class PlaceholderTest {
-    @Test
-    public void testGetMessage() {
+    @Test public void testGetMessage() {
         Placeholder pH = new Placeholder();
 
         String test = pH.getMessage();
