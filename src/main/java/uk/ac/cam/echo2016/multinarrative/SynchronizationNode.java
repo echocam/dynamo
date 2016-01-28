@@ -5,21 +5,16 @@ package uk.ac.cam.echo2016.multinarrative;
  * @author tr393
  *
  */
-public class SynchronizationNode extends Node { //TODO Todo's and documentation
+public class SynchronizationNode extends Node { //TODO Documentation
 	public SynchronizationNode(String id) {
 		super(id);
-		// TODO Auto-generated constructor stub
 	}
-	public android.os.BaseBundle startNarrative(Narrative option) {
+	public android.os.BaseBundle startNarrative(Narrative option) { //TODO Finish Impl
 		return option.getProperties();
 	}
-	public GameChoice onEntry (Narrative completed, NarrativeInstance instance) {
+	public GameChoice onEntry (Narrative completed, NarrativeInstance instance) { // TODO finish impl
 		if (!this.getOptions().contains(completed)) {} //TODO Exception needed???
 		
-		int count = 0;
-		for(Narrative narr : this.getOptions()) {
-			
-		}
 		return null;
 	}
 }
