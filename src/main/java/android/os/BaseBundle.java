@@ -41,7 +41,7 @@ public class BaseBundle {
     /**
      * Constructs a new, empty Bundle.
      */
-    BaseBundle() {
+    public BaseBundle() {
         this(0);
     }
 
@@ -51,7 +51,7 @@ public class BaseBundle {
      *
      * @param capacity the initial capacity of the Bundle
      */
-    BaseBundle(int capacity) {
+    public BaseBundle(int capacity) {
         mMap = capacity > 0 ?
                 new HashMap<String,Object>(capacity) : new HashMap<String,Object>();
     }
@@ -62,7 +62,7 @@ public class BaseBundle {
      *
      * @param b a Bundle to be copied.
      */
-    BaseBundle(BaseBundle b) {
+    public BaseBundle(BaseBundle b) {
         if (b.mMap != null) {
             mMap = new HashMap<String, Object>(b.mMap);
         } else {
@@ -134,7 +134,7 @@ public class BaseBundle {
      *
      * @param map a Map
      */
-    void putAll(Map<? extends String,? extends Object> map) {   
+    public void putAll(Map<? extends String,? extends Object> map) {   
         mMap.putAll(map);
     }
 
@@ -155,7 +155,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @param value a Boolean, or null
      */
-    void putBoolean(String key, boolean value) {
+    public void putBoolean(String key, boolean value) {
         
         mMap.put(key, value);
     }
@@ -167,7 +167,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @param value a byte
      */
-    void putByte(String key, byte value) {
+    public void putByte(String key, byte value) {
         
         mMap.put(key, value);
     }
@@ -179,7 +179,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @param value a char, or null
      */
-    void putChar(String key, char value) {
+    public void putChar(String key, char value) {
         
         mMap.put(key, value);
     }
@@ -191,7 +191,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @param value a short
      */
-    void putShort(String key, short value) {
+    public void putShort(String key, short value) {
         
         mMap.put(key, value);
     }
@@ -227,7 +227,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @param value a float
      */
-    void putFloat(String key, float value) {
+    public void putFloat(String key, float value) {
         
         mMap.put(key, value);
     }
@@ -263,7 +263,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @param value a CharSequence, or null
      */
-    void putCharSequence(String key, CharSequence value) {
+    public void putCharSequence(String key, CharSequence value) {
         
         mMap.put(key, value);
     }
@@ -275,7 +275,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @param value an ArrayList<Integer> object, or null
      */
-    void putIntegerArrayList(String key, ArrayList<Integer> value) {
+    public void putIntegerArrayList(String key, ArrayList<Integer> value) {
         
         mMap.put(key, value);
     }
@@ -287,7 +287,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @param value an ArrayList<String> object, or null
      */
-    void putStringArrayList(String key, ArrayList<String> value) {
+    public void putStringArrayList(String key, ArrayList<String> value) {
         
         mMap.put(key, value);
     }
@@ -299,7 +299,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @param value an ArrayList<CharSequence> object, or null
      */
-    void putCharSequenceArrayList(String key, ArrayList<CharSequence> value) {
+    public void putCharSequenceArrayList(String key, ArrayList<CharSequence> value) {
         
         mMap.put(key, value);
     }
@@ -311,7 +311,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @param value a boolean array object, or null
      */
-    void putBooleanArray(String key, boolean[] value) {
+    public void putBooleanArray(String key, boolean[] value) {
         
         mMap.put(key, value);
     }
@@ -323,7 +323,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @param value a byte array object, or null
      */
-    void putByteArray(String key, byte[] value) {
+    public void putByteArray(String key, byte[] value) {
         
         mMap.put(key, value);
     }
@@ -335,7 +335,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @param value a short array object, or null
      */
-    void putShortArray(String key, short[] value) {
+    public void putShortArray(String key, short[] value) {
         
         mMap.put(key, value);
     }
@@ -347,7 +347,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @param value a char array object, or null
      */
-    void putCharArray(String key, char[] value) {
+    public void putCharArray(String key, char[] value) {
         
         mMap.put(key, value);
     }
@@ -383,7 +383,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @param value a float array object, or null
      */
-    void putFloatArray(String key, float[] value) {
+    public void putFloatArray(String key, float[] value) {
         
         mMap.put(key, value);
     }
@@ -419,7 +419,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @param value a CharSequence array object, or null
      */
-    void putCharSequenceArray(String key, CharSequence[] value) {
+    public void putCharSequenceArray(String key, CharSequence[] value) {
         
         mMap.put(key, value);
     }
@@ -431,7 +431,7 @@ public class BaseBundle {
      * @param key a String
      * @return a boolean value
      */
-    boolean getBoolean(String key) {
+    public boolean getBoolean(String key) {
         
         if (DEBUG) System.out.println("Getting boolean in "
                 + Integer.toHexString(System.identityHashCode(this)));
@@ -468,7 +468,7 @@ public class BaseBundle {
      * @param defaultValue Value to return if key does not exist
      * @return a boolean value
      */
-    boolean getBoolean(String key, boolean defaultValue) {
+    public boolean getBoolean(String key, boolean defaultValue) {
         
         Object o = mMap.get(key);
         if (o == null) {
@@ -489,7 +489,7 @@ public class BaseBundle {
      * @param key a String
      * @return a byte value
      */
-    byte getByte(String key) {
+    public byte getByte(String key) {
         
         return getByte(key, (byte) 0);
     }
@@ -503,7 +503,7 @@ public class BaseBundle {
      * @return a byte value
      */
     
-    Byte getByte(String key, byte defaultValue) {
+    public Byte getByte(String key, byte defaultValue) {
         
         Object o = mMap.get(key);
         if (o == null) {
@@ -524,7 +524,7 @@ public class BaseBundle {
      * @param key a String
      * @return a char value
      */
-    char getChar(String key) {
+    public char getChar(String key) {
         
         return getChar(key, (char) 0);
     }
@@ -538,7 +538,7 @@ public class BaseBundle {
      * @return a char value
      */
     
-    char getChar(String key, char defaultValue) {
+    public char getChar(String key, char defaultValue) {
         
         Object o = mMap.get(key);
         if (o == null) {
@@ -559,7 +559,7 @@ public class BaseBundle {
      * @param key a String
      * @return a short value
      */
-    short getShort(String key) {
+    public short getShort(String key) {
         
         return getShort(key, (short) 0);
     }
@@ -573,7 +573,7 @@ public class BaseBundle {
      * @return a short value
      */
     
-    short getShort(String key, short defaultValue) {
+    public short getShort(String key, short defaultValue) {
         
         Object o = mMap.get(key);
         if (o == null) {
@@ -662,7 +662,7 @@ public class BaseBundle {
      * @param key a String
      * @return a float value
      */
-    float getFloat(String key) {
+    public float getFloat(String key) {
         
         return getFloat(key, 0.0f);
     }
@@ -675,7 +675,7 @@ public class BaseBundle {
      * @param defaultValue Value to return if key does not exist
      * @return a float value
      */
-    float getFloat(String key, float defaultValue) {
+    public float getFloat(String key, float defaultValue) {
         
         Object o = mMap.get(key);
         if (o == null) {
@@ -766,7 +766,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @return a CharSequence value, or null
      */
-    CharSequence getCharSequence(String key) {
+    public CharSequence getCharSequence(String key) {
         
         final Object o = mMap.get(key);
         try {
@@ -788,7 +788,7 @@ public class BaseBundle {
      * @return the CharSequence value associated with the given key, or defaultValue
      *     if no valid CharSequence object is currently mapped to that key.
      */
-    CharSequence getCharSequence(String key, CharSequence defaultValue) {
+    public CharSequence getCharSequence(String key, CharSequence defaultValue) {
         final CharSequence cs = getCharSequence(key);
         return (cs == null) ? defaultValue : cs;
     }
@@ -801,7 +801,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @return an ArrayList<String> value, or null
      */
-    ArrayList<Integer> getIntegerArrayList(String key) {
+    public ArrayList<Integer> getIntegerArrayList(String key) {
         Object o = mMap.get(key);
         if (o == null) {
             return null;
@@ -822,7 +822,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @return an ArrayList<String> value, or null
      */
-    ArrayList<String> getStringArrayList(String key) {
+    public ArrayList<String> getStringArrayList(String key) {
         
         Object o = mMap.get(key);
         if (o == null) {
@@ -844,7 +844,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @return an ArrayList<CharSequence> value, or null
      */
-    ArrayList<CharSequence> getCharSequenceArrayList(String key) {
+    public ArrayList<CharSequence> getCharSequenceArrayList(String key) {
         
         Object o = mMap.get(key);
         if (o == null) {
@@ -866,7 +866,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @return a boolean[] value, or null
      */
-    boolean[] getBooleanArray(String key) {
+    public boolean[] getBooleanArray(String key) {
         
         Object o = mMap.get(key);
         if (o == null) {
@@ -888,7 +888,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @return a byte[] value, or null
      */
-    byte[] getByteArray(String key) {
+    public byte[] getByteArray(String key) {
         
         Object o = mMap.get(key);
         if (o == null) {
@@ -910,7 +910,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @return a short[] value, or null
      */
-    short[] getShortArray(String key) {
+    public short[] getShortArray(String key) {
         
         Object o = mMap.get(key);
         if (o == null) {
@@ -932,7 +932,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @return a char[] value, or null
      */
-    char[] getCharArray(String key) {
+    public char[] getCharArray(String key) {
         
         Object o = mMap.get(key);
         if (o == null) {
@@ -998,7 +998,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @return a float[] value, or null
      */
-    float[] getFloatArray(String key) {
+    public float[] getFloatArray(String key) {
         
         Object o = mMap.get(key);
         if (o == null) {
@@ -1064,7 +1064,7 @@ public class BaseBundle {
      * @param key a String, or null
      * @return a CharSequence[] value, or null
      */
-    CharSequence[] getCharSequenceArray(String key) {
+    public CharSequence[] getCharSequenceArray(String key) {
         
         Object o = mMap.get(key);
         if (o == null) {
