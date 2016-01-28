@@ -1,4 +1,4 @@
-package uk.ac.cam.Echo2016;
+package uk.ac.cam.echo2016;
 
 /**
  * 
