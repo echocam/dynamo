@@ -1,4 +1,4 @@
-package uk.ac.cam.echo2016;
+package uk.ac.cam.echo2016.multinarrative;
 
 /**
  * 
