@@ -1,6 +1,6 @@
 package test;
 
-import main.Placeholder;
+import main.java.Placeholder;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
