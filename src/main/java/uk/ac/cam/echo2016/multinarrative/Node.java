@@ -8,10 +8,12 @@ package uk.ac.cam.echo2016.multinarrative;
 import java.util.ArrayList;
 
 public class Node {
-	private String id;
+	private final String ID;
 	protected android.os.BaseBundle properties;
 	
-	public Node(String id) {}
+	public Node(String id) {
+	    this.ID = id;
+	}
 
 	public String getIdentifier() {return null;}
 	public android.os.BaseBundle startNarrative(Narrative option) {return null;}

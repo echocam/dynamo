@@ -2,11 +2,15 @@ package uk.ac.cam.echo2016.multinarrative;
 
 /**
  * 
- * @author tr393
+ * @author tr393, eyx20
  *
  */
 public class Narrative { //TODO Todo's and documentation
-	private String id;
+    
+	private final String ID;
+	private Node Start;
+	private Node End;
+	
 	public Narrative(String id) {};
 	public String getIdentifier() {return null;}
 	public Node getEnd() {return null;}
