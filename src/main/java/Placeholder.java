@@ -1,5 +1,3 @@
-package main;
-
 public class Placeholder {
     private String p = "This is a placeholder file";
 
