@@ -1,17 +1,23 @@
-apply plugin: 'java'
 
 repositories {
   mavenCentral()
 }
 
+apply plugin: 'java'
+
 dependencies {
   testCompile 'junit:junit:4.12'
 }
 
-test {
-  // enable TestNG support (default is JUnit)
-  //useTestNG()
+compileJava {
+    options.compilerArgs << "-Xlint"
+}
 
+compileTestJava {
+    options.compilerArgs << "-Xlint"
+}
+
+test {
   // set a system property for the test JVM(s)
   //systemProperty 'some.prop', 'value'
 
@@ -27,7 +33,7 @@ test {
   //maxHeapSize = "512m"
 
   // set JVM arguments for the test JVM(s)
-  //jvmArgs '-XX:MaxPermSize=256m'
+  //jvmArgs '-Xlint'
 
   // listen to events in the test execution lifecycle
   beforeTest { descriptor ->
