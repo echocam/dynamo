@@ -7,6 +7,8 @@ This application is in development by James Riordan, Angus Hammond, Elise Xue, R
 Building and Testing
 ====================
 
+You must have Java8 installed or above.
+
 Linux
 -----
 To build the project and/or testing open the root directory in the terminal.
