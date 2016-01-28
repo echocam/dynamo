@@ -7,15 +7,28 @@ package uk.ac.cam.echo2016.multinarrative;
  */
 import java.util.ArrayList;
 
-public class Node {
+public abstract class Node { //TODO Documentation
 	private String id;
 	protected android.os.BaseBundle properties;
-	
-	public Node(String id) {}
+	private ArrayList<Narrative> options = new ArrayList<Narrative>();
 
-	public String getIdentifier() {return null;}
-	public android.os.BaseBundle startNarrative(Narrative option) {return null;}
-	public GameChoice onEntry(Narrative played, NarrativeInstance instance) {return null;}
-	public void getProperties() {return;}
-	public ArrayList<Narrative> getOptions() {return null;}
+	public Node(String id) {
+		this.id = id;
+	}
+
+	public abstract android.os.BaseBundle startNarrative(Narrative option);
+
+	public abstract GameChoice onEntry(Narrative played, NarrativeInstance instance);
+
+	public String getIdentifier() {
+		return id;
+	}
+
+	public android.os.BaseBundle getProperties() {
+		return properties;
+	}
+
+	public ArrayList<Narrative> getOptions() {
+		return options;
+	}
 }
