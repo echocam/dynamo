@@ -89,7 +89,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 											// something's broken
 
 		// assert nStart has other options
-		narratives.remove(narr);
+		narratives.remove(narr); // TODO breaking encapsulation?
 		return true;
 	}
 	/**
@@ -104,7 +104,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 		}
 
 		// assert no narratives leading into node
-		nodes.remove(node);
+		nodes.remove(node); // TODO breaking encapsulation?
 		return true;
 	}
 

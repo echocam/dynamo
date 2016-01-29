@@ -1,4 +1,4 @@
-package test.android.os;
+package android.os;
 
 import android.os.BaseBundle;
 import org.junit.Test;
