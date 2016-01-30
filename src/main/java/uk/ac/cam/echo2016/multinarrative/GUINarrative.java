@@ -14,8 +14,8 @@ public class GUINarrative extends EditableNarrative { //TODO Todo's and document
     //Is this supposed to be the GUI constructor? Should this instead be GUINarrative()?
 	public void newNarrative(String id, String start, String end) {
 	    this.narrative = new Narrative(id);
-	    narrative.setStart(new Node(start));
-	    narrative.setEnd(new Node(end));
+	    narrative.setStart(new SynchronizationNode(start));
+	    narrative.setEnd(new SynchronizationNode(end));
 	    return;
 	    }
 	
