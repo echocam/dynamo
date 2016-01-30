@@ -25,6 +25,4 @@ public class MultiNarrative { //TODO Documentation
 		}
 		return null; //TODO add proper exception
 	}
-
-	// TODO Add getStartNode()?
 }
