@@ -11,7 +11,7 @@ public abstract class Node { // TODO Documentation
 
 	private final String id;
 	protected android.os.BaseBundle properties;
-	private ArrayList<Narrative> options;
+	protected ArrayList<Narrative> options;
 	private boolean copied = false;
 
 	public Node(String id) {
