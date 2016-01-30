@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public abstract class Node { //TODO Documentation
 	private final String id;
 	protected android.os.BaseBundle properties;
-	private ArrayList<Narrative> options;
+	protected ArrayList<Narrative> options;
 
 	public Node(String id) {
 		this.id = id;
