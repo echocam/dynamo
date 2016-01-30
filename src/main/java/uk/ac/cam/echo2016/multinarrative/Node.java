@@ -1,14 +1,13 @@
 package uk.ac.cam.echo2016.multinarrative;
 
+import java.util.ArrayList;
+
 /**
  * 
  * @author tr393
  *
  */
-import java.util.ArrayList;
-
 public abstract class Node { // TODO Documentation
-
 	private final String id;
 	protected android.os.BaseBundle properties;
 	protected ArrayList<Narrative> options;

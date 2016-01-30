@@ -23,84 +23,83 @@ public class NarrativeInstanceTest {
 		nodeList.add(new ChoiceNode("choiceJessica1")); 	// 10
 
 		Narrative tempNarr;
-		tempNarr = new Narrative("narrMike1", nodeList.get(0), nodeList.get(6));
-		nodeList.get(0).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrMike2", nodeList.get(6), nodeList.get(1));
-		nodeList.get(6).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrMike3", nodeList.get(6), nodeList.get(4));
-		nodeList.get(6).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrMike4", nodeList.get(4), nodeList.get(1));
-		nodeList.get(4).options.add(tempNarr);
-		narrList.add(tempNarr);
 
-		tempNarr = new Narrative("narrSam1", nodeList.get(0), nodeList.get(7));
+		tempNarr = new Narrative("narrMike1",nodeList.get(0),nodeList.get(6));
 		nodeList.get(0).options.add(tempNarr);
 		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrSam2", nodeList.get(7), nodeList.get(4));
-		nodeList.get(7).options.add(tempNarr);
+		tempNarr = new Narrative("narrMike2",nodeList.get(6),nodeList.get(1));
+		nodeList.get(6).options.add(tempNarr);
 		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrSam3", nodeList.get(4), nodeList.get(1));
+		tempNarr = new Narrative("narrMike3",nodeList.get(6),nodeList.get(4));
+		nodeList.get(6).options.add(tempNarr);
+		narrList.add(tempNarr);
+		tempNarr = new Narrative("narrMike4",nodeList.get(4),nodeList.get(1));
 		nodeList.get(4).options.add(tempNarr);
 		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrSam4", nodeList.get(7), nodeList.get(5));
+		
+		tempNarr = new Narrative("narrSam1",nodeList.get(0),nodeList.get(7));
+		nodeList.get(0).options.add(tempNarr);
+		narrList.add(tempNarr);
+		tempNarr = new Narrative("narrSam2",nodeList.get(7),nodeList.get(4));
 		nodeList.get(7).options.add(tempNarr);
 		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrSam5", nodeList.get(5), nodeList.get(1));
+		tempNarr = new Narrative("narrSam3",nodeList.get(4),nodeList.get(1));
+		nodeList.get(4).options.add(tempNarr);
+		narrList.add(tempNarr);
+		tempNarr = new Narrative("narrSam4",nodeList.get(7),nodeList.get(5));
+		nodeList.get(7).options.add(tempNarr);
+		narrList.add(tempNarr);
+		tempNarr = new Narrative("narrSam5",nodeList.get(5),nodeList.get(1));
 		nodeList.get(5).options.add(tempNarr);
 		narrList.add(tempNarr);
-
-		tempNarr = new Narrative("narrSarah1", nodeList.get(0), nodeList.get(8));
+		
+		tempNarr = new Narrative("narrSarah1",nodeList.get(0),nodeList.get(8));
 		nodeList.get(0).options.add(tempNarr);
 		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrSarah2", nodeList.get(8), nodeList.get(4));
+		tempNarr = new Narrative("narrSarah2",nodeList.get(8),nodeList.get(4));
 		nodeList.get(8).options.add(tempNarr);
 		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrSarah3", nodeList.get(4), nodeList.get(1));
+		tempNarr = new Narrative("narrSarah3",nodeList.get(4),nodeList.get(1));
 		nodeList.get(4).options.add(tempNarr);
 		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrSarah4", nodeList.get(8), nodeList.get(2));
+		tempNarr = new Narrative("narrSarah4",nodeList.get(8),nodeList.get(2));
 		nodeList.get(8).options.add(tempNarr);
 		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrSarah5", nodeList.get(2), nodeList.get(4));
+		tempNarr = new Narrative("narrSarah4",nodeList.get(2),nodeList.get(4));
 		nodeList.get(2).options.add(tempNarr);
 		narrList.add(tempNarr);
-
-		tempNarr = new Narrative("narrChris1", nodeList.get(0), nodeList.get(9));
+		tempNarr = new Narrative("narrChris1",nodeList.get(0),nodeList.get(9));
 		nodeList.get(0).options.add(tempNarr);
 		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrChris2", nodeList.get(9), nodeList.get(2));
+		tempNarr = new Narrative("narrChris2",nodeList.get(9),nodeList.get(2));
 		nodeList.get(9).options.add(tempNarr);
 		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrChris3", nodeList.get(2), nodeList.get(1));
+		tempNarr = new Narrative("narrChris3",nodeList.get(2),nodeList.get(1));
 		nodeList.get(2).options.add(tempNarr);
 		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrChris4", nodeList.get(9), nodeList.get(3));
+		tempNarr = new Narrative("narrChris4",nodeList.get(9),nodeList.get(3));
 		nodeList.get(9).options.add(tempNarr);
 		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrChris5", nodeList.get(3), nodeList.get(1));
+		tempNarr = new Narrative("narrChris5",nodeList.get(3),nodeList.get(1));
 		nodeList.get(3).options.add(tempNarr);
 		narrList.add(tempNarr);
-
-		tempNarr = new Narrative("narrJessica1", nodeList.get(0), nodeList.get(3));
+		
+		tempNarr = new Narrative("narrJessica1",nodeList.get(0),nodeList.get(3));
 		nodeList.get(0).options.add(tempNarr);
 		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrJessica2", nodeList.get(3), nodeList.get(10));
+		tempNarr = new Narrative("narrJessica2",nodeList.get(3),nodeList.get(10));
 		nodeList.get(3).options.add(tempNarr);
 		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrJessica3", nodeList.get(10), nodeList.get(5));
+		tempNarr = new Narrative("narrJessica3",nodeList.get(10),nodeList.get(5));
 		nodeList.get(10).options.add(tempNarr);
 		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrJessica4", nodeList.get(5), nodeList.get(1));
+		tempNarr = new Narrative("narrJessica4",nodeList.get(5),nodeList.get(1));
 		nodeList.get(5).options.add(tempNarr);
 		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrJessica5", nodeList.get(10), nodeList.get(1));
+		tempNarr = new Narrative("narrJessica5",nodeList.get(10),nodeList.get(1));
 		nodeList.get(10).options.add(tempNarr);
 		narrList.add(tempNarr);
 	}
-
 	@Test
 	public void testNodeStructure() {
 		NarrativeInstanceTest test = new NarrativeInstanceTest();
