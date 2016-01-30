@@ -8,4 +8,9 @@ build/*
 .classpath
 .project
 
+*.DS_Store
+.idea/*
+local.properties
+DynamicNarrative.iml
+
 /bin/

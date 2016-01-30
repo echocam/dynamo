@@ -8,19 +8,19 @@ package uk.ac.cam.echo2016.multinarrative;
 import java.util.ArrayList;
 
 public abstract class Node { //TODO Documentation
-	private String id;
+	private String ID;
 	protected android.os.BaseBundle properties;
 	protected ArrayList<Narrative> options;
 	private boolean copied = false;
-
+	
 	public Node(String id) {
-		this.id = id;
+		this.ID = id;
 		this.properties = new android.os.BaseBundle();
 		this.options = new ArrayList<Narrative>();
 	}
 	
 	public Node(Node node, NarrativeInstance instance) { // TODO check + todo's
-		this.id = node.id;
+		this.ID = node.ID;
 		this.properties = new android.os.BaseBundle(node.properties);
 		this.options = new ArrayList<Narrative>();
 		node.copied = true;
@@ -49,7 +49,7 @@ public abstract class Node { //TODO Documentation
 	public abstract GameChoice onEntry(Narrative played, NarrativeInstance instance);
 
 	public String getIdentifier() {
-		return id;
+		return ID;
 	}
 
 	public android.os.BaseBundle getProperties() {

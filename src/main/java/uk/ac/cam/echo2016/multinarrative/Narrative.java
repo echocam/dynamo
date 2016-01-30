@@ -2,9 +2,10 @@ package uk.ac.cam.echo2016.multinarrative;
 
 /**
  * 
- * @author tr393
+ * @author tr393, eyx20
  *
  */
+
 public class Narrative { // TODO Documentation
 	private String id;
 	protected Node start;
