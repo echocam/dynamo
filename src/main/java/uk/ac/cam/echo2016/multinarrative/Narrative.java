@@ -12,7 +12,7 @@ public class Narrative { // TODO Documentation
 	protected Node end;
 	protected android.os.BaseBundle properties = null;
 
-	public Narrative(String id) {
+	public Narrative(String id, Node start, Node end) {
 		this.id = id;
 		this.start = start;
 		this.end = end;
