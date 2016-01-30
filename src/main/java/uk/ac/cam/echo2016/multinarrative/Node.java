@@ -10,11 +10,31 @@ import java.util.ArrayList;
 public abstract class Node { //TODO Documentation
 	private String id;
 	protected android.os.BaseBundle properties;
-	private ArrayList<Narrative> options = new ArrayList<Narrative>();
+	protected ArrayList<Narrative> options;
+	private boolean copied = false;
 
 	public Node(String id) {
 		this.id = id;
+		this.properties = new android.os.BaseBundle();
+		this.options = new ArrayList<Narrative>();
 	}
+	
+	public Node(Node node, NarrativeInstance instance) { // TODO check + todo's
+		this.id = node.id;
+		this.properties = new android.os.BaseBundle(node.properties);
+		this.options = new ArrayList<Narrative>();
+		node.copied = true;
+		for(Narrative narr : node.options) {
+			Node endCopy;
+			if (narr.getEnd().copied == false) {
+				endCopy = narr.getEnd().copy(instance);
+			} else {
+				endCopy = instance.getNode(narr.getEnd().getIdentifier());
+			}
+			this.options.add(new Narrative(narr.getIdentifier(),this,endCopy));
+		}
+	}
+	public abstract Node copy(NarrativeInstance instance);
 
 	public abstract android.os.BaseBundle startNarrative(Narrative option);
 
