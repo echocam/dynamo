@@ -65,9 +65,10 @@ public class NarrativeInstanceTest {
 		tempNarr = new Narrative("narrSarah4",nodeList.get(8),nodeList.get(2));
 		nodeList.get(8).options.add(tempNarr);
 		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrSarah4",nodeList.get(2),nodeList.get(4));
+		tempNarr = new Narrative("narrSarah5",nodeList.get(2),nodeList.get(4));
 		nodeList.get(2).options.add(tempNarr);
 		narrList.add(tempNarr);
+		
 		tempNarr = new Narrative("narrChris1",nodeList.get(0),nodeList.get(9));
 		nodeList.get(0).options.add(tempNarr);
 		narrList.add(tempNarr);
