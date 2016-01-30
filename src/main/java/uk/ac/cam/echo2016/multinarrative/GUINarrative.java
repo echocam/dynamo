@@ -15,7 +15,7 @@ public class GUINarrative extends EditableNarrative { //TODO Todo's and document
 	public void newNarrative(String id, String start, String end) {
 	    this.narrative = new Narrative(id);
 	    narrative.setStart(new Node(start));
-	    narrative.setEnd(new Node(End));
+	    narrative.setEnd(new Node(end));
 	    return;
 	    }
 	
