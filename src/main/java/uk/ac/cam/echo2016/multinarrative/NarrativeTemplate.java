@@ -10,9 +10,10 @@ public class NarrativeTemplate extends MultiNarrative { // TODO Todo's and
 	public NarrativeInstance generateInstance() {
 		NarrativeInstance instance = new NarrativeInstance();
 		
+		instance.start = this.start.copy(instance);
 		for (Node node : this.nodes) { // TODO might be breaking encapsulation
-			instance.nodes.add(node.copy(instance));// TODO reset copy tag then copy the start
+			node.setCopied(false); // TODO bad encapsulation, but resets copy flag
 		}
-		return null;
+		return instance;
 	}
 }

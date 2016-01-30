@@ -24,16 +24,24 @@ public abstract class Node { //TODO Documentation
 		this.properties = new android.os.BaseBundle(node.properties);
 		this.options = new ArrayList<Narrative>();
 		node.copied = true;
-		for(Narrative narr : node.options) {
+		for(Narrative narrOrig : node.options) {
 			Node endCopy;
-			if (narr.getEnd().copied == false) {
-				endCopy = narr.getEnd().copy(instance);
+			if (narrOrig.getEnd().copied == false) {
+				endCopy = narrOrig.getEnd().copy(instance);
 			} else {
-				endCopy = instance.getNode(narr.getEnd().getIdentifier());
+				endCopy = instance.getNode(narrOrig.getEnd().getIdentifier());
 			}
-			this.options.add(new Narrative(narr.getIdentifier(),this,endCopy));
+			Narrative narrCopy = new Narrative(narrOrig.getIdentifier(),this,endCopy);
+			this.options.add(narrCopy);
+			instance.narratives.add(narrCopy);
 		}
+		instance.nodes.add(this);
 	}
+
+	protected void setCopied(boolean bool) { // TODO WARNING - should only be accessed by a template
+		copied = bool;
+	}
+	
 	public abstract Node copy(NarrativeInstance instance);
 
 	public abstract android.os.BaseBundle startNarrative(Narrative option);

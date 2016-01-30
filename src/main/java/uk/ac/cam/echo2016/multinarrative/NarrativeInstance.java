@@ -8,18 +8,19 @@ import java.util.ArrayList;
  *
  */
 public class NarrativeInstance extends MultiNarrative { // TODO Documentation
-	protected android.os.BaseBundle properties = new android.os.BaseBundle();
+	protected android.os.BaseBundle properties;
 	protected ArrayList<Node> activeNodes = new ArrayList<Node>();
 
-	public NarrativeInstance() {} // TODO explain how this is needed for NarrativeTemplate
+	public NarrativeInstance() {
+		properties = new android.os.BaseBundle();
+	} // TODO explain how this is needed for NarrativeTemplate
 	
-	public NarrativeInstance(NarrativeTemplate template) {
+	public NarrativeInstance(NarrativeTemplate template) { // TODO check copy constructor
 		NarrativeInstance base = template.generateInstance();
-		// TODO copy constructor/clone
+		this.narratives = base.narratives; // TODO breaking encapsulation?
+		this.nodes = base.nodes;
+		this.start = base.start;
 		this.properties = base.properties;
-
-		// activeNodes.add(start);// TODO breaking encapsulation..?, getStart()
-		// required?
 	}
 
 
