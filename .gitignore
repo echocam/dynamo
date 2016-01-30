@@ -6,5 +6,10 @@ build/*
 
 .settings/*
 .classpath
+.project
+
 *.DS_Store
+local.properties
+DynamicNarrative.iml
+
 /bin/
