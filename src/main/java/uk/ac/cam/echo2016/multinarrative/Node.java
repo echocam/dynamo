@@ -10,10 +10,11 @@ import java.util.ArrayList;
 public abstract class Node { //TODO Documentation
 	private String id;
 	protected android.os.BaseBundle properties;
-	private ArrayList<Narrative> options = new ArrayList<Narrative>();
+	private ArrayList<Narrative> options;
 
 	public Node(String id) {
 		this.id = id;
+		this.options = new ArrayList<Narrative>();
 	}
 
 	public abstract android.os.BaseBundle startNarrative(Narrative option);

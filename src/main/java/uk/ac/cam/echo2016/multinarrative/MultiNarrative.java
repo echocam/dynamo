@@ -8,8 +8,8 @@ import java.util.ArrayList;
  *
  */
 public class MultiNarrative { //TODO Documentation
-	protected ArrayList<Narrative> narratives;
-	protected ArrayList<Node> nodes;
+	protected ArrayList<Narrative> narratives = new ArrayList<Narrative>();
+	protected ArrayList<Node> nodes = new ArrayList<Node>();
 	protected Node start;
 
 	public Node getNode(String id) {
