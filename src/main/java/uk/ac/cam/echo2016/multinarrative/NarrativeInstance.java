@@ -13,7 +13,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 
 	public NarrativeInstance() {
 		properties = new android.os.BaseBundle();
-	} // TODO explain how this is needed for NarrativeTemplate
+	}
 
 	public NarrativeInstance(NarrativeTemplate template) { // TODO check copy constructor
 		NarrativeInstance base = template.generateInstance();
@@ -28,11 +28,11 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 	}
 
 	public android.os.BaseBundle getNarrativeProperties(String id) {
-		return super.getNarrative(id).properties;
+		return getNarrative(id).properties;
 	}
 
 	public android.os.BaseBundle getNodeProperties(String id) {
-		return super.getNode(id).properties;
+		return getNode(id).properties;
 	}
 
 	public android.os.BaseBundle startNarrative(String id) {
@@ -77,17 +77,18 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 		if (narr == null)
 			return false;
 		Node nEnd = narr.end;
-
-		/*
-		 * TODO retrieve special node properties if this is the only narrative entering the node, kill(nEnd); else
-		 * update node entry narratives
-		 */
+		
+		ArrayList<String> narrNames = nEnd.properties.getStringArrayList("Impl.Node.Entries"); // TODO improve naming convention?
+		
+		narrNames.remove(narr.getIdentifier());
+		if (narrNames.size() == 0) {
+			kill(nEnd);
+		}
 		// TODO and update event if instanceof sync node? i.e. change to ACTION_CONTINUE?
 
 		Node nStart = narr.start;
 		nStart.getOptions().remove(narr); // TODO should return true, otherwise something's broken
 
-		// assert nStart has other options
 		narratives.remove(narr);
 		return true;
 	}
@@ -100,11 +101,12 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 	public boolean kill(Node node) {
 		if (node == null)
 			return false;
-		for (Narrative narr : node.getOptions()) {
+		for (Narrative narr : new ArrayList<Narrative>(node.getOptions())) {
 			kill(narr);
 		}
 
-		// assert no narratives leading into node
+		assert node.properties.getStringArrayList("Impl.Node.Entries").size() == 0;
+		
 		nodes.remove(node);
 		return true;
 	}

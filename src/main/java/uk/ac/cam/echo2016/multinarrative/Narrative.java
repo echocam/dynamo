@@ -37,8 +37,9 @@ public class Narrative { // TODO Documentation
 		this.end = end;
 	}
 
-	public void createProperties() { // TODO Initialize with default starting size?
-		properties = new android.os.BaseBundle();
+	public void createProperties() {
+		if (properties == null)
+			properties = new android.os.BaseBundle(); // TODO Initialize with default starting size?
 	}
 
 	public android.os.BaseBundle getProperties() {

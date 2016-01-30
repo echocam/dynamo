@@ -33,14 +33,26 @@ public abstract class Node { // TODO Documentation
 		this.options = new ArrayList<Narrative>();
 		node.copied = true;
 
-		for (Narrative narrOrig : node.options) {
+		for (Narrative narrOrig : node.options) { // TODO check properties work
 			Node endCopy;
-			if (narrOrig.getEnd().copied == false) { // check if node has already been copied
-				endCopy = narrOrig.getEnd().copy(instance);
+			if (narrOrig.getEnd().copied == false) {
+				// Not already copied
+				endCopy = narrOrig.getEnd().copy(instance); // create new node
+				
+				// Create and update entryList property
+				endCopy.createProperties();
+				ArrayList<String> entryList = new ArrayList<String>();
+				entryList.add(narrOrig.getIdentifier());
+				endCopy.properties.putStringArrayList("Impl.Node.Entries", entryList);
 			} else {
+				// Already copied
 				endCopy = instance.getNode(narrOrig.getEnd().getIdentifier());
+				
+				// Update entryList property
+				endCopy.properties.getStringArrayList("Impl.Node.Entries").add(narrOrig.getIdentifier());
 			}
 
+			
 			Narrative narrCopy = new Narrative(narrOrig.getIdentifier(), this, endCopy);
 			this.options.add(narrCopy);
 			instance.narratives.add(narrCopy);
@@ -60,6 +72,11 @@ public abstract class Node { // TODO Documentation
 
 	public String getIdentifier() {
 		return id;
+	}
+
+	public void createProperties() {
+		if (properties == null)
+			properties = new android.os.BaseBundle(); // TODO Initialize with default starting size?
 	}
 
 	public android.os.BaseBundle getProperties() {
