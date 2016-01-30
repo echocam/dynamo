@@ -8,12 +8,12 @@ package uk.ac.cam.echo2016.multinarrative;
 import java.util.ArrayList;
 
 public abstract class Node { //TODO Documentation
-	private String ID;
+	private final String id;
 	protected android.os.BaseBundle properties;
 	private ArrayList<Narrative> options;
 
 	public Node(String id) {
-		this.ID = id;
+		this.id = id;
 		this.options = new ArrayList<Narrative>();
 	}
 
@@ -22,7 +22,7 @@ public abstract class Node { //TODO Documentation
 	public abstract GameChoice onEntry(Narrative played, NarrativeInstance instance);
 
 	public String getIdentifier() {
-		return ID;
+		return id;
 	}
 
 	public android.os.BaseBundle getProperties() {
