@@ -1,4 +1,16 @@
 bin/*
+testbin/*
 *~
+build/*
+.gradle/*
 
+.settings/*
+.classpath
+.project
 
+*.DS_Store
+.idea/*
+local.properties
+DynamicNarrative.iml
+
+/bin/
