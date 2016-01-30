@@ -9,15 +9,18 @@ import java.util.ArrayList;
  */
 public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 	protected android.os.BaseBundle properties;
-	protected ArrayList<Node> activeNodes;
+	protected ArrayList<Node> activeNodes = new ArrayList<Node>();
 
-	public NarrativeInstance(NarrativeTemplate template) {
+	public NarrativeInstance() {
+		properties = new android.os.BaseBundle();
+	} // TODO explain how this is needed for NarrativeTemplate
+
+	public NarrativeInstance(NarrativeTemplate template) { // TODO check copy constructor
 		NarrativeInstance base = template.generateInstance();
-		// TODO copy constructor/clone
+		this.narratives = base.narratives;
+		this.nodes = base.nodes;
+		this.start = base.start;
 		this.properties = base.properties;
-
-		// activeNodes.add(start);// TODO breaking encapsulation..?, getStart()
-		// required?
 	}
 
 	public android.os.BaseBundle getGlobalProperties() {
@@ -43,10 +46,9 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 	}
 
 	/**
-	 * Recursively deletes an item from the graph according to the instance this
-	 * method is called from. Only nodes and narratives further down the tree
-	 * are deleted, so nodes must have no entering narratives and narratives
-	 * must start from a node with other options available.
+	 * Recursively deletes an item from the graph according to the instance this method is called from. Only nodes and
+	 * narratives further down the tree are deleted, so nodes must have no entering narratives and narratives must start
+	 * from a node with other options available.
 	 * 
 	 * @param id
 	 *            string identifier for the item to be deleted
@@ -54,8 +56,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 	 */
 	public boolean kill(String id) { // TODO More Documentation, including overloaded methods
 		Narrative narr = getNarrative(id);
-		Node node = getNode(id); // TODO search might be optimizable (2nd not
-									// required)
+		Node node = getNode(id); // TODO search might be optimizable (2nd not required)
 
 		if (narr != null) { // TODO alternate exception handling?
 			kill(narr);
@@ -66,34 +67,34 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 		}
 		return false;
 	}
+
 	/**
 	 * {@link NarrativeInstance#kill(String)}
+	 * 
 	 * @see NarrativeInstance#kill(String)
 	 */
 	public boolean kill(Narrative narr) {
 		if (narr == null)
 			return false;
-		Node nEnd = narr.end; // TODO assumes nEnd isn't null (see
-								// Narrative.java)
+		Node nEnd = narr.end;
 
 		/*
-		 * TODO retrieve special node properties if this is the only narrative
-		 * entering the node, kill(nEnd); else update node entry narratives
+		 * TODO retrieve special node properties if this is the only narrative entering the node, kill(nEnd); else
+		 * update node entry narratives
 		 */
-		// TODO and update event if instanceof sync node? i.e. change to
-		// ACTION_CONTINUE?
+		// TODO and update event if instanceof sync node? i.e. change to ACTION_CONTINUE?
 
-		Node nStart = narr.start; // TODO assumes nStart isn't null (see
-									// Narrative.java)
-		nStart.getOptions().remove(narr); // TODO should return true, otherwise
-											// something's broken
+		Node nStart = narr.start;
+		nStart.getOptions().remove(narr); // TODO should return true, otherwise something's broken
 
 		// assert nStart has other options
-		narratives.remove(narr); // TODO breaking encapsulation?
+		narratives.remove(narr);
 		return true;
 	}
+
 	/**
 	 * {@link NarrativeInstance#kill(String)}
+	 * 
 	 * @see NarrativeInstance#kill(String)
 	 */
 	public boolean kill(Node node) {
@@ -104,7 +105,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 		}
 
 		// assert no narratives leading into node
-		nodes.remove(node); // TODO breaking encapsulation?
+		nodes.remove(node);
 		return true;
 	}
 
