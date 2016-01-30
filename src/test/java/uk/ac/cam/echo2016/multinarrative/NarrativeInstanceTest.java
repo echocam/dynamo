@@ -107,8 +107,8 @@ public class NarrativeInstanceTest {
 //		template.nodes.addAll(nodeList);
 		
 		
-//		instance.narratives = new ArrayList<Narrative>(narrList); // WARNING!!! ENCAPSULATION BROKEN
-//		instance.nodes = new ArrayList<Node>(nodeList); // WARNING!!! ENCAPSULATION BROKEN
+//		instance.narratives = new ArrayList<Narrative>(narrList); // Warning! ENCAPSULATION BROKEN
+//		instance.nodes = new ArrayList<Node>(nodeList); // Warning! ENCAPSULATION BROKEN
 //		
 //		Narrative narr = instance.getNarrative("narrBob1");
 //		//assertNull(narr);

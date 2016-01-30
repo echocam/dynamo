@@ -21,7 +21,7 @@ public abstract class Node { // TODO Documentation
 
 	public Node(Node node, NarrativeInstance instance) { // TODO check + todo's
 		this.id = node.id;
-		this.properties = new android.os.BaseBundle(node.properties);
+		if (properties != null) this.properties = new android.os.BaseBundle(node.properties);
 		this.options = new ArrayList<Narrative>();
 		node.copied = true;
 		for(Narrative narrOrig : node.options) {
