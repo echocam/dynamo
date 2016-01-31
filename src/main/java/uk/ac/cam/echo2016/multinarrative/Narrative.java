@@ -7,8 +7,8 @@ package uk.ac.cam.echo2016.multinarrative;
  */
 public class Narrative { // TODO Documentation
 	private final String id;
-	protected Node start;
-	protected Node end;
+	private Node start;
+	private Node end;
 	protected android.os.BaseBundle properties = null;
 
 	public Narrative(String id, Node start, Node end) {
