@@ -6,21 +6,22 @@ package uk.ac.cam.echo2016.multinarrative;
  *
  */
 public class GUINarrative extends EditableNarrative { //TODO Documentation
-    
-	public void newNarrative(String id, String start, String end) {
-		Node startNode = getNode(start);
-		Node endNode = getNode(end);
-		Narrative narr = new Narrative(id, startNode, endNode);
-	    this.narratives.add(narr);
-	    startNode.options.add(narr);
-	    return;
-	    }
+    //TODO Change from ArrayLists to HashMap.
+	public void newNarrative(String id, String start, String end) { //TODO error if not unique
+		if (isUniqueId(id)) {
+			Node startNode = getNode(start);
+			Node endNode = getNode(end);
+			Narrative narr = new Narrative(id, startNode, endNode);
+		    this.narratives.add(narr);
+		    startNode.options.add(narr);
+		}
+	}
 	
-	public void newSynchronizationNode(String id) {
+	public void newSynchronizationNode(String id) {//TODO error if not unique
 		if (isUniqueId(id))
 				nodes.add(new SynchronizationNode(id));
 	}
-	public void insertChoiceNode(String id) {
+	public void insertChoiceNode(String id) {//TODO error if not unique
 		if (isUniqueId(id))
 				nodes.add(new ChoiceNode(id));
 	}
