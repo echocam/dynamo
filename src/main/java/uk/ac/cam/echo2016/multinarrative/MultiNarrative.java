@@ -8,7 +8,8 @@ import java.util.HashSet;
  *
  */
 public class MultiNarrative { //TODO Documentation
-	protected HashSet<Narrative> narratives = new HashSet<Narrative>();
+	protected HashSet<Narrative> narratives = new HashSet<Narrative>(); // TODO Warning: Narrative and Node must not
+																		// have their .equals() method overridden
 	protected HashSet<Node> nodes = new HashSet<Node>();
 	protected Node start;
 
