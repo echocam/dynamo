@@ -1,8 +1,9 @@
 package uk.ac.cam.echo2016.multinarrative;
 
 /**
+ * Represents a narrative as found in the GUI editor. 
  * 
- * @author tr393
+ * @author tr393, rjm232
  *
  */
 public class EditableNarrative extends MultiNarrative{ //TODO Todo's and documentation
