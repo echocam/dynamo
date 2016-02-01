@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 /**
  * 
- * @author tr393
+ * The superclass of the other nodes, Synchronization and Choice. Allows for multiple entering and exiting 
+ * narratives.
+ * 
+ * @author tr393, rjm232
  *
  */
 public abstract class Node { // TODO Documentation

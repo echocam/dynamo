@@ -2,7 +2,9 @@ package uk.ac.cam.echo2016.multinarrative;
 
 /**
  * 
- * @author tr393
+ * The template of the story from which the copy of the game required for each play through is derived.
+ * 
+ * @author tr393, rjm232
  *
  */
 public class NarrativeTemplate extends MultiNarrative { // TODO Todo's and documentation
