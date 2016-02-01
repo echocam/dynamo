@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 /**
  * 
- * @author tr393
+ * Represents an actual play through of the story. Instantiated from the template.
+ * 
+ * @author tr393, rjm232
  *
  */
 public class NarrativeInstance extends MultiNarrative { // TODO Documentation

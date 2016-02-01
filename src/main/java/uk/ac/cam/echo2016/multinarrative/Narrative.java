@@ -2,6 +2,8 @@ package uk.ac.cam.echo2016.multinarrative;
 
 /**
  * 
+ * Acts as a connection between nodes. Represents the paths that characters follow.
+ * 
  * @author tr393, eyx20, rjm232
  *
  */
