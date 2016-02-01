@@ -2,7 +2,7 @@ package uk.ac.cam.echo2016.multinarrative;
 
 /**
  * 
- * @author tr393, eyx20
+ * @author tr393, eyx20, rjm232
  *
  */
 public class Narrative { // TODO Documentation

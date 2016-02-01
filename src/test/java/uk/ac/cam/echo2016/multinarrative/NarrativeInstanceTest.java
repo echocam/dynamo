@@ -10,6 +10,9 @@ public class NarrativeInstanceTest {
 	ArrayList<Node> nodeList = new ArrayList<Node>();
 
 	public NarrativeInstanceTest() {
+		/**
+		 * The structure created here is what is found in the Visual Basic diagram on the Google Drive.
+		 */
 		nodeList.add(new SynchronizationNode("syncStart")); // 0
 		nodeList.add(new SynchronizationNode("syncEnd")); 	// 1
 		nodeList.add(new SynchronizationNode("sync1")); 	// 2
@@ -129,9 +132,5 @@ public class NarrativeInstanceTest {
 		assertEquals(21, instance.narratives.size());// Implementation not finished
 		
 		System.out.println("Test Completed");
-	}
-
-	public static void main(String[] args) {
-		
 	}
 }
