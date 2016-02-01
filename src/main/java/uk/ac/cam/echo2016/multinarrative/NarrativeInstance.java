@@ -30,11 +30,11 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 	}
 
 	public android.os.BaseBundle getNarrativeProperties(String id) {
-		return getNarrative(id).properties;
+		return getNarrative(id).getProperties();
 	}
 
 	public android.os.BaseBundle getNodeProperties(String id) {
-		return getNode(id).properties;
+		return getNode(id).getProperties();
 	}
 
 	public android.os.BaseBundle startNarrative(String id) {
@@ -80,7 +80,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 			return false;
 		Node nEnd = narr.getEnd();
 		
-		ArrayList<String> narrNames = nEnd.properties.getStringArrayList("Impl.Node.Entries"); // TODO improve naming convention?
+		ArrayList<String> narrNames = nEnd.getProperties().getStringArrayList("Impl.Node.Entries"); // TODO improve naming convention?
 		
 		narrNames.remove(narr.getIdentifier());
 		if (narrNames.size() == 0) {
@@ -107,7 +107,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 			kill(narr); // copy of ArrayList used to allow deletion of nodes within the function
 		}
 
-		assert node.properties.getStringArrayList("Impl.Node.Entries").size() == 0;
+		assert node.getProperties().getStringArrayList("Impl.Node.Entries").size() == 0;
 		
 		nodes.remove(node);
 		return true;

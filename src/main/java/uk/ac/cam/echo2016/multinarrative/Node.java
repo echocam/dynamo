@@ -4,15 +4,12 @@ import java.util.ArrayList;
 
 /**
  * 
- * The superclass of the other nodes, Synchronization and Choice. Allows for multiple entering and exiting 
- * narratives.
- * 
- * @author tr393, rjm232
+ * @author tr393
  *
  */
 public abstract class Node { // TODO Documentation
 	private final String id;
-	protected android.os.BaseBundle properties;
+	private android.os.BaseBundle properties;
 	protected ArrayList<Narrative> options;
 	private boolean copied = false; // flag used in graph copy that indicates whether this node has been passed
 

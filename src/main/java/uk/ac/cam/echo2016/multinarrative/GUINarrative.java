@@ -53,9 +53,9 @@ public class GUINarrative extends EditableNarrative { //TODO Documentation
 		Narrative narr = getNarrative(id);
 		Node node = getNode(id); // TODO search might be optimizable (2nd not required)
 		if (narr != null) { // TODO alternate exception handling?
-			return narr.properties;
+			return narr.getProperties();
 		} else if (node != null) { // TODO alternate exception handling?
-			return node.properties;
+			return node.getProperties();
 		}
 		return null;
 	}	
