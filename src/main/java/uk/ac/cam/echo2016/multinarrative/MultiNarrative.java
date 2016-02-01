@@ -1,6 +1,6 @@
 package uk.ac.cam.echo2016.multinarrative;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * 
@@ -8,8 +8,8 @@ import java.util.ArrayList;
  *
  */
 public class MultiNarrative { //TODO Documentation
-	protected ArrayList<Narrative> narratives = new ArrayList<Narrative>();
-	protected ArrayList<Node> nodes = new ArrayList<Node>();
+	protected HashSet<Narrative> narratives = new HashSet<Narrative>();
+	protected HashSet<Node> nodes = new HashSet<Node>();
 	protected Node start;
 
 	public Node getNode(String id) {

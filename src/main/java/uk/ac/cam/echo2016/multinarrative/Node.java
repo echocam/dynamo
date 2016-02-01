@@ -23,7 +23,6 @@ public abstract class Node { // TODO Documentation
 	 * further down the graph. The copy created is then returned. The graph instance is used to record node/narrative
 	 * references and make sure that nodes are not copied twice.
 	 * 
-	 * @param this
 	 * @param instance
 	 */
 	public Node copyToGraph(NarrativeInstance instance) { // TODO More Documentation!!! and tests
@@ -41,8 +40,6 @@ public abstract class Node { // TODO Documentation
 			Node endNodeCopy;
 			if (narrTemplate.getEnd().copied == false) {
 				// Not already copied
-				
-				//endCopy = narrOrig.getEnd().callConstructor(narrOrig.getEnd().id); // create new node
 				
 				endNodeCopy = narrTemplate.getEnd().copyToGraph(instance); // Recursively copy nodes at the ends of narratives
 				

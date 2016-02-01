@@ -6,7 +6,6 @@ package uk.ac.cam.echo2016.multinarrative;
  *
  */
 public class GUINarrative extends EditableNarrative { //TODO Documentation
-    //TODO Change from ArrayLists to HashMap.
 	public void newNarrative(String id, String start, String end) { //TODO error if not unique
 		if (isUniqueId(id)) {
 			Node startNode = getNode(start);
@@ -25,21 +24,30 @@ public class GUINarrative extends EditableNarrative { //TODO Documentation
 		if (isUniqueId(id))
 				nodes.add(new ChoiceNode(id));
 	}
-	//TODO documentation
-	//TODO parameter name refactoring
-	public void insertChoiceOnNarrative(String choiceId, String narrId, String newnarrId) { // TODO error for elementNotFound
-		if (isUniqueId(choiceId) && isUniqueId(newnarrId)) {
-			
-			Narrative narr1 = getNarrative(narrId);
-			ChoiceNode choice = new ChoiceNode(choiceId);
-			Narrative narr2 = new Narrative(newnarrId,choice, narr1.getEnd());
-			narr1.setEnd(choice);
-			
+	//TODO documentation(+overloaded function) + better refactoring?
+	public void insertChoiceOnNarrative(String narrId, String newChoiceId, String newNarrId) { // TODO error for elementNotFound
+		if (isUniqueId(newChoiceId) && isUniqueId(newNarrId)) {
+			Narrative narr2 = getNarrative(narrId);
+			ChoiceNode choice = new ChoiceNode(newChoiceId);
+			Narrative narr1 = new Narrative(newNarrId, narr2.getStart(), choice);
+			narr2.setStart(choice);
+			narratives.add(narr1);
 			nodes.add(choice);
-			narratives.add(narr2);
-			
 		}
 	}
+	public void insertChoiceOnNarrative(String narrId, String newChoiceId, String newNarrId1, String newNarrId2) { // TODO error for elementNotFound
+		if (isUniqueId(newChoiceId) && isUniqueId(newNarrId1) && isUniqueId(newNarrId2)) {
+			Narrative narr = getNarrative(narrId);
+			ChoiceNode choice = new ChoiceNode(newChoiceId);
+			Narrative narr1 = new Narrative(newNarrId1, narr.getStart(), choice);
+			Narrative narr2 = new Narrative(newNarrId2, choice, narr.getEnd());
+			narratives.remove(narr);
+			narratives.add(narr1);
+			narratives.add(narr2);
+			nodes.add(choice);
+		}
+	}
+	
 	public boolean isUniqueId(String id) {
 		Narrative narr = getNarrative(id);
 		Node node = getNode(id);
