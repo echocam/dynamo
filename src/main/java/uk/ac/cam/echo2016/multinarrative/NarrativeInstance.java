@@ -42,7 +42,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 
 	public GameChoice endNarrative(String id) {
 		Narrative finished = getNarrative(id);
-		return finished.end.onEntry(finished, this);
+		return finished.getEnd().onEntry(finished, this);
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 	public boolean kill(Narrative narr) {
 		if (narr == null)
 			return false;
-		Node nEnd = narr.end;
+		Node nEnd = narr.getEnd();
 		
 		ArrayList<String> narrNames = nEnd.properties.getStringArrayList("Impl.Node.Entries"); // TODO improve naming convention?
 		
@@ -86,7 +86,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 		}
 		// TODO and update event if instanceof sync node? i.e. change to ACTION_CONTINUE?
 
-		Node nStart = narr.start;
+		Node nStart = narr.getStart();
 		nStart.getOptions().remove(narr); // TODO should return true, otherwise something's broken
 
 		narratives.remove(narr);
@@ -102,7 +102,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 		if (node == null)
 			return false;
 		for (Narrative narr : new ArrayList<Narrative>(node.getOptions())) {
-			kill(narr);
+			kill(narr); // copy of ArrayList used to allow deletion of nodes within the function
 		}
 
 		assert node.properties.getStringArrayList("Impl.Node.Entries").size() == 0;
