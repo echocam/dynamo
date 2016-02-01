@@ -12,11 +12,11 @@ public class SynchronizationNode extends Node { //TODO Documentation
 	public SynchronizationNode(String id) {
 		super(id);
 	}
-	public SynchronizationNode(Node node, NarrativeInstance instance) {
-		super(node, instance);
-	}
-	public Node copy(NarrativeInstance instance) {
-		return new SynchronizationNode(this, instance);
+//	public SynchronizationNode(Node node, NarrativeInstance instance) {
+//		super(node, instance);
+//	}
+	public Node callConstructor(String id) {
+		return new SynchronizationNode(id);
 	}
 	
 	public android.os.BaseBundle startNarrative(Narrative option) { //TODO Finish Impl

@@ -13,12 +13,12 @@ public class ChoiceNode extends Node { // TODO Todo's and documentation
 		super(id);
 	}
 
-	public ChoiceNode(Node node, NarrativeInstance instance) {
-		super(node, instance);
-	}
+//	public ChoiceNode(Node node, NarrativeInstance instance) {
+//		super(node, instance);
+//	}
 
-	public Node copy(NarrativeInstance instance) {
-		return new ChoiceNode(this, instance);
+	public Node callConstructor(String id) {
+		return new ChoiceNode(id);
 	}
 
 	public android.os.BaseBundle startNarrative(Narrative option) { //TODO Finish Impl

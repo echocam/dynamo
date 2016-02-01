@@ -19,52 +19,64 @@ public abstract class Node { // TODO Documentation
 	}
 
 	/**
-	 * Used to copy the node and all of the graph below it in a recursive manner. The instance is used to keep track of
-	 * previously copied parts of the graph, so that upon reaching a node already copied, the narrative can be connected
-	 * correctly.
+	 * Copies this node and its narratives and recursively calls this method on the nodes reached by the narratives
+	 * further down the graph. The copy created is then returned. The graph instance is used to record node/narrative
+	 * references and make sure that nodes are not copied twice.
 	 * 
-	 * @param node
+	 * @param this
 	 * @param instance
 	 */
-	public Node(Node node, NarrativeInstance instance) { // TODO Documentation and cleanup
-		this.id = node.id;
-		if (properties != null)
-			this.properties = new android.os.BaseBundle(node.properties);
-		this.options = new ArrayList<Narrative>();
-		node.copied = true;
+	public Node copyToGraph(NarrativeInstance instance) { // TODO More Documentation!!! and tests
+		
+		// Eventually calls Node(this.id) via subclass's constructor
+		Node result = this.callConstructor(this.id);
+		
+		if (this.properties != null) // Copy properties across, if any
+			result.properties = new android.os.BaseBundle(this.properties);
 
-		for (Narrative narrOrig : node.options) { // TODO check properties work
-			Node endCopy;
-			if (narrOrig.getEnd().copied == false) {
+		this.copied = true; // TODO encapsulation of copied flag
+		
+		// Copy each narrative leaving this node and call copyGraph on their end nodes 
+		for (Narrative narrTemplate : this.options) {
+			Node endNodeCopy;
+			if (narrTemplate.getEnd().copied == false) {
 				// Not already copied
-				endCopy = narrOrig.getEnd().copy(instance); // create new node
+				
+				//endCopy = narrOrig.getEnd().callConstructor(narrOrig.getEnd().id); // create new node
+				
+				endNodeCopy = narrTemplate.getEnd().copyToGraph(instance); // Recursively copy nodes at the ends of narratives
 				
 				// Create and update entryList property
-				endCopy.createProperties();
+				endNodeCopy.createProperties();
 				ArrayList<String> entryList = new ArrayList<String>();
-				entryList.add(narrOrig.getIdentifier());
-				endCopy.properties.putStringArrayList("Impl.Node.Entries", entryList);
+				entryList.add(narrTemplate.getIdentifier());
+				endNodeCopy.properties.putStringArrayList("Impl.Node.Entries", entryList);
 			} else {
 				// Already copied
-				endCopy = instance.getNode(narrOrig.getEnd().getIdentifier());
+				
+				endNodeCopy = instance.getNode(narrTemplate.getEnd().getIdentifier()); // Get reference to copied end
 				
 				// Update entryList property
-				endCopy.properties.getStringArrayList("Impl.Node.Entries").add(narrOrig.getIdentifier());
+				endNodeCopy.properties.getStringArrayList("Impl.Node.Entries").add(narrTemplate.getIdentifier());
 			}
 
+			// Create narrative using references obtained/created above, linking this node to the new end nodes
+			Narrative narrCopy = new Narrative(narrTemplate.getIdentifier(), result, endNodeCopy);
 			
-			Narrative narrCopy = new Narrative(narrOrig.getIdentifier(), this, endCopy);
-			this.options.add(narrCopy);
+			// Update narrative references
+			result.options.add(narrCopy);
+			// Update graph references
 			instance.narratives.add(narrCopy);
 		}
-		instance.nodes.add(this);
+		instance.nodes.add(result);
+		return result;
 	}
 
 	protected void setCopied(boolean bool) { // TODO warning - should only be accessed by a template
 		copied = bool;
 	}
 
-	public abstract Node copy(NarrativeInstance instance);
+	public abstract Node callConstructor(String id);
 
 	public abstract android.os.BaseBundle startNarrative(Narrative option);
 
