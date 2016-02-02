@@ -4,6 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class NarrativeInstanceTest {
 	ArrayList<Narrative> narrList = new ArrayList<Narrative>();

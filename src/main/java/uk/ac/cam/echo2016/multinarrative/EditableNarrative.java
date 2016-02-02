@@ -10,11 +10,11 @@ package uk.ac.cam.echo2016.multinarrative;
 public class EditableNarrative extends MultiNarrative{ //TODO Todo's and documentation
 	
 	public void addNarrative(Narrative narrative) {
-		narratives.add(narrative);
+		narratives.put(narrative.getIdentifier(), narrative);
 	}
 	
 	public void addNode(Node node) {
-		nodes.add(node);
+		nodes.put(node.getIdentifier(), node);
 	}
 	
 	public boolean removeNarrative(String id) {
