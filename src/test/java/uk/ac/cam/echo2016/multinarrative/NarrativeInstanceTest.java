@@ -111,12 +111,20 @@ public class NarrativeInstanceTest {
 		template.narratives.addAll(test.narrList);
 		template.nodes.addAll(test.nodeList);
 		template.start = template.getNode("syncStart");
-
+		template.getNode("choiceMike1").createProperties();
+		template.getNode("choiceMike1").getProperties().putBoolean("ChoicePropertyCopiedCorrectly", true);
+		template.getNode("sync1").createProperties();
+		template.getNode("sync1").getProperties().putBoolean("SyncPropertyCopiedCorrectly", true);
+	
+		
 		assertEquals(24, template.narratives.size());
 		assertEquals(11, template.nodes.size());
 		assertEquals(template.getNarrative("narrSarah5").getEnd().getIdentifier(), "sync3");
 
 		NarrativeInstance instance = new NarrativeInstance(template);
+		
+		assertTrue("Check Choice properties copied correctly", instance.getNodeProperties("choiceMike1").containsKey("ChoicePropertyCopiedCorrectly"));
+		assertTrue("Check Sync properties copied correctly", instance.getNodeProperties("sync1").containsKey("SyncPropertyCopiedCorrectly"));
 
 		assertEquals("Checking correct number of narratives: ", 24, instance.narratives.size());
 		assertEquals("Checking correct number of nodes: ", 11, instance.nodes.size());
@@ -130,7 +138,5 @@ public class NarrativeInstanceTest {
 
 		instance.kill("narrMike1");
 		assertEquals(21, instance.narratives.size());// Implementation not finished
-		
-		System.out.println("Test Completed");
 	}
 }

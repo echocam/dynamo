@@ -17,6 +17,14 @@ compileTestJava {
     options.compilerArgs << "-Xlint"
 }
 
+task copyFXMLandCSS (type: Copy) {
+    from 'src/main/java'
+    into 'build/classes/main'
+    include('**/*.fxml', '**/*.css')
+}
+
+assemble.dependsOn copyFXMLandCSS
+
 sourceSets {
   main {
     java {
