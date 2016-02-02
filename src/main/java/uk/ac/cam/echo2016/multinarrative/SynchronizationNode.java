@@ -1,7 +1,6 @@
 package uk.ac.cam.echo2016.multinarrative;
 
 /**
- * 
  * Represents a synchronization node, where multiple characters are allowed to interact. Can have multiple entering and
  * multiple exiting narratives.
  * 
@@ -12,7 +11,9 @@ public class SynchronizationNode extends Node { // TODO Documentation
 	public SynchronizationNode(String id) {
 		super(id);
 	}
-
+	/**
+	 * Effectively a clone method.
+	 */
 	protected Node callConstructor(String id) {
 		return new SynchronizationNode(id);
 	}
