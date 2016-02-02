@@ -112,9 +112,9 @@ public class NarrativeInstanceTest {
 		template.nodes.addAll(test.nodeList);
 		template.start = template.getNode("syncStart");
 		template.getNode("choiceMike1").createProperties();
-		template.getNode("choiceMike1").properties.putBoolean("ChoicePropertyCopiedCorrectly", true);
+		template.getNode("choiceMike1").getProperties().putBoolean("ChoicePropertyCopiedCorrectly", true);
 		template.getNode("sync1").createProperties();
-		template.getNode("sync1").properties.putBoolean("SyncPropertyCopiedCorrectly", true);
+		template.getNode("sync1").getProperties().putBoolean("SyncPropertyCopiedCorrectly", true);
 	
 		
 		assertEquals(24, template.narratives.size());
