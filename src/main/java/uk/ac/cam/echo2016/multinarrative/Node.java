@@ -48,16 +48,19 @@ public abstract class Node { // TODO Documentation
 				
 				// Create and update entryList property
 				endNodeCopy.createProperties();
-				ArrayList<String> entryList = new ArrayList<String>();
-				entryList.add(narrTemplate.getIdentifier());
-				endNodeCopy.properties.putStringArrayList("Impl.Node.Entries", entryList);
+				
+				endNodeCopy.properties.putInt("Impl.Node.Entries", 1);
 			} else {
 				// Already copied
 				
 				endNodeCopy = instance.getNode(narrTemplate.getEnd().getIdentifier()); // Get reference to copied end
 				
 				// Update entryList property
-				endNodeCopy.properties.getStringArrayList("Impl.Node.Entries").add(narrTemplate.getIdentifier());
+				
+
+				int narrEntries = endNodeCopy.properties.getInt("Impl.Node.Entries");
+				narrEntries++;
+				endNodeCopy.properties.putInt("Impl.Node.Entries", narrEntries);
 			}
 
 			// Create narrative using references obtained/created above, linking this node to the new end nodes
