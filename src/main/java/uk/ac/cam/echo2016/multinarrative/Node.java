@@ -101,6 +101,10 @@ public abstract class Node { // TODO Documentation
 	public android.os.BaseBundle getProperties() {
 		return properties;
 	}
+	
+	public void setProperties(android.os.BaseBundle b) {
+		properties = b;
+	}
 
 	public ArrayList<Narrative> getOptions() {
 		return options;

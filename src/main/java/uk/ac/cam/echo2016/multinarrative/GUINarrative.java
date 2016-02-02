@@ -64,7 +64,7 @@ public class GUINarrative extends EditableNarrative { // TODO Documentation
 		}
 	}
 
-	public boolean isUniqueId(String id) {
+	private boolean isUniqueId(String id) {
 		Narrative narr = getNarrative(id);
 		Node node = getNode(id);
 		return ((narr == null) && (node == null));
