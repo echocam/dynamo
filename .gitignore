@@ -3,6 +3,7 @@ testbin/*
 *~
 build/*
 .gradle/*
+gradle.properties
 
 .settings/*
 .classpath
@@ -14,3 +15,5 @@ local.properties
 *.iml
 
 /bin/
+java
+javac
