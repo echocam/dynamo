@@ -1,6 +1,7 @@
 package uk.ac.cam.echo2016.multinarrative;
 
 /**
+ * The EditableNarrative that is edited using the GUI.
  * 
  * @author tr393, eyx20
  *
@@ -11,8 +12,8 @@ public class GUINarrative extends EditableNarrative { // TODO Documentation
 			Node startNode = getNode(start);
 			Node endNode = getNode(end);
 			Narrative narr = new Narrative(id, startNode, endNode);
-			this.narratives.add(narr);
 			startNode.options.add(narr);
+			addNarrative(narr);			
 		} else {
 			throw new NonUniqueIdException();
 		}
@@ -20,14 +21,14 @@ public class GUINarrative extends EditableNarrative { // TODO Documentation
 
 	public void newSynchronizationNode(String id) throws NonUniqueIdException { // TODO error message
 		if (isUniqueId(id))
-			nodes.add(new SynchronizationNode(id));
+			addNode(new SynchronizationNode(id));
 		else
 			throw new NonUniqueIdException();
 	}
 
 	public void insertChoiceNode(String id) throws NonUniqueIdException { // TODO error message
 		if (isUniqueId(id))
-			nodes.add(new ChoiceNode(id));
+			addNode(new ChoiceNode(id));
 		else
 			throw new NonUniqueIdException();
 	}
