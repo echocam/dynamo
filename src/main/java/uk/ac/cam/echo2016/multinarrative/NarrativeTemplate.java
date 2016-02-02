@@ -15,6 +15,7 @@ public class NarrativeTemplate extends MultiNarrative { // TODO Todo's and docum
 		for (Node node : this.nodes.values()) {
 			node.setCopied(false); // TODO bad encapsulation, but resets copy flag
 		}
+		instance.setActive(start);
 		return instance;
 	}
 }

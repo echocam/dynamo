@@ -49,8 +49,7 @@ public class EditableNarrative extends MultiNarrative{ //TODO Todo's and documen
 			return false;
 		
 		Narrative newNarr = new Narrative(newName, narr.getStart(), narr.getEnd());
-		newNarr.createProperties();
-		newNarr.getProperties() = narr.getProperties();
+		
 	}
 	
 	public boolean renameNode(String id, String newName) {
