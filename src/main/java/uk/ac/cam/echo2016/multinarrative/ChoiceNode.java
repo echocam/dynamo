@@ -13,7 +13,10 @@ public class ChoiceNode extends Node { // TODO Todo's and documentation
 		super(id);
 	}
 
-	public Node callConstructor(String id) {
+	/**
+	 * Effectively a clone method.
+	 */
+	protected Node callConstructor(String id) {
 		return new ChoiceNode(id);
 	}
 
