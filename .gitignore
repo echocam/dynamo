@@ -3,6 +3,7 @@ testbin/*
 *~
 build/*
 .gradle/*
+gradle.properties
 
 .settings/*
 .classpath
