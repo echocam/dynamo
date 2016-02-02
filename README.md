@@ -81,7 +81,7 @@ class TestClass {
     }
 
     package int packageInstanceMethod() {
-      return privateInstanceMember;
+        return privateInstanceMember;
     }
 }
 ```
