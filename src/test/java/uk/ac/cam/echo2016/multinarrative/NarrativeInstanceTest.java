@@ -3,113 +3,113 @@ package uk.ac.cam.echo2016.multinarrative;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class NarrativeInstanceTest {
-	ArrayList<Narrative> narrList = new ArrayList<Narrative>();
-	ArrayList<Node> nodeList = new ArrayList<Node>();
+	HashMap<String, Narrative> narrMap = new HashMap<String, Narrative>();
+	HashMap<String, Node> nodeMap= new HashMap<String, Node>();
 
 	public NarrativeInstanceTest() {
 		/**
 		 * The structure created here is what is found in the Visual Basic diagram on the Google Drive.
 		 */
-		nodeList.add(new SynchronizationNode("syncStart")); // 0
-		nodeList.add(new SynchronizationNode("syncEnd")); 	// 1
-		nodeList.add(new SynchronizationNode("sync1")); 	// 2
-		nodeList.add(new SynchronizationNode("sync2")); 	// 3
-		nodeList.add(new SynchronizationNode("sync3")); 	// 4
-		nodeList.add(new SynchronizationNode("sync4")); 	// 5
-		nodeList.add(new ChoiceNode("choiceMike1")); 		// 6
-		nodeList.add(new ChoiceNode("choiceSam1")); 		// 7
-		nodeList.add(new ChoiceNode("choiceSarah1")); 		// 8
-		nodeList.add(new ChoiceNode("choiceChris1")); 		// 9
-		nodeList.add(new ChoiceNode("choiceJessica1")); 	// 10
+		nodeMap.put("syncStart", new SynchronizationNode("syncStart")); // 0
+		nodeMap.put("syncEnd", new SynchronizationNode("syncEnd")); 	// 1
+		nodeMap.put("sync1", new SynchronizationNode("sync1")); 	// 2
+		nodeMap.put("sync2", new SynchronizationNode("sync2")); 	// 3
+		nodeMap.put("sync3", new SynchronizationNode("sync3")); 	// 4
+		nodeMap.put("sync4", new SynchronizationNode("sync4")); 	// 5
+		nodeMap.put("choiceMike1", new ChoiceNode("choiceMike1")); 		// 6
+		nodeMap.put("choiceSam1", new ChoiceNode("choiceSam1")); 		// 7
+		nodeMap.put("choiceSarah1", new ChoiceNode("choiceSarah1")); 		// 8
+		nodeMap.put("choiceChris1", new ChoiceNode("choiceChris1")); 		// 9
+		nodeMap.put("choiceJessica1", new ChoiceNode("choiceJessica1")); 	// 10
 
 		Narrative tempNarr;
 
-		tempNarr = new Narrative("narrMike1",nodeList.get(0),nodeList.get(6));
-		nodeList.get(0).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrMike2",nodeList.get(6),nodeList.get(1));
-		nodeList.get(6).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrMike3",nodeList.get(6),nodeList.get(4));
-		nodeList.get(6).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrMike4",nodeList.get(4),nodeList.get(1));
-		nodeList.get(4).options.add(tempNarr);
-		narrList.add(tempNarr);
+		tempNarr = new Narrative("narrMike1",nodeMap.get("syncStart"),nodeMap.get("choiceMike1"));
+		nodeMap.get("syncStart").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
+		tempNarr = new Narrative("narrMike2",nodeMap.get("choiceMike1"),nodeMap.get("syncEnd"));
+		nodeMap.get("choiceMike1").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
+		tempNarr = new Narrative("narrMike3",nodeMap.get("choiceMike1"),nodeMap.get("sync3"));
+		nodeMap.get("choiceMike1").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
+		tempNarr = new Narrative("narrMike4",nodeMap.get("sync3"),nodeMap.get("syncEnd"));
+		nodeMap.get("sync3").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
 		
-		tempNarr = new Narrative("narrSam1",nodeList.get(0),nodeList.get(7));
-		nodeList.get(0).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrSam2",nodeList.get(7),nodeList.get(4));
-		nodeList.get(7).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrSam3",nodeList.get(4),nodeList.get(1));
-		nodeList.get(4).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrSam4",nodeList.get(7),nodeList.get(5));
-		nodeList.get(7).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrSam5",nodeList.get(5),nodeList.get(1));
-		nodeList.get(5).options.add(tempNarr);
-		narrList.add(tempNarr);
+		tempNarr = new Narrative("narrSam1",nodeMap.get("syncStart"),nodeMap.get("choiceSam1"));
+		nodeMap.get("syncStart").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
+		tempNarr = new Narrative("narrSam2",nodeMap.get("choiceSam1"),nodeMap.get("sync3"));
+		nodeMap.get("choiceSam1").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
+		tempNarr = new Narrative("narrSam3",nodeMap.get("sync3"),nodeMap.get("syncEnd"));
+		nodeMap.get("sync3").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
+		tempNarr = new Narrative("narrSam4",nodeMap.get("choiceSam1"),nodeMap.get("sync4"));
+		nodeMap.get("choiceSam1").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
+		tempNarr = new Narrative("narrSam5",nodeMap.get("sync4"),nodeMap.get("syncEnd"));
+		nodeMap.get("sync4").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
 		
-		tempNarr = new Narrative("narrSarah1",nodeList.get(0),nodeList.get(8));
-		nodeList.get(0).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrSarah2",nodeList.get(8),nodeList.get(4));
-		nodeList.get(8).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrSarah3",nodeList.get(4),nodeList.get(1));
-		nodeList.get(4).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrSarah4",nodeList.get(8),nodeList.get(2));
-		nodeList.get(8).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrSarah5",nodeList.get(2),nodeList.get(4));
-		nodeList.get(2).options.add(tempNarr);
-		narrList.add(tempNarr);
+		tempNarr = new Narrative("narrSarah1",nodeMap.get("syncStart"),nodeMap.get("choiceSarah1"));
+		nodeMap.get("syncStart").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
+		tempNarr = new Narrative("narrSarah2",nodeMap.get("choiceSarah1"),nodeMap.get("sync3"));
+		nodeMap.get("choiceSarah1").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
+		tempNarr = new Narrative("narrSarah3",nodeMap.get("sync3"),nodeMap.get("syncEnd"));
+		nodeMap.get("sync3").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
+		tempNarr = new Narrative("narrSarah4",nodeMap.get("choiceSarah1"),nodeMap.get("sync1"));
+		nodeMap.get("choiceSarah1").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
+		tempNarr = new Narrative("narrSarah5",nodeMap.get("sync1"),nodeMap.get("sync3"));
+		nodeMap.get("sync1").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
 		
-		tempNarr = new Narrative("narrChris1",nodeList.get(0),nodeList.get(9));
-		nodeList.get(0).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrChris2",nodeList.get(9),nodeList.get(2));
-		nodeList.get(9).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrChris3",nodeList.get(2),nodeList.get(1));
-		nodeList.get(2).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrChris4",nodeList.get(9),nodeList.get(3));
-		nodeList.get(9).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrChris5",nodeList.get(3),nodeList.get(1));
-		nodeList.get(3).options.add(tempNarr);
-		narrList.add(tempNarr);
+		tempNarr = new Narrative("narrChris1",nodeMap.get("syncStart"),nodeMap.get("choiceChris1"));
+		nodeMap.get("syncStart").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
+		tempNarr = new Narrative("narrChris2",nodeMap.get("choiceChris1"),nodeMap.get("sync1"));
+		nodeMap.get("choiceChris1").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
+		tempNarr = new Narrative("narrChris3",nodeMap.get("sync1"),nodeMap.get("syncEnd"));
+		nodeMap.get("sync1").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
+		tempNarr = new Narrative("narrChris4",nodeMap.get("choiceChris1"),nodeMap.get("sync2"));
+		nodeMap.get("choiceChris1").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
+		tempNarr = new Narrative("narrChris5",nodeMap.get("sync2"),nodeMap.get("syncEnd"));
+		nodeMap.get("sync2").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
 		
-		tempNarr = new Narrative("narrJessica1",nodeList.get(0),nodeList.get(3));
-		nodeList.get(0).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrJessica2",nodeList.get(3),nodeList.get(10));
-		nodeList.get(3).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrJessica3",nodeList.get(10),nodeList.get(5));
-		nodeList.get(10).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrJessica4",nodeList.get(5),nodeList.get(1));
-		nodeList.get(5).options.add(tempNarr);
-		narrList.add(tempNarr);
-		tempNarr = new Narrative("narrJessica5",nodeList.get(10),nodeList.get(1));
-		nodeList.get(10).options.add(tempNarr);
-		narrList.add(tempNarr);
+		tempNarr = new Narrative("narrJessica1",nodeMap.get("syncStart"),nodeMap.get("sync2"));
+		nodeMap.get("syncStart").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
+		tempNarr = new Narrative("narrJessica2",nodeMap.get("sync2"),nodeMap.get("choiceJessica1"));
+		nodeMap.get("sync2").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
+		tempNarr = new Narrative("narrJessica3",nodeMap.get("choiceJessica1"),nodeMap.get("sync4"));
+		nodeMap.get("choiceJessica1").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
+		tempNarr = new Narrative("narrJessica4",nodeMap.get("sync4"),nodeMap.get("syncEnd"));
+		nodeMap.get("sync4").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
+		tempNarr = new Narrative("narrJessica5",nodeMap.get("choiceJessica1"),nodeMap.get("syncEnd"));
+		nodeMap.get("choiceJessica1").options.add(tempNarr);
+		narrMap.put(tempNarr.getIdentifier(), tempNarr);
 	}
 	@Test
 	public void testNodeStructure() {
 		NarrativeInstanceTest test = new NarrativeInstanceTest();
 		NarrativeTemplate template = new NarrativeTemplate();
-		template.narratives.addAll(test.narrList);
-		template.nodes.addAll(test.nodeList);
+		template.narratives.putAll(test.narrMap);
+		template.nodes.putAll(test.nodeMap);
 		template.start = template.getNode("syncStart");
 		
 		template.getNode("choiceMike1").createProperties();
