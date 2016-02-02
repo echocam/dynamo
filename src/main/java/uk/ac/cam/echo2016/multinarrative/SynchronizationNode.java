@@ -13,7 +13,7 @@ public class SynchronizationNode extends Node { // TODO Documentation
 		super(id);
 	}
 
-	public Node callConstructor(String id) {
+	protected Node callConstructor(String id) {
 		return new SynchronizationNode(id);
 	}
 

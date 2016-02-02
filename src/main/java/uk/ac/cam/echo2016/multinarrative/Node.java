@@ -65,9 +65,9 @@ public abstract class Node { // TODO Documentation
 			// Update narrative references
 			result.options.add(narrCopy);
 			// Update graph references
-			instance.narratives.add(narrCopy);
+			instance.narratives.put(narrCopy.getIdentifier(), narrCopy);
 		}
-		instance.nodes.add(result);
+		instance.nodes.put(result.getIdentifier(), result);
 		return result;
 	}
 
@@ -75,7 +75,7 @@ public abstract class Node { // TODO Documentation
 		copied = bool;
 	}
 
-	public abstract Node callConstructor(String id);
+	protected abstract Node callConstructor(String id);
 
 	public abstract android.os.BaseBundle startNarrative(Narrative option);
 
