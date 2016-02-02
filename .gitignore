@@ -17,3 +17,5 @@ local.properties
 /bin/
 java
 javac
+
+ignore/
