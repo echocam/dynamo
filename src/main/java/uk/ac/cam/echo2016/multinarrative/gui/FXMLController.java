@@ -43,7 +43,7 @@ public class FXMLController {
         }catch(IllegalOperationException ioe){
             setInfo(ioe.getMessage(),name);
         }catch(IOException ioe){
-            //Indiicates that fxml files aren't set up properly...
+            //Indicates that fxml files aren't set up properly...
             throw new RuntimeException("FXML files not configured correctly",ioe);
         }
     }
