@@ -138,7 +138,5 @@ public class NarrativeInstanceTest {
 
 		instance.kill("narrMike1");
 		assertEquals(21, instance.narratives.size());// Implementation not finished
-		
-		System.out.println("Test Completed");
 	}
 }
