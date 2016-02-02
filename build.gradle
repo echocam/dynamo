@@ -49,7 +49,11 @@ task copyFXMLandCSS (type: Copy) {
 
 assemble.dependsOn copyFXMLandCSS
 
-task run {
-
-
+task runGui(type: JavaExec) {
+      workingDir = main_build
+      main = 'uk.ac.cam.echo2016.multinarrative.gui.FXMLGUI'
 }
+
+runGui.dependsOn assemble
+
+
