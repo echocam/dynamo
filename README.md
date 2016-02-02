@@ -83,7 +83,6 @@ class TestClass {
     package int packageInstanceMethod() {
       return privateInstanceMember;
     }
-
 }
 ```
 Abiding by this is up to the programmer's discretion, but don't diverge from this format unless you have a good reason.
