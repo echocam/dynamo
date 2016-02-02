@@ -1,6 +1,7 @@
 package uk.ac.cam.echo2016.multinarrative;
 
 /**
+ * The EditableNarrative that is edited using the GUI.
  * 
  * @author tr393, eyx20
  *
@@ -11,23 +12,24 @@ public class GUINarrative extends EditableNarrative { // TODO Documentation
 			Node startNode = getNode(start);
 			Node endNode = getNode(end);
 			Narrative narr = new Narrative(id, startNode, endNode);
-			this.narratives.add(narr);
+			this.narratives.put(narr.getIdentifier(), narr);
 			startNode.options.add(narr);
+			addNarrative(narr);			
 		} else {
 			throw new NonUniqueIdException();
 		}
 	}
 
 	public void newSynchronizationNode(String id) throws NonUniqueIdException { // TODO error message
-		if (isUniqueId(id))
-			nodes.add(new SynchronizationNode(id));
+		if (isUniqueId(id)) 
+			nodes.put(id, new SynchronizationNode(id));
 		else
 			throw new NonUniqueIdException();
 	}
 
 	public void insertChoiceNode(String id) throws NonUniqueIdException { // TODO error message
 		if (isUniqueId(id))
-			nodes.add(new ChoiceNode(id));
+			nodes.put(id, new ChoiceNode(id));
 		else
 			throw new NonUniqueIdException();
 	}
@@ -40,8 +42,8 @@ public class GUINarrative extends EditableNarrative { // TODO Documentation
 			ChoiceNode choice = new ChoiceNode(newChoiceId);
 			Narrative narr1 = new Narrative(newNarrId, narr2.getStart(), choice);
 			narr2.setStart(choice);
-			narratives.add(narr1);
-			nodes.add(choice);
+			narratives.put(narr1.getIdentifier(), narr1);
+			nodes.put(choice.getIdentifier(), choice);
 		} else {
 			throw new NonUniqueIdException();
 		}
@@ -55,9 +57,9 @@ public class GUINarrative extends EditableNarrative { // TODO Documentation
 			Narrative narr1 = new Narrative(newNarrId1, narr.getStart(), choice);
 			Narrative narr2 = new Narrative(newNarrId2, choice, narr.getEnd());
 			narratives.remove(narr);
-			narratives.add(narr1);
-			narratives.add(narr2);
-			nodes.add(choice);
+			narratives.put(narr1.getIdentifier(), narr1);
+			narratives.put(narr2.getIdentifier(), narr2);
+			nodes.put(choice.getIdentifier(), choice);
 		} else {
 			throw new NonUniqueIdException();
 		}

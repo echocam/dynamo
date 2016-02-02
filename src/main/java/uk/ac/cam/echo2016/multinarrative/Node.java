@@ -26,6 +26,8 @@ public abstract class Node { // TODO Documentation
 	 * 
 	 * @param instance
 	 */
+	// TODO change callConstructor to use clone() instead
+	// TODO move to NarrativeTemplate and copy through the hashmap
 	public Node copyToGraph(NarrativeInstance instance) { // TODO More Documentation!!! and tests
 		
 		// Eventually calls Node(this.id) via subclass's constructor
@@ -64,16 +66,16 @@ public abstract class Node { // TODO Documentation
 			// Update narrative references
 			result.options.add(narrCopy);
 			// Update graph references
-			instance.narratives.add(narrCopy);
+			instance.narratives.put(narrCopy.getIdentifier(), narrCopy);
 		}
-		instance.nodes.add(result);
+		instance.nodes.put(result.getIdentifier(), result);
 		return result;
 	}
 
 	protected void setCopied(boolean bool) { // TODO warning - should only be accessed by a template
 		copied = bool;
 	}
-
+	
 	/**
 	 * Method is implemented in derived classes ChoiceNode and SyncNode, to allow this class to make new 
 	 * objects of those derived types in the copyToGraph method.

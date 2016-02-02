@@ -11,7 +11,6 @@ public class SynchronizationNode extends Node { // TODO Documentation
 	public SynchronizationNode(String id) {
 		super(id);
 	}
-
 	/**
 	 * Effectively a clone method.
 	 */

@@ -91,7 +91,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 		Node nStart = narr.getStart();
 		nStart.getOptions().remove(narr); // TODO should return true, otherwise something's broken
 
-		narratives.remove(narr);
+		narratives.remove(narr.getIdentifier());
 		return true;
 	}
 
@@ -109,7 +109,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 
 		assert node.getProperties().getStringArrayList("Impl.Node.Entries").size() == 0;
 		
-		nodes.remove(node);
+		nodes.remove(node.getIdentifier());
 		return true;
 	}
 

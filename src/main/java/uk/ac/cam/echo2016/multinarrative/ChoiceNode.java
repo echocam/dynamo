@@ -7,12 +7,11 @@ package uk.ac.cam.echo2016.multinarrative;
  * @author tr393, rjm232
  *
  */
-public class ChoiceNode extends Node { // TODO Todo's and documentation
+public class ChoiceNode extends Node { // TODO implementation and documentation
 
 	public ChoiceNode(String id) {
 		super(id);
 	}
-
 	/**
 	 * Effectively a clone method.
 	 */
