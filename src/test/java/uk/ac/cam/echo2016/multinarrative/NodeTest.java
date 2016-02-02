@@ -23,11 +23,4 @@ public class NodeTest {
 		assertNotNull(syncTest.getProperties());
 		assertNotNull(choiceTest.getProperties());
 	}
-	
-	@Test
-	public void CopyConstructorTest() {
-		
-	}
-	
-
 }
