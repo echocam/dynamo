@@ -5,27 +5,36 @@ package uk.ac.cam.echo2016.multinarrative;
  * @author tr393, eyx20
  *
  */
-public class GUINarrative extends EditableNarrative { //TODO Documentation
-	public void newNarrative(String id, String start, String end) { //TODO error if not unique
+public class GUINarrative extends EditableNarrative { // TODO Documentation
+	public void newNarrative(String id, String start, String end) throws NonUniqueIdException { // TODO error message
 		if (isUniqueId(id)) {
 			Node startNode = getNode(start);
 			Node endNode = getNode(end);
 			Narrative narr = new Narrative(id, startNode, endNode);
-		    this.narratives.add(narr);
-		    startNode.options.add(narr);
+			this.narratives.add(narr);
+			startNode.options.add(narr);
+		} else {
+			throw new NonUniqueIdException();
 		}
 	}
-	
-	public void newSynchronizationNode(String id) {//TODO error if not unique
+
+	public void newSynchronizationNode(String id) throws NonUniqueIdException { // TODO error message
 		if (isUniqueId(id))
-				nodes.add(new SynchronizationNode(id));
+			nodes.add(new SynchronizationNode(id));
+		else
+			throw new NonUniqueIdException();
 	}
-	public void insertChoiceNode(String id) {//TODO error if not unique
+
+	public void insertChoiceNode(String id) throws NonUniqueIdException { // TODO error message
 		if (isUniqueId(id))
-				nodes.add(new ChoiceNode(id));
+			nodes.add(new ChoiceNode(id));
+		else
+			throw new NonUniqueIdException();
 	}
-	//TODO documentation(+overloaded function) + better refactoring?
-	public void insertChoiceOnNarrative(String narrId, String newChoiceId, String newNarrId) { // TODO error for elementNotFound
+
+	// TODO documentation(+overloaded function) + better refactoring?
+	public void insertChoiceOnNarrative(String narrId, String newChoiceId, String newNarrId)
+			throws NonUniqueIdException { // TODO error for elementNotFound/ error message
 		if (isUniqueId(newChoiceId) && isUniqueId(newNarrId)) {
 			Narrative narr2 = getNarrative(narrId);
 			ChoiceNode choice = new ChoiceNode(newChoiceId);
@@ -33,9 +42,13 @@ public class GUINarrative extends EditableNarrative { //TODO Documentation
 			narr2.setStart(choice);
 			narratives.add(narr1);
 			nodes.add(choice);
+		} else {
+			throw new NonUniqueIdException();
 		}
 	}
-	public void insertChoiceOnNarrative(String narrId, String newChoiceId, String newNarrId1, String newNarrId2) { // TODO error for elementNotFound
+
+	public void insertChoiceOnNarrative(String narrId, String newChoiceId, String newNarrId1, String newNarrId2)
+			throws NonUniqueIdException { // TODO error for elementNotFound/error message
 		if (isUniqueId(newChoiceId) && isUniqueId(newNarrId1) && isUniqueId(newNarrId2)) {
 			Narrative narr = getNarrative(narrId);
 			ChoiceNode choice = new ChoiceNode(newChoiceId);
@@ -45,19 +58,23 @@ public class GUINarrative extends EditableNarrative { //TODO Documentation
 			narratives.add(narr1);
 			narratives.add(narr2);
 			nodes.add(choice);
+		} else {
+			throw new NonUniqueIdException();
 		}
 	}
-	
+
 	public boolean isUniqueId(String id) {
 		Narrative narr = getNarrative(id);
 		Node node = getNode(id);
 		return ((narr == null) && (node == null));
 	}
+
 	public void setStartPoint(String id) { // TODO error for elementNotFound
 		Node node = getNode(id);
 		start = node;
 	}
-	public android.os.BaseBundle getProperties (String id) { // TODO error for elementNotFound
+
+	public android.os.BaseBundle getProperties(String id) { // TODO error for elementNotFound
 		Narrative narr = getNarrative(id);
 		Node node = getNode(id); // TODO search might be optimizable (2nd not required)
 		if (narr != null) { // TODO alternate exception handling?
@@ -66,5 +83,5 @@ public class GUINarrative extends EditableNarrative { //TODO Documentation
 			return node.getProperties();
 		}
 		return null;
-	}	
+	}
 }

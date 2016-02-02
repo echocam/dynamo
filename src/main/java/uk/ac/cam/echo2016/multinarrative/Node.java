@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * 
- * @author tr393
+ * @author tr393, rjm232
  *
  */
 public abstract class Node { // TODO Documentation
@@ -20,8 +20,9 @@ public abstract class Node { // TODO Documentation
 
 	/**
 	 * Copies this node and its narratives and recursively calls this method on the nodes reached by the narratives
-	 * further down the graph. The copy created is then returned. The graph instance is used to record node/narrative
-	 * references and make sure that nodes are not copied twice.
+	 * further down the graph. The copy created is then returned. 
+	 * The graph instance is used to record node/narrative references and make sure that nodes are not copied twice.
+	 * The callConstructor method is effectively a clone method. :P
 	 * 
 	 * @param instance
 	 */
@@ -73,7 +74,14 @@ public abstract class Node { // TODO Documentation
 		copied = bool;
 	}
 
-	public abstract Node callConstructor(String id);
+	/**
+	 * Method is implemented in derived classes ChoiceNode and SyncNode, to allow this class to make new 
+	 * objects of those derived types in the copyToGraph method.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	protected abstract Node callConstructor(String id);
 
 	public abstract android.os.BaseBundle startNarrative(Narrative option);
 
