@@ -80,10 +80,11 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 			return false;
 		Node nEnd = narr.getEnd();
 		
-		ArrayList<String> narrNames = nEnd.getProperties().getStringArrayList("Impl.Node.Entries"); // TODO improve naming convention?
+		int narrEntries = nEnd.getProperties().getInt("Impl.Node.Entries"); // TODO improve naming convention?
+		--narrEntries;
+		nEnd.getProperties().putInt("Impl.Node.Entries", narrEntries);
 		
-		narrNames.remove(narr.getIdentifier());
-		if (narrNames.size() == 0) {
+		if (narrEntries == 0) {
 			kill(nEnd);
 		}
 		// TODO and update event if instanceof sync node? i.e. change to ACTION_CONTINUE?
@@ -91,7 +92,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 		Node nStart = narr.getStart();
 		nStart.getOptions().remove(narr); // TODO should return true, otherwise something's broken
 
-		narratives.remove(narr);
+		narratives.remove(narr.getIdentifier());
 		return true;
 	}
 
@@ -107,9 +108,9 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 			kill(narr); // copy of ArrayList used to allow deletion of nodes within the function
 		}
 
-		assert node.getProperties().getStringArrayList("Impl.Node.Entries").size() == 0;
+		assert node.getProperties().getInt("Impl.Node.Entries") == 0;
 		
-		nodes.remove(node);
+		nodes.remove(node.getIdentifier());
 		return true;
 	}
 

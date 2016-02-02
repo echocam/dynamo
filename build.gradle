@@ -1,9 +1,18 @@
+def src = "src"
+def main_src = src + "/main/java"
+
+def build = "build"
+def main_build = build + "/classes/main"
+
+apply plugin: 'java'
+
+if(JavaVersion.current() != JavaVersion.VERSION_1_8){
+    throw new GradleException("This build must be run with java 8")
+}
 
 repositories {
   mavenCentral()
 }
-
-apply plugin: 'java'
 
 dependencies {
   testCompile 'junit:junit:4.12'
@@ -17,34 +26,9 @@ compileTestJava {
     options.compilerArgs << "-Xlint"
 }
 
-sourceSets {
-  main {
-    java {
-      //exclude 'some/unwanted/package/**'
-    }
-  }
-
-  test {
-    java {
-      //include 'android/os/*'
-    }
-  }
-}
-
-
 test {
-  // set a system property for the test JVM(s)
-  //systemProperty 'some.prop', 'value'
-
   // show standard out and standard error of the test JVM(s) on the console
   testLogging.showStandardStreams = true
-
-  // set heap size for the test JVM(s)
-  //minHeapSize = "128m"
-  //maxHeapSize = "512m"
-
-  // set JVM arguments for the test JVM(s)
-  //jvmArgs '-Xlint'
 
   // listen to events in the test execution lifecycle
   beforeTest { descriptor ->
@@ -56,3 +40,20 @@ test {
      logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
   }
 }
+
+task copyFXMLandCSS (type: Copy) {
+    from main_src
+    into main_build
+    include('**/*.fxml', '**/*.css')
+}
+
+assemble.dependsOn copyFXMLandCSS
+
+task runGui(type: JavaExec) {
+      workingDir = main_build
+      main = 'uk.ac.cam.echo2016.multinarrative.gui.FXMLGUI'
+}
+
+runGui.dependsOn assemble
+
+
