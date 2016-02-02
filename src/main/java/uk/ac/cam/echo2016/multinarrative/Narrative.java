@@ -11,7 +11,7 @@ public class Narrative { // TODO Documentation
 	private final String id;
 	private Node start;
 	private Node end;
-	protected android.os.BaseBundle properties = null;
+	private android.os.BaseBundle properties = null;
 
 	public Narrative(String id, Node start, Node end) {
 		this.id = id;

@@ -11,7 +11,7 @@ public class NarrativeTemplate extends MultiNarrative { // TODO Todo's and docum
 	public NarrativeInstance generateInstance() {
 		NarrativeInstance instance = new NarrativeInstance();
 		
-		instance.start = this.start.copy(instance);
+		instance.start = this.start.copyToGraph(instance);
 		for (Node node : this.nodes) {
 			node.setCopied(false); // TODO bad encapsulation, but resets copy flag
 		}
