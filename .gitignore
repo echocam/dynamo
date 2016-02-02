@@ -11,6 +11,6 @@ build/*
 *.DS_Store
 .idea/*
 local.properties
-DynamicNarrative.iml
+*.iml
 
 /bin/
