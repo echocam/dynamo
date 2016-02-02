@@ -25,6 +25,8 @@ public abstract class Node { // TODO Documentation
 	 * 
 	 * @param instance
 	 */
+	// TODO change callConstructor to use clone() instead
+	// TODO move to NarrativeTemplate and copy through the hashmap
 	public Node copyToGraph(NarrativeInstance instance) { // TODO More Documentation!!! and tests
 		
 		// Eventually calls Node(this.id) via subclass's constructor
