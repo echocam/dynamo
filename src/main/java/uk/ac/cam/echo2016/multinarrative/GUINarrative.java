@@ -12,7 +12,6 @@ public class GUINarrative extends EditableNarrative { // TODO Documentation
 			Node startNode = getNode(start);
 			Node endNode = getNode(end);
 			Narrative narr = new Narrative(id, startNode, endNode);
-			this.narratives.put(narr.getIdentifier(), narr);
 			startNode.options.add(narr);
 			addNarrative(narr);			
 		} else {
