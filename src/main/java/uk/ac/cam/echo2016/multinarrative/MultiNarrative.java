@@ -2,9 +2,12 @@ package uk.ac.cam.echo2016.multinarrative;
 
 import java.util.HashMap;
 
+import uk.ac.cam.echo2016.multinarrative.Narrative;
+import uk.ac.cam.echo2016.multinarrative.Node;
+
 /**
  * 
- * @author tr393
+ * @author tr393, eyx20
  *
  */
 public class MultiNarrative { //TODO Documentation
@@ -14,16 +17,10 @@ public class MultiNarrative { //TODO Documentation
 	protected Node start;
 
 	public Node getNode(String id) {
-		for(Node node : nodes.values()) {
-			if (node.getIdentifier().equals(id)) return node;
-		}
-		return null; //TODO add proper exception
-	}
+        return nodes.get(id);
+    }
 
-	public Narrative getNarrative(String id) {
-		for(Narrative narr : narratives.values()) {
-			if (narr.getIdentifier().equals(id)) return narr;
-		}
-		return null; //TODO add proper exception
-	}
+    public Narrative getNarrative(String id) {
+        return narratives.get(id);
+    }
 }
