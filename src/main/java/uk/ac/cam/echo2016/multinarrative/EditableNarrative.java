@@ -1,5 +1,7 @@
 package uk.ac.cam.echo2016.multinarrative;
 
+import java.util.HashMap;
+
 /**
  * Represents a MultiNarrative that can be edited. Included for extensibility. We subclass it with 
  * GUINarrative, but this class can be derived for other methods of editing.
@@ -11,6 +13,7 @@ public class EditableNarrative extends MultiNarrative{ //TODO Todo's and documen
 	
 	public void addNarrative(Narrative narrative) {
 		narratives.put(narrative.getIdentifier(), narrative);
+		narrative.getStart().options.add(narrative);
 	}
 	
 	public void addNode(Node node) {
@@ -32,11 +35,14 @@ public class EditableNarrative extends MultiNarrative{ //TODO Todo's and documen
 		if (node == null) 
 			return false;
 		
-		for (Narrative narr : narratives.values()) {
+		HashMap<String, Narrative> copy = new HashMap<String, Narrative>();
+		copy.putAll(narratives);
+		
+		for (Narrative narr : copy.values()) {
 			if (narr.getStart() == node) {
-				narratives.remove(narr.getIdentifier());
+				removeNarrative(narr.getIdentifier());
 			} else if (narr.getEnd() == node) {
-				removeNarrative(narr.getIdentifier());	
+				removeNarrative(narr.getIdentifier());			
 			}
 		}
 		
@@ -76,7 +82,10 @@ public class EditableNarrative extends MultiNarrative{ //TODO Todo's and documen
 				narr.setEnd(newNode);	
 			}
 		}
+		for (Narrative narr : node.options) {
+			newNode.options.add(narr);
+		}
 		
 		return true;
-	}	
+	}
 }
