@@ -3,7 +3,8 @@ package uk.ac.cam.echo2016.multinarrative;
 /**
  * The EditableNarrative that is edited using the GUI.
  * 
- * @author tr393, eyx20
+ * @author tr393
+ * @author eyx20
  *
  */
 public class GUINarrative extends EditableNarrative { // TODO Documentation

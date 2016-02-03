@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 /**
  * 
- * @author tr393, rjm232
+ * @author tr393
+ * @author rjm232
  *
  */
 public abstract class Node { // TODO Documentation

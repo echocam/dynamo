@@ -7,8 +7,11 @@ import uk.ac.cam.echo2016.multinarrative.Node;
 
 /**
  * 
- * @author tr393, eyx20
- *
+ * @author tr393
+ * @author eyx20
+ * @version 1.0
+ * @see GUINarrative
+ * @see MultiNarrative 
  */
 public class MultiNarrative { //TODO Documentation
 	protected HashMap<String, Narrative> narratives = new HashMap<String, Narrative>(); // TODO Warning: Narrative and Node must not
