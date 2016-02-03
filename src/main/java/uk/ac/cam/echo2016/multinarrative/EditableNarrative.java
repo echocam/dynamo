@@ -13,7 +13,7 @@ public class EditableNarrative extends MultiNarrative{ //TODO Todo's and documen
 	
 	public void addNarrative(Narrative narrative) {
 		narratives.put(narrative.getIdentifier(), narrative);
-		narrative.getStart().options.add(narrative);
+		narrative.getStart().getOptions().add(narrative);
 	}
 	
 	public void addNode(Node node) {
@@ -25,7 +25,7 @@ public class EditableNarrative extends MultiNarrative{ //TODO Todo's and documen
 		if (narr == null) 
 			return false;
 		
-		narr.getStart().options.remove(narr);	
+		narr.getStart().getOptions().remove(narr);	
 		
 		return true;
 	}
@@ -59,8 +59,8 @@ public class EditableNarrative extends MultiNarrative{ //TODO Todo's and documen
 			newNarr.setProperties(new android.os.BaseBundle(narr.getProperties()));
 		
 		narratives.put(newName, newNarr);
-		newNarr.getStart().options.remove(narr);
-		newNarr.getStart().options.add(newNarr);
+		newNarr.getStart().getOptions().remove(narr);
+		newNarr.getStart().getOptions().add(newNarr);
 		
 		return true;
 	}
@@ -82,8 +82,8 @@ public class EditableNarrative extends MultiNarrative{ //TODO Todo's and documen
 				narr.setEnd(newNode);	
 			}
 		}
-		for (Narrative narr : node.options) {
-			newNode.options.add(narr);
+		for (Narrative narr : node.getOptions()) {
+			newNode.getOptions().add(narr);
 		}
 		
 		return true;

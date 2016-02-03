@@ -5,9 +5,22 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 
+/**
+ * Here there are commented out traverse statements. One can uncomment them to see the structure of
+ * the graph.
+ * 
+ * @author Rjmcf
+ *
+ */
+
 public class EditableNarrativeTest {
 	EditableNarrative eNarr;
 	
+	/**
+	 * Builds graph structure. Uncomment the traverse statement in addNarrativeAndNodeTest to see 
+	 * the structure.
+	 * @see addNarrativeAndNodeTest
+	 */
 	@Before
 	public void setup() {
 		eNarr = new EditableNarrative();
@@ -44,7 +57,7 @@ public class EditableNarrativeTest {
 	public void renameNarrativeTest() {
 		eNarr.renameNarrative("link4", "fromLeftToEnd");
 		assertEquals("Check link4 renamed internally", "fromLeftToEnd", eNarr.narratives.get("fromLeftToEnd").getIdentifier());
-		assertEquals("Check link4 renamed in start Node", "fromLeftToEnd", eNarr.nodes.get("left").options.get(0).getIdentifier());
+		assertEquals("Check link4 renamed in start Node", "fromLeftToEnd", eNarr.nodes.get("left").getOptions().get(0).getIdentifier());
 		//eNarr.start.traverse();
 	}
 	
@@ -55,8 +68,8 @@ public class EditableNarrativeTest {
 		assertEquals("check choice1 renamed in entering narr", "FirstChoice", eNarr.narratives.get("link1").getEnd().getIdentifier());
 		assertEquals("check choice1 renamed in exiting left", "FirstChoice", eNarr.narratives.get("link2").getStart().getIdentifier());
 		assertEquals("check choice1 renamed in exiting right", "FirstChoice", eNarr.narratives.get("link3").getStart().getIdentifier());
-		assertEquals("check choice1 still has options", 2, eNarr.nodes.get("FirstChoice").options.size());
-		for (Narrative n : eNarr.nodes.get("FirstChoice").options) {
+		assertEquals("check choice1 still has options", 2, eNarr.nodes.get("FirstChoice").getOptions().size());
+		for (Narrative n : eNarr.nodes.get("FirstChoice").getOptions()) {
 			assertEquals("check choice1 renamed in options", "FirstChoice", n.getStart().getIdentifier());
 		}
 		//eNarr.start.traverse();
@@ -66,11 +79,11 @@ public class EditableNarrativeTest {
 	public void removeNarrativeTest() {
 		eNarr.removeNarrative("link1");
 		assertNull("Check link1 removed from narratives", eNarr.narratives.get("link1"));
-		assertEquals("Check link1 removed from start options", 0, eNarr.start.options.size());
+		assertEquals("Check link1 removed from start options", 0, eNarr.start.getOptions().size());
 		//eNarr.start.traverse();
 		
 		eNarr.removeNarrative("link3");
-		assertEquals("Check link3 removed from choice1 options", 1, eNarr.nodes.get("choice1").options.size());
+		assertEquals("Check link3 removed from choice1 options", 1, eNarr.nodes.get("choice1").getOptions().size());
 		//eNarr.nodes.get("choice1").traverse();
 	}
 	

@@ -12,7 +12,7 @@ public class GUINarrative extends EditableNarrative { // TODO Documentation
 			Node startNode = getNode(start);
 			Node endNode = getNode(end);
 			Narrative narr = new Narrative(id, startNode, endNode);
-			startNode.options.add(narr);
+			startNode.getOptions().add(narr);
 			addNarrative(narr);			
 		} else {
 			throw new NonUniqueIdException();
