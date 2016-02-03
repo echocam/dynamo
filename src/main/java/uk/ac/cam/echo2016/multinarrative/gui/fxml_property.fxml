@@ -59,13 +59,11 @@
       </BorderPane>
    </content>
    <graphic>
-      <BorderPane>
-         <center>
-            <TextField fx:id="name" promptText="Property Name" BorderPane.alignment="CENTER" />
-         </center>
-         <right>
-            <Button mnemonicParsing="false" onAction="#deleteButtonAction" text="x" BorderPane.alignment="CENTER" />
-         </right>
-      </BorderPane>
+      <StackPane>
+         <children>
+            <TextField fx:id="name" prefWidth="165.0" promptText="Property Name" />
+            <Button mnemonicParsing="false" onAction="#deleteButtonAction" text="x" StackPane.alignment="CENTER_RIGHT" />
+         </children>
+      </StackPane>
    </graphic>
 </TitledPane>
