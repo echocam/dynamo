@@ -1,18 +1,19 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.text.Text;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Accordion;
-import javafx.scene.input.KeyEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.TitledPane;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_ADDED;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_REMOVED;
+
 import java.io.IOException;
 
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.*;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Accordion;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
+import javafx.scene.text.Text;
 
 /**
  * @author jr650

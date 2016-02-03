@@ -31,7 +31,6 @@ import java.util.Set;
  * by try{...}catch(ClassCastException){...}
  */
 public class BaseBundle {
-    private static final String TAG = "Bundle";
     static final boolean DEBUG = false;
 
     static final int BUNDLE_MAGIC = 0x4C444E42; // 'B' 'N' 'D' 'L'
