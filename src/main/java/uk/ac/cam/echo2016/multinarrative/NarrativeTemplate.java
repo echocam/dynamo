@@ -2,17 +2,30 @@ package uk.ac.cam.echo2016.multinarrative;
 
 /**
  * 
- * @author tr393
+ * The template of the story from which the copy of the game required for each play through is derived.
+ * 
+ * @author tr393, rjm232
  *
  */
 public class NarrativeTemplate extends MultiNarrative { // TODO Todo's and documentation
-	public NarrativeInstance generateInstance() {
+	
+	/**
+	 * 
+	 * @return
+	 * @throws NullPointerException if the NarrativeInstance.start has not been set.
+	 */
+	public NarrativeInstance generateInstance() throws NullPointerException{
 		NarrativeInstance instance = new NarrativeInstance();
 		
-		instance.start = this.start.copy(instance);
-		for (Node node : this.nodes) {
+		if (this.start != null) {
+			instance.start = this.start.copyToGraph(instance);
+		} else {
+			throw new NullPointerException("No node registered as start of graph.");
+		}
+		for (Node node : this.nodes.values()) {
 			node.setCopied(false); // TODO bad encapsulation, but resets copy flag
 		}
+		instance.setActive(start);
 		return instance;
 	}
 }

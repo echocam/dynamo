@@ -25,12 +25,18 @@
         <tabs>
           <Tab text="Nodes">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ListView fx:id="nodes" prefWidth="200.0" />
+                     </children></AnchorPane>
             </content>
           </Tab>
           <Tab text="Narratives">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ListView fx:id="narratives" prefWidth="200.0" />
+                     </children></AnchorPane>
             </content>
           </Tab>
         </tabs>
@@ -39,7 +45,7 @@
    <right>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <center>
-            <Accordion BorderPane.alignment="CENTER" fx:id="properties"/>
+            <Accordion fx:id="properties" BorderPane.alignment="CENTER" />
          </center>
          <top>
             <BorderPane BorderPane.alignment="CENTER">
@@ -49,6 +55,9 @@
                <center>
                   <TextField fx:id="propertyName" onAction="#addPropertyButtonAction" BorderPane.alignment="CENTER" />
                </center>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
             </BorderPane>
          </top>
       </BorderPane>
@@ -72,6 +81,9 @@
             </items>
           </Menu>
         </menus>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
       </MenuBar>
    </top>
    <bottom>

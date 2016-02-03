@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 /**
  * 
- * @author tr393
+ * Represents an actual play through of the story. Instantiated from the template.
+ * 
+ * @author tr393, rjm232
  *
  */
 public class NarrativeInstance extends MultiNarrative { // TODO Documentation
@@ -13,9 +15,9 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 
 	public NarrativeInstance() {
 		properties = new android.os.BaseBundle();
-	} // TODO explain how this is needed for NarrativeTemplate
+	}
 
-	public NarrativeInstance(NarrativeTemplate template) { // TODO check copy constructor
+	public NarrativeInstance(NarrativeTemplate template) throws NullPointerException{ // TODO check copy constructor
 		NarrativeInstance base = template.generateInstance();
 		this.narratives = base.narratives;
 		this.nodes = base.nodes;
@@ -28,11 +30,11 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 	}
 
 	public android.os.BaseBundle getNarrativeProperties(String id) {
-		return super.getNarrative(id).properties;
+		return getNarrative(id).getProperties();
 	}
 
 	public android.os.BaseBundle getNodeProperties(String id) {
-		return super.getNode(id).properties;
+		return getNode(id).getProperties();
 	}
 
 	public android.os.BaseBundle startNarrative(String id) {
@@ -42,7 +44,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 
 	public GameChoice endNarrative(String id) {
 		Narrative finished = getNarrative(id);
-		return finished.end.onEntry(finished, this);
+		return finished.getEnd().onEntry(finished, this);
 	}
 
 	/**
@@ -76,19 +78,21 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 	public boolean kill(Narrative narr) {
 		if (narr == null)
 			return false;
-		Node nEnd = narr.end;
-
-		/*
-		 * TODO retrieve special node properties if this is the only narrative entering the node, kill(nEnd); else
-		 * update node entry narratives
-		 */
+		Node nEnd = narr.getEnd();
+		
+		int narrEntries = nEnd.getProperties().getInt("Impl.Node.Entries"); // TODO improve naming convention?
+		--narrEntries;
+		nEnd.getProperties().putInt("Impl.Node.Entries", narrEntries);
+		
+		if (narrEntries == 0) {
+			kill(nEnd);
+		}
 		// TODO and update event if instanceof sync node? i.e. change to ACTION_CONTINUE?
 
-		Node nStart = narr.start;
+		Node nStart = narr.getStart();
 		nStart.getOptions().remove(narr); // TODO should return true, otherwise something's broken
 
-		// assert nStart has other options
-		narratives.remove(narr);
+		narratives.remove(narr.getIdentifier());
 		return true;
 	}
 
@@ -100,12 +104,13 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 	public boolean kill(Node node) {
 		if (node == null)
 			return false;
-		for (Narrative narr : node.getOptions()) {
-			kill(narr);
+		for (Narrative narr : new ArrayList<Narrative>(node.getOptions())) {
+			kill(narr); // copy of ArrayList used to allow deletion of nodes within the function
 		}
 
-		// assert no narratives leading into node
-		nodes.remove(node);
+		assert node.getProperties().getInt("Impl.Node.Entries") == 0;
+		
+		nodes.remove(node.getIdentifier());
 		return true;
 	}
 

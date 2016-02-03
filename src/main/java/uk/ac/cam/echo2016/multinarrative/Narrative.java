@@ -2,14 +2,16 @@ package uk.ac.cam.echo2016.multinarrative;
 
 /**
  * 
- * @author tr393, eyx20
+ * Acts as a connection between nodes. Represents the paths that characters follow.
+ * 
+ * @author tr393, eyx20, rjm232
  *
  */
 public class Narrative { // TODO Documentation
 	private final String id;
-	protected Node start;
-	protected Node end;
-	protected android.os.BaseBundle properties = null;
+	private Node start;
+	private Node end;
+	private android.os.BaseBundle properties = null;
 
 	public Narrative(String id, Node start, Node end) {
 		this.id = id;
@@ -37,11 +39,22 @@ public class Narrative { // TODO Documentation
 		this.end = end;
 	}
 
-	public void createProperties() { // TODO Initialize with default starting size?
-		properties = new android.os.BaseBundle();
+	public void createProperties() {
+		if (properties == null)
+			properties = new android.os.BaseBundle(); // TODO Initialize with default starting size?
 	}
 
 	public android.os.BaseBundle getProperties() {
 		return properties;
+	}
+	
+	public void setProperties(android.os.BaseBundle b) {
+		properties = b;
+	}
+	
+	public void follow() {
+		System.out.println("This narrative is " + id);
+		System.out.println("It connects " + start.getIdentifier() + " to " + end.getIdentifier());
+		System.out.println();
 	}
 }

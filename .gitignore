@@ -3,6 +3,7 @@ testbin/*
 *~
 build/*
 .gradle/*
+gradle.properties
 
 .settings/*
 .classpath
@@ -11,6 +12,8 @@ build/*
 *.DS_Store
 .idea/*
 local.properties
-DynamicNarrative.iml
+*.iml
 
 /bin/
+
+ignore/
