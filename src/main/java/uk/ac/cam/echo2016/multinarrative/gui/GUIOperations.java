@@ -1,7 +1,9 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
 
+import android.os.BaseBundle;
+
 /**
- * @author jr650
+ * @author jr650, eyx20
  */
 public class GUIOperations{
 
@@ -12,7 +14,13 @@ public class GUIOperations{
      * message of exception is displayed to the user, using the Strings
      * class for formatting.
      */
-    public void addProperty(String s) throws IllegalOperationException{}
+    
+    private BaseBundle properties = new BaseBundle();
+    
+    
+    public void addProperty(String s) throws IllegalOperationException{
+        properties.putString(s, s);
+    }
     
     /**
      * TODO
@@ -21,7 +29,9 @@ public class GUIOperations{
      * message of exception is displayed to the user, using the Strings
      * class for formatting.
      */
-    public void removeProperty(String s) throws IllegalOperationException{}
+    public void removeProperty(String s) throws IllegalOperationException{
+        properties.remove(s);
+    }
     
     /**
      * TODO
@@ -30,7 +40,10 @@ public class GUIOperations{
      * message of exception is displayed to the user, using the Strings
      * class for formatting.
      */
-    public void renameProperty(String from, String to) throws IllegalOperationException{}
-    
+    public void renameProperty(String from, String to) throws IllegalOperationException{
+        String obj = (String) properties.get(from);
+        properties.putString(to, obj);
+        properties.remove(from);
+    }
 
 }
