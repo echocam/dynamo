@@ -1,5 +1,6 @@
 package uk.ac.cam.echo2016.multinarrative;
 
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -9,7 +10,8 @@ public class NarrativeInstanceTest {
 	HashMap<String, Narrative> narrMap = new HashMap<String, Narrative>();
 	HashMap<String, Node> nodeMap= new HashMap<String, Node>();
 
-	public NarrativeInstanceTest() {
+	@Before
+	public void NarrativeInstanceTest() {
 		/**
 		 * The structure created here is what is found in the Visual Basic diagram on the Google Drive.
 		 */
@@ -104,12 +106,12 @@ public class NarrativeInstanceTest {
 		nodeMap.get("choiceJessica1").options.add(tempNarr);
 		narrMap.put(tempNarr.getIdentifier(), tempNarr);
 	}
+	
 	@Test
-	public void testNodeStructure() {
-		NarrativeInstanceTest test = new NarrativeInstanceTest();
+	public void testNodeStructure() throws NullPointerException{
 		NarrativeTemplate template = new NarrativeTemplate();
-		template.narratives.putAll(test.narrMap);
-		template.nodes.putAll(test.nodeMap);
+		template.narratives.putAll(narrMap);
+		template.nodes.putAll(nodeMap);
 		template.start = template.getNode("syncStart");
 		
 		template.getNode("choiceMike1").createProperties();
@@ -120,7 +122,7 @@ public class NarrativeInstanceTest {
 		assertEquals(24, template.narratives.size());
 		assertEquals(11, template.nodes.size());
 		assertEquals(template.getNarrative("narrSarah5").getEnd().getIdentifier(), "sync3");
-
+		
 		NarrativeInstance instance = new NarrativeInstance(template);
 		
 		assertTrue("Check Choice properties copied correctly", instance.getNodeProperties("choiceMike1").containsKey("ChoicePropertyCopiedCorrectly"));
@@ -138,5 +140,14 @@ public class NarrativeInstanceTest {
 
 		instance.kill("narrMike1");
 		assertEquals(21, instance.narratives.size());// Implementation not finished
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void testErrorThrown() throws NullPointerException {
+		NarrativeTemplate template = new NarrativeTemplate();
+		template.narratives.putAll(narrMap);
+		template.nodes.putAll(nodeMap);
+		
+		NarrativeInstance instance = new NarrativeInstance(template);
 	}
 }
