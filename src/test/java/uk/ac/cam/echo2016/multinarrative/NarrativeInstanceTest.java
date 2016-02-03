@@ -15,17 +15,17 @@ public class NarrativeInstanceTest {
 	 */
 	@Before
 	public void setup() {
-		nodeMap.put("syncStart", new SynchronizationNode("syncStart")); // 0
-		nodeMap.put("syncEnd", new SynchronizationNode("syncEnd")); 	// 1
-		nodeMap.put("sync1", new SynchronizationNode("sync1")); 	// 2
-		nodeMap.put("sync2", new SynchronizationNode("sync2")); 	// 3
-		nodeMap.put("sync3", new SynchronizationNode("sync3")); 	// 4
-		nodeMap.put("sync4", new SynchronizationNode("sync4")); 	// 5
-		nodeMap.put("choiceMike1", new ChoiceNode("choiceMike1")); 		// 6
-		nodeMap.put("choiceSam1", new ChoiceNode("choiceSam1")); 		// 7
-		nodeMap.put("choiceSarah1", new ChoiceNode("choiceSarah1")); 		// 8
-		nodeMap.put("choiceChris1", new ChoiceNode("choiceChris1")); 		// 9
-		nodeMap.put("choiceJessica1", new ChoiceNode("choiceJessica1")); 	// 10
+		nodeMap.put("syncStart", new SynchronizationNode("syncStart")); // ___0
+		nodeMap.put("syncEnd", new SynchronizationNode("syncEnd")); // _______1
+		nodeMap.put("sync1", new SynchronizationNode("sync1")); // ___________2
+		nodeMap.put("sync2", new SynchronizationNode("sync2")); // ___________3
+		nodeMap.put("sync3", new SynchronizationNode("sync3")); // ___________4
+		nodeMap.put("sync4", new SynchronizationNode("sync4")); // ___________5
+		nodeMap.put("choiceMike1", new ChoiceNode("choiceMike1")); // ________6
+		nodeMap.put("choiceSam1", new ChoiceNode("choiceSam1")); // __________7
+		nodeMap.put("choiceSarah1", new ChoiceNode("choiceSarah1")); // ______8
+		nodeMap.put("choiceChris1", new ChoiceNode("choiceChris1")); // ______9
+		nodeMap.put("choiceJessica1", new ChoiceNode("choiceJessica1")); // _10
 
 		Narrative tempNarr;
 
@@ -108,7 +108,7 @@ public class NarrativeInstanceTest {
 	}
 	
 	@Test
-	public void testNodeStructure() throws NullPointerException{
+	public void testNodeStructure() throws NullPointerException{ // TODO Documentation!
 		NarrativeTemplate template = new NarrativeTemplate();
 		template.narratives.putAll(narrMap);
 		template.nodes.putAll(nodeMap);
@@ -139,7 +139,7 @@ public class NarrativeInstanceTest {
 		assertNull(narr);
 
 		instance.kill("narrMike1");
-		assertEquals(21, instance.narratives.size());// Implementation not finished
+		assertEquals(21, instance.narratives.size());
 	}
 	
 	/**

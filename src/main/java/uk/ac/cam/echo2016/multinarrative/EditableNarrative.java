@@ -3,10 +3,11 @@ package uk.ac.cam.echo2016.multinarrative;
 import java.util.HashMap;
 
 /**
- * Represents a MultiNarrative that can be edited. Included for extensibility. We subclass it with 
- * GUINarrative, but this class can be derived for other methods of editing.
+ * Represents a MultiNarrative that can be edited. Included for extensibility. We subclass it with GUINarrative, but
+ * this class can be derived for other methods of editing.
  * 
- * @author tr393, rjm232
+ * @author tr393
+ * @author rjm232
  *
  */
 public class EditableNarrative extends MultiNarrative{ //TODO Todo's and documentation

@@ -4,17 +4,17 @@ package uk.ac.cam.echo2016.multinarrative;
  * 
  * The template of the story from which the copy of the game required for each play through is derived.
  * 
- * @author tr393, rjm232
+ * @author tr393
+ * @author rjm232
  *
  */
-public class NarrativeTemplate extends MultiNarrative { // TODO Todo's and documentation
+public class NarrativeTemplate extends MultiNarrative { // TODO Documentation
 	
 	/**
-	 * 
 	 * @return
 	 * @throws NullPointerException if the NarrativeInstance.start has not been set.
 	 */
-	public NarrativeInstance generateInstance() throws NullPointerException{
+	public NarrativeInstance generateInstance() throws NullPointerException{ // TODO more appropriate exception(and change doc)?
 		NarrativeInstance instance = new NarrativeInstance();
 		
 		if (this.start != null) {
