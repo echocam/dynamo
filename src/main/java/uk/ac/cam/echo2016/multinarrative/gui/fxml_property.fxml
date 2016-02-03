@@ -8,54 +8,64 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.collections.*?>
 
-<TitledPane animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uk.ac.cam.echo2016.multinarrative.gui.FXMLPropertyController">
+<TitledPane fx:id="root" animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uk.ac.cam.echo2016.multinarrative.gui.FXMLPropertyController">
     <stylesheets>
       <URL value="@Style.css" />
     </stylesheets>
     <content>
-      <BorderPane prefHeight="200.0" prefWidth="200.0">
+      <BorderPane fx:id="propertyPane" prefHeight="200.0" prefWidth="200.0">
          <center>
-            <ListView fx:id="values" BorderPane.alignment="CENTER" />
+            <ListView fx:id="values" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets right="10.0" top="10.0" />
+               </BorderPane.margin></ListView>
          </center>
-         <top>
-            <FlowPane prefHeight="0.0" prefWidth="578.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type:">
-                     <FlowPane.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </FlowPane.margin>
-                  </Text>
-                  <ComboBox fx:id="type" promptText="Choose A Type">
-                      <items>
-                          <FXCollections fx:factory="observableArrayList">
-                              <String fx:value="String" />
-                              <String fx:value="Integer" />
-                              <String fx:value="Boolean" />
-                              <String fx:value="Byte" />
-                              <String fx:value="Short" />
-                              <String fx:value="Long" />
-                              <String fx:value="Float" />
-                              <String fx:value="Double" />
-                          </FXCollections>
-                      </items>
-                      <value>
-                          <String fx:value="String" />
-                      </value>
-                  </ComboBox>
-               </children>
-            </FlowPane>
-         </top>
          <right>
             <VBox BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" prefWidth="50.0" text="+" />
-                  <Button mnemonicParsing="false" prefWidth="50.0" text="-" />
+                  <Button mnemonicParsing="false" text="+">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin></Button>
+                  <Button mnemonicParsing="false" text="x">
+                     <VBox.margin>
+                        <Insets top="3.0" />
+                     </VBox.margin></Button>
                </children>
             </VBox>
          </right>
+         <bottom>
+            <FlowPane prefHeight="25.0" prefWidth="125.0" BorderPane.alignment="CENTER" />
+         </bottom>
+         <top>
+            <ComboBox fx:id="type" prefWidth="1000.0" promptText="Choose A Type" BorderPane.alignment="CENTER">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="String" />
+                        <String fx:value="Integer" />
+                        <String fx:value="Boolean" />
+                        <String fx:value="Byte" />
+                        <String fx:value="Short" />
+                        <String fx:value="Long" />
+                        <String fx:value="Float" />
+                        <String fx:value="Double" />
+                    </FXCollections>
+                </items>
+                <value>
+                    <String fx:value="String" />
+                </value>
+            </ComboBox>
+         </top>
       </BorderPane>
    </content>
    <graphic>
-      <TextField fx:id="name" promptText="Property Name" />
+      <BorderPane>
+         <center>
+            <TextField fx:id="name" promptText="Property Name" BorderPane.alignment="CENTER" />
+         </center>
+         <right>
+            <Button mnemonicParsing="false" onAction="#deleteButtonAction" text="x" BorderPane.alignment="CENTER" />
+         </right>
+      </BorderPane>
    </graphic>
 </TitledPane>

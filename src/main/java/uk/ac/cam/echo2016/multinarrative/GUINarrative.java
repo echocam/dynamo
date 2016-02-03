@@ -12,8 +12,7 @@ public class GUINarrative extends EditableNarrative { // TODO Documentation
 			Node startNode = getNode(start);
 			Node endNode = getNode(end);
 			Narrative narr = new Narrative(id, startNode, endNode);
-			this.narratives.put(narr.getIdentifier(), narr);
-			startNode.options.add(narr);
+			startNode.getOptions().add(narr);
 			addNarrative(narr);			
 		} else {
 			throw new NonUniqueIdException();
@@ -65,7 +64,7 @@ public class GUINarrative extends EditableNarrative { // TODO Documentation
 		}
 	}
 
-	public boolean isUniqueId(String id) {
+	private boolean isUniqueId(String id) {
 		Narrative narr = getNarrative(id);
 		Node node = getNode(id);
 		return ((narr == null) && (node == null));
