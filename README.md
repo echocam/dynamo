@@ -21,9 +21,14 @@ To run the GUI simply use the following:
 ./gradlew runGui
 ```
 
-```bash
 To test:
+```bash
 ./gradlew check
+```
+
+To clean:
+```bash
+./gradlew clean
 ```
 
 Windows
