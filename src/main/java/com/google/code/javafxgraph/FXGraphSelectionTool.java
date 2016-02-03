@@ -13,10 +13,12 @@
  */
 package com.google.code.javafxgraph;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.animation.TimelineBuilder;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
@@ -24,11 +26,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.RectangleBuilder;
 import javafx.util.Duration;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class FXGraphSelectionTool extends FXTool {
 
@@ -91,10 +89,12 @@ public class FXGraphSelectionTool extends FXTool {
             double width = maxX - minX + 40;
             double height = maxY - minY + 40;
 
-            RectangleBuilder theBuilder = RectangleBuilder.create();
-            theBuilder.x(startX).y(startY).width(width).height(height).strokeWidth(1).stroke(Color.BLACK).strokeDashArray(3.0, 7.0, 3.0, 7.0).fill(Color.TRANSPARENT).mouseTransparent(true);
-
-            currentSelectionRectangle = theBuilder.build();
+            currentSelectionRectangle = new Rectangle(startX, startY, width, height);
+            currentSelectionRectangle.setStrokeWidth(1);
+            currentSelectionRectangle.setStroke(Color.BLACK);
+            currentSelectionRectangle.getStrokeDashArray().addAll(3.0, 7.0, 3.0, 7.0);
+            currentSelectionRectangle.setFill(Color.TRANSPARENT);
+            currentSelectionRectangle.setMouseTransparent(true);
             currentSelectionRectangle.setTranslateZ(SELECTION_Z_OFFSET);
             owningControl.getChildren().add(currentSelectionRectangle);
 
@@ -106,7 +106,8 @@ public class FXGraphSelectionTool extends FXTool {
                 }
             });
 
-            currentSelectionTimeline = TimelineBuilder.create().cycleCount(Animation.INDEFINITE).keyFrames(theOneFrame).build();
+            currentSelectionTimeline = new Timeline(theOneFrame);
+            currentSelectionTimeline.cycleCountProperty().set(Animation.INDEFINITE);
             currentSelectionTimeline.play();
         }
 
@@ -133,10 +134,12 @@ public class FXGraphSelectionTool extends FXTool {
     }
 
     public void startSelectionAt(double aSceneX, double aSceneY) {
-        RectangleBuilder theBuilder = RectangleBuilder.create();
-        theBuilder.x(aSceneX).y(aSceneY).width(1).height(1).strokeWidth(1).stroke(Color.BLACK).strokeDashArray(3.0, 7.0, 3.0, 7.0).fill(Color.TRANSPARENT).mouseTransparent(true);
-
-        interactiveSelectionRectangle = theBuilder.build();
+        interactiveSelectionRectangle = new Rectangle(aSceneX, aSceneY, 1, 1);
+        interactiveSelectionRectangle.setStrokeWidth(1);
+        interactiveSelectionRectangle.setStroke(Color.BLACK);
+        interactiveSelectionRectangle.getStrokeDashArray().addAll(3.0, 7.0, 3.0, 7.0);
+        interactiveSelectionRectangle.setFill(Color.TRANSPARENT);
+        interactiveSelectionRectangle.setMouseTransparent(true);
         interactiveSelectionRectangle.setTranslateZ(SELECTION_Z_OFFSET);
 
         owningControl.getChildren().add(interactiveSelectionRectangle);
@@ -149,7 +152,8 @@ public class FXGraphSelectionTool extends FXTool {
             }
         });
 
-        interactiveSelectionTimeline = TimelineBuilder.create().cycleCount(Animation.INDEFINITE).keyFrames(theOneFrame).build();
+        interactiveSelectionTimeline = new Timeline(theOneFrame);
+        interactiveSelectionTimeline.cycleCountProperty().set(Animation.INDEFINITE);
         interactiveSelectionTimeline.play();
 
     }

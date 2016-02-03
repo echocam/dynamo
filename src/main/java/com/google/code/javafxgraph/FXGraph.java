@@ -13,7 +13,6 @@
  */
 package com.google.code.javafxgraph;
 
-import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 

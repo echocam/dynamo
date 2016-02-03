@@ -20,7 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import javafx.scene.shape.RectangleBuilder;
+import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,9 +55,9 @@ public class FXEdge {
     }
 
     public Node compileDisplayShapeFor(FXEdgeWayPoint aWayPoint, double aZoomLevel) {
-        RectangleBuilder theBuilder = RectangleBuilder.create();
-        theBuilder.width(4).height(4).fill(Color.RED).stroke(Color.RED);
-        Node theNode = theBuilder.build();
+        Rectangle theNode = new Rectangle(4, 4);
+        theNode.setFill(Color.RED);
+        theNode.setStroke(Color.RED);
         theNode.setScaleX(aZoomLevel);
         theNode.setScaleY(aZoomLevel);
         theNode.setLayoutX((aWayPoint.positionX - 2) * aZoomLevel);

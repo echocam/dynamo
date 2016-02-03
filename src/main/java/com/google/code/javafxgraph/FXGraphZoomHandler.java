@@ -16,7 +16,6 @@ package com.google.code.javafxgraph;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.animation.TimelineBuilder;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
@@ -43,7 +42,8 @@ public class FXGraphZoomHandler {
             }
         });
 
-        zoomTimeLine = TimelineBuilder.create().cycleCount(Animation.INDEFINITE).keyFrames(theOneFrame).build();
+        zoomTimeLine = new Timeline(theOneFrame);
+        zoomTimeLine.cycleCountProperty().set(Animation.INDEFINITE);
         zoomTimeLine.play();
 
     }
