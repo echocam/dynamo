@@ -17,7 +17,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 		properties = new android.os.BaseBundle();
 	}
 
-	public NarrativeInstance(NarrativeTemplate template) { // TODO check copy constructor
+	public NarrativeInstance(NarrativeTemplate template) throws NullPointerException{ // TODO check copy constructor
 		NarrativeInstance base = template.generateInstance();
 		this.narratives = base.narratives;
 		this.nodes = base.nodes;

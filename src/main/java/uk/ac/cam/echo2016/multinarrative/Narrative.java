@@ -51,4 +51,10 @@ public class Narrative { // TODO Documentation
 	public void setProperties(android.os.BaseBundle b) {
 		properties = b;
 	}
+	
+	public void follow() {
+		System.out.println("This narrative is " + id);
+		System.out.println("It connects " + start.getIdentifier() + " to " + end.getIdentifier());
+		System.out.println();
+	}
 }

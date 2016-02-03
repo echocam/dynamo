@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public abstract class Node { // TODO Documentation
 	private final String id;
 	private android.os.BaseBundle properties;
-	protected ArrayList<Narrative> options;
+	private ArrayList<Narrative> options;
 	private boolean copied = false; // flag used in graph copy that indicates whether this node has been passed
 
 	public Node(String id) {
@@ -111,5 +111,20 @@ public abstract class Node { // TODO Documentation
 
 	public ArrayList<Narrative> getOptions() {
 		return options;
+	}
+	
+	public void traverse() { // TODO: remove as for testing purposes only
+		System.out.println("This node is " + id);
+		System.out.println("Exiting this node are the following narratives:");
+		for (Narrative n : options) {
+			System.out.println("    " + n.getIdentifier());
+		}
+		System.out.println();
+		for (Narrative n : options) {
+			n.follow();
+		}
+		for (Narrative n : options) {
+			n.getEnd().traverse();
+		}
 	}
 }
