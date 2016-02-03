@@ -112,4 +112,19 @@ public abstract class Node { // TODO Documentation
 	public ArrayList<Narrative> getOptions() {
 		return options;
 	}
+	
+	public void traverse() { // TODO: remove as for testing purposes only
+		System.out.println("This node is " + id);
+		System.out.println("Exiting this node are the following narratives:");
+		for (Narrative n : options) {
+			System.out.println("    " + n.getIdentifier());
+		}
+		System.out.println();
+		for (Narrative n : options) {
+			n.follow();
+		}
+		for (Narrative n : options) {
+			n.getEnd().traverse();
+		}
+	}
 }
