@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public abstract class Node { // TODO Documentation
 	private final String id;
 	private android.os.BaseBundle properties;
-	protected ArrayList<Narrative> options;
+	private ArrayList<Narrative> options;
 	private boolean copied = false; // flag used in graph copy that indicates whether this node has been passed
 
 	public Node(String id) {
