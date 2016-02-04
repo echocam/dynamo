@@ -47,6 +47,7 @@ public class NarrativeTemplate extends MultiNarrative {
         for (Narrative narr : narratives.values()) {
             Narrative r_narr = narr.clone();
             // Find Start and end in r_nodes
+            
             r_narr.setStart(r_nodes.get(narr.getStart().getIdentifier()));
             r_narr.setEnd(r_nodes.get(narr.getEnd().getIdentifier()));
             r_narr.getStart().getOptions().add(r_narr);

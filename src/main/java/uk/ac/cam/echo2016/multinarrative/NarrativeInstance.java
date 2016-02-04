@@ -19,10 +19,6 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     protected BaseBundle properties;
     protected ArrayList<Node> activeNodes = new ArrayList<Node>();
 
-    public NarrativeInstance() {
-        properties = new BaseBundle();
-    }
-
     public NarrativeInstance(NarrativeTemplate template) throws NullPointerException { // TODO testing
         NarrativeInstance base = template.generateInstance();
         this.narratives = base.narratives;
