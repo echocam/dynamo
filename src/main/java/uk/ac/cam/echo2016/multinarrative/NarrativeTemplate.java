@@ -59,7 +59,7 @@ public class NarrativeTemplate extends MultiNarrative {
         }
         Node r_start = r_nodes.get(start.getIdentifier());
 
-        NarrativeInstance instance = new NarrativeInstance(r_nodes, r_narrs, r_start);
+        NarrativeInstance instance = new NarrativeInstance(r_narrs, r_nodes, r_start);
         return instance;
     }
     /*
