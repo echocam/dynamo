@@ -1,5 +1,6 @@
 package uk.ac.cam.echo2016.multinarrative;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -27,13 +28,17 @@ public class NarrativeTemplate extends MultiNarrative {
      *
      * @return
      */
+
     public NarrativeInstance generateInstance() {
         HashMap<String, Node> r_nodes = new HashMap<>();
         HashMap<String, Narrative> r_narrs = new HashMap<>();
-
+        
+        if (start == null) {throw new RuntimeException();} // TODO better exception
+        
         for (Node node : nodes.values()) {
             Node r_node = node.clone();
             r_node.createProperties();
+            r_node.setOptions(new ArrayList<Narrative>());
             r_nodes.put(node.getIdentifier(), r_node);
         }
 
@@ -54,13 +59,12 @@ public class NarrativeTemplate extends MultiNarrative {
 
         return new NarrativeInstance(r_narrs, r_nodes, start);
     }
-
     /*
-     * public NarrativeInstance generateInstance() throws NullPointerException { // TODO more appropriate exception?
-     * NarrativeInstance instance = new NarrativeInstance();
-     * 
-     * if (this.start != null) { instance.start = this.start.copyToGraph(instance); } else { throw new
-     * NullPointerException("No node registered as start of graph."); } for (Node node : this.nodes.values()) {
-     * node.resetCopied(); } instance.setActive(start); return instance; }
+	 public NarrativeInstance generateInstance() throws NullPointerException { // TODO more appropriate exception?
+	 NarrativeInstance instance = new NarrativeInstance();
+	 
+	 if (this.start != null) { instance.start = this.start.copyToGraph(instance); } else { throw new
+	 NullPointerException("No node registered as start of graph."); } for (Node node : this.nodes.values()) {
+	 node.resetCopied(); } instance.setActive(start); return instance; }
      */
 }

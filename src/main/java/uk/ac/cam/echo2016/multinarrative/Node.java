@@ -37,13 +37,13 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
 	 */
 	// TODO change callConstructor to use clone() instead?
 	// TODO move to NarrativeTemplate and copy through the hashmap?
-	/*public Node copyToGraph(NarrativeInstance instance) { // TODO More Documentation!!! and tests
+	public Node copyToGraph(NarrativeInstance instance) { // TODO More Documentation!!! and tests
 
 		// Eventually calls Node(this.id) via subclass's constructor
 		Node result = this.callConstructor(this.id);
 
 		if (this.properties != null) // Copy properties across, if any
-			result.properties = new BaseBundle(this.properties);
+			result.properties = BaseBundle.deepcopy(this.properties);
 
 		this.copied = true; // TODO encapsulation of copied flag
 
@@ -82,7 +82,7 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
 		}
 		instance.nodes.put(result.getIdentifier(), result);
 		return result;
-	}*/
+	}
 	@Override
 	public Node clone() {
 	    try {
@@ -131,5 +131,9 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
 
 	public ArrayList<Narrative> getOptions() {
 		return options;
+	}
+	
+	public void setOptions(ArrayList<Narrative> o) {
+		options = o;
 	}
 }

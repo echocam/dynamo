@@ -23,7 +23,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 		properties = new BaseBundle();
 	}
 
-	public NarrativeInstance(NarrativeTemplate template) throws NullPointerException{ // TODO check copy constructor
+	public NarrativeInstance(NarrativeTemplate template) throws NullPointerException{ // TODO testing
 		NarrativeInstance base = template.generateInstance();
 		this.narratives = base.narratives;
 		this.nodes = base.nodes;
@@ -32,9 +32,9 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 	}
 
 
-    public NarrativeInstance(HashMap<String, Narrative> r_narrs, HashMap<String, Node> r_nodes, Node start) {
-        this.narratives = r_narrs;
-        this.nodes = r_nodes;
+    public NarrativeInstance(HashMap<String, Narrative> narrs, HashMap<String, Node> nodes, Node start) {
+        this.narratives = narrs;
+        this.nodes = nodes;
         this.start = start;
     }
 
@@ -71,16 +71,17 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 	 */
 	public boolean kill(String id) { // TODO More Documentation, including overloaded methods
 		Narrative narr = getNarrative(id);
-		Node node = getNode(id); // TODO search might be optimizable (2nd not required)
-
 		if (narr != null) { // TODO alternate exception handling?
 			kill(narr);
 			return true;
-		} else if (node != null) { // TODO alternate exception handling?
-			kill(node);
-			return true;
+		} else {
+			Node node = getNode(id);
+			if (node != null) { // TODO alternate exception handling?
+				kill(node);
+				return true;
+			}
+			return false;
 		}
-		return false;
 	}
 
 	/**
@@ -117,7 +118,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 	public boolean kill(Node node) {
 		if (node == null)
 			return false;
-		for (Narrative narr : new ArrayList<Narrative>(node.getOptions())) { // TODO BUGFIX - shallow copy. Why didnt this break before?
+		for (Narrative narr : new ArrayList<Narrative>(node.getOptions())) {
 			kill(narr); // copy of ArrayList used to allow deletion of nodes within the function
 		}
 
