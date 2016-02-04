@@ -10,7 +10,7 @@ import java.util.HashMap;
  * @author rjm232
  *
  */
-public class EditableNarrative extends MultiNarrative{ //TODO Todo's and documentation
+public abstract class EditableNarrative extends MultiNarrative{ //TODO Todo's and documentation
     
     public void addNarrative(Narrative narrative) {
         narratives.put(narrative.getIdentifier(), narrative);

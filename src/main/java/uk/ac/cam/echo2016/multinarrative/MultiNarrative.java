@@ -13,9 +13,8 @@ import uk.ac.cam.echo2016.multinarrative.Node;
  * @see GUINarrative
  * @see MultiNarrative 
  */
-public class MultiNarrative { //TODO Documentation
-    protected HashMap<String, Narrative> narratives = new HashMap<String, Narrative>(); // TODO Warning: Narrative and Node must not
-                                                                        // have their .equals() method overridden
+public abstract class MultiNarrative { //TODO Documentation
+    protected HashMap<String, Narrative> narratives = new HashMap<String, Narrative>();
     protected HashMap<String, Node> nodes = new HashMap<String, Node>();
     protected Node start;
 
