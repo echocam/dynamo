@@ -15,7 +15,7 @@
     <content>
       <BorderPane fx:id="propertyPane" prefHeight="200.0" prefWidth="200.0">
          <center>
-            <ListView fx:id="values" BorderPane.alignment="CENTER">
+            <ListView fx:id="values" editable="true" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets right="10.0" top="10.0" />
                </BorderPane.margin></ListView>
@@ -23,14 +23,19 @@
          <right>
             <VBox BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" text="+">
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addValueAction" text="+">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin></Button>
-                  <Button mnemonicParsing="false" text="x">
+                  <Button fx:id="remove" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#removeValueAction" text="x">
                      <VBox.margin>
                         <Insets top="3.0" />
                      </VBox.margin></Button>
+                  <ColorPicker fx:id="recolour" styleClass="button">
+                     <VBox.margin>
+                        <Insets top="3.0" />
+                     </VBox.margin>
+                  </ColorPicker>
                </children>
             </VBox>
          </right>
@@ -59,13 +64,11 @@
       </BorderPane>
    </content>
    <graphic>
-      <BorderPane>
-         <center>
-            <TextField fx:id="name" promptText="Property Name" BorderPane.alignment="CENTER" />
-         </center>
-         <right>
-            <Button mnemonicParsing="false" onAction="#deleteButtonAction" text="x" BorderPane.alignment="CENTER" />
-         </right>
-      </BorderPane>
+      <StackPane>
+         <children>
+            <TextField fx:id="name" prefWidth="165.0" promptText="Property Name" />
+            <Button mnemonicParsing="false" onAction="#deleteButtonAction" text="x" StackPane.alignment="CENTER_RIGHT" />
+         </children>
+      </StackPane>
    </graphic>
 </TitledPane>

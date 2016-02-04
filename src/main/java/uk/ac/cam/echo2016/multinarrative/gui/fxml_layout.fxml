@@ -7,19 +7,12 @@
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import javafx.scene.layout.*?>
+<?import com.google.com.javafxgraph.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uk.ac.cam.echo2016.multinarrative.gui.FXMLController">
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uk.ac.cam.echo2016.multinarrative.gui.FXMLController">
     <stylesheets>
       <URL value="@Style.css" />
     </stylesheets>
-    <center>
-      <ScrollPane fx:id="drawingPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
-            </AnchorPane>
-        </content>
-      </ScrollPane>
-   </center>
    <left>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -48,17 +41,12 @@
             <Accordion fx:id="properties" BorderPane.alignment="CENTER" />
          </center>
          <top>
-            <BorderPane BorderPane.alignment="CENTER">
-               <left>
-                  <Button fx:id="addProperty" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addPropertyButtonAction" text="+" BorderPane.alignment="CENTER" />
-               </left>
-               <center>
-                  <TextField fx:id="propertyName" onAction="#addPropertyButtonAction" BorderPane.alignment="CENTER" />
-               </center>
-               <BorderPane.margin>
-                  <Insets />
-               </BorderPane.margin>
-            </BorderPane>
+            <StackPane BorderPane.alignment="CENTER">
+               <children>
+                  <TextField fx:id="propertyName" onAction="#addPropertyButtonAction" />
+                  <Button fx:id="addProperty" mnemonicParsing="false" onAction="#addPropertyButtonAction" text="+" StackPane.alignment="CENTER_RIGHT" />
+               </children>
+            </StackPane>
          </top>
       </BorderPane>
    </right>

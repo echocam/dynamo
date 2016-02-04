@@ -3,7 +3,7 @@ root {
 }
 
 .menu-bar, .list-view, .label, .button, .tab .tab-label, 
-.combo-box > .list-cell, .text-input,
+.combo-box > .list-cell, .text-input, .list-cell,
 #label, #infoBar {
     -fx-text-fill: white;
     -fx-font-family: "Arial Narrow";
@@ -13,20 +13,34 @@ root {
     -fx-fill: white;
 }
 
-.root, .list-view, 
-.titled-pane:focused, .titled-pane > .title, .tab-pane .tab, 
+.list-cell:odd {
+    -fx-cell-hover-color: #457894;
+    -fx-background-color: #2a2a2a;
+}
+
+.list-cell:even {
+    -fx-cell-hover-color: #457894;
+    -fx-background-color: #222222;
+}
+
+.list-cell:focused, .list-cell:hover {
+    -fx-background-color: #457894;
+}
+
+.root, .list-view, .scroll-pane, 
+.titled-pane:focused, .tab-pane .tab, 
 #propertyPane, #baseline, #root {
     -fx-background-color: #333333;
 }
 
-.button, .combo-box-base, .text-field, .menu-bar{
+.button, .combo-box-base, .text-field, .titled-pane > .title, .menu-bar{
     -fx-background-color:
         #222222,
         #333333;
     -fx-background-insets: 0, 1;
 }
 
-.button:hover, .button:focused {
+.button:hover, .titled-pane:expanded > .title {
     -fx-background-color:
         #222222,
         #457894;
@@ -40,10 +54,12 @@ root {
 
 .menu-bar, #baseline {
     -fx-background-color: #222222;
+}
+.menu-bar, .titled-pane > .title, #baseline {
     -fx-background-radius: 6;
 }
 
-.titled-pane:expanded > .title, .tab-pane .tab:selected {
+.tab-pane .tab:selected {
     -fx-background-color: #457894;
 }
 
@@ -51,7 +67,7 @@ root {
     -fx-opacity: 0;
 }
 
-.tab .tab-label,
+.tab .tab-label, .titled-pane:focused,
 .tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator, 
 #label { 
     -fx-border-color: transparent;  
@@ -65,5 +81,10 @@ root {
 #baseline {
   -fx-opacity: 1;
 }
+
+#recolour {
+	-fx-color-label-visible: false;
+}
+
 
 
