@@ -70,11 +70,6 @@ public class EditableNarrativeTest {
     }
     
     @Test
-    public void addNarrativeAndNodeTest() {
-        traverse(eNarr.start);
-    }
-    
-    @Test
     public void renameNarrativeTest() {
         eNarr.renameNarrative("link4", "fromLeftToEnd");
         assertEquals("Check link4 renamed internally", "fromLeftToEnd", eNarr.narratives.get("fromLeftToEnd").getIdentifier());
