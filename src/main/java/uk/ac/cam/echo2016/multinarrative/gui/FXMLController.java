@@ -46,12 +46,13 @@ public class FXMLController implements Initializable {
 
     @FXML
     protected void addPropertyButtonAction(ActionEvent event) {
+
 	String name = propertyName.getText();
 	try {
-	    operations.addProperty(name, "String");// Throws
-						   // IllegalOperationException
-						   // if
-	    // fails
+	    operations.addProperty(name);// Throws
+					 // IllegalOperationException
+					 // if
+					 // fails
 	    addProperty(name);
 	} catch (IllegalOperationException ioe) {
 	    setInfo(ioe.getMessage(), name);

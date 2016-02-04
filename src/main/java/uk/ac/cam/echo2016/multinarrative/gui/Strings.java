@@ -1,7 +1,7 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
 
 /**
- * @author jr650
+ * @author jr650, eyx20
  */
 public class Strings{
     
@@ -14,7 +14,6 @@ public class Strings{
     public static final String ALREADY_EXISTS = "Property %1 already exists.";
     public static final String INVALID_TYPE = "Type cannot be resolved.";
     public static final String PROPERTY_DOES_NOT_EXIST = "Property %1 does not exist.";
-    public static final String ALREADY_EXISTS = "Property %1 already exists.";
 
     
 

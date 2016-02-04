@@ -17,40 +17,48 @@ public class GUIOperations{
      * message of exception is displayed to the user, using the Strings
      * class for formatting.
      */    
-    public void addProperty(String s, String type) throws IllegalOperationException{
+    public void addProperty(String s) throws IllegalOperationException{
         if (s.equals("") || s == null) {
             throw new IllegalOperationException(ADD_EMPTY_STRING);
         }
         if (properties.containsKey(s)) {
             throw new IllegalOperationException(ALREADY_EXISTS);
         }
+        properties.putString(s, s);
+        
+    }
+    
+    public void setType(String property, String type) throws IllegalOperationException {
+        if (!properties.containsKey(property)) {
+            throw new IllegalOperationException(PROPERTY_DOES_NOT_EXIST);
+        }
         switch (type) {
         case "String": 
-            properties.putString(s, s);
+            properties.putString(property, property);
             break;
         case "Integer":
-            properties.putInt(s, Integer.parseInt(s));
+            properties.putInt(property, Integer.parseInt(property));
             break;
         case "Boolean":
-            properties.putBoolean(s, Boolean.parseBoolean(s));
+            properties.putBoolean(property, Boolean.parseBoolean(property));
             break;
         case "Byte":
-            properties.putByte(s, Byte.parseByte(s));
+            properties.putByte(property, Byte.parseByte(property));
             break;
         case "Short":
-            properties.putShort(s, Short.parseShort(s));
+            properties.putShort(property, Short.parseShort(property));
             break;
         case "Long":
-            properties.putLong(s, Long.parseLong(s));
+            properties.putLong(property, Long.parseLong(property));
             break;
         case "Float":
-            properties.putFloat(s, Integer.parseInt(s));
+            properties.putFloat(property, Integer.parseInt(property));
             break;
         case "Double":
-            properties.putDouble(s, Double.parseDouble(s));
+            properties.putDouble(property, Double.parseDouble(property));
             break;
         default:
-            throw new IllegalOperationException(INVALID_TYPE);
+            throw new IllegalOperationException("Type " + type + " connot be resolved.");
         
         }
     }
@@ -64,7 +72,7 @@ public class GUIOperations{
      */
     public void removeProperty(String s) throws IllegalOperationException{
         if (!properties.containsKey(s)) {
-            throw new IllegalOperationException(PROPERTY_DOES_NOT_EXIST);
+            throw new IllegalOperationException("Property " + s + " does not exist.");
         }
         properties.remove(s);
     }
