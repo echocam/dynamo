@@ -42,10 +42,12 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
 
         // Eventually calls Node(this.id) via subclass's constructor
         Node result = this.callConstructor(this.id);
+        
+           
+        
 
         if (this.properties != null) // Copy properties across, if any
             result.properties = BaseBundle.deepcopy(this.properties);
-
         this.copied = true; // TODO encapsulation of copied flag
 
         // Copy each narrative leaving this node and call copyGraph on their end nodes
@@ -53,9 +55,7 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
             Node endNodeCopy;
             if (narrTemplate.getEnd().copied == false) {
                 // Not already copied
-
                 endNodeCopy = narrTemplate.getEnd().copyToGraph(instance); // Recursively copy nodes at the ends of
-                                                                           // narratives
 
                 // Create and update entryList property
                 endNodeCopy.createProperties();
@@ -65,7 +65,6 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
                 // Already copied
 
                 endNodeCopy = instance.getNode(narrTemplate.getEnd().getIdentifier()); // Get reference to copied end
-
                 // Update entryList property
 
                 int narrEntries = endNodeCopy.properties.getInt("Impl.Node.Entries");
