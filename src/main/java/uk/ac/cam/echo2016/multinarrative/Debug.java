@@ -29,8 +29,13 @@ public class Debug {
     
     private static final int TYPE_NARRATIVE = 0b00100000000000000000000000000000;
     
-    private static final int PRIORITY_LEVEL = priority_level; //TODO(tr395): read this from config file at runtime, allow different types to have different priorities!
-    private static final int RELAVENT_TYPES = TYPE_ALL;       //TODO(tr395): read this from config file at runtime
+    
+    //The base level of stuff you wish to see, the higher the number, the more information will be displayed.
+    private static final int PRIORITY_LEVEL = 3; //TODO(tr395): read this from config file at runtime, 
+                                                 //allow different types to have different priorities!
+    
+    //The types of information you wish to see printed.                                                          
+    private static final int RELAVENT_TYPES = TYPE_ALL; //TODO(tr395): read this from config file at runtime
     
     /**
      * Prints out the provided string provided the current PRIORITY_LEVEL for the type provided is at least
@@ -71,7 +76,7 @@ public class Debug {
             (priorityLevel <= PRIORITY_LEVEL) &&
             ((type | RELAVENT_TYPES) != 0)
            ) ||
-           priority_level <= 1
+           priorityLevel <= 1
         ) {
             int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
             String debugString = lineNumber + ":" + s;
