@@ -18,10 +18,10 @@ package uk.ac.cam.echo2016.multinarrative;
  * @see MultiNarrative
  */
 public class SynchronizationNode extends Node { // TODO Documentation
-	private static final long serialVersionUID = 1;
-	public SynchronizationNode(String id) {
-		super(id);
-	}
+    private static final long serialVersionUID = 1;
+    public SynchronizationNode(String id) {
+        super(id);
+    }
 
     protected Node callConstructor(String id) {
         return new SynchronizationNode(id);
