@@ -1,6 +1,7 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
 
 import android.os.BaseBundle;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.*;
 
 /**
  * @author jr650, eyx20
@@ -17,8 +18,11 @@ public class GUIOperations{
      * class for formatting.
      */    
     public void addProperty(String s, String type) throws IllegalOperationException{
+        if (s.equals("") || s == null) {
+            throw new IllegalOperationException(ADD_EMPTY_STRING);
+        }
         if (properties.containsKey(s)) {
-            throw new IllegalOperationException("Property " + s + " already exists.");
+            throw new IllegalOperationException(ALREADY_EXISTS);
         }
         switch (type) {
         case "String": 
@@ -46,7 +50,7 @@ public class GUIOperations{
             properties.putDouble(s, Double.parseDouble(s));
             break;
         default:
-            throw new IllegalOperationException("Type " + type + " connot be resolved.");
+            throw new IllegalOperationException(INVALID_TYPE);
         
         }
     }
@@ -60,7 +64,7 @@ public class GUIOperations{
      */
     public void removeProperty(String s) throws IllegalOperationException{
         if (!properties.containsKey(s)) {
-            throw new IllegalOperationException("Property " + s + " does not exist.");
+            throw new IllegalOperationException(PROPERTY_DOES_NOT_EXIST);
         }
         properties.remove(s);
     }
@@ -74,8 +78,7 @@ public class GUIOperations{
      */
     public void renameProperty(String from, String to) throws IllegalOperationException{
         if (!properties.containsKey(from)) {
-            throw new IllegalOperationException("Property " + from + " cannot be renamed: "
-                    + "Property does not exist.");
+            throw new IllegalOperationException(PROPERTY_MISSING);
         }
         if (properties.containsKey(to)) {
             throw new IllegalOperationException("Property cannot be renamed to " + to + ": "

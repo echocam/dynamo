@@ -5,6 +5,7 @@ import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_REMOVED;
 
 import java.io.IOException;
 
+import uk.ac.cam.echo2016.multinarrative.gui.IllegalOperationException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,8 +38,10 @@ public class FXMLController {
     @FXML
     protected void addPropertyButtonAction(ActionEvent event) {
         String name = propertyName.getText();
+//        String typename = type.getSelectionModel().getSelectedItem();
+//        System.out.println(typename);
         try {
-            operations.addProperty(name);// Throws IllegalOperationException if
+            operations.addProperty(name, "String");// Throws IllegalOperationException if
                                             // fails
 
             addProperty(name);
