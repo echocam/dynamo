@@ -46,8 +46,9 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     }
 
     public BaseBundle startNarrative(String id) {
-        // TODO do whatever needs to be done when starting a narrative
-        return getNarrativeProperties(id);
+        Narrative narr = getNarrative(id);
+        narr.start.startNarrative(narr);
+        return narr.getProperties();
     }
 
     public GameChoice endNarrative(String id) {
@@ -87,8 +88,14 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     public boolean kill(Narrative narr) {
         if (narr == null)
             return false;
+        
+        System.out.println("Killing: " + narr.getIdentifier());
         Node nEnd = narr.getEnd();
-
+        String s = nEnd == null ? "null"
+            : nEnd + " " + (nEnd.getProperties() == null ? "null"
+                : nEnd.getProperties() + " " + nEnd.getProperties().getInt("Impl.Node.Entries"));
+        System.out.println(s);
+        
         int narrEntries = nEnd.getProperties().getInt("Impl.Node.Entries"); // TODO improve naming convention?
         --narrEntries;
         nEnd.getProperties().putInt("Impl.Node.Entries", narrEntries);
