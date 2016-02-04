@@ -1,5 +1,6 @@
 package uk.ac.cam.echo2016.multinarrative;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -10,7 +11,8 @@ import java.util.ArrayList;
  * @version 1.0
  *
  */
-public abstract class Node { // TODO Documentation
+public abstract class Node implements Serializable{ // TODO Documentation
+	private static final long serialVersionUID = 1;
 	private final String id;
 	private android.os.BaseBundle properties;
 	private ArrayList<Narrative> options;

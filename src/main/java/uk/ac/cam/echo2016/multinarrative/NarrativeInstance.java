@@ -12,6 +12,7 @@ import java.util.ArrayList;
  *
  */
 public class NarrativeInstance extends MultiNarrative { // TODO Documentation
+	private static final long serialVersionUID = 1;
 	protected android.os.BaseBundle properties;
 	protected ArrayList<Node> activeNodes = new ArrayList<Node>();
 

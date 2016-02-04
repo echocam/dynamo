@@ -16,6 +16,7 @@ package uk.ac.cam.echo2016.multinarrative;
  * @see MultiNarrative 
  */
 public class ChoiceNode extends Node { // TODO Implementation and documentation
+	private static final long serialVersionUID = 1;
 
 	public ChoiceNode(String id) {
 		super(id);

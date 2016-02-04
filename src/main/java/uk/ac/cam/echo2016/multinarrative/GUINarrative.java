@@ -16,6 +16,7 @@ package uk.ac.cam.echo2016.multinarrative;
  * @see MultiNarrative
  */
 public class GUINarrative extends EditableNarrative { // TODO Documentation
+	private static final long serialVersionUID = 1;
 	public void newNarrative(String id, String start, String end) throws NonUniqueIdException { // TODO error message
 		if (isUniqueId(id)) {
 			Node startNode = getNode(start);

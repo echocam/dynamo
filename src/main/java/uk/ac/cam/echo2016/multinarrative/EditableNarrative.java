@@ -11,6 +11,7 @@ import java.util.HashMap;
  *
  */
 public class EditableNarrative extends MultiNarrative{ //TODO Todo's and documentation
+	private static final long serialVersionUID = 1;
 	
 	public void addNarrative(Narrative narrative) {
 		narratives.put(narrative.getIdentifier(), narrative);
