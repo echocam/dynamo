@@ -14,7 +14,7 @@ import android.os.BaseBundle;
  * @version 1.0
  *
  */
-public class Narrative implements Serializable { // TODO Documentation
+public class Narrative implements Serializable, Cloneable{ // TODO Documentation
 	private static final long serialVersionUID = 1;
 	private final String id;
 	private Node start;

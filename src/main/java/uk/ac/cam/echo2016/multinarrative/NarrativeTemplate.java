@@ -32,16 +32,23 @@ public class NarrativeTemplate extends MultiNarrative {
         HashMap<String, Narrative> r_narrs = new HashMap<>();
 
         for (Node node : nodes.values()) {
-            r_nodes.put(node.getIdentifier(), node.clone());
+            Node r_node = node.clone();
+            r_node.createProperties();
+            r_nodes.put(node.getIdentifier(), r_node);
         }
 
         for (Narrative narr : narratives.values()) {
             Narrative r_narr = narr.clone();
             // Find Start and end in r_nodes
-            r_narr.setStart(r_nodes.get(r_narr.getIdentifier()));
-            r_narr.setEnd(r_nodes.get(r_narr.getIdentifier()));
-
+            r_narr.setStart(r_nodes.get(narr.getStart().getIdentifier()));
+            r_narr.setEnd(r_nodes.get(narr.getEnd().getIdentifier()));
             r_narr.getStart().getOptions().add(r_narr);
+            
+            // Increments the narrative entries property
+            int narrEntries = r_narr.getEnd().getProperties().getInt("Impl.Node.Entries");
+            narrEntries++;
+            r_narr.getEnd().getProperties().putInt("Impl.Node.Entries", narrEntries);
+            
             r_narrs.put(narr.getIdentifier(), r_narr);
         }
 

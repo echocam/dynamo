@@ -114,7 +114,7 @@ public class NarrativeInstanceTest {
         template.nodes.putAll(nodeMap);
         template.start = template.getNode("syncStart");
         
-        template.getNode("choiceMike1").createProperties();
+        template.getNode("choiceMike1").createProperties(); // TODO test deep clone method
         template.getNode("choiceMike1").getProperties().putBoolean("ChoicePropertyCopiedCorrectly", true);
         template.getNode("sync1").createProperties();
         template.getNode("sync1").getProperties().putBoolean("SyncPropertyCopiedCorrectly", true);
@@ -146,6 +146,7 @@ public class NarrativeInstanceTest {
      * Here template.start is not set, so an error is thrown.
      * @throws NullPointerException
      */
+    /*
     @Test(expected = NullPointerException.class)
     public void testErrorThrown() throws NullPointerException {
         NarrativeTemplate template = new NarrativeTemplate();
@@ -154,5 +155,5 @@ public class NarrativeInstanceTest {
         
         @SuppressWarnings("unused")
         NarrativeInstance instance = new NarrativeInstance(template);
-    }
+    }*/
 }

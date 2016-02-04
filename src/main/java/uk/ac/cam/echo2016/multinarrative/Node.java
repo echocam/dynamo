@@ -37,7 +37,7 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
 	 */
 	// TODO change callConstructor to use clone() instead?
 	// TODO move to NarrativeTemplate and copy through the hashmap?
-	public Node copyToGraph(NarrativeInstance instance) { // TODO More Documentation!!! and tests
+	/*public Node copyToGraph(NarrativeInstance instance) { // TODO More Documentation!!! and tests
 
 		// Eventually calls Node(this.id) via subclass's constructor
 		Node result = this.callConstructor(this.id);
@@ -82,7 +82,7 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
 		}
 		instance.nodes.put(result.getIdentifier(), result);
 		return result;
-	}
+	}*/
 	@Override
 	public Node clone() {
 	    try {

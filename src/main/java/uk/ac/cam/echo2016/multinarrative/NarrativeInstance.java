@@ -117,7 +117,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 	public boolean kill(Node node) {
 		if (node == null)
 			return false;
-		for (Narrative narr : new ArrayList<Narrative>(node.getOptions())) {
+		for (Narrative narr : new ArrayList<Narrative>(node.getOptions())) { // TODO BUGFIX - shallow copy. Why didnt this break before?
 			kill(narr); // copy of ArrayList used to allow deletion of nodes within the function
 		}
 
