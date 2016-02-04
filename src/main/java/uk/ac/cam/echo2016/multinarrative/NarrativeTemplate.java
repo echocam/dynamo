@@ -54,7 +54,7 @@ public class NarrativeTemplate extends MultiNarrative {
             
             // Increments the narrative entries property
             int narrEntries = r_narr.getEnd().getProperties().getInt("Impl.Node.Entries");
-            r_narr.getEnd().getProperties().putInt("Impl.Node.Entries", narrEntries++);
+            r_narr.getEnd().getProperties().putInt("Impl.Node.Entries", ++narrEntries);
             
             r_narrs.put(narr.getIdentifier(), r_narr);
         }
