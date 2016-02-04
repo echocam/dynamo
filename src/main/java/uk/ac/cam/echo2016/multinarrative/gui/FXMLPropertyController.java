@@ -22,12 +22,12 @@ import javafx.scene.paint.Color;
  */
 public class FXMLPropertyController {
 
-	private String propName;
-	
-	private Map<String,Color> colours = new HashMap<String,Color>();
-	
-	@FXML
-	private TitledPane root;
+    private String propName;
+    
+    private Map<String,Color> colours = new HashMap<String,Color>();
+    
+    @FXML
+    private TitledPane root;
     @FXML
     private ListView<String> values;
     @FXML
@@ -50,7 +50,7 @@ public class FXMLPropertyController {
         
         values.setCellFactory(TextFieldListCell.forListView());
         remove.setDisable(true);
-    	recolour.setDisable(true);
+        recolour.setDisable(true);
         
         this.name.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -62,50 +62,50 @@ public class FXMLPropertyController {
     }
     
     protected void textChangeAction(){
-    	String newName = name.getText();
-    	if(!newName.equals(propName)){
-    		try{
-    			controller.getOperations().renameProperty(propName,newName);
-    			propName = name.getText();
-    			
-    		}catch(IllegalOperationException ioe){
-    			controller.setInfo(ioe.getMessage(), propName, newName);
-    			name.setText(propName);
-    		}
-    	}
+        String newName = name.getText();
+        if(!newName.equals(propName)){
+            try{
+                controller.getOperations().renameProperty(propName,newName);
+                propName = name.getText();
+                
+            }catch(IllegalOperationException ioe){
+                controller.setInfo(ioe.getMessage(), propName, newName);
+                name.setText(propName);
+            }
+        }
     }
     
     @FXML
     protected void deleteButtonAction(ActionEvent event){
-    	controller.removeProperty(propName, root);
+        controller.removeProperty(propName, root);
     }
     
     @FXML
     protected void addValueAction(ActionEvent event){
-    	ObservableList<String> items = values.getItems();
-    	int i = 1;
-    	String s = Strings.populateString(Strings.PROPERTY_VALUE, ""+i);
-    	while(items.contains(s)){
-    		i++;
-    		s=Strings.populateString(Strings.PROPERTY_VALUE, ""+i);
-    	}
-    	items.add(s);
-    	remove.setDisable(false);
-    	recolour.setDisable(false);
+        ObservableList<String> items = values.getItems();
+        int i = 1;
+        String s = Strings.populateString(Strings.PROPERTY_VALUE, ""+i);
+        while(items.contains(s)){
+            i++;
+            s=Strings.populateString(Strings.PROPERTY_VALUE, ""+i);
+        }
+        items.add(s);
+        remove.setDisable(false);
+        recolour.setDisable(false);
     }
     
     @FXML
     protected void removeValueAction(ActionEvent event){
-    	ObservableList<String> selected = values.getSelectionModel().getSelectedItems();
-    	ObservableList<String> items = values.getItems();
-    	for(String s: selected){
-    		items.remove(s);
-    		colours.remove(s);
-    	}
-    	if(items.isEmpty()){
-    		remove.setDisable(true);
-        	recolour.setDisable(true);
-    	}
+        ObservableList<String> selected = values.getSelectionModel().getSelectedItems();
+        ObservableList<String> items = values.getItems();
+        for(String s: selected){
+            items.remove(s);
+            colours.remove(s);
+        }
+        if(items.isEmpty()){
+            remove.setDisable(true);
+            recolour.setDisable(true);
+        }
     }
  
 }

@@ -19,68 +19,68 @@ import javafx.scene.text.Text;
  * @author jr650
  */
 public class FXMLController {
-	@FXML
-	private Text infoBar;
-	@FXML
-	private TextField propertyName;
-	@FXML
-	private Button addProperty;
-	@FXML
-	private Accordion properties;
-	@FXML
-	private ListView<String> nodes;
-	@FXML
-	private ListView<String> narratives;
+    @FXML
+    private Text infoBar;
+    @FXML
+    private TextField propertyName;
+    @FXML
+    private Button addProperty;
+    @FXML
+    private Accordion properties;
+    @FXML
+    private ListView<String> nodes;
+    @FXML
+    private ListView<String> narratives;
 
-	private GUIOperations operations = new GUIOperations();
+    private GUIOperations operations = new GUIOperations();
 
-	@FXML
-	protected void addPropertyButtonAction(ActionEvent event) {
-		String name = propertyName.getText();
-		try {
-			operations.addProperty(name);// Throws IllegalOperationException if
-											// fails
+    @FXML
+    protected void addPropertyButtonAction(ActionEvent event) {
+        String name = propertyName.getText();
+        try {
+            operations.addProperty(name);// Throws IllegalOperationException if
+                                            // fails
 
-			addProperty(name);
-		} catch (IllegalOperationException ioe) {
-			setInfo(ioe.getMessage(), name);
+            addProperty(name);
+        } catch (IllegalOperationException ioe) {
+            setInfo(ioe.getMessage(), name);
 
-		}
-	}
+        }
+    }
 
-	protected void addProperty(String s) {
-		try {
-			propertyName.setText("");
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml_property.fxml"));
-			TitledPane root = loader.load();
-			FXMLPropertyController prop = (FXMLPropertyController) loader.getController();
-			prop.init(s, this);
-			properties.getPanes().add(root);
-			setInfo(PROPERTY_ADDED, s);
-		} catch (IOException ioe) {
-			// Indicates that fxml files aren't set up properly...
-			throw new RuntimeException("FXML files not configured correctly", ioe);
-		}
-	}
+    protected void addProperty(String s) {
+        try {
+            propertyName.setText("");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml_property.fxml"));
+            TitledPane root = loader.load();
+            FXMLPropertyController prop = (FXMLPropertyController) loader.getController();
+            prop.init(s, this);
+            properties.getPanes().add(root);
+            setInfo(PROPERTY_ADDED, s);
+        } catch (IOException ioe) {
+            // Indicates that fxml files aren't set up properly...
+            throw new RuntimeException("FXML files not configured correctly", ioe);
+        }
+    }
 
-	protected boolean removeProperty(String s, TitledPane pane) {
-		try {
-			operations.removeProperty(s);
-			properties.getPanes().remove(pane);
-			setInfo(PROPERTY_REMOVED, s);
-			return true;
-		} catch (IllegalOperationException ioe) {
-			setInfo(ioe.getMessage(), s);
-			return false;
-		}
-	}
+    protected boolean removeProperty(String s, TitledPane pane) {
+        try {
+            operations.removeProperty(s);
+            properties.getPanes().remove(pane);
+            setInfo(PROPERTY_REMOVED, s);
+            return true;
+        } catch (IllegalOperationException ioe) {
+            setInfo(ioe.getMessage(), s);
+            return false;
+        }
+    }
 
-	public void setInfo(String template, String... values) {
-		infoBar.setText(Strings.populateString(template, values));
-	}
-	
-	public GUIOperations getOperations(){
-		return operations;
-	}
+    public void setInfo(String template, String... values) {
+        infoBar.setText(Strings.populateString(template, values));
+    }
+    
+    public GUIOperations getOperations(){
+        return operations;
+    }
 
 }

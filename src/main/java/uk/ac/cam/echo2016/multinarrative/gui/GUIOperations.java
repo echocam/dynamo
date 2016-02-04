@@ -7,8 +7,8 @@ import android.os.BaseBundle;
  */
 public class GUIOperations{
 
-	private BaseBundle properties = new BaseBundle();
-	
+    private BaseBundle properties = new BaseBundle();
+    
     /**
      * TODO
      * Adds the required property
