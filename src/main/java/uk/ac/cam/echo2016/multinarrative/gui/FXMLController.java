@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 import com.google.code.javafxgraph.FXGraph;
 
+import uk.ac.cam.echo2016.multinarrative.gui.IllegalOperationException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,26 +44,27 @@ public class FXMLController implements Initializable {
 
     private GUIOperations operations = new GUIOperations();
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {	
-	FXGraph g = new FXGraph();
-	String css = getClass().getResource("Style.css").toExternalForm();
-	g.getStylesheets().add(css);
-	root.centerProperty().set(g);
-    }
-    
     @FXML
     protected void addPropertyButtonAction(ActionEvent event) {
 	String name = propertyName.getText();
 	try {
-	    operations.addProperty(name);// Throws IllegalOperationException if
-					 // fails
-
+	    operations.addProperty(name, "String");// Throws
+						   // IllegalOperationException
+						   // if
+	    // fails
 	    addProperty(name);
 	} catch (IllegalOperationException ioe) {
 	    setInfo(ioe.getMessage(), name);
 
 	}
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+	FXGraph g = new FXGraph();
+	String css = getClass().getResource("Style.css").toExternalForm();
+	g.getStylesheets().add(css);
+	root.centerProperty().set(g);
     }
 
     protected void addProperty(String s) {

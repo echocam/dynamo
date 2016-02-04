@@ -16,6 +16,7 @@ package uk.ac.cam.echo2016.multinarrative;
  * @see MultiNarrative 
  */
 public class ChoiceNode extends Node { // TODO Implementation and documentation
+	private static final long serialVersionUID = 1;
 
 	public ChoiceNode(String id) {
 		super(id);
@@ -25,12 +26,12 @@ public class ChoiceNode extends Node { // TODO Implementation and documentation
 		return new ChoiceNode(id);
 	}
 
-	public android.os.BaseBundle startNarrative(Narrative option) { // TODO Finish Impl
-		return null;
-	};
+    public android.os.BaseBundle startNarrative(Narrative option) { // TODO Finish Impl
+        return null;
+    };
 
-	public GameChoice onEntry(Narrative completed, NarrativeInstance instance) { // TODO Finish Impl
-		return null;
-	}
+    public GameChoice onEntry(Narrative completed, NarrativeInstance instance) { // TODO Finish Impl
+        return null;
+    }
 
 }

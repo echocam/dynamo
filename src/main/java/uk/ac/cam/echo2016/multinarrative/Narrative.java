@@ -1,5 +1,7 @@
 package uk.ac.cam.echo2016.multinarrative;
 
+import java.io.Serializable;
+
 /**
  * 
  * Acts as a connection between nodes. Represents the paths that characters follow.
@@ -10,7 +12,8 @@ package uk.ac.cam.echo2016.multinarrative;
  * @version 1.0
  *
  */
-public class Narrative { // TODO Documentation
+public class Narrative implements Serializable{ // TODO Documentation
+	private static final long serialVersionUID = 1;
 	private final String id;
 	private Node start;
 	private Node end;

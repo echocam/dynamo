@@ -47,13 +47,12 @@ public class FXMLPropertyController implements Initializable {
 
     private FXMLController controller;
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 	values.setCellFactory(TextFieldListCell.forListView());
-	
+
 	remove.setDisable(true);
-	
+
 	recolour.getStyleClass().add("button");
 	recolour.setDisable(true);
 	recolour.valueProperty().addListener(new ChangeListener<Color>() {
@@ -85,7 +84,7 @@ public class FXMLPropertyController implements Initializable {
 	    }
 	});
     }
-    
+
     public void init(String name, FXMLController parent) {
 	this.name.setText(name);
 	propName = name;
@@ -131,6 +130,7 @@ public class FXMLPropertyController implements Initializable {
 	    items.remove(s);
 	    colours.remove(s);
 	}
+
     }
 
 }

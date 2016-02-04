@@ -18,26 +18,27 @@ package uk.ac.cam.echo2016.multinarrative;
  * @see MultiNarrative
  */
 public class NarrativeTemplate extends MultiNarrative {
+	private static final long serialVersionUID = 1;
 
-	//TODO Documentation
-	/**
-	 *
-	 * @return
-	 * @throws NullPointerException
-	 *             if the NarrativeInstance.start has not been set.
-	 */
-	public NarrativeInstance generateInstance() throws NullPointerException { // TODO more appropriate exception?
-		NarrativeInstance instance = new NarrativeInstance();
+    //TODO Documentation
+    /**
+     *
+     * @return
+     * @throws NullPointerException
+     *             if the NarrativeInstance.start has not been set.
+     */
+    public NarrativeInstance generateInstance() throws NullPointerException { // TODO more appropriate exception?
+        NarrativeInstance instance = new NarrativeInstance();
 
-		if (this.start != null) {
-			instance.start = this.start.copyToGraph(instance);
-		} else {
-			throw new NullPointerException("No node registered as start of graph.");
-		}
-		for (Node node : this.nodes.values()) {
-			node.resetCopied();
-		}
-		instance.setActive(start);
-		return instance;
-	}
+        if (this.start != null) {
+            instance.start = this.start.copyToGraph(instance);
+        } else {
+            throw new NullPointerException("No node registered as start of graph.");
+        }
+        for (Node node : this.nodes.values()) {
+            node.resetCopied();
+        }
+        instance.setActive(start);
+        return instance;
+    }
 }
