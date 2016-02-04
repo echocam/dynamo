@@ -111,7 +111,7 @@ public class NarrativeInstanceTest {
 
         // Load Test
 
-        for (int i = 0; i < 128; ++i) {
+        for (int i = 1; i < 1000000; ++i) {
             Node node = new ChoiceNode(Integer.toBinaryString(i));
             loadNodes.put(node.getIdentifier(), node);
         }
@@ -125,14 +125,16 @@ public class NarrativeInstanceTest {
                 binCopy >>= 1;
                 ++bitCount;
             }
-            int bin1 = binary | 2 << bitCount - 1;
-            int bin2 = binary | 3 << bitCount - 1;
-
+            int bin1 = binary | 2 << bitCount - 1; // Set highest bit+1 to 1
+            int bin2 = bin1 & ~(1 << bitCount - 1); // Set 2nd highest bit to 0
+            if (bin1 == 0 || bin2 == 0 ) {
+                System.out.println("?");
+            }
             Node child1 = loadNodes.get(Integer.toBinaryString(bin1));
             Node child2 = loadNodes.get(Integer.toBinaryString(bin2));
             if (child1 != null && child2 != null) {
-                Narrative narr1 = new Narrative("l" + bin1, node, child1);
-                Narrative narr2 = new Narrative("r" + bin2, node, child2);
+                Narrative narr1 = new Narrative("narr" + Integer.toBinaryString(bin1), node, child1);
+                Narrative narr2 = new Narrative("narr" + Integer.toBinaryString(bin2), node, child2);
                 loadNarrs.put(narr1.getIdentifier(), narr1);
                 loadNarrs.put(narr2.getIdentifier(), narr2);
                 node.getOptions().add(narr1);
@@ -144,37 +146,50 @@ public class NarrativeInstanceTest {
 
     @Test
     public void testNodeStructure() throws NullPointerException { // TODO Documentation!
-        NarrativeTemplate template = new NarrativeTemplate();
-        template.narratives.putAll(sampleNarrs);
-        template.nodes.putAll(sampleNodes);
-        template.start = template.getNode("syncStart");
-
-        template.getNode("choiceMike1").createProperties(); // TODO test deep clone method
-        template.getNode("choiceMike1").getProperties().putBoolean("ChoicePropertyCopiedCorrectly", true);
-        template.getNode("sync1").createProperties();
-        template.getNode("sync1").getProperties().putBoolean("SyncPropertyCopiedCorrectly", true);
-
-        assertEquals(24, template.narratives.size());
-        assertEquals(11, template.nodes.size());
-        assertEquals(template.getNarrative("narrSarah5").getEnd().getIdentifier(), "sync3");
-       
-        NarrativeInstance instance = template.generateInstance();
         
-        assertTrue("Check Choice properties copied correctly", instance.getNodeProperties("choiceMike1").containsKey("ChoicePropertyCopiedCorrectly"));
-        assertTrue("Check Sync properties copied correctly", instance.getNodeProperties("sync1").containsKey("SyncPropertyCopiedCorrectly"));
+        // Sample Tests
+        
+        NarrativeTemplate sampleTemplate = new NarrativeTemplate();
+        sampleTemplate.narratives.putAll(sampleNarrs);
+        sampleTemplate.nodes.putAll(sampleNodes);
+        sampleTemplate.start = sampleTemplate.getNode("syncStart");
 
-        assertEquals("Checking correct number of narratives: ", 24, instance.narratives.size());
-        assertEquals("Checking correct number of nodes: ", 11, instance.nodes.size());
+        sampleTemplate.getNode("choiceMike1").createProperties(); // TODO replace with deep clone method test - use .equals()?
+        sampleTemplate.getNode("choiceMike1").getProperties().putBoolean("ChoicePropertyCopiedCorrectly", true);
+        sampleTemplate.getNode("sync1").createProperties();
+        sampleTemplate.getNode("sync1").getProperties().putBoolean("SyncPropertyCopiedCorrectly", true);
+
+        assertEquals(24, sampleTemplate.narratives.size());
+        assertEquals(11, sampleTemplate.nodes.size());
+        assertEquals(sampleTemplate.getNarrative("narrSarah5").getEnd().getIdentifier(), "sync3");
+       
+        NarrativeInstance sampleInst = sampleTemplate.generateInstance();
+        
+        assertTrue("Check Choice properties copied correctly", sampleInst.getNodeProperties("choiceMike1").containsKey("ChoicePropertyCopiedCorrectly"));
+        assertTrue("Check Sync properties copied correctly", sampleInst.getNodeProperties("sync1").containsKey("SyncPropertyCopiedCorrectly"));
+
+        assertEquals("Checking correct number of narratives: ", 24, sampleInst.narratives.size());
+        assertEquals("Checking correct number of nodes: ", 11, sampleInst.nodes.size());
         assertEquals("Checking \"narrSarah5\" connects to \"sync3\":",
-                instance.getNarrative("narrSarah5").getEnd().getIdentifier(), "sync3");
+                sampleInst.getNarrative("narrSarah5").getEnd().getIdentifier(), "sync3");
         assertTrue("Checking \"choiceJessica1\" has narrative \"narrJessica3\":",
-                instance.getNode("choiceJessica1").getOptions().contains(instance.getNarrative("narrJessica3")));
+                sampleInst.getNode("choiceJessica1").getOptions().contains(sampleInst.getNarrative("narrJessica3")));
 
-        Narrative narr = instance.getNarrative("narrBob1");
+        Narrative narr = sampleInst.getNarrative("narrBob1");
         assertNull(narr);
 
-        instance.kill("narrMike1");
-        assertEquals(21, instance.narratives.size());
+        sampleInst.kill("narrMike1");
+        assertEquals(21, sampleInst.narratives.size());
+        
+        // Load Test
+        
+        NarrativeTemplate loadTemplate = new NarrativeTemplate();
+        loadTemplate.narratives.putAll(loadNarrs);
+        loadTemplate.nodes.putAll(loadNodes);
+        loadTemplate.start = loadTemplate.getNode("1");
+        
+        NarrativeInstance loadInst = loadTemplate.generateInstance();
+        System.out.println(loadInst.getNarrative("narr10101").getIdentifier());
     }
 
     /**

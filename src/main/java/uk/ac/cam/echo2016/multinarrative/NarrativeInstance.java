@@ -33,6 +33,10 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         this.start = start;
     }
 
+    public NarrativeInstance() {
+        
+    }
+
     public BaseBundle getGlobalProperties() {
         return properties;
     }
