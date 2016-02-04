@@ -1,16 +1,21 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
  
+import java.util.HashMap;
+import java.util.Map;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
  
 /**
  * @author jr650
@@ -18,6 +23,8 @@ import javafx.scene.layout.BorderPane;
 public class FXMLPropertyController {
 
 	private String propName;
+	
+	private Map<String,Color> colours = new HashMap<String,Color>();
 	
 	@FXML
 	private TitledPane root;
@@ -29,6 +36,10 @@ public class FXMLPropertyController {
     private TextField name;
     @FXML
     private BorderPane propertyPane;
+    @FXML
+    private Button remove;
+    @FXML
+    private Button recolour;
 
     private FXMLController controller;
 
@@ -38,12 +49,13 @@ public class FXMLPropertyController {
         controller=parent;
         
         values.setCellFactory(TextFieldListCell.forListView());
+        remove.setDisable(true);
+    	recolour.setDisable(true);
         
         this.name.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable,
                     String oldValue, String newValue) {
-
                 textChangeAction();
             }
         });
@@ -78,6 +90,8 @@ public class FXMLPropertyController {
     		s=Strings.populateString(Strings.PROPERTY_VALUE, ""+i);
     	}
     	items.add(s);
+    	remove.setDisable(false);
+    	recolour.setDisable(false);
     }
     
     @FXML
@@ -86,6 +100,11 @@ public class FXMLPropertyController {
     	ObservableList<String> items = values.getItems();
     	for(String s: selected){
     		items.remove(s);
+    		colours.remove(s);
+    	}
+    	if(items.isEmpty()){
+    		remove.setDisable(true);
+        	recolour.setDisable(true);
     	}
     }
  

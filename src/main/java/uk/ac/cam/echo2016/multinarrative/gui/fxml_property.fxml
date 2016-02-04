@@ -23,14 +23,19 @@
          <right>
             <VBox BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" onAction="#addValueAction" text="+">
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addValueAction" text="+">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin></Button>
-                  <Button mnemonicParsing="false" onAction="#removeValueAction" text="x">
+                  <Button fx:id="remove" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#removeValueAction" text="x">
                      <VBox.margin>
                         <Insets top="3.0" />
                      </VBox.margin></Button>
+                  <Button fx:id="recolour"  maxWidth="1.7976931348623157E308" mnemonicParsing="false" text=" ">
+                     <VBox.margin>
+                        <Insets top="3.0" />
+                     </VBox.margin>
+                  </Button>
                </children>
             </VBox>
          </right>
