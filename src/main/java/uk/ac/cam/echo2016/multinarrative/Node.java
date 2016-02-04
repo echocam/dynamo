@@ -87,7 +87,7 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
 	public Node clone() {
 	    try {
 	        Node clone = (Node) super.clone();
-	        clone.properties = this.properties; // TODO change to .clone()
+	        clone.properties = BaseBundle.deepcopy(this.properties);
 	        
 	        return clone;
 	    } catch (CloneNotSupportedException e) {
