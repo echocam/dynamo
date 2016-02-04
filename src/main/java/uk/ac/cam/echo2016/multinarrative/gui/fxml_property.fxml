@@ -15,7 +15,7 @@
     <content>
       <BorderPane fx:id="propertyPane" prefHeight="200.0" prefWidth="200.0">
          <center>
-            <ListView fx:id="values" BorderPane.alignment="CENTER">
+            <ListView fx:id="values" editable="true" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets right="10.0" top="10.0" />
                </BorderPane.margin></ListView>
@@ -23,11 +23,11 @@
          <right>
             <VBox BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" text="+">
+                  <Button mnemonicParsing="false" onAction="#addValueAction" text="+">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin></Button>
-                  <Button mnemonicParsing="false" text="x">
+                  <Button mnemonicParsing="false" onAction="#removeValueAction" text="x">
                      <VBox.margin>
                         <Insets top="3.0" />
                      </VBox.margin></Button>
