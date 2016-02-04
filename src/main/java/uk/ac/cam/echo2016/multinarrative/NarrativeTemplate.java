@@ -5,13 +5,16 @@ import java.util.HashMap;
 
 /**
  * 
- * The template of the story from which the copy of the game required for each play through is derived.
+ * The template of the story from which the copy of the game required for each
+ * play through is derived.
  * 
  * <p>
- * ALT: A full {@code MultiNarrative} graph that is used to create new {@code NarrativeInstance}s for each playthrough.
- * This contains all nodes and narratives on the graph designed in the {@code FXMLGUI} editor, and is the template graph
- * used for new save files. When the template is created, it should not be modified in any way. (Unless the programmer
- * wants different behaviour across new playthroughs!)
+ * ALT: A full {@code MultiNarrative} graph that is used to create new
+ * {@code NarrativeInstance}s for each playthrough. This contains all nodes and
+ * narratives on the graph designed in the {@code FXMLGUI} editor, and is the
+ * template graph used for new save files. When the template is created, it
+ * should not be modified in any way. (Unless the programmer wants different
+ * behaviour across new playthroughs!)
  * 
  * @author tr393
  * @author rjm232
@@ -28,7 +31,6 @@ public class NarrativeTemplate extends MultiNarrative {
      *
      * @return
      */
-
     public NarrativeInstance generateInstance() {
         HashMap<String, Node> r_nodes = new HashMap<>();
         HashMap<String, Narrative> r_narrs = new HashMap<>();
@@ -51,13 +53,14 @@ public class NarrativeTemplate extends MultiNarrative {
             
             // Increments the narrative entries property
             int narrEntries = r_narr.getEnd().getProperties().getInt("Impl.Node.Entries");
-            narrEntries++;
-            r_narr.getEnd().getProperties().putInt("Impl.Node.Entries", narrEntries);
+            r_narr.getEnd().getProperties().putInt("Impl.Node.Entries", narrEntries++);
             
             r_narrs.put(narr.getIdentifier(), r_narr);
         }
+        Node r_start = r_nodes.get(start.getIdentifier());
 
-        return new NarrativeInstance(r_narrs, r_nodes, start);
+        NarrativeInstance instance = new NarrativeInstance(r_nodes, r_narrs, r_start);
+        return instance;
     }
     /*
 	 public NarrativeInstance generateInstance() throws NullPointerException { // TODO more appropriate exception?
