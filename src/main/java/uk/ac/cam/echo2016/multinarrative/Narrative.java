@@ -14,7 +14,7 @@ import android.os.BaseBundle;
  * @version 1.0
  *
  */
-public class Narrative implements Serializable{ // TODO Documentation
+public class Narrative implements Serializable { // TODO Documentation
 	private static final long serialVersionUID = 1;
 	private final String id;
 	private Node start;
@@ -26,6 +26,16 @@ public class Narrative implements Serializable{ // TODO Documentation
 		this.start = start;
 		this.end = end;
 	}
+
+   @Override
+    public Narrative clone() {
+        try {
+            Narrative clone = (Narrative) super.clone();
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 	public String getIdentifier() {
 		return id;

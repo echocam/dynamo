@@ -3,6 +3,8 @@ package uk.ac.cam.echo2016.multinarrative;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javax.management.RuntimeErrorException;
+
 import android.os.BaseBundle;
 
 /**
@@ -13,7 +15,7 @@ import android.os.BaseBundle;
  * @version 1.0
  *
  */
-public abstract class Node implements Serializable{ // TODO Documentation
+public abstract class Node implements Serializable, Cloneable { // TODO Documentation
 	private static final long serialVersionUID = 1;
 	private final String id;
 	private BaseBundle properties;
@@ -81,7 +83,17 @@ public abstract class Node implements Serializable{ // TODO Documentation
 		instance.nodes.put(result.getIdentifier(), result);
 		return result;
 	}
-
+	@Override
+	public Node clone() {
+	    try {
+	        Node clone = (Node) super.clone();
+	        clone.properties = this.properties; // TODO change to .clone()
+	        
+	        return clone;
+	    } catch (CloneNotSupportedException e) {
+	        throw new RuntimeException(e);
+	    }
+	}
 	protected void resetCopied() { // TODO warning - should not be concurrently called while the
 									// NarrativeTemplate.getInstance() method is running!
 		copied = false;

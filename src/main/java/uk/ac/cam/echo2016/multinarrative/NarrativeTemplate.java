@@ -1,5 +1,8 @@
 package uk.ac.cam.echo2016.multinarrative;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 
  * The template of the story from which the copy of the game required for each play through is derived.
@@ -18,16 +21,36 @@ package uk.ac.cam.echo2016.multinarrative;
  * @see MultiNarrative
  */
 public class NarrativeTemplate extends MultiNarrative {
-	private static final long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
-    //TODO Documentation
+    // TODO Documentation
     /**
      *
      * @return
-     * @throws NullPointerException
-     *             if the NarrativeInstance.start has not been set.
      */
-    public NarrativeInstance generateInstance() throws NullPointerException { // TODO more appropriate exception?
+	public NarrativeInstance generateInstance() {
+	    Map<String, Node> r_nodes = new HashMap<>();
+	    Map<String,Narrative> r_narrs = new HashMap<>();
+	    	    
+	    for(Node node : nodes.values()){
+	        r_nodes.put(node.getIdentifier(), node.clone());
+	    }
+	    
+	    for(Narrative narr: narratives.values()){
+	        Narrative r_narr = narr.clone();
+            //Find Start and end in r_nodes
+	        r_narr.setStart(r_nodes.get(r_narr.getIdentifier()));
+	        r_narr.setEnd(r_nodes.get(r_narr.getIdentifier()));
+	        
+	        r_narr.getStart().getOptions().add(r_narr);
+	        r_narrs.put(narr.getIdentifier(), r_narr);
+        }
+	    
+	    return new NarrativeInstance(r_nodes,r_narrs,start);
+	}
+	
+	
+    /*public NarrativeInstance generateInstance() throws NullPointerException { // TODO more appropriate exception?
         NarrativeInstance instance = new NarrativeInstance();
 
         if (this.start != null) {
@@ -40,5 +63,5 @@ public class NarrativeTemplate extends MultiNarrative {
         }
         instance.setActive(start);
         return instance;
-    }
+    }*/
 }
