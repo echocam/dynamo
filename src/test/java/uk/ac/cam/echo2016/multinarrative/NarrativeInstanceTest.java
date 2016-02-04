@@ -123,7 +123,7 @@ public class NarrativeInstanceTest {
         assertEquals(11, template.nodes.size());
         assertEquals(template.getNarrative("narrSarah5").getEnd().getIdentifier(), "sync3");
         
-        NarrativeInstance instance = new NarrativeInstance(template);
+        NarrativeInstance instance = template.generateInstance();
         
         assertTrue("Check Choice properties copied correctly", instance.getNodeProperties("choiceMike1").containsKey("ChoicePropertyCopiedCorrectly"));
         assertTrue("Check Sync properties copied correctly", instance.getNodeProperties("sync1").containsKey("SyncPropertyCopiedCorrectly"));
@@ -153,6 +153,6 @@ public class NarrativeInstanceTest {
         template.nodes.putAll(nodeMap);
         
         @SuppressWarnings("unused")
-        NarrativeInstance instance = new NarrativeInstance(template);
+        NarrativeInstance instance = template.generateInstance();
     }
 }
