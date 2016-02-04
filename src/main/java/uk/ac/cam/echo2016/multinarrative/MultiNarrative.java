@@ -21,7 +21,7 @@ public class MultiNarrative implements Serializable{ //TODO Documentation
 	protected HashMap<String, Node> nodes = new HashMap<String, Node>();
 	protected Node start;
 
-	public Node getNode(String id) {
+    public Node getNode(String id) {
         return nodes.get(id);
     }
 

@@ -7,17 +7,15 @@ import android.os.BaseBundle;
  */
 public class GUIOperations{
 
+    private BaseBundle properties = new BaseBundle();
+    
     /**
      * TODO
      * Adds the required property
      * @throws IllegalOperationException if can't add property, 
      * message of exception is displayed to the user, using the Strings
      * class for formatting.
-     */
-    
-    private BaseBundle properties = new BaseBundle();
-    
-    
+     */    
     public void addProperty(String s) throws IllegalOperationException{
         properties.putString(s, s);
     }

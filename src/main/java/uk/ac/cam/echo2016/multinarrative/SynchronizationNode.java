@@ -23,18 +23,18 @@ public class SynchronizationNode extends Node { // TODO Documentation
 		super(id);
 	}
 
-	protected Node callConstructor(String id) {
-		return new SynchronizationNode(id);
-	}
+    protected Node callConstructor(String id) {
+        return new SynchronizationNode(id);
+    }
 
-	public android.os.BaseBundle startNarrative(Narrative option) { // TODO Finish Impl
-		return option.getProperties();
-	}
+    public android.os.BaseBundle startNarrative(Narrative option) { // TODO Finish Impl
+        return option.getProperties();
+    }
 
-	public GameChoice onEntry(Narrative completed, NarrativeInstance instance) { // TODO finish impl
-		if (!this.getOptions().contains(completed)) {
-		} // TODO Exception needed???
+    public GameChoice onEntry(Narrative completed, NarrativeInstance instance) { // TODO finish impl
+        if (!this.getOptions().contains(completed)) {
+        } // TODO Exception needed???
 
-		return null;
-	}
+        return null;
+    }
 }
