@@ -38,12 +38,9 @@ public class FXMLController {
     @FXML
     protected void addPropertyButtonAction(ActionEvent event) {
         String name = propertyName.getText();
-//        String typename = type.getSelectionModel().getSelectedItem();
-//        System.out.println(typename);
         try {
-            operations.addProperty(name, "String");// Throws IllegalOperationException if
+            operations.addProperty(name);// Throws IllegalOperationException if
                                             // fails
-
             addProperty(name);
         } catch (IllegalOperationException ioe) {
             setInfo(ioe.getMessage(), name);
