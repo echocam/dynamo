@@ -27,7 +27,7 @@ root {
     -fx-background-color: #457894;
 }
 
-.root, .list-view, 
+.root, .list-view, .scroll-pane, 
 .titled-pane:focused, .tab-pane .tab, 
 #propertyPane, #baseline, #root {
     -fx-background-color: #333333;
@@ -83,26 +83,8 @@ root {
 }
 
 #recolour {
-	-fx-background-color:
-        #222222,
-        linear-gradient(to bottom, #967844, #7A9945, #48977A, #4C7B96, #793F95, #90497B, #914240, #934D21);
-    -fx-background-insets: 0, 1;
+	-fx-color-label-visible: false;
 }
-
-#recolour:hover {
-	-fx-background-color:
-        #222222,
-        linear-gradient(to bottom, #f8bd55, #c0fe56, #5dfbc1, #64c2f8, #be4af7, #ed5fc2, #ef504c, #f2660f);
-}
-
-#recolour:pressed {
-	-fx-background-color:
-        #222222,
-        linear-gradient(to bottom, #FCDEAA, #E0FFAB, #AEFDE0, #B2E1FC, #DFA5FB, #F6AFE1, #F7A8A6, #F9B387);
-
-}
-
-
 
 
 

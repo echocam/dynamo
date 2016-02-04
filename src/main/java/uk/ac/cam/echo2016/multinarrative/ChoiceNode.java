@@ -1,5 +1,7 @@
 package uk.ac.cam.echo2016.multinarrative;
 
+import android.os.BaseBundle;
+
 /**
  * Represents a major decision made in a narrative that can affect which sync point a character will end up in. Has one
  * narrative entering, and several leaving.
@@ -26,7 +28,7 @@ public class ChoiceNode extends Node { // TODO Implementation and documentation
 		return new ChoiceNode(id);
 	}
 
-    public android.os.BaseBundle startNarrative(Narrative option) { // TODO Finish Impl
+    public BaseBundle startNarrative(Narrative option) { // TODO Finish Impl
         return null;
     };
 

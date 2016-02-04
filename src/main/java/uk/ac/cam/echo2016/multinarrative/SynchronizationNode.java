@@ -1,5 +1,7 @@
 package uk.ac.cam.echo2016.multinarrative;
 
+import android.os.BaseBundle;
+
 /**
  * Represents a synchronization node, where multiple characters are allowed to interact. Can have multiple entering and
  * multiple exiting narratives.
@@ -27,7 +29,7 @@ public class SynchronizationNode extends Node { // TODO Documentation
         return new SynchronizationNode(id);
     }
 
-    public android.os.BaseBundle startNarrative(Narrative option) { // TODO Finish Impl
+    public BaseBundle startNarrative(Narrative option) { // TODO Finish Impl
         return option.getProperties();
     }
 
