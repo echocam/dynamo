@@ -3,9 +3,17 @@ package uk.ac.cam.echo2016.multinarrative;
 /**
  * The EditableNarrative that is edited using the GUI.
  * 
+ * <p>
+ * ALT: The {@code MultiNarrative} graph structure used by the {@code FXMLGUI} editor to store the game design. This
+ * graph is generated alongside the editor and used to build the template when the design is finished. New {@code Node}s
+ * and {@code Narrative}s can be added 
+ * 
+ * 
  * @author tr393
  * @author eyx20
- *
+ * @version 1.0
+ * @throws NonUniqueIdException
+ * @see MultiNarrative
  */
 public class GUINarrative extends EditableNarrative { // TODO Documentation
 	public void newNarrative(String id, String start, String end) throws NonUniqueIdException { // TODO error message
@@ -14,14 +22,14 @@ public class GUINarrative extends EditableNarrative { // TODO Documentation
 			Node endNode = getNode(end);
 			Narrative narr = new Narrative(id, startNode, endNode);
 			startNode.getOptions().add(narr);
-			addNarrative(narr);			
+			addNarrative(narr);
 		} else {
 			throw new NonUniqueIdException();
 		}
 	}
 
 	public void newSynchronizationNode(String id) throws NonUniqueIdException { // TODO error message
-		if (isUniqueId(id)) 
+		if (isUniqueId(id))
 			nodes.put(id, new SynchronizationNode(id));
 		else
 			throw new NonUniqueIdException();

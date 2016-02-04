@@ -14,6 +14,27 @@ import org.junit.Before;
  */
 
 public class EditableNarrativeTest {
+	public static void follow(Narrative narr) {
+		System.out.println("This narrative is " + narr.getIdentifier());
+		System.out.println("It connects " + narr.getIdentifier() + " to " + narr.getIdentifier());
+		System.out.println();
+	}
+	public static void traverse(Node node) { // TODO: remove as for testing purposes only
+		System.out.println("This node is " + node.getIdentifier());
+		System.out.println("Exiting this node are the following narratives:");
+		for (Narrative n : node.getOptions()) {
+			System.out.println("    " + n.getIdentifier());
+		}
+		System.out.println();
+		for (Narrative n : node.getOptions()) {
+			follow(n);
+		}
+		for (Narrative n : node.getOptions()) {
+			traverse(n.getEnd());
+		}
+	}
+	
+	
 	EditableNarrative eNarr;
 	
 	/**
@@ -50,7 +71,7 @@ public class EditableNarrativeTest {
 	
 	@Test
 	public void addNarrativeAndNodeTest() {
-		//eNarr.start.traverse();
+		traverse(eNarr.start);
 	}
 	
 	@Test
@@ -58,7 +79,7 @@ public class EditableNarrativeTest {
 		eNarr.renameNarrative("link4", "fromLeftToEnd");
 		assertEquals("Check link4 renamed internally", "fromLeftToEnd", eNarr.narratives.get("fromLeftToEnd").getIdentifier());
 		assertEquals("Check link4 renamed in start Node", "fromLeftToEnd", eNarr.nodes.get("left").getOptions().get(0).getIdentifier());
-		//eNarr.start.traverse();
+		//traverse(eNarr.start);
 	}
 	
 	@Test
@@ -72,7 +93,7 @@ public class EditableNarrativeTest {
 		for (Narrative n : eNarr.nodes.get("FirstChoice").getOptions()) {
 			assertEquals("check choice1 renamed in options", "FirstChoice", n.getStart().getIdentifier());
 		}
-		//eNarr.start.traverse();
+		//traverse(eNarr.start);
 	}
 	
 	@Test
@@ -80,11 +101,11 @@ public class EditableNarrativeTest {
 		eNarr.removeNarrative("link1");
 		assertNull("Check link1 removed from narratives", eNarr.narratives.get("link1"));
 		assertEquals("Check link1 removed from start options", 0, eNarr.start.getOptions().size());
-		//eNarr.start.traverse();
+		//traverse(eNarr.start);
 		
 		eNarr.removeNarrative("link3");
 		assertEquals("Check link3 removed from choice1 options", 1, eNarr.nodes.get("choice1").getOptions().size());
-		//eNarr.nodes.get("choice1").traverse();
+		//traverse(eNarr.nodes.get("choice1"));
 	}
 	
 	@Test
@@ -93,7 +114,7 @@ public class EditableNarrativeTest {
 		assertNull("Check left removed from nodes", eNarr.nodes.get("left"));
 		assertNull("Check entering narrative removed from narratives", eNarr.narratives.get("link2"));
 		assertNull("Check exiting narrative removed from narratives", eNarr.narratives.get("link4"));
-		//eNarr.start.traverse();
+		//traverse(eNarr.start);
 		
 		setup();
 		eNarr.removeNode("choice1");
@@ -101,8 +122,8 @@ public class EditableNarrativeTest {
 		assertNull("Check entering narrative removed from narratives", eNarr.narratives.get("link1"));
 		assertNull("Check left exiting narrative removed", eNarr.narratives.get("link2"));
 		assertNull("Check right exiting narrative removed", eNarr.narratives.get("link3"));
-		//eNarr.start.traverse();
-		//eNarr.nodes.get("left").traverse();
-		//eNarr.nodes.get("right").traverse();
+		//traverse(eNarr.start);
+		//traverse(eNarr.nodes.get("left"));
+		//traverse(eNarr.nodes.get("right"));
 	}
 }

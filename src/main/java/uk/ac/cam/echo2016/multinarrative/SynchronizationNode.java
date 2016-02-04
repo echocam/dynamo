@@ -4,19 +4,24 @@ package uk.ac.cam.echo2016.multinarrative;
  * Represents a synchronization node, where multiple characters are allowed to interact. Can have multiple entering and
  * multiple exiting narratives.
  * 
+ * <p>
+ * ALT: Implements a {@link Node} at an intersection point on the {@code MultiNarrative} graph structure. At this point,
+ * multiple {@code Narrative}s interact and affect each other's gameplay. There should be at least 2 {@code Narrative}s
+ * entering the {@code Node} for the {@code Node} to be meaningful. The most typical use would be to have the same number of entering
+ * {@code Narrative}s also exiting (one for each character), but this isn't required.
+ * 
  * @author tr393
  * @author rjm232
+ * @version 1.0
  * @see Node
  * @see ChoiceNode
- * @see MultiNarrative 
+ * @see MultiNarrative
  */
 public class SynchronizationNode extends Node { // TODO Documentation
 	public SynchronizationNode(String id) {
 		super(id);
 	}
-	/**
-	 * Effectively a clone method.
-	 */
+
 	protected Node callConstructor(String id) {
 		return new SynchronizationNode(id);
 	}

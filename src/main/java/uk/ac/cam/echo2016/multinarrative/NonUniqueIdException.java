@@ -3,7 +3,7 @@ package uk.ac.cam.echo2016.multinarrative;
 /**
  * 
  * @author tr393
- *
+ * @version 1.0
  */
 public class NonUniqueIdException extends Exception {
 

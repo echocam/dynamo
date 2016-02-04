@@ -7,6 +7,7 @@ package uk.ac.cam.echo2016.multinarrative;
  * @author tr393
  * @author eyx20
  * @author rjm232
+ * @version 1.0
  *
  */
 public class Narrative { // TODO Documentation
@@ -52,11 +53,5 @@ public class Narrative { // TODO Documentation
 	
 	public void setProperties(android.os.BaseBundle b) {
 		properties = b;
-	}
-	
-	public void follow() {
-		System.out.println("This narrative is " + id);
-		System.out.println("It connects " + start.getIdentifier() + " to " + end.getIdentifier());
-		System.out.println();
 	}
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * @author tr393
- *
+ * @version 1.0
  */
 public class GameChoice { //TODO Todo's and documentation
 	

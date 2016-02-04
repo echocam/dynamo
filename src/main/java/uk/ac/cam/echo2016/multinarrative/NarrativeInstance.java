@@ -8,6 +8,7 @@ import java.util.ArrayList;
  * 
  * @author tr39
  * @author rjm232
+ * @version 1.0
  *
  */
 public class NarrativeInstance extends MultiNarrative { // TODO Documentation
