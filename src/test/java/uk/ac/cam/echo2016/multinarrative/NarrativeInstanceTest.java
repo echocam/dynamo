@@ -16,8 +16,8 @@ public class NarrativeInstanceTest {
     @Before
     public void setup() {
 
-        //Visual Basic Sample Diagram
-    	
+        // Visual Basic Sample Diagram
+
         sampleNodes.put("syncStart", new SynchronizationNode("syncStart")); // ___0
         sampleNodes.put("syncEnd", new SynchronizationNode("syncEnd")); // _______1
         sampleNodes.put("sync1", new SynchronizationNode("sync1")); // ___________2
@@ -32,114 +32,114 @@ public class NarrativeInstanceTest {
 
         Narrative tempNarr;
 
-        tempNarr = new Narrative("narrMike1",sampleNodes.get("syncStart"),sampleNodes.get("choiceMike1"));
+        tempNarr = new Narrative("narrMike1", sampleNodes.get("syncStart"), sampleNodes.get("choiceMike1"));
         sampleNodes.get("syncStart").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        tempNarr = new Narrative("narrMike2",sampleNodes.get("choiceMike1"),sampleNodes.get("syncEnd"));
+        tempNarr = new Narrative("narrMike2", sampleNodes.get("choiceMike1"), sampleNodes.get("syncEnd"));
         sampleNodes.get("choiceMike1").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        tempNarr = new Narrative("narrMike3",sampleNodes.get("choiceMike1"),sampleNodes.get("sync3"));
+        tempNarr = new Narrative("narrMike3", sampleNodes.get("choiceMike1"), sampleNodes.get("sync3"));
         sampleNodes.get("choiceMike1").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        tempNarr = new Narrative("narrMike4",sampleNodes.get("sync3"),sampleNodes.get("syncEnd"));
+        tempNarr = new Narrative("narrMike4", sampleNodes.get("sync3"), sampleNodes.get("syncEnd"));
         sampleNodes.get("sync3").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        
-        tempNarr = new Narrative("narrSam1",sampleNodes.get("syncStart"),sampleNodes.get("choiceSam1"));
+
+        tempNarr = new Narrative("narrSam1", sampleNodes.get("syncStart"), sampleNodes.get("choiceSam1"));
         sampleNodes.get("syncStart").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        tempNarr = new Narrative("narrSam2",sampleNodes.get("choiceSam1"),sampleNodes.get("sync3"));
+        tempNarr = new Narrative("narrSam2", sampleNodes.get("choiceSam1"), sampleNodes.get("sync3"));
         sampleNodes.get("choiceSam1").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        tempNarr = new Narrative("narrSam3",sampleNodes.get("sync3"),sampleNodes.get("syncEnd"));
+        tempNarr = new Narrative("narrSam3", sampleNodes.get("sync3"), sampleNodes.get("syncEnd"));
         sampleNodes.get("sync3").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        tempNarr = new Narrative("narrSam4",sampleNodes.get("choiceSam1"),sampleNodes.get("sync4"));
+        tempNarr = new Narrative("narrSam4", sampleNodes.get("choiceSam1"), sampleNodes.get("sync4"));
         sampleNodes.get("choiceSam1").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        tempNarr = new Narrative("narrSam5",sampleNodes.get("sync4"),sampleNodes.get("syncEnd"));
+        tempNarr = new Narrative("narrSam5", sampleNodes.get("sync4"), sampleNodes.get("syncEnd"));
         sampleNodes.get("sync4").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        
-        tempNarr = new Narrative("narrSarah1",sampleNodes.get("syncStart"),sampleNodes.get("choiceSarah1"));
+
+        tempNarr = new Narrative("narrSarah1", sampleNodes.get("syncStart"), sampleNodes.get("choiceSarah1"));
         sampleNodes.get("syncStart").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        tempNarr = new Narrative("narrSarah2",sampleNodes.get("choiceSarah1"),sampleNodes.get("sync3"));
+        tempNarr = new Narrative("narrSarah2", sampleNodes.get("choiceSarah1"), sampleNodes.get("sync3"));
         sampleNodes.get("choiceSarah1").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        tempNarr = new Narrative("narrSarah3",sampleNodes.get("sync3"),sampleNodes.get("syncEnd"));
+        tempNarr = new Narrative("narrSarah3", sampleNodes.get("sync3"), sampleNodes.get("syncEnd"));
         sampleNodes.get("sync3").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        tempNarr = new Narrative("narrSarah4",sampleNodes.get("choiceSarah1"),sampleNodes.get("sync1"));
+        tempNarr = new Narrative("narrSarah4", sampleNodes.get("choiceSarah1"), sampleNodes.get("sync1"));
         sampleNodes.get("choiceSarah1").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        tempNarr = new Narrative("narrSarah5",sampleNodes.get("sync1"),sampleNodes.get("sync3"));
+        tempNarr = new Narrative("narrSarah5", sampleNodes.get("sync1"), sampleNodes.get("sync3"));
         sampleNodes.get("sync1").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        
-        tempNarr = new Narrative("narrChris1",sampleNodes.get("syncStart"),sampleNodes.get("choiceChris1"));
+
+        tempNarr = new Narrative("narrChris1", sampleNodes.get("syncStart"), sampleNodes.get("choiceChris1"));
         sampleNodes.get("syncStart").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        tempNarr = new Narrative("narrChris2",sampleNodes.get("choiceChris1"),sampleNodes.get("sync1"));
+        tempNarr = new Narrative("narrChris2", sampleNodes.get("choiceChris1"), sampleNodes.get("sync1"));
         sampleNodes.get("choiceChris1").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        tempNarr = new Narrative("narrChris3",sampleNodes.get("sync1"),sampleNodes.get("syncEnd"));
+        tempNarr = new Narrative("narrChris3", sampleNodes.get("sync1"), sampleNodes.get("syncEnd"));
         sampleNodes.get("sync1").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        tempNarr = new Narrative("narrChris4",sampleNodes.get("choiceChris1"),sampleNodes.get("sync2"));
+        tempNarr = new Narrative("narrChris4", sampleNodes.get("choiceChris1"), sampleNodes.get("sync2"));
         sampleNodes.get("choiceChris1").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        tempNarr = new Narrative("narrChris5",sampleNodes.get("sync2"),sampleNodes.get("syncEnd"));
+        tempNarr = new Narrative("narrChris5", sampleNodes.get("sync2"), sampleNodes.get("syncEnd"));
         sampleNodes.get("sync2").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        
-        tempNarr = new Narrative("narrJessica1",sampleNodes.get("syncStart"),sampleNodes.get("sync2"));
+
+        tempNarr = new Narrative("narrJessica1", sampleNodes.get("syncStart"), sampleNodes.get("sync2"));
         sampleNodes.get("syncStart").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        tempNarr = new Narrative("narrJessica2",sampleNodes.get("sync2"),sampleNodes.get("choiceJessica1"));
+        tempNarr = new Narrative("narrJessica2", sampleNodes.get("sync2"), sampleNodes.get("choiceJessica1"));
         sampleNodes.get("sync2").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        tempNarr = new Narrative("narrJessica3",sampleNodes.get("choiceJessica1"),sampleNodes.get("sync4"));
+        tempNarr = new Narrative("narrJessica3", sampleNodes.get("choiceJessica1"), sampleNodes.get("sync4"));
         sampleNodes.get("choiceJessica1").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        tempNarr = new Narrative("narrJessica4",sampleNodes.get("sync4"),sampleNodes.get("syncEnd"));
+        tempNarr = new Narrative("narrJessica4", sampleNodes.get("sync4"), sampleNodes.get("syncEnd"));
         sampleNodes.get("sync4").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        tempNarr = new Narrative("narrJessica5",sampleNodes.get("choiceJessica1"),sampleNodes.get("syncEnd"));
+        tempNarr = new Narrative("narrJessica5", sampleNodes.get("choiceJessica1"), sampleNodes.get("syncEnd"));
         sampleNodes.get("choiceJessica1").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
-        
+
         // Load Test
-        
-        for(int i=0; i<128; ++i) {
-        	Node node = new ChoiceNode(Integer.toBinaryString(i));
-        	loadNodes.put(node.getIdentifier(), node);
+
+        for (int i = 0; i < 128; ++i) {
+            Node node = new ChoiceNode(Integer.toBinaryString(i));
+            loadNodes.put(node.getIdentifier(), node);
         }
-        for(Node node : loadNodes.values()) {
+        for (Node node : loadNodes.values()) {
             String id = node.getIdentifier();
-            int binary = Integer.parseInt(id);
+            int binary = Integer.parseInt(id,2);
             int binCopy = binary;
-            
-            int bitCount = 0; 
-            while(binCopy > 0) {
+
+            int bitCount = 0;
+            while (binCopy > 0) {
                 binCopy >>= 1;
                 ++bitCount;
             }
-            int bin1 = binary | 2<<bitCount-1;
-            int bin2 = binary | 3<<bitCount-1;
-            
+            int bin1 = binary | 2 << bitCount - 1;
+            int bin2 = binary | 3 << bitCount - 1;
+
             Node child1 = loadNodes.get(Integer.toBinaryString(bin1));
             Node child2 = loadNodes.get(Integer.toBinaryString(bin2));
             if (child1 != null && child2 != null) {
-            	Narrative narr1 = new Narrative("l" + bin1,node, child1);
-            	Narrative narr2 = new Narrative("r" + bin2,node, child2);
-            	loadNarrs.put(narr1.getIdentifier(), narr1);
-            	loadNarrs.put(narr2.getIdentifier(), narr2);
-            	node.getOptions().add(narr1);
+                Narrative narr1 = new Narrative("l" + bin1, node, child1);
+                Narrative narr2 = new Narrative("r" + bin2, node, child2);
+                loadNarrs.put(narr1.getIdentifier(), narr1);
+                loadNarrs.put(narr2.getIdentifier(), narr2);
+                node.getOptions().add(narr1);
                 node.getOptions().add(narr2);
             }
         }
-        
+
     }
 
     @Test
