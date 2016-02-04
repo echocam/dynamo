@@ -1,7 +1,6 @@
 package uk.ac.cam.echo2016.multinarrative;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 
@@ -28,40 +27,33 @@ public class NarrativeTemplate extends MultiNarrative {
      *
      * @return
      */
-	public NarrativeInstance generateInstance() {
-	    Map<String, Node> r_nodes = new HashMap<>();
-	    Map<String,Narrative> r_narrs = new HashMap<>();
-	    	    
-	    for(Node node : nodes.values()){
-	        r_nodes.put(node.getIdentifier(), node.clone());
-	    }
-	    
-	    for(Narrative narr: narratives.values()){
-	        Narrative r_narr = narr.clone();
-            //Find Start and end in r_nodes
-	        r_narr.setStart(r_nodes.get(r_narr.getIdentifier()));
-	        r_narr.setEnd(r_nodes.get(r_narr.getIdentifier()));
-	        
-	        r_narr.getStart().getOptions().add(r_narr);
-	        r_narrs.put(narr.getIdentifier(), r_narr);
-        }
-	    
-	    return new NarrativeInstance(r_nodes,r_narrs,start);
-	}
-	
-	
-    /*public NarrativeInstance generateInstance() throws NullPointerException { // TODO more appropriate exception?
-        NarrativeInstance instance = new NarrativeInstance();
+    public NarrativeInstance generateInstance() {
+        HashMap<String, Node> r_nodes = new HashMap<>();
+        HashMap<String, Narrative> r_narrs = new HashMap<>();
 
-        if (this.start != null) {
-            instance.start = this.start.copyToGraph(instance);
-        } else {
-            throw new NullPointerException("No node registered as start of graph.");
+        for (Node node : nodes.values()) {
+            r_nodes.put(node.getIdentifier(), node.clone());
         }
-        for (Node node : this.nodes.values()) {
-            node.resetCopied();
+
+        for (Narrative narr : narratives.values()) {
+            Narrative r_narr = narr.clone();
+            // Find Start and end in r_nodes
+            r_narr.setStart(r_nodes.get(r_narr.getIdentifier()));
+            r_narr.setEnd(r_nodes.get(r_narr.getIdentifier()));
+
+            r_narr.getStart().getOptions().add(r_narr);
+            r_narrs.put(narr.getIdentifier(), r_narr);
         }
-        instance.setActive(start);
-        return instance;
-    }*/
+
+        return new NarrativeInstance(r_narrs, r_nodes, start);
+    }
+
+    /*
+     * public NarrativeInstance generateInstance() throws NullPointerException { // TODO more appropriate exception?
+     * NarrativeInstance instance = new NarrativeInstance();
+     * 
+     * if (this.start != null) { instance.start = this.start.copyToGraph(instance); } else { throw new
+     * NullPointerException("No node registered as start of graph."); } for (Node node : this.nodes.values()) {
+     * node.resetCopied(); } instance.setActive(start); return instance; }
+     */
 }

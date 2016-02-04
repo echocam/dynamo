@@ -27,10 +27,12 @@ public class Narrative implements Serializable { // TODO Documentation
 		this.end = end;
 	}
 
-   @Override
+    @Override
     public Narrative clone() {
         try {
             Narrative clone = (Narrative) super.clone();
+            clone.properties = BaseBundle.deepcopy(this.properties);
+            
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);

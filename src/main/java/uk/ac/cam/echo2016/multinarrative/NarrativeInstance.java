@@ -1,7 +1,7 @@
 package uk.ac.cam.echo2016.multinarrative;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.HashMap;
 
 import android.os.BaseBundle;
 
@@ -31,8 +31,11 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 		this.properties = base.properties;
 	}
 
-	public NarrativeInstance(Map<String, Node> r_nodes, Map<String, Narrative> r_narrs, Node start) {
-        // TODO Auto-generated constructor stub
+
+    public NarrativeInstance(HashMap<String, Narrative> r_narrs, HashMap<String, Node> r_nodes, Node start) {
+        this.narratives = r_narrs;
+        this.nodes = r_nodes;
+        this.start = start;
     }
 
     public BaseBundle getGlobalProperties() {
