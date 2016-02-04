@@ -18,8 +18,8 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
     private static final long serialVersionUID = 1;
     private final String id;
     private BaseBundle properties;
-    private ArrayList<Narrative> options;
-    private boolean copied = false; // flag used in graph copy that indicates whether this node has been passed
+    ArrayList<Narrative> options;
+    protected boolean copied = false; // flag used in graph copy that indicates whether this node has been passed
 
     public Node(String id) {
         this.id = id;
