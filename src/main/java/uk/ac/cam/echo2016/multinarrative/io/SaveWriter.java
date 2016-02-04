@@ -1,4 +1,4 @@
-package uk.ac.cam.echo2016.multinarrative;
+package uk.ac.cam.echo2016.multinarrative.io;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

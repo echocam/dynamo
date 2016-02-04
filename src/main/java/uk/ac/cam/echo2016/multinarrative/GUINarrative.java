@@ -1,5 +1,7 @@
 package uk.ac.cam.echo2016.multinarrative;
 
+import android.os.BaseBundle;
+
 /**
  * The EditableNarrative that is edited using the GUI.
  * 
@@ -85,7 +87,7 @@ public class GUINarrative extends EditableNarrative { // TODO Documentation
         start = node;
     }
 
-    public android.os.BaseBundle getProperties(String id) { // TODO error for elementNotFound
+    public BaseBundle getProperties(String id) { // TODO error for elementNotFound
         Narrative narr = getNarrative(id);
         if (narr != null) { // TODO alternate exception handling?
             return narr.getProperties();

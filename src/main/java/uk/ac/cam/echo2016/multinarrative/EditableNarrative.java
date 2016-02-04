@@ -2,6 +2,8 @@ package uk.ac.cam.echo2016.multinarrative;
 
 import java.util.HashMap;
 
+import android.os.BaseBundle;
+
 /**
  * Represents a MultiNarrative that can be edited. Included for extensibility. We subclass it with GUINarrative, but
  * this class can be derived for other methods of editing.
@@ -58,7 +60,7 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Todo's a
         
         Narrative newNarr = new Narrative(newName, narr.getStart(), narr.getEnd());
         if (narr.getProperties() != null)
-            newNarr.setProperties(new android.os.BaseBundle(narr.getProperties()));
+            newNarr.setProperties(new BaseBundle(narr.getProperties()));
         
         narratives.put(newName, newNarr);
         newNarr.getStart().getOptions().remove(narr);
@@ -74,7 +76,7 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Todo's a
         
         Node newNode = node.callConstructor(newName);
         if (node.getProperties() != null) 
-            newNode.setProperties(new android.os.BaseBundle(node.getProperties()));
+            newNode.setProperties(new BaseBundle(node.getProperties()));
         
         nodes.put(newName, newNode);
         for (Narrative narr : narratives.values()) {

@@ -1,6 +1,9 @@
 package uk.ac.cam.echo2016.multinarrative;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import android.os.BaseBundle;
 
 /**
  * 
@@ -13,14 +16,10 @@ import java.util.ArrayList;
  */
 public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     private static final long serialVersionUID = 1;
-    protected android.os.BaseBundle properties;
+    protected BaseBundle properties;
     protected ArrayList<Node> activeNodes = new ArrayList<Node>();
 
-    public NarrativeInstance() {
-        properties = new android.os.BaseBundle();
-    }
-
-    public NarrativeInstance(NarrativeTemplate template) throws NullPointerException{ // TODO check copy constructor
+    public NarrativeInstance(NarrativeTemplate template) throws NullPointerException { // TODO testing
         NarrativeInstance base = template.generateInstance();
         this.narratives = base.narratives;
         this.nodes = base.nodes;
@@ -28,21 +27,28 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         this.properties = base.properties;
     }
 
-    public android.os.BaseBundle getGlobalProperties() {
+    public NarrativeInstance(HashMap<String, Narrative> narrs, HashMap<String, Node> nodes, Node start) {
+        this.narratives = narrs;
+        this.nodes = nodes;
+        this.start = start;
+    }
+
+    public BaseBundle getGlobalProperties() {
         return properties;
     }
 
-    public android.os.BaseBundle getNarrativeProperties(String id) {
+    public BaseBundle getNarrativeProperties(String id) {
         return getNarrative(id).getProperties();
     }
 
-    public android.os.BaseBundle getNodeProperties(String id) {
+    public BaseBundle getNodeProperties(String id) {
         return getNode(id).getProperties();
     }
 
-    public android.os.BaseBundle startNarrative(String id) {
-        // TODO do whatever needs to be done when starting a narrative
-        return getNarrativeProperties(id);
+    public BaseBundle startNarrative(String id) {
+        Narrative narr = getNarrative(id);
+        narr.start.startNarrative(narr);
+        return narr.getProperties();
     }
 
     public GameChoice endNarrative(String id) {
@@ -61,16 +67,17 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
      */
     public boolean kill(String id) { // TODO More Documentation, including overloaded methods
         Narrative narr = getNarrative(id);
-        Node node = getNode(id); // TODO search might be optimizable (2nd not required)
-
         if (narr != null) { // TODO alternate exception handling?
             kill(narr);
             return true;
-        } else if (node != null) { // TODO alternate exception handling?
-            kill(node);
-            return true;
+        } else {
+            Node node = getNode(id);
+            if (node != null) { // TODO alternate exception handling?
+                kill(node);
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 
     /**
@@ -81,12 +88,18 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     public boolean kill(Narrative narr) {
         if (narr == null)
             return false;
+        
+        System.out.println("Killing: " + narr.getIdentifier());
         Node nEnd = narr.getEnd();
+        String s = nEnd == null ? "null"
+            : nEnd + " " + (nEnd.getProperties() == null ? "null"
+                : nEnd.getProperties() + " " + nEnd.getProperties().getInt("Impl.Node.Entries"));
+        System.out.println(s);
         
         int narrEntries = nEnd.getProperties().getInt("Impl.Node.Entries"); // TODO improve naming convention?
         --narrEntries;
         nEnd.getProperties().putInt("Impl.Node.Entries", narrEntries);
-        
+
         if (narrEntries == 0) {
             kill(nEnd);
         }
@@ -112,7 +125,6 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         }
 
         assert node.getProperties().getInt("Impl.Node.Entries") == 0;
-        
         nodes.remove(node.getIdentifier());
         return true;
     }
