@@ -18,6 +18,7 @@
 
 package android.os;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
@@ -30,8 +31,8 @@ import java.util.Set;
 /* Compiler warns about three instances of unchecked casts, but all are surrounded 
  * by try{...}catch(ClassCastException){...}
  */
-public class BaseBundle {
-    private static final String TAG = "Bundle";
+public class BaseBundle implements Serializable {
+    private static final long serialVersionUID = 1;
     static final boolean DEBUG = false;
 
     static final int BUNDLE_MAGIC = 0x4C444E42; // 'B' 'N' 'D' 'L'

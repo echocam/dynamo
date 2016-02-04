@@ -6,6 +6,8 @@ package uk.ac.cam.echo2016.multinarrative.gui;
 public class Strings{
     
     public static final String PROPERTY_ADDED = "Added Property: %1";
+    public static final String PROPERTY_REMOVED = "Removed Property: %1";
+    public static final String PROPERTY_VALUE = "Value%1";
 
     private Strings(){}
 

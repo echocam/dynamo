@@ -1,26 +1,39 @@
 package uk.ac.cam.echo2016.multinarrative;
 
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
 public class NodeTest {
-	@Test
-	public void SimpleTest() {
-		SynchronizationNode syncTest = new SynchronizationNode("syncTestID");
-		ChoiceNode choiceTest = new ChoiceNode("choiceTestID");
-		
-		assertEquals("syncTestID",syncTest.getIdentifier());
-		assertEquals("choiceTestID",choiceTest.getIdentifier());
-		assertEquals(new ArrayList<Narrative>(), syncTest.getOptions());
-		assertEquals(new ArrayList<Narrative>(), choiceTest.getOptions());
-		assertNull(syncTest.getProperties());
-		assertNull(choiceTest.getProperties());
-		
-		syncTest.createProperties();
-		choiceTest.createProperties();
-		assertNotNull(syncTest.getProperties());
-		assertNotNull(choiceTest.getProperties());
-	}
+    SynchronizationNode syncTest;
+    ChoiceNode choiceTest;
+    
+    @Before
+    public void setup() {
+        syncTest = new SynchronizationNode("syncTestID");
+        choiceTest = new ChoiceNode("choiceTestID");
+    }
+    
+    @Test
+    public void testConstructor() {
+        assertEquals("syncTestID", syncTest.getIdentifier());
+        assertEquals("choiceTestID", choiceTest.getIdentifier());
+        assertEquals(new ArrayList<Narrative>(), syncTest.getOptions());
+        assertEquals(new ArrayList<Narrative>(), choiceTest.getOptions());
+        assertNull(syncTest.getProperties());
+        assertNull(choiceTest.getProperties());
+    }
+    
+    @Test
+    public void testCallConstructor() {		
+        Node newSync = syncTest.callConstructor("newSyncNode");
+        Node newChoice = choiceTest.callConstructor("newChoiceNode");
+        
+        assertEquals("Test type", SynchronizationNode.class, newSync.getClass());
+        assertEquals("Test type", ChoiceNode.class, newChoice.getClass());
+        assertEquals("Test new ID", "newSyncNode", newSync.getIdentifier());
+        assertEquals("Test new ID", "newChoiceNode", newChoice.getIdentifier());
+    }
 }

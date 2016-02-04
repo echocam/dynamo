@@ -1,99 +1,108 @@
 root { 
     display: block;
 }
-.root {
--fx-background-color: linear-gradient(#222222, #000000);
-}
 
-.menu-bar { 
+.menu-bar, .list-view, .label, .button, .tab .tab-label, 
+.combo-box > .list-cell, .text-input, .list-cell,
+#label, #infoBar {
     -fx-text-fill: white;
     -fx-font-family: "Arial Narrow";
-    -fx-font-weight: bold;
-    -fx-background-color: linear-gradient(#444444, #222222);
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
 }
 
-.list-view {
-    -fx-text-fill: white;
-    -fx-font-family: "Arial Narrow";
-    -fx-font-weight: bold;
-    -fx-background-color: linear-gradient(#444444, #222222);
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+#label, #infoBar {
+    -fx-fill: white;
 }
 
-.label {
-    -fx-text-fill: white;
-    -fx-font-family: "Arial Narrow";
-    -fx-font-weight: bold;
-    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+.list-cell:odd {
+    -fx-cell-hover-color: #457894;
+    -fx-background-color: #2a2a2a;
 }
 
-.button {
-    -fx-text-fill: white;
-    -fx-font-family: "Arial Narrow";
-    -fx-font-weight: bold;
+.list-cell:even {
+    -fx-cell-hover-color: #457894;
+    -fx-background-color: #222222;
+}
+
+.list-cell:focused, .list-cell:hover {
+    -fx-background-color: #457894;
+}
+
+.root, .list-view, 
+.titled-pane:focused, .tab-pane .tab, 
+#propertyPane, #baseline, #root {
     -fx-background-color: #333333;
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+.button, .combo-box-base, .text-field, .titled-pane > .title, .menu-bar{
+    -fx-background-color:
+        #222222,
+        #333333;
+    -fx-background-insets: 0, 1;
+}
+
+.button:hover, .titled-pane:expanded > .title {
+    -fx-background-color:
+        #222222,
+        #457894;
 }
 
 .button:pressed {
-    -fx-background-color: linear-gradient(#61a2b1, #2A5058);
+    -fx-background-color:
+        #222222,
+        derive(#457894,0.5);
 }
 
-.titled-pane:focused{
-    -fx-background-color: linear-gradient(#444444, #222222);
+.menu-bar, #baseline {
+    -fx-background-color: #222222;
+}
+.menu-bar, .titled-pane > .title, #baseline {
+    -fx-background-radius: 6;
 }
 
-.titled-pane > .title {
-    -fx-background-color: linear-gradient(#444444, #222222);
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
-}
-
-.titled-pane:expanded > .title {
-    -fx-background-color: linear-gradient(#61a2b1, #2A5058);
+.tab-pane .tab:selected {
+    -fx-background-color: #457894;
 }
 
 .tab-pane .tab-header-area .tab-header-background {
     -fx-opacity: 0;
 }
 
-.tab-pane .tab
-{
-    -fx-background-color: linear-gradient(#444444, #222222);
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
-}
-
-.tab-pane .tab:selected
-{
-    -fx-background-color: linear-gradient(#61a2b1, #2A5058);
-}
-
-.tab .tab-label { 
-    -fx-text-fill: white;
-    -fx-font-family: "Arial Narrow";
-    -fx-font-weight: bold;
+.tab .tab-label, .titled-pane:focused,
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator, 
+#label { 
     -fx-border-color: transparent;  
 }
 
-.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
-    -fx-border-color: transparent;
-}
-
-#infoBar {
-    -fx-fill: white;
-    -fx-font-family: "Arial Narrow";
-    -fx-font-weight: bold;
-
-}
-
 #drawingPane {
-  -fx-background-color: rgba(0,0,0,0.6);
+  -fx-background-color: transparent;
   -fx-opacity: 0;
 }
 
 #baseline {
-  -fx-background-color: linear-gradient(#444444, #222222);
   -fx-opacity: 1;
 }
+
+#recolour {
+	-fx-background-color:
+        #222222,
+        linear-gradient(to bottom, #967844, #7A9945, #48977A, #4C7B96, #793F95, #90497B, #914240, #934D21);
+    -fx-background-insets: 0, 1;
+}
+
+#recolour:hover {
+	-fx-background-color:
+        #222222,
+        linear-gradient(to bottom, #f8bd55, #c0fe56, #5dfbc1, #64c2f8, #be4af7, #ed5fc2, #ef504c, #f2660f);
+}
+
+#recolour:pressed {
+	-fx-background-color:
+        #222222,
+        linear-gradient(to bottom, #FCDEAA, #E0FFAB, #AEFDE0, #B2E1FC, #DFA5FB, #F6AFE1, #F7A8A6, #F9B387);
+
+}
+
+
+
 
 

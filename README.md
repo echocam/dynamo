@@ -13,7 +13,7 @@ Linux
 -----
 To build the project and/or testing open the root directory in the terminal.
 ```bash
-./gradlew assemble
+./gradlew build
 ```
 
 To run the GUI simply use the following:
@@ -24,6 +24,11 @@ To run the GUI simply use the following:
 To test:
 ```bash
 ./gradlew check
+```
+
+To clean:
+```bash
+./gradlew clean
 ```
 
 Windows
