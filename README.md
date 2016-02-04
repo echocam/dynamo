@@ -21,7 +21,6 @@ To run the GUI simply use the following:
 ./gradlew runGui
 ```
 
-```
 To test:
 ```bash
 ./gradlew check
@@ -44,10 +43,7 @@ Project (Java) Style Guide
 --------------------------
 
 ### Indentation
-Spaces or tabs?
-
-### Functions
-Functions must
+Indentation must be done with 4 spaces. NOT tabs.
 
 ### Class Member Ordering
 It is advised that class members are ordered as follows:
