@@ -16,7 +16,7 @@ public class NarrativeInstanceTest {
     @Before
     public void setup() {
 
-        // Visual Basic Sample Diagram
+        // Standard Test - From the Visual Basic Sample Diagram
 
         sampleNodes.put("syncStart", new SynchronizationNode("syncStart")); // ___0
         sampleNodes.put("syncEnd", new SynchronizationNode("syncEnd")); // _______1
@@ -109,8 +109,8 @@ public class NarrativeInstanceTest {
         sampleNodes.get("choiceJessica1").getOptions().add(tempNarr);
         sampleNarrs.put(tempNarr.getIdentifier(), tempNarr);
 
-        // Load Test
-
+        // Load Test - binary tree with node "1abcd" having children "10abcd" and "11abcd"
+        
         for (int i = 1; i < 1000000; ++i) {
             Node node = new ChoiceNode(Integer.toBinaryString(i));
             loadNodes.put(node.getIdentifier(), node);
@@ -163,7 +163,7 @@ public class NarrativeInstanceTest {
         assertEquals(11, sampleTemplate.nodes.size());
         assertEquals(sampleTemplate.getNarrative("narrSarah5").getEnd().getIdentifier(), "sync3");
        
-        NarrativeInstance sampleInst = sampleTemplate.generateInstance();
+        NarrativeInstance sampleInst = sampleTemplate.generateInstance2();
         
         assertTrue("Check Choice properties copied correctly", sampleInst.getNodeProperties("choiceMike1").containsKey("ChoicePropertyCopiedCorrectly"));
         assertTrue("Check Sync properties copied correctly", sampleInst.getNodeProperties("sync1").containsKey("SyncPropertyCopiedCorrectly"));
@@ -188,7 +188,7 @@ public class NarrativeInstanceTest {
         loadTemplate.nodes.putAll(loadNodes);
         loadTemplate.start = loadTemplate.getNode("1");
         
-        NarrativeInstance loadInst = loadTemplate.generateInstance();
+        NarrativeInstance loadInst = loadTemplate.generateInstance2();
         System.out.println(loadInst.getNarrative("narr10101").getIdentifier());
     }
 
