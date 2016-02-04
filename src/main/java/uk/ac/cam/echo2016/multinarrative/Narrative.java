@@ -2,6 +2,8 @@ package uk.ac.cam.echo2016.multinarrative;
 
 import java.io.Serializable;
 
+import android.os.BaseBundle;
+
 /**
  * 
  * Acts as a connection between nodes. Represents the paths that characters follow.
@@ -17,7 +19,7 @@ public class Narrative implements Serializable{ // TODO Documentation
 	private final String id;
 	private Node start;
 	private Node end;
-	private android.os.BaseBundle properties = null;
+	private BaseBundle properties = null;
 
 	public Narrative(String id, Node start, Node end) {
 		this.id = id;
@@ -47,14 +49,14 @@ public class Narrative implements Serializable{ // TODO Documentation
 
 	public void createProperties() {
 		if (properties == null)
-			properties = new android.os.BaseBundle(); // TODO Initialize with default starting size?
+			properties = new BaseBundle(); // TODO Initialize with default starting size?
 	}
 
-	public android.os.BaseBundle getProperties() {
+	public BaseBundle getProperties() {
 		return properties;
 	}
 	
-	public void setProperties(android.os.BaseBundle b) {
+	public void setProperties(BaseBundle b) {
 		properties = b;
 	}
 }

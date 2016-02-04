@@ -3,6 +3,8 @@ package uk.ac.cam.echo2016.multinarrative;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import android.os.BaseBundle;
+
 /**
  * Represents a {@code Node} on the {@code MultiNarrative} graph structure. Each node has an {@code ArrayList} of {@code Narrative} references leaving the {@code Node}.
  * 
@@ -14,7 +16,7 @@ import java.util.ArrayList;
 public abstract class Node implements Serializable{ // TODO Documentation
 	private static final long serialVersionUID = 1;
 	private final String id;
-	private android.os.BaseBundle properties;
+	private BaseBundle properties;
 	private ArrayList<Narrative> options;
 	private boolean copied = false; // flag used in graph copy that indicates whether this node has been passed
 
@@ -39,7 +41,7 @@ public abstract class Node implements Serializable{ // TODO Documentation
 		Node result = this.callConstructor(this.id);
 
 		if (this.properties != null) // Copy properties across, if any
-			result.properties = new android.os.BaseBundle(this.properties);
+			result.properties = new BaseBundle(this.properties);
 
 		this.copied = true; // TODO encapsulation of copied flag
 
@@ -94,7 +96,7 @@ public abstract class Node implements Serializable{ // TODO Documentation
 	 */
 	protected abstract Node callConstructor(String id);
 
-	public abstract android.os.BaseBundle startNarrative(Narrative option);
+	public abstract BaseBundle startNarrative(Narrative option);
 
 	public abstract GameChoice onEntry(Narrative played, NarrativeInstance instance);
 
@@ -104,14 +106,14 @@ public abstract class Node implements Serializable{ // TODO Documentation
 
 	public void createProperties() {
 		if (properties == null)
-			properties = new android.os.BaseBundle(); // TODO Initialize with default starting size?
+			properties = new BaseBundle(); // TODO Initialize with default starting size?
 	}
 
-	public android.os.BaseBundle getProperties() {
+	public BaseBundle getProperties() {
 		return properties;
 	}
 
-	public void setProperties(android.os.BaseBundle b) {
+	public void setProperties(BaseBundle b) {
 		properties = b;
 	}
 

@@ -2,6 +2,8 @@ package uk.ac.cam.echo2016.multinarrative;
 
 import java.util.ArrayList;
 
+import android.os.BaseBundle;
+
 /**
  * 
  * Represents an actual play through of the story. Instantiated from the template.
@@ -13,11 +15,11 @@ import java.util.ArrayList;
  */
 public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 	private static final long serialVersionUID = 1;
-	protected android.os.BaseBundle properties;
+	protected BaseBundle properties;
 	protected ArrayList<Node> activeNodes = new ArrayList<Node>();
 
 	public NarrativeInstance() {
-		properties = new android.os.BaseBundle();
+		properties = new BaseBundle();
 	}
 
 	public NarrativeInstance(NarrativeTemplate template) throws NullPointerException{ // TODO check copy constructor
@@ -28,19 +30,19 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 		this.properties = base.properties;
 	}
 
-	public android.os.BaseBundle getGlobalProperties() {
+	public BaseBundle getGlobalProperties() {
 		return properties;
 	}
 
-	public android.os.BaseBundle getNarrativeProperties(String id) {
+	public BaseBundle getNarrativeProperties(String id) {
 		return getNarrative(id).getProperties();
 	}
 
-	public android.os.BaseBundle getNodeProperties(String id) {
+	public BaseBundle getNodeProperties(String id) {
 		return getNode(id).getProperties();
 	}
 
-	public android.os.BaseBundle startNarrative(String id) {
+	public BaseBundle startNarrative(String id) {
 		// TODO do whatever needs to be done when starting a narrative
 		return getNarrativeProperties(id);
 	}
