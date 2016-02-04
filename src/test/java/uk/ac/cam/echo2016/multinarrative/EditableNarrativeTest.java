@@ -44,7 +44,7 @@ public class EditableNarrativeTest {
      */
     @Before
     public void setup() {
-        eNarr = new EditableNarrative();
+        eNarr = new GUINarrative();
         
         SynchronizationNode s1 = new SynchronizationNode("start");
         ChoiceNode c1 = new ChoiceNode("choice1");

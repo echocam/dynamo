@@ -1,5 +1,6 @@
 package uk.ac.cam.echo2016.multinarrative;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import uk.ac.cam.echo2016.multinarrative.Narrative;
@@ -13,7 +14,8 @@ import uk.ac.cam.echo2016.multinarrative.Node;
  * @see GUINarrative
  * @see MultiNarrative 
  */
-public abstract class MultiNarrative { //TODO Documentation
+public abstract class MultiNarrative implements Serializable { //TODO Documentation
+    private static final long serialVersionUID = 1;
     protected HashMap<String, Narrative> narratives = new HashMap<String, Narrative>();
     protected HashMap<String, Node> nodes = new HashMap<String, Node>();
     protected Node start;

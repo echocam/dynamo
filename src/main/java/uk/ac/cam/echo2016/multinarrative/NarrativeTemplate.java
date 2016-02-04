@@ -18,6 +18,7 @@ package uk.ac.cam.echo2016.multinarrative;
  * @see MultiNarrative
  */
 public class NarrativeTemplate extends MultiNarrative {
+	private static final long serialVersionUID = 1;
 
     //TODO Documentation
     /**
