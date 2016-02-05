@@ -55,7 +55,7 @@ public class NarrativeTemplate extends MultiNarrative {
             r_route.setEnd(r_nodes.get(route.getEnd().getIdentifier()));
             r_route.getStart().getOptions().add(r_route);
             
-            // Increments the route entries property
+            // Increments the route entries property (if not found initialised to 0)
             int routeEntries = r_route.getEnd().getProperties().getInt("Impl.Node.Entries");
             r_route.getEnd().getProperties().putInt("Impl.Node.Entries", ++routeEntries);
             
@@ -87,16 +87,18 @@ public class NarrativeTemplate extends MultiNarrative {
     public Node copyToGraph(Node node, NarrativeInstance instance) { // TODO More Documentation!!! and tests
 
         // Eventually calls Node(this.id) via subclass's constructor
-        //Node result = node.callConstructor(node.getIdentifier());
-        Node result = null;
-        try {
-            result = node.getClass().getConstructor(String.class).newInstance(node.getIdentifier());
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                | NoSuchMethodException | SecurityException e) {
-            e.printStackTrace();
-        }
-        //Node result = (node instanceof ChoiceNode) ? new ChoiceNode(node.getIdentifier())
-        //        : new SynchronizationNode(node.getIdentifier());
+        Node result = node.newInstance(node.getIdentifier());
+        
+//        Node result = null;
+//        try {
+//            result = node.getClass().getConstructor(String.class).newInstance(node.getIdentifier());
+//        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+//                | NoSuchMethodException | SecurityException e) {
+//            e.printStackTrace();
+//        }
+        
+//        Node result = (node instanceof ChoiceNode) ? new ChoiceNode(node.getIdentifier())
+//                : new SynchronizationNode(node.getIdentifier());
 
         if (node.getProperties() != null) // Copy getProperties() across, if any
             result.setProperties(BaseBundle.deepcopy(node.getProperties()));

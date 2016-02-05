@@ -24,16 +24,22 @@ public class ChoiceNode extends Node { // TODO Implementation and documentation
 		super(id);
 	}
 
-	protected Node callConstructor(String id) {
+	protected Node newInstance(String id) {
 		return new ChoiceNode(id);
 	}
 
-    public BaseBundle startRoute(Route option) { // TODO Finish Impl
-        return null;
+    public BaseBundle startRoute(Route option) {
+        return option.getProperties();
     };
 
     public GameChoice onEntry(Route completed, NarrativeInstance instance) { // TODO Finish Impl
-        return null;
+        GameChoice gameChoice = new GameChoice();
+        if (!this.getOptions().contains(completed)) {
+        } // TODO Exception needed???
+        
+        //TODO initialise gameChoice
+        
+        return gameChoice;
     }
 
 }

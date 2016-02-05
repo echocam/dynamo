@@ -51,13 +51,20 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 
     public BaseBundle startRoute(String id) {
         Route route = getRoute(id);
-        route.start.startRoute(route);
-        return route.getProperties();
+        Node startNode = route.getStart();
+        activeNodes.remove(startNode); // TODO handle error - return false
+        return startNode.startRoute(route);
     }
 
     public GameChoice endRoute(String id) {
-        Route finished = getRoute(id);
-        return finished.getEnd().onEntry(finished, this);
+        Route route = getRoute(id);
+        Node endNode = route.getEnd(); // TODO handle error - return null
+        activeNodes.add(endNode);
+        // increments routes completed (if not found initialised to 0)
+        int routesCompleted = endNode.getProperties().getInt("Impl.Node.Completed");
+        endNode.getProperties().putInt("Impl.Node.Completed", ++routesCompleted);
+        
+        return endNode.onEntry(route, this);
     }
 
     /**
@@ -134,11 +141,18 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         return true;
     }
 
-    public ArrayList<Route> getPlayableRoutes() { // TODO implementation + todo's
-        return null;
+    public ArrayList<Route> getPlayableRoutes() {
+        ArrayList<Route> r_routes = new ArrayList<Route>();
+        for (Node node : activeNodes) {
+            for (Route route : node.options) {
+                r_routes.add(route);
+            }
+        }
+        return r_routes;
     }
 
     public void setActive(Node node) {
-        activeNodes.add(node);
+        if (!activeNodes.contains(node))
+            activeNodes.add(node);
     }
 }

@@ -2,7 +2,7 @@ package uk.ac.cam.echo2016.multinarrative;
 
 /**
  * 
- * @author Rjmcf
+ * @author rjm232
  *
  */
 
