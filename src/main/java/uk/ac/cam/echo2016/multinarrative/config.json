@@ -1,0 +1,16 @@
+{
+    "log": {
+        "console": {
+            "all": 3,
+            "gui": 5,
+            "error": {
+                "level": 4,
+                "colour": "red"
+            }
+        },
+        "file": {
+            "error": 5,
+            "all": 3
+        }
+    }
+}
