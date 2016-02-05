@@ -12,8 +12,7 @@ import org.junit.Before;
  * @author Rjmcf
  *
  */
-
-public class EditableNarrativeTest {
+public class EditableNarrativeTest { // TODO combine with narrativeInstanceTest/GUINarrativeTest
     public static void follow(Route route) {
         System.out.println("This route is " + route.getIdentifier());
         System.out.println("It connects " + route.getIdentifier() + " to " + route.getIdentifier());
@@ -112,16 +111,16 @@ public class EditableNarrativeTest {
     public void removeNodeTest() {
         eNarr.removeNode("left");
         assertNull("Check left removed from nodes", eNarr.nodes.get("left"));
-        assertNull("Check entering narrative removed from narratives", eNarr.routes.get("link2"));
-        assertNull("Check exiting narrative removed from narratives", eNarr.routes.get("link4"));
+        assertNull("Check entering route removed from routes", eNarr.routes.get("link2"));
+        assertNull("Check exiting route removed from routes", eNarr.routes.get("link4"));
         //traverse(eNarr.start);
         
         setup();
         eNarr.removeNode("choice1");
         assertNull("Check choice1 removed from nodes", eNarr.nodes.get("choice1"));
-        assertNull("Check entering narrative removed from narratives", eNarr.routes.get("link1"));
-        assertNull("Check left exiting narrative removed", eNarr.routes.get("link2"));
-        assertNull("Check right exiting narrative removed", eNarr.routes.get("link3"));
+        assertNull("Check entering route removed from routes", eNarr.routes.get("link1"));
+        assertNull("Check left exiting route removed", eNarr.routes.get("link2"));
+        assertNull("Check right exiting route removed", eNarr.routes.get("link3"));
         //traverse(eNarr.start);
         //traverse(eNarr.nodes.get("left"));
         //traverse(eNarr.nodes.get("right"));
