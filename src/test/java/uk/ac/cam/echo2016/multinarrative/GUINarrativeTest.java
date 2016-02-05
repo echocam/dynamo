@@ -150,6 +150,33 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     	
     	assertNotNull("Check route added to routes", gNarr.getRoute("newLink4"));
     	assertEquals("Check start node has correct name reference", "newLink4", gNarr.getRoute("newLink4").getStart().getOptions().get(0).getIdentifier());
-    	traverse(gNarr.start);
+    	assertEquals("Check route has been added only once", 1, gNarr.getRoute("newLink4").getStart().getOptions().size());
+    	//traverse(gNarr.start);
+    }
+    
+    @Test(expected=NonUniqueIdException.class)
+    public void newRouteExceptionTest() throws NonUniqueIdException {
+    	gNarr.newRoute("link2", "start", "end");
+    }
+    
+    @Test
+    public void newSyncAndChoiceNodeTest() throws NonUniqueIdException {
+    	gNarr.newSynchronizationNode("syncTest");
+    	gNarr.insertChoiceNode("choiceTest");
+    	
+    	assertNotNull("Check Sync node added to nodes", gNarr.getNode("syncTest"));
+    	assertEquals("Check Sync node is of correct type", SynchronizationNode.class, gNarr.getNode("syncTest").getClass());
+    	assertNotNull("Check Choice node added to nodes", gNarr.getNode("choiceTest"));
+    	assertEquals("Check Choice node is of correct type", ChoiceNode.class, gNarr.getNode("choiceTest").getClass());
+    }
+    
+    @Test(expected=NonUniqueIdException.class)
+    public void newSyncExceptionTest() throws NonUniqueIdException {
+    	gNarr.newSynchronizationNode("right");
+    }
+    
+    @Test(expected=NonUniqueIdException.class)
+    public void newChoiceExceptionTest() throws NonUniqueIdException {
+    	gNarr.insertChoiceNode("left");
     }
 }
