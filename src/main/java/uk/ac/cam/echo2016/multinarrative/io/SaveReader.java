@@ -1,8 +1,12 @@
-package uk.ac.cam.echo2016.multinarrative;
+package uk.ac.cam.echo2016.multinarrative.io;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+
+import uk.ac.cam.echo2016.multinarrative.GUINarrative;
+import uk.ac.cam.echo2016.multinarrative.NarrativeInstance;
+import uk.ac.cam.echo2016.multinarrative.NarrativeTemplate;
 
 public class SaveReader {
     public static GUINarrative loadGUINarrative(String filename) throws IOException{

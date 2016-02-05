@@ -18,7 +18,7 @@
 
 package android.os;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
@@ -68,6 +68,19 @@ public class BaseBundle implements Serializable {
             mMap = new HashMap<String, Object>(b.mMap);
         } else {
             mMap = null;
+        }
+    }
+
+    public static BaseBundle deepcopy(BaseBundle b){
+        try {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(buffer);
+            oos.writeObject(b);
+            ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(buffer.toByteArray()));
+
+            return (BaseBundle) ois.readObject();
+        } catch(IOException|ClassNotFoundException e){
+            throw new RuntimeException();
         }
     }
 

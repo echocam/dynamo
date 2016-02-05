@@ -2,6 +2,8 @@ package uk.ac.cam.echo2016.multinarrative;
 
 import java.util.HashMap;
 
+import android.os.BaseBundle;
+
 /**
  * Represents a MultiNarrative that can be edited. Included for extensibility. We subclass it with GUINarrative, but
  * this class can be derived for other methods of editing.
@@ -13,21 +15,21 @@ import java.util.HashMap;
 
 public abstract class EditableNarrative extends MultiNarrative { //TODO Todo's and documentation
     private static final long serialVersionUID = 1;
-    public void addNarrative(Narrative narrative) {
-        narratives.put(narrative.getIdentifier(), narrative);
-        narrative.getStart().getOptions().add(narrative);
+    public void addRoute(Route route) {
+        routes.put(route.getIdentifier(), route);
+        route.getStart().getOptions().add(route);
     }
     
     public void addNode(Node node) {
         nodes.put(node.getIdentifier(), node);
     }
     
-    public boolean removeNarrative(String id) { // TODO: test this!
-        Narrative narr = narratives.remove(id);
-        if (narr == null) 
+    public boolean removeRoute(String id) { // TODO: test this!
+        Route route = routes.remove(id);
+        if (route == null) 
             return false;
         
-        narr.getStart().getOptions().remove(narr);	
+        route.getStart().getOptions().remove(route);	
         
         return true;
     }
@@ -37,32 +39,32 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Todo's a
         if (node == null) 
             return false;
         
-        HashMap<String, Narrative> copy = new HashMap<String, Narrative>();
-        copy.putAll(narratives);
+        HashMap<String, Route> copy = new HashMap<String, Route>();
+        copy.putAll(routes);
         
-        for (Narrative narr : copy.values()) {
-            if (narr.getStart() == node) {
-                removeNarrative(narr.getIdentifier());
-            } else if (narr.getEnd() == node) {
-                removeNarrative(narr.getIdentifier());			
+        for (Route route : copy.values()) {
+            if (route.getStart() == node) {
+                removeRoute(route.getIdentifier());
+            } else if (route.getEnd() == node) {
+                removeRoute(route.getIdentifier());			
             }
         }
         
         return true;		
     }
     
-    public boolean renameNarrative(String id, String newName) { // TODO: test this!
-        Narrative narr = narratives.remove(id);
-        if (narr == null)
+    public boolean renameRoute(String id, String newName) { // TODO: test this!
+        Route route = routes.remove(id);
+        if (route == null)
             return false;
         
-        Narrative newNarr = new Narrative(newName, narr.getStart(), narr.getEnd());
-        if (narr.getProperties() != null)
-            newNarr.setProperties(new android.os.BaseBundle(narr.getProperties()));
+        Route newRoute = new Route(newName, route.getStart(), route.getEnd());
+        if (route.getProperties() != null)
+            newRoute.setProperties(new BaseBundle(route.getProperties()));
         
-        narratives.put(newName, newNarr);
-        newNarr.getStart().getOptions().remove(narr);
-        newNarr.getStart().getOptions().add(newNarr);
+        routes.put(newName, newRoute);
+        newRoute.getStart().getOptions().remove(route);
+        newRoute.getStart().getOptions().add(newRoute);
         
         return true;
     }
@@ -74,18 +76,18 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Todo's a
         
         Node newNode = node.callConstructor(newName);
         if (node.getProperties() != null) 
-            newNode.setProperties(new android.os.BaseBundle(node.getProperties()));
+            newNode.setProperties(new BaseBundle(node.getProperties()));
         
         nodes.put(newName, newNode);
-        for (Narrative narr : narratives.values()) {
-            if (narr.getStart() == node) {
-                narr.setStart(newNode);
-            } else if (narr.getEnd() == node) {
-                narr.setEnd(newNode);	
+        for (Route route : routes.values()) {
+            if (route.getStart() == node) {
+                route.setStart(newNode);
+            } else if (route.getEnd() == node) {
+                route.setEnd(newNode);	
             }
         }
-        for (Narrative narr : node.getOptions()) {
-            newNode.getOptions().add(narr);
+        for (Route route : node.getOptions()) {
+            newNode.getOptions().add(route);
         }
         
         return true;

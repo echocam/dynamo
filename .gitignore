@@ -16,5 +16,7 @@ local.properties
 
 /bin/
 
+logs/*
+
 ignore/
 Echo/*

@@ -1,5 +1,7 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
 
+import java.util.HashMap;
+
 import android.os.BaseBundle;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.*;
 
@@ -8,7 +10,7 @@ import static uk.ac.cam.echo2016.multinarrative.gui.Strings.*;
  */
 public class GUIOperations{
 
-    private BaseBundle properties = new BaseBundle();
+    private HashMap<String, BaseBundle> properties;
     
     /**
      * TODO
@@ -17,40 +19,48 @@ public class GUIOperations{
      * message of exception is displayed to the user, using the Strings
      * class for formatting.
      */    
-    public void addProperty(String s, String type) throws IllegalOperationException{
+    public void addProperty(String s) throws IllegalOperationException{
         if (s.equals("") || s == null) {
             throw new IllegalOperationException(ADD_EMPTY_STRING);
         }
         if (properties.containsKey(s)) {
             throw new IllegalOperationException(ALREADY_EXISTS);
         }
+        properties.put(s, new BaseBundle());
+        
+    }
+    
+    public void addValue(String property, String type, String value) throws IllegalOperationException {
+        if (!properties.containsKey(property)) {
+            throw new IllegalOperationException(PROPERTY_DOES_NOT_EXIST);
+        }
         switch (type) {
         case "String": 
-            properties.putString(s, s);
+            properties.get(property).putString(value, value);
             break;
         case "Integer":
-            properties.putInt(s, Integer.parseInt(s));
+            properties.get(property).putInt(value, Integer.parseInt(value));
             break;
         case "Boolean":
-            properties.putBoolean(s, Boolean.parseBoolean(s));
+            properties.get(property).putBoolean(value, Boolean.parseBoolean(value));
             break;
         case "Byte":
-            properties.putByte(s, Byte.parseByte(s));
+            properties.get(property).putByte(value, Byte.parseByte(value));
             break;
         case "Short":
-            properties.putShort(s, Short.parseShort(s));
+            properties.get(property).putShort(value, Short.parseShort(value));
             break;
         case "Long":
-            properties.putLong(s, Long.parseLong(s));
+            properties.get(property).putLong(value, Long.parseLong(value));
             break;
         case "Float":
-            properties.putFloat(s, Integer.parseInt(s));
+            properties.get(property).putFloat(value, Integer.parseInt(value));
             break;
         case "Double":
-            properties.putDouble(s, Double.parseDouble(s));
+            properties.get(property).putDouble(value, Double.parseDouble(value));
             break;
         default:
-            throw new IllegalOperationException(INVALID_TYPE);
+            throw new IllegalOperationException("Type " + type + " connot be resolved.");
         
         }
     }
@@ -64,7 +74,7 @@ public class GUIOperations{
      */
     public void removeProperty(String s) throws IllegalOperationException{
         if (!properties.containsKey(s)) {
-            throw new IllegalOperationException(PROPERTY_DOES_NOT_EXIST);
+            throw new IllegalOperationException("Property " + s + " does not exist.");
         }
         properties.remove(s);
     }
@@ -84,28 +94,8 @@ public class GUIOperations{
             throw new IllegalOperationException("Property cannot be renamed to " + to + ": "
                     + to + " already exists.");
         }
-        Object obj = properties.get(from);
-        if (String.class.isInstance(obj)) {
-            properties.putString(to, (String) obj);
-        } else if (Integer.class.isInstance(obj)) {
-            properties.putInt(to, (Integer) obj);
-        } else if (Boolean.class.isInstance(obj)) {
-            properties.putBoolean(to, (Boolean) obj);
-        } else if (Byte.class.isInstance(obj)) {
-            properties.putByte(to, (Byte) obj);
-        } else if (Short.class.isInstance(obj)) {
-            properties.putShort(to, (Short) obj);
-        } else if (Long.class.isInstance(obj)) {
-            properties.putLong(to, (Long) obj);
-        } else if (Float.class.isInstance(obj)) {
-            properties.putFloat(to, (Float) obj);
-        } else if (Double.class.isInstance(obj)) {
-            properties.putDouble(to, (Double) obj);
-        } else {
-            throw new IllegalOperationException("Property " + from + " cannot be renamed: "
-                    + "Type cannot be resolved.");
-        }
-        
+        BaseBundle oldprop = properties.get(from);
+        properties.put(to, oldprop);
         properties.remove(from);
     }
 
