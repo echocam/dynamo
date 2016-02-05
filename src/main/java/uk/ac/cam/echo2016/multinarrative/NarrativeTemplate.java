@@ -1,5 +1,6 @@
 package uk.ac.cam.echo2016.multinarrative;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -72,9 +73,6 @@ public class NarrativeTemplate extends MultiNarrative {
             throw new RuntimeException();
         } // TODO better exception
         instance.start = copyToGraph(this.start, instance);
-        for (Node node : this.nodes.values()) {
-            node.resetCopied();
-        }
         instance.setActive(start);
         return instance;
     }
@@ -89,19 +87,25 @@ public class NarrativeTemplate extends MultiNarrative {
     public Node copyToGraph(Node node, NarrativeInstance instance) { // TODO More Documentation!!! and tests
 
         // Eventually calls Node(this.id) via subclass's constructor
-        Node result = node.callConstructor(node.getIdentifier());
-        //Node result = node.clone2();
+        //Node result = node.callConstructor(node.getIdentifier());
+        Node result = null;
+        try {
+            result = node.getClass().getConstructor(String.class).newInstance(node.getIdentifier());
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                | NoSuchMethodException | SecurityException e) {
+            e.printStackTrace();
+        }
+        //Node result = (node instanceof ChoiceNode) ? new ChoiceNode(node.getIdentifier())
+        //        : new SynchronizationNode(node.getIdentifier());
 
         if (node.getProperties() != null) // Copy getProperties() across, if any
             result.setProperties(BaseBundle.deepcopy(node.getProperties()));
-        node.copied = true; // TODO encapsulation of copied flag
-
         // Copy each route leaving node node and call copyGraph on their end nodes
-        for (Route narrTemplate : node.options) {
+        for (Route templateRoute : node.options) {
             Node endNodeCopy;
-            if (narrTemplate.getEnd().copied == false) {
+            if (!instance.nodes.containsKey(templateRoute.getEnd().getIdentifier())) {
                 // Not already copied
-                endNodeCopy = copyToGraph(narrTemplate.getEnd(), instance); // Recursively copy nodes at the ends of
+                endNodeCopy = copyToGraph(templateRoute.getEnd(), instance); // Recursively copy nodes at the ends of
 
                 // Create and update entryList property
                 endNodeCopy.createProperties();
@@ -110,7 +114,7 @@ public class NarrativeTemplate extends MultiNarrative {
             } else {
                 // Already copied
 
-                endNodeCopy = instance.getNode(narrTemplate.getEnd().getIdentifier()); // Get reference to copied end
+                endNodeCopy = instance.getNode(templateRoute.getEnd().getIdentifier()); // Get reference to copied end
                 // Update entryList property
 
                 int routeEntries = endNodeCopy.getProperties().getInt("Impl.Node.Entries");
@@ -119,8 +123,8 @@ public class NarrativeTemplate extends MultiNarrative {
             }
 
             // Create route using references obtained/created above, linking node node to the new end nodes
-            Route routeCopy = new Route(narrTemplate.getIdentifier(), result, endNodeCopy);
-            routeCopy.setProperties(narrTemplate.getProperties());
+            Route routeCopy = new Route(templateRoute.getIdentifier(), result, endNodeCopy);
+            routeCopy.setProperties(templateRoute.getProperties());
             
             // Update route references
             result.getOptions().add(routeCopy);

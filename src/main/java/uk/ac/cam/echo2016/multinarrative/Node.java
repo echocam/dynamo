@@ -19,7 +19,6 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
     private final String id;
     private BaseBundle properties;
     ArrayList<Route> options;
-    protected boolean copied = false; // flag used in graph copy that indicates whether this node has been passed
 
     public Node(String id) {
         this.id = id;
@@ -36,10 +35,6 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    protected void resetCopied() {
-        copied = false;
     }
 
     /**
