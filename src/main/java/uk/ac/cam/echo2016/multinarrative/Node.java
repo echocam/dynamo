@@ -38,8 +38,7 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
         }
     }
 
-    protected void resetCopied() { // TODO warning - should not be concurrently called while the
-                                   // NarrativeTemplate.getInstance() method is running!
+    protected void resetCopied() {
         copied = false;
     }
 

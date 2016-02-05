@@ -19,7 +19,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     protected BaseBundle properties;
     protected ArrayList<Node> activeNodes = new ArrayList<Node>();
 
-    public NarrativeInstance(NarrativeTemplate template) throws NullPointerException { // TODO testing
+    public NarrativeInstance(NarrativeTemplate template) {
         NarrativeInstance base = template.generateInstance();
         this.routes = base.routes;
         this.nodes = base.nodes;
@@ -110,7 +110,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         // TODO and update event if instanceof sync node? i.e. change to ACTION_CONTINUE?
 
         Node nStart = route.getStart();
-        nStart.getOptions().remove(route); // TODO should return true, otherwise something's broken
+        nStart.getOptions().remove(route); // Should return true, otherwise something's broken
 
         routes.remove(route.getIdentifier());
         return true;
