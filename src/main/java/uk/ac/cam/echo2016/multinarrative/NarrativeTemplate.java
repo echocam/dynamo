@@ -65,14 +65,13 @@ public class NarrativeTemplate extends MultiNarrative {
         NarrativeInstance instance = new NarrativeInstance(r_routes, r_nodes, r_start);
         return instance;
     }
-	 public NarrativeInstance generateInstance2() throws NullPointerException { // TODO more appropriate exception?
+	 public NarrativeInstance generateInstance2() { // TODO more appropriate exception?
 	 NarrativeInstance instance = new NarrativeInstance();
 
-        if (this.start != null) {
-            instance.start = copyToGraph(this.start,instance);
-        } else {
-            throw new NullPointerException("No node registered as start of graph.");
-        }
+        if (start == null) {
+            throw new RuntimeException();
+        } // TODO better exception
+        instance.start = copyToGraph(this.start, instance);
         for (Node node : this.nodes.values()) {
             node.resetCopied();
         }
