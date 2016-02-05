@@ -16,7 +16,7 @@ public class NarrativeInstanceTest {
     @Before
     public void setup() {
 
-        // Standard Test - From the Visual Basic Sample Diagram
+        // Standard Test // - From the Visual Basic Sample Diagram
 
         sampleNodes.put("syncStart", new SynchronizationNode("syncStart")); // ___0
         sampleNodes.put("syncEnd", new SynchronizationNode("syncEnd")); // _______1
@@ -109,15 +109,15 @@ public class NarrativeInstanceTest {
         sampleNodes.get("choiceJessica1").getOptions().add(tempRoute);
         sampleRoutes.put(tempRoute.getIdentifier(), tempRoute);
 
-        // Load Test - binary tree with node "1abcd" having children "10abcd" and "11abcd"
-        
-        for (int i = 1; i < 1000000; ++i) {
+        // Load Test // - binary tree with node "1abcd" having children "10abcd" and "11abcd"
+
+        for (int i = 1; i < 100000; ++i) {
             Node node = new ChoiceNode(Integer.toBinaryString(i));
             loadNodes.put(node.getIdentifier(), node);
         }
         for (Node node : loadNodes.values()) {
             String id = node.getIdentifier();
-            int binary = Integer.parseInt(id,2);
+            int binary = Integer.parseInt(id, 2);
             int binCopy = binary;
 
             int bitCount = 0;
@@ -127,7 +127,7 @@ public class NarrativeInstanceTest {
             }
             int bin1 = binary | 2 << bitCount - 1; // Set highest bit+1 to 1
             int bin2 = bin1 & ~(1 << bitCount - 1); // Set 2nd highest bit to 0
-            if (bin1 == 0 || bin2 == 0 ) {
+            if (bin1 == 0 || bin2 == 0) {
                 System.out.println("?");
             }
             Node child1 = loadNodes.get(Integer.toBinaryString(bin1));
@@ -145,51 +145,59 @@ public class NarrativeInstanceTest {
     }
 
     @Test
-    public void testNodeStructure() throws NullPointerException { // TODO Documentation!
-        
-        // Sample Tests
-        
+    public void testNodeStructure() throws NullPointerException {
+
+        // Sample Tests //
+
+        // creates template using the maps created above
         NarrativeTemplate sampleTemplate = new NarrativeTemplate();
         sampleTemplate.routes.putAll(sampleRoutes);
         sampleTemplate.nodes.putAll(sampleNodes);
         sampleTemplate.start = sampleTemplate.getNode("syncStart");
 
-        sampleTemplate.getNode("choiceMike1").createProperties(); // TODO replace with deep clone method test - use .equals()?
-        sampleTemplate.getNode("choiceMike1").getProperties().putBoolean("ChoicePropertyCopiedCorrectly", true);
-        sampleTemplate.getNode("sync1").createProperties();
-        sampleTemplate.getNode("sync1").getProperties().putBoolean("SyncPropertyCopiedCorrectly", true);
+        // Adds a test property for reference test later
+        sampleTemplate.getNode("syncStart").createProperties();
+        sampleTemplate.getNode("syncStart").getProperties().putIntArray("TestProperty", new int[] { 1, 2, 3 });
 
+        // Tests the template constructor - these are for the full sample graph
         assertEquals(24, sampleTemplate.routes.size());
         assertEquals(11, sampleTemplate.nodes.size());
         assertEquals(sampleTemplate.getRoute("routeSarah5").getEnd().getIdentifier(), "sync3");
-       
-        NarrativeInstance sampleInst = sampleTemplate.generateInstance2();
-        
-        assertTrue("Check Choice properties copied correctly", sampleInst.getNodeProperties("choiceMike1").containsKey("ChoicePropertyCopiedCorrectly"));
-        assertTrue("Check Sync properties copied correctly", sampleInst.getNodeProperties("sync1").containsKey("SyncPropertyCopiedCorrectly"));
 
-        assertEquals("Checking correct number of routes: ", 24, sampleInst.routes.size());
-        assertEquals("Checking correct number of nodes: ", 11, sampleInst.nodes.size());
-        assertEquals("Checking \"routeSarah5\" connects to \"sync3\":",
+        // Copy the template into an instance
+        NarrativeInstance sampleInst = sampleTemplate.generateInstance2();
+
+        // Tests whether the copy has the correct structure
+        assertEquals("Testing correct number of routes: ", 24, sampleInst.routes.size());
+        assertEquals("Testing correct number of nodes: ", 11, sampleInst.nodes.size());
+        assertEquals("Testing \"routeSarah5\" connects to \"sync3\":",
                 sampleInst.getRoute("routeSarah5").getEnd().getIdentifier(), "sync3");
-        assertTrue("Checking \"choiceJessica1\" has route \"routeJessica3\":",
+        assertTrue("Testing \"choiceJessica1\" has route \"routeJessica3\":",
                 sampleInst.getNode("choiceJessica1").getOptions().contains(sampleInst.getRoute("routeJessica3")));
 
-        Route route = sampleInst.getRoute("routeBob1");
-        assertNull(route);
+        // Tests whether the copy has different references
+        assertFalse("Testing \"routes\" reference is different: ", sampleInst.routes == sampleTemplate.routes);
+        assertFalse("Testing \"nodes\" reference is different: ", sampleInst.nodes == sampleTemplate.nodes);
+        assertFalse("Testing \"start\" reference is different: ", sampleInst.start == sampleTemplate.start);
+        assertFalse("Testing Test Property reference is different: ", sampleInst.getNode("syncStart").getProperties()
+                .get("TestProperty") == sampleTemplate.getNode("syncStart").getProperties().get("TestProperty"));
 
+        // Tests whether getRoute returns null for incorrect routes
+        assertNull("Testing incorrect route: ", sampleInst.getRoute("routeBob1"));
+
+        // Tests whether the kill method works correctly NOTE: may need changing to 20 with character association
         sampleInst.kill("routeMike1");
-        assertEquals(21, sampleInst.routes.size());
-        
-        // Load Test
-        
+        assertEquals("Testing kill method: ", 21, sampleInst.routes.size());
+
+        // Load Test //
+
         NarrativeTemplate loadTemplate = new NarrativeTemplate();
         loadTemplate.routes.putAll(loadRoutes);
         loadTemplate.nodes.putAll(loadNodes);
         loadTemplate.start = loadTemplate.getNode("1");
-        
+
         NarrativeInstance loadInst = loadTemplate.generateInstance2();
-        System.out.println(loadInst.getRoute("route10101").getIdentifier());
+        assertTrue("Testing load test constructor: ", loadInst.routes.containsKey("route10101"));
     }
 
     /**
@@ -205,17 +213,13 @@ public class NarrativeInstanceTest {
      * 
      * @SuppressWarnings("unused") NarrativeInstance instance = new NarrativeInstance(template); }
      */
-    
-   /*
-    @Test(expected = NullPointerException.class)
-    public void testErrorThrown() throws NullPointerException {
-        NarrativeTemplate template = new NarrativeTemplate();
-        template.routes.putAll(routeMap);
-        template.nodes.putAll(nodeMap);
-        
-        @SuppressWarnings("unused")
-        NarrativeInstance instance = template.generateInstance();
-    }
-*/
-    
+
+    /*
+     * @Test(expected = NullPointerException.class) public void testErrorThrown() throws NullPointerException {
+     * NarrativeTemplate template = new NarrativeTemplate(); template.routes.putAll(routeMap);
+     * template.nodes.putAll(nodeMap);
+     * 
+     * @SuppressWarnings("unused") NarrativeInstance instance = template.generateInstance(); }
+     */
+
 }
