@@ -40,7 +40,7 @@ public class FXMLController implements Initializable {
     @FXML
     private ListView<String> nodes;
     @FXML
-    private ListView<String> narratives;
+    private ListView<String> routes;
 
     private GUIOperations operations = new GUIOperations();
 

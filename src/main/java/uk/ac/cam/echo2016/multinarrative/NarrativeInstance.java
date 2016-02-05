@@ -21,14 +21,14 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 
     public NarrativeInstance(NarrativeTemplate template) throws NullPointerException { // TODO testing
         NarrativeInstance base = template.generateInstance();
-        this.narratives = base.narratives;
+        this.routes = base.routes;
         this.nodes = base.nodes;
         this.start = base.start;
         this.properties = base.properties;
     }
 
-    public NarrativeInstance(HashMap<String, Narrative> narrs, HashMap<String, Node> nodes, Node start) {
-        this.narratives = narrs;
+    public NarrativeInstance(HashMap<String, Route> routes, HashMap<String, Node> nodes, Node start) {
+        this.routes = routes;
         this.nodes = nodes;
         this.start = start;
     }
@@ -41,28 +41,28 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         return properties;
     }
 
-    public BaseBundle getNarrativeProperties(String id) {
-        return getNarrative(id).getProperties();
+    public BaseBundle getRouteProperties(String id) {
+        return getRoute(id).getProperties();
     }
 
     public BaseBundle getNodeProperties(String id) {
         return getNode(id).getProperties();
     }
 
-    public BaseBundle startNarrative(String id) {
-        Narrative narr = getNarrative(id);
-        narr.start.startNarrative(narr);
-        return narr.getProperties();
+    public BaseBundle startRoute(String id) {
+        Route route = getRoute(id);
+        route.start.startRoute(route);
+        return route.getProperties();
     }
 
-    public GameChoice endNarrative(String id) {
-        Narrative finished = getNarrative(id);
+    public GameChoice endRoute(String id) {
+        Route finished = getRoute(id);
         return finished.getEnd().onEntry(finished, this);
     }
 
     /**
      * Recursively deletes an item from the graph according to the instance this method is called from. Only nodes and
-     * narratives further down the tree are deleted, so nodes must have no entering narratives and narratives must start
+     * routes further down the tree are deleted, so nodes must have no entering routes and routes must start
      * from a node with other options available.
      * 
      * @param id
@@ -70,9 +70,9 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
      * @return
      */
     public boolean kill(String id) { // TODO More Documentation, including overloaded methods
-        Narrative narr = getNarrative(id);
-        if (narr != null) { // TODO alternate exception handling?
-            kill(narr);
+        Route route = getRoute(id);
+        if (route != null) { // TODO alternate exception handling?
+            kill(route);
             return true;
         } else {
             Node node = getNode(id);
@@ -89,30 +89,30 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
      * 
      * @see NarrativeInstance#kill(String)
      */
-    public boolean kill(Narrative narr) {
-        if (narr == null)
+    public boolean kill(Route route) {
+        if (route == null)
             return false;
         
-        System.out.println("Killing: " + narr.getIdentifier());
-        Node nEnd = narr.getEnd();
+        System.out.println("Killing: " + route.getIdentifier());
+        Node nEnd = route.getEnd();
         String s = nEnd == null ? "null"
             : nEnd + " " + (nEnd.getProperties() == null ? "null"
                 : nEnd.getProperties() + " " + nEnd.getProperties().getInt("Impl.Node.Entries"));
         System.out.println(s);
         
-        int narrEntries = nEnd.getProperties().getInt("Impl.Node.Entries"); // TODO improve naming convention?
-        --narrEntries;
-        nEnd.getProperties().putInt("Impl.Node.Entries", narrEntries);
+        int routeEntres = nEnd.getProperties().getInt("Impl.Node.Entries"); // TODO improve naming convention?
+        --routeEntres;
+        nEnd.getProperties().putInt("Impl.Node.Entries", routeEntres);
 
-        if (narrEntries == 0) {
+        if (routeEntres == 0) {
             kill(nEnd);
         }
         // TODO and update event if instanceof sync node? i.e. change to ACTION_CONTINUE?
 
-        Node nStart = narr.getStart();
-        nStart.getOptions().remove(narr); // TODO should return true, otherwise something's broken
+        Node nStart = route.getStart();
+        nStart.getOptions().remove(route); // TODO should return true, otherwise something's broken
 
-        narratives.remove(narr.getIdentifier());
+        routes.remove(route.getIdentifier());
         return true;
     }
 
@@ -124,8 +124,8 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     public boolean kill(Node node) {
         if (node == null)
             return false;
-        for (Narrative narr : new ArrayList<Narrative>(node.getOptions())) {
-            kill(narr); // copy of ArrayList used to allow deletion of nodes within the function
+        for (Route route : new ArrayList<Route>(node.getOptions())) {
+            kill(route); // copy of ArrayList used to allow deletion of nodes within the function
         }
 
         assert node.getProperties().getInt("Impl.Node.Entries") == 0;
@@ -133,7 +133,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         return true;
     }
 
-    public ArrayList<Narrative> getPlayableNarratives() { // TODO implementation + todo's
+    public ArrayList<Route> getPlayableRoutes() { // TODO implementation + todo's
         return null;
     }
 

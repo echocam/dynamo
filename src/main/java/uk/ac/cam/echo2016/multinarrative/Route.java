@@ -15,23 +15,23 @@ import android.os.BaseBundle;
  * @version 1.0
  *
  */
-public class Narrative implements Serializable, Cloneable { // TODO Documentation
+public class Route implements Serializable, Cloneable { // TODO Documentation
     private static final long serialVersionUID = 1;
     private final String id;
     protected Node start;
     protected Node end;
     protected BaseBundle properties;
 
-    public Narrative(String id, Node start, Node end) {
+    public Route(String id, Node start, Node end) {
         this.id = id;
         this.start = start;
         this.end = end;
     }
 
     @Override
-    public Narrative clone() {
+    public Route clone() {
         try {
-            Narrative clone = (Narrative) super.clone();
+            Route clone = (Route) super.clone();
             clone.properties = BaseBundle.deepcopy(this.properties);
 
             return clone;
