@@ -24,7 +24,6 @@ public class GUINarrative extends EditableNarrative { // TODO Documentation
 			Node startNode = getNode(start);
 			Node endNode = getNode(end);
 			Route route = new Route(id, startNode, endNode);
-			startNode.getOptions().add(route);
 			addRoute(route);
 		} else {
 			throw new NonUniqueIdException();
