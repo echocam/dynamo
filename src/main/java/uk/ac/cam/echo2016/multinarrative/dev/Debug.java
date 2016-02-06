@@ -27,7 +27,7 @@ public class Debug {
     private static final int TYPE_GUI_USE     = 0b01000000000000000000000000000000;
     private static final int TYPE_GUI         = TYPE_GUI_DISPLAY | TYPE_GUI_USE;
     
-    private static final int TYPE_NARRATIVE = 0b00100000000000000000000000000000;
+    private static final int TYPE_ROUTE = 0b00100000000000000000000000000000;
     
     
     //The base level of stuff you wish to see, the higher the number, the more information will be displayed.

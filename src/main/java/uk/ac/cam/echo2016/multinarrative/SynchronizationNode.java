@@ -1,14 +1,16 @@
 package uk.ac.cam.echo2016.multinarrative;
 
+import android.os.BaseBundle;
+
 /**
  * Represents a synchronization node, where multiple characters are allowed to interact. Can have multiple entering and
- * multiple exiting narratives.
+ * multiple exiting routes.
  * 
  * <p>
  * ALT: Implements a {@link Node} at an intersection point on the {@code MultiNarrative} graph structure. At this point,
- * multiple {@code Narrative}s interact and affect each other's gameplay. There should be at least 2 {@code Narrative}s
+ * multiple {@code Route}s interact and affect each other's gameplay. There should be at least 2 {@code Route}s
  * entering the {@code Node} for the {@code Node} to be meaningful. The most typical use would be to have the same number of entering
- * {@code Narrative}s also exiting (one for each character), but this isn't required.
+ * {@code Route}s also exiting (one for each character), but this isn't required.
  * 
  * @author tr393
  * @author rjm232
@@ -23,18 +25,21 @@ public class SynchronizationNode extends Node { // TODO Documentation
 		super(id);
 	}
 
-    protected Node callConstructor(String id) {
+    protected Node newInstance(String id) {
         return new SynchronizationNode(id);
     }
 
-    public android.os.BaseBundle startNarrative(Narrative option) { // TODO Finish Impl
+    public BaseBundle startRoute(Route option) {
         return option.getProperties();
     }
 
-    public GameChoice onEntry(Narrative completed, NarrativeInstance instance) { // TODO finish impl
+    public GameChoice onEntry(Route completed, NarrativeInstance instance) {
+        GameChoice gameChoice = new GameChoice();
         if (!this.getOptions().contains(completed)) {
         } // TODO Exception needed???
-
-        return null;
+        
+        //TODO initialise gameChoice
+        
+        return gameChoice;
     }
 }

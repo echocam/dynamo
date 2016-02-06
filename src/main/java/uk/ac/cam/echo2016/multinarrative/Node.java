@@ -6,36 +6,49 @@ import java.util.ArrayList;
 import android.os.BaseBundle;
 
 /**
- * Represents a {@code Node} on the {@code MultiNarrative} graph structure. Each node has an {@code ArrayList} of {@code Narrative} references leaving the {@code Node}.
- *
+ * Represents a {@code Node} on the {@code MultiNarrative} graph structure. Each node has an {@code ArrayList} of
+ * {@code Narrative} references leaving the {@code Node}.
+ * 
  * @author tr393
  * @author rjm232
  * @version 1.0
  *
  */
-public abstract class Node implements Serializable, Cloneable{ // TODO Documentation
+public abstract class Node implements Serializable, Cloneable { // TODO Documentation
     private static final long serialVersionUID = 1;
     private final String id;
-    protected BaseBundle properties;
-    protected ArrayList<Narrative> options;
+    private BaseBundle properties;
+    ArrayList<Route> options;
 
     public Node(String id) {
         this.id = id;
-        this.options = new ArrayList<Narrative>();
+        this.options = new ArrayList<Route>();
+    }
+
+    @Override
+    public Node clone() {
+        try {
+            Node clone = (Node) super.clone();
+            clone.properties = BaseBundle.deepcopy(this.properties);
+
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * Method is implemented in derived classes ChoiceNode and SyncNode, to allow this class to make new objects of
      * those derived types in the copyToGraph method.
-     *
+     * 
      * @param id
      * @return
      */
-    protected abstract Node callConstructor(String id);
-    
-    public abstract BaseBundle startNarrative(Narrative option);
+    protected abstract Node newInstance(String id);
 
-    public abstract GameChoice onEntry(Narrative played, NarrativeInstance instance);
+    public abstract BaseBundle startRoute(Route option);
+
+    public abstract GameChoice onEntry(Route played, NarrativeInstance instance);
 
     public String getIdentifier() {
         return id;
@@ -54,19 +67,11 @@ public abstract class Node implements Serializable, Cloneable{ // TODO Documenta
         properties = b;
     }
 
-    public ArrayList<Narrative> getOptions() {
+    public ArrayList<Route> getOptions() {
         return options;
     }
-    
-    @Override
-    public Node clone(){
-	try {
-	    Node node = (Node) super.clone();
-	    node.options = new ArrayList<>();
-	    //node.properties = properties.clone(); TODO
-	    return node;
-	} catch (CloneNotSupportedException e) {
-	    throw new RuntimeException(e);
-	}
+
+    public void setOptions(ArrayList<Route> o) {
+        options = o;
     }
 }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class GameChoice { //TODO Todo's and documentation
     
     public static final int ACTION_MAJOR_DECISION = 0;
-    public static final int ACTION_CHOOSE_NARRATIVE = 0;
+    public static final int ACTION_CHOOSE_ROUTE = 0;
     public static final int ACTION_CONTINUE = 0;
     
     protected boolean eventTrigger;
@@ -22,6 +22,6 @@ public class GameChoice { //TODO Todo's and documentation
     
     public int getAction() {return 0;}
     
-    public ArrayList<Narrative> getOptions() {return null;}
+    public ArrayList<Route> getOptions() {return null;}
 
 }

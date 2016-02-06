@@ -7,8 +7,7 @@ import android.os.BaseBundle;
 
 /**
  * 
- * Represents an actual play through of the story. Instantiated from the
- * template.
+ * Represents an actual play through of the story. Instantiated from the template.
  * 
  * @author tr39
  * @author rjm232
@@ -20,66 +19,76 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     protected BaseBundle properties;
     protected ArrayList<Node> activeNodes = new ArrayList<Node>();
 
-    public NarrativeInstance() {
-	properties = new BaseBundle();
+    public NarrativeInstance(NarrativeTemplate template) {
+        NarrativeInstance base = template.generateInstance();
+        this.routes = base.routes;
+        this.nodes = base.nodes;
+        this.start = base.start;
+        this.properties = base.properties;
     }
 
-    public NarrativeInstance(HashMap<String, Node> nodes, HashMap<String, Narrative> narratives, Node start)
-	    throws NullPointerException {
-	this.nodes = nodes;
-	this.narratives = narratives;
-	this.activeNodes = new ArrayList<>();
-	this.activeNodes.add(start);
-	this.properties = new BaseBundle();
+    public NarrativeInstance(HashMap<String, Route> routes, HashMap<String, Node> nodes, SynchronizationNode start) {
+        this.routes = routes;
+        this.nodes = nodes;
+        this.start = start;
+    }
+
+    public NarrativeInstance() {
+        
     }
 
     public BaseBundle getGlobalProperties() {
-	return properties;
+        return properties;
     }
 
-    public BaseBundle getNarrativeProperties(String id) {
-	return getNarrative(id).getProperties();
+    public BaseBundle getRouteProperties(String id) {
+        return getRoute(id).getProperties();
     }
 
     public BaseBundle getNodeProperties(String id) {
-	return getNode(id).getProperties();
+        return getNode(id).getProperties();
     }
 
-    public BaseBundle startNarrative(String id) {
-	Narrative narr = getNarrative(id);
-	narr.start.startNarrative(narr);
-	return narr.getProperties();
+    public BaseBundle startRoute(String id) {
+        Route route = getRoute(id);
+        Node startNode = route.getStart();
+        activeNodes.remove(startNode); // TODO handle error - return false
+        return startNode.startRoute(route);
     }
 
-    public GameChoice endNarrative(String id) {
-	Narrative finished = getNarrative(id);
-	return finished.getEnd().onEntry(finished, this);
+    public GameChoice endRoute(String id) {
+        Route route = getRoute(id);
+        Node endNode = route.getEnd(); // TODO handle error - return null
+        activeNodes.add(endNode);
+        // increments routes completed (if not found initialised to 0)
+        int routesCompleted = endNode.getProperties().getInt("Impl.Node.Completed");
+        endNode.getProperties().putInt("Impl.Node.Completed", ++routesCompleted);
+        
+        return endNode.onEntry(route, this);
     }
 
     /**
-     * Recursively deletes an item from the graph according to the instance this
-     * method is called from. Only nodes and narratives further down the tree
-     * are deleted, so nodes must have no entering narratives and narratives
-     * must start from a node with other options available.
+     * Recursively deletes an item from the graph according to the instance this method is called from. Only nodes and
+     * routes further down the tree are deleted, so nodes must have no entering routes and routes must start
+     * from a node with other options available.
      * 
      * @param id
      *            string identifier for the item to be deleted
      * @return
      */
-    public boolean kill(String id) { // TODO More Documentation, including
-				     // overloaded methods
-	Narrative narr = getNarrative(id);
-	Node node = getNode(id); // TODO search might be optimizable (2nd not
-				 // required)
-
-	if (narr != null) { // TODO alternate exception handling?
-	    kill(narr);
-	    return true;
-	} else if (node != null) { // TODO alternate exception handling?
-	    kill(node);
-	    return true;
-	}
-	return false;
+    public boolean kill(String id) { // TODO More Documentation, including overloaded methods
+        Route route = getRoute(id);
+        if (route != null) { // TODO alternate exception handling?
+            kill(route);
+            return true;
+        } else {
+            Node node = getNode(id);
+            if (node != null) { // TODO alternate exception handling?
+                kill(node);
+                return true;
+            }
+            return false;
+        }
     }
 
     /**
@@ -87,37 +96,31 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
      * 
      * @see NarrativeInstance#kill(String)
      */
-    public boolean kill(Narrative narr) {
-	if (narr == null)
-	    return false;
+    public boolean kill(Route route) {
+        if (route == null)
+            return false;
+        
+        System.out.println("Killing: " + route.getIdentifier());
+        Node nEnd = route.getEnd();
+        String s = nEnd == null ? "null"
+            : nEnd + " " + (nEnd.getProperties() == null ? "null"
+                : nEnd.getProperties() + " " + nEnd.getProperties().getInt("Impl.Node.Entries"));
+        System.out.println(s);
+        
+        int routeEntres = nEnd.getProperties().getInt("Impl.Node.Entries"); // TODO improve naming convention?
+        --routeEntres;
+        nEnd.getProperties().putInt("Impl.Node.Entries", routeEntres);
 
-	System.out.println("Killing: " + narr.getIdentifier());
+        if (routeEntres == 0) {
+            kill(nEnd);
+        }
+        // TODO and update event if instanceof sync node? i.e. change to ACTION_CONTINUE?
 
-	Node nEnd = narr.getEnd();
+        Node nStart = route.getStart();
+        nStart.getOptions().remove(route); // Should return true, otherwise something's broken
 
-	String s = nEnd == null ? "null"
-		: nEnd + " " + (nEnd.getProperties() == null ? "null"
-			: nEnd.getProperties() + " " + nEnd.getProperties().getInt("Impl.Node.Entries"));
-
-	System.out.println(s);
-
-	int narrEntries = nEnd.getProperties().getInt("Impl.Node.Entries"); // TODO
-									    // improve
-									    // naming
-									    // convention?
-	--narrEntries;
-	nEnd.getProperties().putInt("Impl.Node.Entries", narrEntries);
-
-	if (narrEntries == 0) {
-	    kill(nEnd);
-	}
-
-	Node nStart = narr.getStart();
-	nStart.getOptions().remove(narr); // TODO should return true, otherwise
-					  // something's broken
-
-	narratives.remove(narr.getIdentifier());
-	return true;
+        routes.remove(route.getIdentifier());
+        return true;
     }
 
     /**
@@ -126,32 +129,30 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
      * @see NarrativeInstance#kill(String)
      */
     public boolean kill(Node node) {
-	if (node == null)
-	    return false;
+        if (node == null)
+            return false;
+        for (Route route : new ArrayList<Route>(node.getOptions())) {
+            kill(route); // copy of ArrayList used to allow deletion of nodes within the function
+        }
 
-	System.out.println("Killing: " + node.getIdentifier());
+        assert node.getProperties().getInt("Impl.Node.Entries") == 0;
 
-	assert node.getProperties().getInt("Impl.Node.Entries") == 0;
-
-	for (Narrative narr : new ArrayList<>(node.getOptions())) {// Duplicates
-								   // list so
-								   // modifications
-								   // don't
-								   // affect
-								   // iteration
-	    kill(narr);
-	}
-
-	nodes.remove(node.getIdentifier());
-	return true;
+        nodes.remove(node.getIdentifier());
+        return true;
     }
 
-    public ArrayList<Narrative> getPlayableNarratives() { // TODO implementation
-							  // + todo's
-	return null;
+    public ArrayList<Route> getPlayableRoutes() {
+        ArrayList<Route> r_routes = new ArrayList<Route>();
+        for (Node node : activeNodes) {
+            for (Route route : node.options) {
+                r_routes.add(route);
+            }
+        }
+        return r_routes;
     }
 
     public void setActive(Node node) {
-	activeNodes.add(node);
+        if (!activeNodes.contains(node))
+            activeNodes.add(node);
     }
 }
