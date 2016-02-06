@@ -1,6 +1,6 @@
 package uk.ac.cam.echo2016.multinarrative.gui.graph;
 
-import javafx.scene.Node;
+import javafx.scene.layout.Region;
 
 
 /**
@@ -10,14 +10,14 @@ import javafx.scene.Node;
  */
 public class GraphNode {
 
-    private Node contents;
+    private Region contents;
 
     private double x;
     private double y;
     
     private String name;
 
-    public GraphNode(Node node, String name) {
+    public GraphNode(Region node, String name) {
 	node.setUserData(this);
 	contents = node;
 	this.name = name;
@@ -50,7 +50,7 @@ public class GraphNode {
 	return y*scale;
     }
     
-    public Node getContents(){
+    public Region getContents(){
 	return contents;
     }
     

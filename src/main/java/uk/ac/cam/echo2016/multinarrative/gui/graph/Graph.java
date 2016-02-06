@@ -6,6 +6,9 @@ import java.util.Set;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.CubicCurve;
+import uk.ac.cam.echo2016.multinarrative.gui.FXMLController;
 import uk.ac.cam.echo2016.multinarrative.gui.GUIOperations;
 
 /**
@@ -24,9 +27,12 @@ public class Graph {
     private Set<GraphNode> nodes = new HashSet<>();
     private Set<GraphEdge> edges = new HashSet<>();
     
-    public Graph(ScrollPane pane, Pane p, GUIOperations operations){
+    private FXMLController controller;
+    
+    public Graph(ScrollPane pane, Pane p, GUIOperations operations, FXMLController c){
 	this.pane = p;
 	this.operations=operations;
+	controller = c;
 	input = new InputMonitor(this, pane);
 	input.registerHandlerFor(p);
     }
@@ -54,6 +60,7 @@ public class Graph {
     }
     
     public void updateEdge(GraphEdge edge){
+	System.out.println("Update edge: "+edge.getName());
 	edge.update(input.getScale());
     }
     
@@ -84,11 +91,18 @@ public class Graph {
     }
     
     public void addEdge(GraphEdge edge){
-	Node n = edge.getNode();
-	pane.getChildren().add(n);
+	CubicCurve n = edge.getNode();
+	Circle c = edge.getControl();
+	pane.getChildren().add(0,n);
+	int i = 1;
+	while(pane.getChildren().get(i) instanceof CubicCurve){
+	    i++;
+	}
+	pane.getChildren().add(i, c);
 	edge.update(input.getScale());
 	edges.add(edge);
 	input.registerHandlerFor(n);
+	input.registerHandlerFor(c);
     }
     
     public void removeEdge(GraphEdge edge){
@@ -101,11 +115,16 @@ public class Graph {
 	return input;
     }
 
-    /**
-     * @return the operations
-     */
+    public FXMLController getController() {
+	return controller;
+    }
+    
     public GUIOperations getOperations() {
 	return operations;
+    }
+    
+    public Pane getPane(){
+	return pane;
     }
 
 }

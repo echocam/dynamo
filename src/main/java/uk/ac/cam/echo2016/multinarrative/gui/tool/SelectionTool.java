@@ -1,4 +1,4 @@
-package uk.ac.cam.echo2016.multinarrative.gui.graph.tool;
+package uk.ac.cam.echo2016.multinarrative.gui.tool;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +15,8 @@ public class SelectionTool implements GraphTool {
     public static final PseudoClass SELECTED = PseudoClass.getPseudoClass("selected");
 
     private boolean dragging;
+
+    private GraphEdge press;
 
     private GraphNode select;
 
@@ -62,8 +64,19 @@ public class SelectionTool implements GraphTool {
 
     @Override
     public void mouseReleased(MouseEvent event) {
+	if (!dragging) {
+	    if (press == null && select != null) {
+		if (isSelected(select)) {
+		    deselect(select);
+		} else {
+		    select(select);
+		}
+	    }
+	}
+
 	dragging = false;
 	select = null;
+	press = null;
 	mouseX = Double.NaN;
 	mouseY = Double.NaN;
     }
@@ -73,11 +86,14 @@ public class SelectionTool implements GraphTool {
 	if (!dragging) {
 	    dragging = true;
 	} else {
-	    if (!selection.isEmpty()) {
-		double movementX = mouseX == mouseX ? event.getSceneX() - mouseX : 0.0;
+	    double movementX = mouseX == mouseX ? event.getSceneX() - mouseX : 0.0;
 		double movementY = mouseY == mouseY ? event.getSceneY() - mouseY : 0.0;
-
+	    if(press != null){
+		press.translate(movementX, movementY);
+		graph.updateEdge(press);
+	    } else if (!selection.isEmpty()) {
 		for (GraphNode node : selection) {
+		    graph.getOperations().translateNode(node.getName(), movementX, movementY);
 		    node.translate(movementX, movementY, graph.getInput().getScale());
 		    graph.updateNode(node);
 		}
@@ -93,29 +109,25 @@ public class SelectionTool implements GraphTool {
     @Override
     public void mousePressedOnNode(MouseEvent event, GraphNode node) {
 	select = node;
+	mousePressed(event);
     }
 
     @Override
     public void mousePressedOnEdge(MouseEvent event, GraphEdge edge) {
+	press = edge;
     }
 
     @Override
     public void mouseReleasedOnNode(MouseEvent event, GraphNode node) {
-	
-	if (select == node) {
-		if (isSelected(select)) {
-		    deselect(select);
-		} else {
-		    select(select);
-		}
-	    } 
-	
-	mouseReleased(event);
     }
 
     @Override
     public void mouseReleasedOnEdge(MouseEvent event, GraphEdge edge) {
-	mouseReleased(event);
+    }
+
+    @Override
+    public void dragStart(MouseEvent event) {
+	dragging = true;
     }
 
 }

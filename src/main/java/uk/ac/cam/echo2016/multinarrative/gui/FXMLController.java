@@ -19,8 +19,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphTool;
-import uk.ac.cam.echo2016.multinarrative.gui.graph.tool.InsertTool;
-import uk.ac.cam.echo2016.multinarrative.gui.graph.tool.SelectionTool;
+import uk.ac.cam.echo2016.multinarrative.gui.tool.InsertTool;
+import uk.ac.cam.echo2016.multinarrative.gui.tool.SelectionTool;
 
 /**
  * @author jr650
@@ -56,7 +56,7 @@ public class FXMLController {
     public void init(){
 	graphArea.minHeightProperty().bind(scroll.heightProperty());
 	graphArea.minWidthProperty().bind(scroll.widthProperty());
-	graph = new Graph(scroll, graphArea, getOperations());
+	graph = new Graph(scroll, graphArea, getOperations(), this);
 	selectTool = new SelectionTool(graph);
 	insertTool = new InsertTool(graph);
 	selectMode();

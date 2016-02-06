@@ -134,6 +134,7 @@ public class GUIOperations{
     /**
      * TODO
      * Adds a narrative, throwing exception if it fails.
+     * Do cycle detection here!!
      */
     public void addNarrative(String name, String start, String end)throws IllegalOperationException{
 	
