@@ -27,7 +27,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         this.properties = base.properties;
     }
 
-    public NarrativeInstance(HashMap<String, Route> routes, HashMap<String, Node> nodes, Node start) {
+    public NarrativeInstance(HashMap<String, Route> routes, HashMap<String, Node> nodes, SynchronizationNode start) {
         this.routes = routes;
         this.nodes = nodes;
         this.start = start;

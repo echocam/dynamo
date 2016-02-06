@@ -32,7 +32,7 @@ public class ChoiceNode extends Node { // TODO Implementation and documentation
         return option.getProperties();
     };
 
-    public GameChoice onEntry(Route completed, NarrativeInstance instance) { // TODO Finish Impl
+    public GameChoice onEntry(Route completed, NarrativeInstance instance) {
         GameChoice gameChoice = new GameChoice();
         if (!this.getOptions().contains(completed)) {
         } // TODO Exception needed???

@@ -33,7 +33,7 @@ public class SynchronizationNode extends Node { // TODO Documentation
         return option.getProperties();
     }
 
-    public GameChoice onEntry(Route completed, NarrativeInstance instance) { // TODO finish impl
+    public GameChoice onEntry(Route completed, NarrativeInstance instance) {
         GameChoice gameChoice = new GameChoice();
         if (!this.getOptions().contains(completed)) {
         } // TODO Exception needed???

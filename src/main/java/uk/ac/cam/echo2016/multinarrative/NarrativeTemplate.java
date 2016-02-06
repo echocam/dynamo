@@ -61,18 +61,21 @@ public class NarrativeTemplate extends MultiNarrative {
             
             r_routes.put(route.getIdentifier(), r_route);
         }
-        Node r_start = r_nodes.get(start.getIdentifier());
+        SynchronizationNode r_start = (SynchronizationNode) r_nodes.get(start.getIdentifier()); // TODO CHECK
 
         NarrativeInstance instance = new NarrativeInstance(r_routes, r_nodes, r_start);
         return instance;
     }
+    
+    
+    
 	 public NarrativeInstance generateInstance2() { // TODO more appropriate exception?
 	 NarrativeInstance instance = new NarrativeInstance();
 
         if (start == null) {
             throw new RuntimeException();
         } // TODO better exception
-        instance.start = copyToGraph(this.start, instance);
+        instance.start = (SynchronizationNode) copyToGraph(this.start, instance);
         instance.setActive(start);
         return instance;
     }
@@ -84,7 +87,7 @@ public class NarrativeTemplate extends MultiNarrative {
      * 
      * @param instance
      */
-    public Node copyToGraph(Node node, NarrativeInstance instance) { // TODO More Documentation!!! and tests
+    public Node copyToGraph(Node node, NarrativeInstance instance) { // TODO More Documentation
 
         // Eventually calls Node(this.id) via subclass's constructor
         Node result = node.newInstance(node.getIdentifier());

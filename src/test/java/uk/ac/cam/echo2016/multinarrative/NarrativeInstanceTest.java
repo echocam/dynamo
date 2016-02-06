@@ -141,6 +141,11 @@ public class NarrativeInstanceTest {
                 node.getOptions().add(route2);
             }
         }
+        SynchronizationNode start = new SynchronizationNode("start");
+        Route startRoute = new Route("startRoute", start, loadNodes.get("1"));
+        start.options.add(startRoute);
+        loadNodes.put("start", start);
+        loadRoutes.put("startRoute", startRoute);
 
     }
 
@@ -153,7 +158,7 @@ public class NarrativeInstanceTest {
         NarrativeTemplate sampleTemplate = new NarrativeTemplate();
         sampleTemplate.routes.putAll(sampleRoutes);
         sampleTemplate.nodes.putAll(sampleNodes);
-        sampleTemplate.start = sampleTemplate.getNode("syncStart");
+        sampleTemplate.start = (SynchronizationNode) sampleTemplate.getNode("syncStart");
 
         // Adds a test property for reference test later
         sampleTemplate.getNode("syncStart").createProperties();
@@ -194,7 +199,7 @@ public class NarrativeInstanceTest {
         NarrativeTemplate loadTemplate = new NarrativeTemplate();
         loadTemplate.routes.putAll(loadRoutes);
         loadTemplate.nodes.putAll(loadNodes);
-        loadTemplate.start = loadTemplate.getNode("1");
+        loadTemplate.start = (SynchronizationNode) loadTemplate.getNode("start");
 
         NarrativeInstance loadInst = loadTemplate.generateInstance2();
         assertTrue("Testing load test constructor: ", loadInst.routes.containsKey("route10101"));

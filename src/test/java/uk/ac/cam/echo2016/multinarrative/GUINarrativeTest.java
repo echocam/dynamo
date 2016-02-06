@@ -19,7 +19,7 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
         System.out.println("It connects " + route.getStart().getIdentifier() + " to " + route.getEnd().getIdentifier());
         System.out.println();
     }
-    public static void traverse(Node node) { // TODO: remove as for testing purposes only
+    public static void traverse(Node node) { // TODO: move to multinarrative/dev
         System.out.println("This node is " + node.getIdentifier());
         System.out.println("Exiting this node are the following routes:");
         for (Route n : node.getOptions()) {
@@ -142,9 +142,10 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     /**
      * This test builds the graph, removes the route numbered 2 in the diagram and then adds it again.    
      * @throws NonUniqueIdException 
+     * @throws GraphElementNotFoundException 
      */
     @Test
-    public void newRouteTest() throws NonUniqueIdException {
+    public void newRouteTest() throws NonUniqueIdException, GraphElementNotFoundException {
     	gNarr.removeRoute("link4");
     	gNarr.newRoute("newLink4", "left", "end");
     	
@@ -154,15 +155,15 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     	//traverse(gNarr.start);
     }
     
-    @Test(expected=NonUniqueIdException.class)
-    public void newRouteExceptionTest() throws NonUniqueIdException {
+    @Test(expected=NonUniqueIdException.class) // TODO test GraphElementNotFoundExceptions
+    public void newRouteExceptionTest() throws NonUniqueIdException, GraphElementNotFoundException {
     	gNarr.newRoute("link2", "start", "end");
     }
     
     @Test
     public void newSyncAndChoiceNodeTest() throws NonUniqueIdException {
     	gNarr.newSynchronizationNode("syncTest");
-    	gNarr.insertChoiceNode("choiceTest");
+    	gNarr.newChoiceNode("choiceTest");
     	
     	assertNotNull("Check Sync node added to nodes", gNarr.getNode("syncTest"));
     	assertEquals("Check Sync node is of correct type", SynchronizationNode.class, gNarr.getNode("syncTest").getClass());
@@ -177,6 +178,6 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     
     @Test(expected=NonUniqueIdException.class)
     public void newChoiceExceptionTest() throws NonUniqueIdException {
-    	gNarr.insertChoiceNode("left");
+    	gNarr.newChoiceNode("left");
     }
 }
