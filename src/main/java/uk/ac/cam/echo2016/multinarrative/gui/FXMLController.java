@@ -4,31 +4,35 @@ import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_ADDED;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_REMOVED;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-import com.google.code.javafxgraph.FXGraph;
-
-import uk.ac.cam.echo2016.multinarrative.gui.IllegalOperationException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
+import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphTool;
+import uk.ac.cam.echo2016.multinarrative.gui.graph.tool.InsertTool;
+import uk.ac.cam.echo2016.multinarrative.gui.graph.tool.SelectionTool;
 
 /**
  * @author jr650
  */
-public class FXMLController implements Initializable {
+public class FXMLController {
 
     @FXML
     private BorderPane root;
+    @FXML
+    private ScrollPane scroll;
+    @FXML
+    private Pane graphArea;
     @FXML
     private Text infoBar;
     @FXML
@@ -43,7 +47,31 @@ public class FXMLController implements Initializable {
     private ListView<String> narratives;
 
     private GUIOperations operations = new GUIOperations();
-
+    
+    private Graph graph;
+    
+    private GraphTool selectTool;
+    private GraphTool insertTool;
+    
+    public void init(){
+	graphArea.minHeightProperty().bind(scroll.heightProperty());
+	graphArea.minWidthProperty().bind(scroll.widthProperty());
+	graph = new Graph(scroll, graphArea, getOperations());
+	selectTool = new SelectionTool(graph);
+	insertTool = new InsertTool(graph);
+	selectMode();
+    }
+    
+    @FXML 
+    protected void insertMode(){
+	graph.setTool(insertTool);
+    }
+    
+    @FXML 
+    protected void selectMode(){
+	graph.setTool(selectTool);
+    }
+    
     @FXML
     protected void addPropertyButtonAction(ActionEvent event) {
 
@@ -58,14 +86,6 @@ public class FXMLController implements Initializable {
 	    setInfo(ioe.getMessage(), name);
 
 	}
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-	FXGraph g = new FXGraph();
-	String css = getClass().getResource("Style.css").toExternalForm();
-	g.getStylesheets().add(css);
-	root.centerProperty().set(g);
     }
 
     protected void addProperty(String s) {

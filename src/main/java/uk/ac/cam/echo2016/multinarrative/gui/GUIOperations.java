@@ -110,11 +110,41 @@ public class GUIOperations{
         } else if (Double.class.isInstance(obj)) {
             properties.putDouble(to, (Double) obj);
         } else {
-            throw new IllegalOperationException("Property " + from + " cannot be renamed: "
-                    + "Type cannot be resolved.");
+            throw new IllegalOperationException(INVALID_TYPE);
         }
         
         properties.remove(from);
     }
+    
+    /**
+     * TODO
+     * Gets a name that's not already in the graph...
+     * @return
+     */
+    public String getUniqueNodeName(){
+	return "Node";
+    }
+    
+    /**
+     * TODO
+     * Adds a node, throwing exception if it fails.
+     */
+    public void addSynchNode(String name, double x, double y) throws IllegalOperationException{}
 
+    /**
+     * TODO
+     * Gets a name that's not already in the graph...
+     * @return
+     */
+    public String getUniqueNarrativeName(){
+	return "Narrative";
+    }
+    
+    /**
+     * TODO
+     * Adds a narrative, throwing exception if it fails.
+     */
+    public void addNarrative(String name, String start, String end){
+	
+    }
 }

@@ -19,7 +19,12 @@ public class FXMLGUI extends Application {
     @Override
     public void start(Stage stage) throws Exception {        
         try{
-            Parent root = FXMLLoader.load(getClass().getResource("fxml_layout.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml_layout.fxml"));
+            
+            Parent root = loader.load();
+            
+            FXMLController controller = loader.getController();
+            controller.init();
             
             stage.setTitle("Graph Editor");
             stage.setScene(new Scene(root, 900, 600));

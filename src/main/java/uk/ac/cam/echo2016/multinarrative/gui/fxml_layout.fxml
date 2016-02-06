@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.canvas.*?>
@@ -14,26 +15,42 @@
       <URL value="@Style.css" />
     </stylesheets>
    <left>
-      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-        <tabs>
-          <Tab text="Nodes">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <ListView fx:id="nodes" prefWidth="200.0" />
-                     </children></AnchorPane>
-            </content>
-          </Tab>
-          <Tab text="Narratives">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <ListView fx:id="narratives" prefWidth="200.0" />
-                     </children></AnchorPane>
-            </content>
-          </Tab>
-        </tabs>
-      </TabPane>
+      <VBox>
+         <children>
+            <ToolBar>
+               <items>
+                  <RadioButton mnemonicParsing="false" onAction="#insertMode" selected="true" text="Insert">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="mode" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton mnemonicParsing="false" onAction="#selectMode" selected="true" text="Select" toggleGroup="$mode" />
+               </items>
+            </ToolBar>
+            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+              <tabs>
+                <Tab text="Nodes">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <ListView fx:id="nodes" prefWidth="200.0" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Narratives">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <ListView fx:id="narratives" prefWidth="200.0" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </VBox>
    </left>
    <right>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -84,4 +101,11 @@
          </children>
       </FlowPane>
    </bottom>
+   <center>
+      <ScrollPane fx:id="scroll" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <content>
+            <Pane fx:id="graphArea" />
+         </content>
+      </ScrollPane>
+   </center>
 </BorderPane>
