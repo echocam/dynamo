@@ -20,6 +20,16 @@ import android.os.BaseBundle;
 public class GUINarrative extends EditableNarrative { // TODO Finish Documentation
     private static final long serialVersionUID = 1;
 
+    /**
+     * Adds a route with ID {@code id} to the graph, connecting the node with ID {@code startId} to the route with
+     * ID {@code endId}.
+     * 
+     * @param id
+     * @param startId
+     * @param endId
+     * @throws NonUniqueIdException
+     * @throws GraphElementNotFoundException
+     */
     public void newRoute(String id, String startId, String endId)
             throws NonUniqueIdException, GraphElementNotFoundException {
         if (isUniqueId(id)) {
@@ -51,17 +61,50 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
             throw new NonUniqueIdException("Invalid id: " + id + " is not unique.");
     }
 
-    // TODO documentation(+overloaded function) + better refactoring?
-    public void insertChoiceOnRoute(String routeId, String newChoiceId, String newRouteId)
-            throws NonUniqueIdException, GraphElementNotFoundException {
+    /**
+     * Takes the route with ID {@code routeId} and splits it in two, where the divisor is a new 
+     * {@code ChoiceNode} with ID {@code newChoiceId}. Here, the original route is preserved between 
+     * its start and the new node.
+     *      
+     * @see insertChoiceOnRoute
+     * @param routeId
+     * @param newChoiceId
+     * @param newRouteId
+     * @throws NonUniqueIdException
+     * @throws GraphElementNotFoundException
+     */
+    // TODO better refactoring?
+    public void insertChoiceOnRoute(String routeId, String newChoiceId, String newRouteId) 
+    		throws NonUniqueIdException, GraphElementNotFoundException {
+    /*
+     * Before:
+     * 			 start
+     *             |
+     *             | routeId
+     *             |
+     *            end  
+     *         
+     * After:
+     *  		 start
+     *   		   |
+     *   		   | routeId
+     *   		   |	
+     * 		  newChoiceId  
+     * 			   |
+     * 			   | NewRouteId
+     *             |
+     *            end 
+     *     
+     */
         if (isUniqueId(newChoiceId) && isUniqueId(newRouteId)) {
-            Route route2 = getRoute(routeId);
-            if (route2 == null) throw new GraphElementNotFoundException("Route with id: " + routeId + " not found");
+            Route route1 = getRoute(routeId);
+            if (route1 == null) throw new GraphElementNotFoundException("Route with id: " + routeId + " not found");
 
             ChoiceNode choice = new ChoiceNode(newChoiceId);
-            Route route1 = new Route(newRouteId, route2.getStart(), choice);
-            route2.setStart(choice);
-            routes.put(route1.getIdentifier(), route1);
+            Route route2 = new Route(newRouteId, choice, route1.getEnd());
+            route1.setEnd(choice);
+            choice.getOptions().add(route2);
+            routes.put(route2.getIdentifier(), route2);
             nodes.put(choice.getIdentifier(), choice);
         } else {
             throw new NonUniqueIdException(
@@ -69,16 +112,52 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
         }
     }
 
+    /**
+     * Takes the route with ID {@code routeId} and splits it in two, where the divisor is a new 
+     * {@code ChoiceNode} with ID {@code newChoiceId}. Here, the original route is discarded.
+     * 
+     * @see insertChoiceOnRoute
+     * @param routeId
+     * @param newChoiceId
+     * @param newRouteId1
+     * @param newRouteId2
+     * @throws NonUniqueIdException
+     * @throws GraphElementNotFoundException
+     */
     public void insertChoiceOnRoute(String routeId, String newChoiceId, String newRouteId1, String newRouteId2)
             throws NonUniqueIdException, GraphElementNotFoundException {
+    	/*
+         * Before:
+         * 			 start
+         *             |
+         *             | routeId
+         *             |
+         *            end  
+         *         
+         * After:
+         *  		 start
+         *   		   |
+         *   		   | newRouteId1
+         *   		   |	
+         * 		  newChoiceId  
+         * 			   |
+         * 			   | newRouteId2
+         *             |
+         *            end 
+         *     
+         */
         if (isUniqueId(newChoiceId) && isUniqueId(newRouteId1) && isUniqueId(newRouteId2)) {
             Route route = getRoute(routeId);
             if (route == null) throw new GraphElementNotFoundException("Route with id: " + routeId + " not found");
             
             ChoiceNode choice = new ChoiceNode(newChoiceId);
             Route route1 = new Route(newRouteId1, route.getStart(), choice);
-            Route route2 = new Route(newRouteId1, choice, route.getEnd());
-            routes.remove(route);
+            Route route2 = new Route(newRouteId2, choice, route.getEnd());
+            routes.remove(route.getIdentifier());
+            Node start = route.getStart();
+            start.getOptions().remove(route);
+            start.getOptions().add(route1);
+            choice.getOptions().add(route2);
             routes.put(route1.getIdentifier(), route1);
             routes.put(route2.getIdentifier(),route2);
             nodes.put(choice.getIdentifier(), choice);

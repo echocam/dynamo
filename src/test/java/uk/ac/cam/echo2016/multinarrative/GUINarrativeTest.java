@@ -155,6 +155,16 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     	//traverse(gNarr.start);
     }
     
+    @Test(expected=GraphElementNotFoundException.class)
+    public void newRouteWrongStartTest() throws NonUniqueIdException, GraphElementNotFoundException {
+    	gNarr.newRoute("newLink", "badStart", "end");
+    }
+    
+    @Test(expected=GraphElementNotFoundException.class)
+    public void newRouteWrongEndTest() throws NonUniqueIdException, GraphElementNotFoundException {
+    	gNarr.newRoute("newLink", "start", "badEnd");
+    }
+    
     @Test(expected=NonUniqueIdException.class) // TODO test GraphElementNotFoundExceptions
     public void newRouteExceptionTest() throws NonUniqueIdException, GraphElementNotFoundException {
     	gNarr.newRoute("link2", "start", "end");
@@ -180,4 +190,75 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     public void newChoiceExceptionTest() throws NonUniqueIdException {
     	gNarr.newChoiceNode("left");
     }
+    
+    @Test
+    public void insertChoiceOnRoute1Test() throws NonUniqueIdException, GraphElementNotFoundException {
+    	// Tests insertChoiceOnRoute(String routeId, String newChoiceId, String newRouteId)
+    	gNarr.insertChoiceOnRoute("link2", "newChoice", "newLink");
+    	
+    	assertNotNull("Check new node in nodes", gNarr.getNode("newChoice"));
+    	assertNotNull("Check new route in routes", gNarr.getRoute("newLink"));
+    	assertEquals("Check choice1 has link2", "link2", gNarr.getNode("choice1").getOptions().get(0).getIdentifier());
+    	assertEquals("Check link2 has choice1 as start", "choice1", gNarr.getRoute("link2").getStart().getIdentifier());
+    	assertEquals("Check link2 has newChoice as end", "newChoice", gNarr.getRoute("link2").getEnd().getIdentifier());
+    	assertEquals("Check newChoice has newLink", "newLink", gNarr.getNode("newChoice").getOptions().get(0).getIdentifier());
+    	assertEquals("Check newLink has newChoice as start", "newChoice", gNarr.getRoute("newLink").getStart().getIdentifier());
+    	assertEquals("Check newLink has left as end", "left", gNarr.getRoute("newLink").getEnd().getIdentifier());
+    
+    	//traverse(gNarr.start);
+    }
+    
+    @Test(expected=NonUniqueIdException.class)
+    public void insertChoiceOnRoute1StartExceptionTest() throws NonUniqueIdException, GraphElementNotFoundException {
+    	gNarr.insertChoiceOnRoute("link2", "start", "newlink");
+    }
+    
+    @Test(expected=NonUniqueIdException.class)
+    public void insertChoiceOnRoute1RouteExceptionTest() throws NonUniqueIdException, GraphElementNotFoundException {
+    	gNarr.insertChoiceOnRoute("link2", "newChoice", "link3");
+    }
+    
+    @Test(expected=GraphElementNotFoundException.class)
+    public void insertChoiceOnRoute1WrongLinkTest() throws NonUniqueIdException, GraphElementNotFoundException {
+    	gNarr.insertChoiceOnRoute("wrongLink", "newChoice", "newLink");
+    }
+    
+    @Test
+    public void insertChoiceOnRoute2Test() throws NonUniqueIdException, GraphElementNotFoundException {
+    	// Tests insertChoiceOnRoute(String routeId, String newChoiceId, String newRouteId1, String newRouteId2) 
+    	gNarr.insertChoiceOnRoute("link5", "newChoice", "link5.1", "link5.2");
+    	
+    	assertNotNull("Check new node in nodes", gNarr.getNode("newChoice"));
+    	assertNotNull("Check first route in routes", gNarr.getRoute("link5.1"));
+    	assertNotNull("Check second route in routes", gNarr.getRoute("link5.2"));
+    	assertNull("Check link5 removed", gNarr.getRoute("link5"));
+    	assertEquals("Check right has link5.1", "link5.1", gNarr.getNode("right").options.get(0).getIdentifier());
+    	assertEquals("Check link5.1 has right as start", "right", gNarr.getRoute("link5.1").getStart().getIdentifier());
+    	assertEquals("Check link5.1 has newChoice as end", "newChoice", gNarr.getRoute("link5.1").getEnd().getIdentifier());
+    	assertEquals("Check newChoice has link5.2", "link5.2", gNarr.getNode("newChoice").getOptions().get(0).getIdentifier());
+    	assertEquals("Check link5.2 has newChoice as start", "newChoice", gNarr.getRoute("link5.2").getStart().getIdentifier());
+    	assertEquals("Check link5.2 has end as end", "end", gNarr.getRoute("link5.2").getEnd().getIdentifier());
+    	//traverse(gNarr.start);
+    }
+    
+    @Test(expected=NonUniqueIdException.class)
+    public void insertChoiceOnRoute2StartExceptionTest() throws NonUniqueIdException, GraphElementNotFoundException {
+    	gNarr.insertChoiceOnRoute("link2", "start", "newLink1", "newlink2");
+    }
+    
+    @Test(expected=NonUniqueIdException.class)
+    public void insertChoiceOnRoute2StartRouteExceptionTest() throws NonUniqueIdException, GraphElementNotFoundException {
+    	gNarr.insertChoiceOnRoute("link2", "newChoice", "link3", "newLink");
+    }
+    
+    @Test(expected=NonUniqueIdException.class)
+    public void insertChoiceOnRoute2EndRouteExceptionTest() throws NonUniqueIdException, GraphElementNotFoundException {
+    	gNarr.insertChoiceOnRoute("link2", "newChoice", "newLink", "link3");
+    }
+    
+    @Test(expected=GraphElementNotFoundException.class)
+    public void insertChoiceOnRoute2WrongLinkTest() throws NonUniqueIdException, GraphElementNotFoundException {
+    	gNarr.insertChoiceOnRoute("wrongLink", "newChoice", "newLink1", "newLink2");
+    }
+    	
 }
