@@ -45,24 +45,24 @@ public class NarrativeTemplate extends MultiNarrative {
             Node r_node = node.clone();
             r_node.createProperties();
             r_node.setOptions(new ArrayList<Route>());
-            r_nodes.put(node.getIdentifier(), r_node);
+            r_nodes.put(node.getId(), r_node);
         }
 
         for (Route route : routes.values()) {
             Route r_route = route.clone();
             // Find Start and end in r_nodes
             
-            r_route.setStart(r_nodes.get(route.getStart().getIdentifier()));
-            r_route.setEnd(r_nodes.get(route.getEnd().getIdentifier()));
+            r_route.setStart(r_nodes.get(route.getStart().getId()));
+            r_route.setEnd(r_nodes.get(route.getEnd().getId()));
             r_route.getStart().getOptions().add(r_route);
             
             // Increments the route entries property (if not found initialised to 0)
             int routeEntries = r_route.getEnd().getProperties().getInt("Impl.Node.Entries");
             r_route.getEnd().getProperties().putInt("Impl.Node.Entries", ++routeEntries);
             
-            r_routes.put(route.getIdentifier(), r_route);
+            r_routes.put(route.getId(), r_route);
         }
-        SynchronizationNode r_start = (SynchronizationNode) r_nodes.get(start.getIdentifier()); // TODO CHECK
+        SynchronizationNode r_start = (SynchronizationNode) r_nodes.get(start.getId()); // TODO CHECK
 
         NarrativeInstance instance = new NarrativeInstance(r_routes, r_nodes, r_start);
         return instance;
@@ -91,7 +91,7 @@ public class NarrativeTemplate extends MultiNarrative {
     public Node copyToGraph(Node node, NarrativeInstance instance) { // TODO More Documentation
 
         // Eventually calls Node(this.id) via subclass's constructor
-        Node result = node.newInstance(node.getIdentifier());
+        Node result = node.newInstance(node.getId());
         
 //        Node result = null;
 //        try {
@@ -109,7 +109,7 @@ public class NarrativeTemplate extends MultiNarrative {
         // Copy each route leaving node node and call copyGraph on their end nodes
         for (Route templateRoute : node.options) {
             Node endNodeCopy;
-            if (!instance.nodes.containsKey(templateRoute.getEnd().getIdentifier())) {
+            if (!instance.nodes.containsKey(templateRoute.getEnd().getId())) {
                 // Not already copied
                 endNodeCopy = copyToGraph(templateRoute.getEnd(), instance); // Recursively copy nodes at the ends of
 
@@ -120,7 +120,7 @@ public class NarrativeTemplate extends MultiNarrative {
             } else {
                 // Already copied
 
-                endNodeCopy = instance.getNode(templateRoute.getEnd().getIdentifier()); // Get reference to copied end
+                endNodeCopy = instance.getNode(templateRoute.getEnd().getId()); // Get reference to copied end
                 // Update entryList property
 
                 int routeEntries = endNodeCopy.getProperties().getInt("Impl.Node.Entries");
@@ -129,15 +129,15 @@ public class NarrativeTemplate extends MultiNarrative {
             }
 
             // Create route using references obtained/created above, linking node node to the new end nodes
-            Route routeCopy = new Route(templateRoute.getIdentifier(), result, endNodeCopy);
+            Route routeCopy = new Route(templateRoute.getId(), templateRoute.getCharId(), result, endNodeCopy);
             routeCopy.setProperties(templateRoute.getProperties());
             
             // Update route references
             result.getOptions().add(routeCopy);
             // Update graph references
-            instance.routes.put(routeCopy.getIdentifier(), routeCopy);
+            instance.routes.put(routeCopy.getId(), routeCopy);
         }
-        instance.nodes.put(result.getIdentifier(), result);
+        instance.nodes.put(result.getId(), result);
         return result;
     }    
 }

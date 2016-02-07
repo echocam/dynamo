@@ -101,7 +101,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         if (route == null)
             return false;
         
-        System.out.println("Killing: " + route.getIdentifier());
+        System.out.println("Killing: " + route.getId());
         Node nEnd = route.getEnd();
         String s = nEnd == null ? "null"
             : nEnd + " " + (nEnd.getProperties() == null ? "null"
@@ -120,7 +120,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         Node nStart = route.getStart();
         nStart.getOptions().remove(route); // Should return true, otherwise something's broken
 
-        routes.remove(route.getIdentifier());
+        routes.remove(route.getId());
         return true;
     }
 
@@ -138,7 +138,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 
         assert node.getProperties().getInt("Impl.Node.Entries") == 0;
 
-        nodes.remove(node.getIdentifier());
+        nodes.remove(node.getId());
         return true;
     }
 

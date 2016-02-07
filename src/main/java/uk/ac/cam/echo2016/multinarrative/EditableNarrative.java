@@ -16,12 +16,12 @@ import android.os.BaseBundle;
 public abstract class EditableNarrative extends MultiNarrative { //TODO Documentation
     private static final long serialVersionUID = 1;
     public void addRoute(Route route) {
-        routes.put(route.getIdentifier(), route);
+        routes.put(route.getId(), route);
         route.getStart().getOptions().add(route);
     }
     
     public void addNode(Node node) {
-        nodes.put(node.getIdentifier(), node);
+        nodes.put(node.getId(), node);
     }
     
     public boolean removeRoute(String id) { 
@@ -41,9 +41,9 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Document
 
         for (Route route : new ArrayList<Route>(routes.values())) {
             if (route.getStart() == node) {
-                removeRoute(route.getIdentifier());
+                removeRoute(route.getId());
             } else if (route.getEnd() == node) {
-                removeRoute(route.getIdentifier());			
+                removeRoute(route.getId());			
             }
         }
         
@@ -55,7 +55,7 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Document
         if (route == null)
             return false;
         
-        Route newRoute = new Route(newName, route.getStart(), route.getEnd());
+        Route newRoute = new Route(newName, route.getCharId(), route.getStart(), route.getEnd());
         if (route.getProperties() != null)
             newRoute.setProperties(new BaseBundle(route.getProperties()));
         

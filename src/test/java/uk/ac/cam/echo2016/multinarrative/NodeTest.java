@@ -18,8 +18,8 @@ public class NodeTest {
     
     @Test
     public void testConstructor() {
-        assertEquals("syncTestID", syncTest.getIdentifier());
-        assertEquals("choiceTestID", choiceTest.getIdentifier());
+        assertEquals("syncTestID", syncTest.getId());
+        assertEquals("choiceTestID", choiceTest.getId());
         assertEquals(new ArrayList<Route>(), syncTest.getOptions());
         assertEquals(new ArrayList<Route>(), choiceTest.getOptions());
         assertNull(syncTest.getProperties());
