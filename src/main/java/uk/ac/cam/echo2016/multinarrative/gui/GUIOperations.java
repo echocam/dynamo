@@ -30,6 +30,15 @@ public class GUIOperations{
         
     }
     
+    /**
+     * Adds a value to a given property
+     * @param property - property name to add value to
+     * @param type - data type of the value, selected from {"String", "Integer", "Boolean", "Byte",
+     * "Short", "Long", "Float", "Double"}
+     * @param value - value to be added
+     * @throws IllegalOperationException when value cannot be added to the property.
+     * Informative message is sent to the user.
+     */
     public void addValue(String property, String type, String value) throws IllegalOperationException {
         if (!properties.containsKey(property)) {
             throw new IllegalOperationException(PROPERTY_DOES_NOT_EXIST);
