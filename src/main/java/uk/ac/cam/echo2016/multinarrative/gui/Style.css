@@ -3,7 +3,7 @@ root {
 }
 
 .menu-bar, .list-view, .label, .button, .tab .tab-label, 
-.combo-box > .list-cell, .text-input, .list-cell,
+.combo-box > .list-cell, .text-input, .list-cell, .radio-button,
 #label, #infoBar {
     -fx-text-fill: white;
     -fx-font-family: "Arial Narrow";
@@ -14,12 +14,10 @@ root {
 }
 
 .list-cell:odd {
-    -fx-cell-hover-color: #457894;
     -fx-background-color: #2a2a2a;
 }
 
-.list-cell:even {
-    -fx-cell-hover-color: #457894;
+.list-cell:even, #graphArea  {
     -fx-background-color: #222222;
 }
 
@@ -27,23 +25,24 @@ root {
     -fx-background-color: #457894;
 }
 
-.root, .list-view, .scroll-pane, 
+.root, .list-view, .pane,
 .titled-pane:focused, .tab-pane .tab, 
-#propertyPane, #baseline, #root {
+#propertyPane, #baseline, #root, .tool-bar {
     -fx-background-color: #333333;
 }
 
-.button, .combo-box-base, .text-field, .titled-pane > .title, .menu-bar{
+.button, .combo-box-base,.text-field, .radio-button .radio, .titled-pane > .title, .menu-bar{
     -fx-background-color:
         #222222,
         #333333;
     -fx-background-insets: 0, 1;
 }
 
-.button:hover, .titled-pane:expanded > .title {
+.button:hover, .text-field:focused, .titled-pane:expanded > .title, .scroll-bar .thumb{
     -fx-background-color:
         #222222,
         #457894;
+    -fx-background-insets: 0, 1;
 }
 
 .button:pressed {
@@ -52,7 +51,7 @@ root {
         derive(#457894,0.5);
 }
 
-.menu-bar, #baseline {
+.menu-bar, .context-menu, #baseline {
     -fx-background-color: #222222;
 }
 .menu-bar, .titled-pane > .title, #baseline {
@@ -63,14 +62,27 @@ root {
     -fx-background-color: #457894;
 }
 
+.radio-button .dot {
+	-fx-mark-highlight-color: #457894;
+	-fx-mark-color: #457894;
+}
+
 .tab-pane .tab-header-area .tab-header-background {
     -fx-opacity: 0;
 }
 
-.tab .tab-label, .titled-pane:focused,
+.tab .tab-label, .titled-pane, .border-pane,
 .tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator, 
 #label { 
     -fx-border-color: transparent;  
+}
+
+.scroll-pane, .scroll-pane > .viewport, .scroll-bar, .titled-pane, .scroll-pane > .corner {
+	-fx-background-color: transparent; 
+}
+
+.scroll-pane,.titled-pane {
+	-fx-control-inner-background: transparent;
 }
 
 #drawingPane {

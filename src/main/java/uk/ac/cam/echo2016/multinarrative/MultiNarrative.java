@@ -17,7 +17,7 @@ public abstract class MultiNarrative implements Serializable { //TODO Documentat
     private static final long serialVersionUID = 1;
     protected HashMap<String, Route> routes = new HashMap<String, Route>();
     protected HashMap<String, Node> nodes = new HashMap<String, Node>();
-    protected Node start;
+    protected SynchronizationNode start;
 
     public Node getNode(String id) {
         return nodes.get(id);

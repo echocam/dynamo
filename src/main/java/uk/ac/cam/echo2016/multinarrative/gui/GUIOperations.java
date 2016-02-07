@@ -94,9 +94,49 @@ public class GUIOperations{
             throw new IllegalOperationException("Property cannot be renamed to " + to + ": "
                     + to + " already exists.");
         }
+
         BaseBundle oldprop = properties.get(from);
         properties.put(to, oldprop);
+
         properties.remove(from);
     }
+    
+    /**
+     * TODO
+     * Gets a name that's not already in the graph...
+     * @return
+     */
+    public String getUniqueNodeName(){
+	return "Node";
+    }
+    
+    /**
+     * TODO
+     * Adds a node, throwing exception if it fails.
+     */
+    public void addSynchNode(String name, double x, double y) throws IllegalOperationException{}
+    
+    /**
+     * TODO
+     * Repositions a node by the given offset
+     */
+    public void translateNode(String name, double x, double y) {}
 
+    /**
+     * TODO
+     * Gets a name that's not already in the graph...
+     * @return
+     */
+    public String getUniqueNarrativeName(){
+	return "Narrative";
+    }
+    
+    /**
+     * TODO
+     * Adds a narrative, throwing exception if it fails.
+     * Do cycle detection here!!
+     */
+    public void addNarrative(String name, String start, String end)throws IllegalOperationException{
+	
+    }
 }

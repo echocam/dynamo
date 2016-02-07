@@ -25,18 +25,21 @@ public class SynchronizationNode extends Node { // TODO Documentation
         super(id);
     }
 
-    protected Node callConstructor(String id) {
+    protected Node newInstance(String id) {
         return new SynchronizationNode(id);
     }
 
-    public BaseBundle startRoute(Route option) { // TODO Finish Impl
+    public BaseBundle startRoute(Route option) {
         return option.getProperties();
     }
 
-    public GameChoice onEntry(Route completed, NarrativeInstance instance) { // TODO finish impl
+    public GameChoice onEntry(Route completed, NarrativeInstance instance) {
+        GameChoice gameChoice = new GameChoice();
         if (!this.getOptions().contains(completed)) {
         } // TODO Exception needed???
-
-        return null;
+        
+        //TODO initialise gameChoice
+        
+        return gameChoice;
     }
 }
