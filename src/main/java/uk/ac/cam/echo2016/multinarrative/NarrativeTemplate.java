@@ -21,6 +21,7 @@ import android.os.BaseBundle;
  * 
  * @author tr393
  * @author rjm232
+ * @author jr650
  * @version 1.0
  * @see NarrativeTemplate#generateInstance()
  * @see NarrativeInstance

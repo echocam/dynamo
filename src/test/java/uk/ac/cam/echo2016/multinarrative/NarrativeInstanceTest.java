@@ -109,7 +109,7 @@ public class NarrativeInstanceTest {
         sampleNodes.get("choiceJessica1").getOptions().add(tempRoute);
         sampleRoutes.put(tempRoute.getIdentifier(), tempRoute);
 
-        // Load Test // - binary tree with node "1abcd" having children "10abcd" and "11abcd"
+        // Load Test // - binary tree with node "1X" having children "10X" and "11X"
 
         for (int i = 1; i < 100000; ++i) {
             Node node = new ChoiceNode(Integer.toBinaryString(i));

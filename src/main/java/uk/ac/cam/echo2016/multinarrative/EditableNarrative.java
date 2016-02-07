@@ -1,6 +1,6 @@
 package uk.ac.cam.echo2016.multinarrative;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import android.os.BaseBundle;
 
@@ -38,11 +38,8 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Document
         Node node = nodes.remove(id);
         if (node == null) 
             return false;
-        
-        HashMap<String, Route> copy = new HashMap<String, Route>();
-        copy.putAll(routes);
-        
-        for (Route route : copy.values()) {
+
+        for (Route route : new ArrayList<Route>(routes.values())) {
             if (route.getStart() == node) {
                 removeRoute(route.getIdentifier());
             } else if (route.getEnd() == node) {
