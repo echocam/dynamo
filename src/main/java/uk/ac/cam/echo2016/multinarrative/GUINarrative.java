@@ -65,6 +65,26 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
      * Takes the route with ID {@code routeId} and splits it in two, where the divisor is a new 
      * {@code ChoiceNode} with ID {@code newChoiceId}. Here, the original route is preserved between 
      * its start and the new node.
+     * 
+     * <pre>
+     * Before:
+     *           start
+     *             |
+     *             | routeId
+     *             |
+     *            end  
+     *         
+     * After:
+     *           start
+     *             |
+     *             | routeId
+     *             |    
+     *        newChoiceId  
+     *             |
+     *             | NewRouteId
+     *             |
+     *            end
+     * </pre>
      *      
      * @see insertChoiceOnRoute
      * @param routeId
@@ -76,26 +96,6 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
     // TODO better refactoring?
     public void insertChoiceOnRoute(String routeId, String charId, String newChoiceId, String newRouteId) 
     		throws NonUniqueIdException, GraphElementNotFoundException {
-    /*
-     * Before:
-     * 			 start
-     *             |
-     *             | routeId
-     *             |
-     *            end  
-     *         
-     * After:
-     *  		 start
-     *   		   |
-     *   		   | routeId
-     *   		   |	
-     * 		  newChoiceId  
-     * 			   |
-     * 			   | NewRouteId
-     *             |
-     *            end 
-     *     
-     */
         if (isUniqueId(newChoiceId) && isUniqueId(newRouteId)) {
             Route route1 = getRoute(routeId);
             if (route1 == null) throw new GraphElementNotFoundException("Route with id: " + routeId + " not found");
