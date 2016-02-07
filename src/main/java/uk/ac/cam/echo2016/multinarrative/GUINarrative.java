@@ -116,6 +116,28 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
      * Takes the route with ID {@code routeId} and splits it in two, where the divisor is a new 
      * {@code ChoiceNode} with ID {@code newChoiceId}. Here, the original route is discarded.
      * 
+     * <pre>
+     *
+     * Before:
+     *           start
+     *             |
+     *             | routeId
+     *             |
+     *            end  
+     *         
+     * After:
+     *           start
+     *             |
+     *             | newRouteId1
+     *             |    
+     *        newChoiceId  
+     *             |
+     *             | newRouteId2
+     *             |
+     *            end 
+     * </pre>
+     *
+     * 
      * @see insertChoiceOnRoute
      * @param routeId
      * @param newChoiceId
@@ -126,26 +148,6 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
      */
     public void insertChoiceOnRoute(String routeId, String charId, String newChoiceId, String newRouteId1, String newRouteId2)
             throws NonUniqueIdException, GraphElementNotFoundException {
-    	/*
-         * Before:
-         * 			 start
-         *             |
-         *             | routeId
-         *             |
-         *            end  
-         *         
-         * After:
-         *  		 start
-         *   		   |
-         *   		   | newRouteId1
-         *   		   |	
-         * 		  newChoiceId  
-         * 			   |
-         * 			   | newRouteId2
-         *             |
-         *            end 
-         *     
-         */
         if (isUniqueId(newChoiceId) && isUniqueId(newRouteId1) && isUniqueId(newRouteId2)) {
             Route route = getRoute(routeId);
             if (route == null) throw new GraphElementNotFoundException("Route with id: " + routeId + " not found");
@@ -185,7 +187,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
         }
     }
     
-    public void setCharacter(String routeId, String charId) throws GraphElementNotFoundException {
+    public void setCharacter(String routeId, String charId) throws GraphElementNotFoundException { // TODO add to tests?
         Route route = getRoute(routeId);
         route.setCharId(charId);
     }
