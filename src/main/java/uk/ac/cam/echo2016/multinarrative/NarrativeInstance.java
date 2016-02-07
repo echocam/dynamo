@@ -101,22 +101,32 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         if (route == null)
             return false;
         
-        System.out.println("Killing: " + route.getId());
+//        System.out.println("Killing: " + route.getId());
         Node nEnd = route.getEnd();
-        String s = nEnd == null ? "null"
-            : nEnd + " " + (nEnd.getProperties() == null ? "null"
-                : nEnd.getProperties() + " " + nEnd.getProperties().getInt("Impl.Node.Entries"));
-        System.out.println(s);
+//        String s = nEnd == null ? "null"
+//            : nEnd + " " + (nEnd.getProperties() == null ? "null"
+//                : nEnd.getProperties() + " " + nEnd.getProperties().getInt("Impl.Node.Entries"));
+//        System.out.println(s);
         
+        // Decrement the entering routes counter
         int routeEntres = nEnd.getProperties().getInt("Impl.Node.Entries"); // TODO improve naming convention?
         --routeEntres;
         nEnd.getProperties().putInt("Impl.Node.Entries", routeEntres);
 
+        // If there are now no routes entering the node, kill it
         if (routeEntres == 0) {
             kill(nEnd);
-        }
+        } /*else {
+            // If there are no routes entering of the same charId {
+            for(Route option : nEnd.options) {
+                if (option.getCharId() == route.getCharId()) {
+                    kill(option);
+                }
+            }
+        }*/
         // TODO and update event if instanceof sync node? i.e. change to ACTION_CONTINUE?
-
+        
+        // Remove the route from the options of the node it comes from
         Node nStart = route.getStart();
         nStart.getOptions().remove(route); // Should return true, otherwise something's broken
 
@@ -133,11 +143,12 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         if (node == null)
             return false;
         for (Route route : new ArrayList<Route>(node.getOptions())) {
-            kill(route); // copy of ArrayList used to allow deletion of nodes within the function
+            kill(route); // Copy of ArrayList used to allow deletion of nodes within the function
         }
 
+        // As specified in the javadoc
         assert node.getProperties().getInt("Impl.Node.Entries") == 0;
-
+        
         nodes.remove(node.getId());
         return true;
     }
