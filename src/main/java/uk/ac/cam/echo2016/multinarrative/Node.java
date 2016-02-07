@@ -19,7 +19,6 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
     private final String id;
     private BaseBundle properties;
     ArrayList<Route> options;
-    protected boolean copied = false; // flag used in graph copy that indicates whether this node has been passed
 
     public Node(String id) {
         this.id = id;
@@ -38,11 +37,6 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
         }
     }
 
-    protected void resetCopied() { // TODO warning - should not be concurrently called while the
-                                   // NarrativeTemplate.getInstance() method is running!
-        copied = false;
-    }
-
     /**
      * Method is implemented in derived classes ChoiceNode and SyncNode, to allow this class to make new objects of
      * those derived types in the copyToGraph method.
@@ -50,7 +44,7 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
      * @param id
      * @return
      */
-    protected abstract Node callConstructor(String id);
+    protected abstract Node newInstance(String id);
 
     public abstract BaseBundle startRoute(Route option);
 

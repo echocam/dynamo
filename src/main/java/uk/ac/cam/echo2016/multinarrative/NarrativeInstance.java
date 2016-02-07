@@ -19,7 +19,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     protected BaseBundle properties;
     protected ArrayList<Node> activeNodes = new ArrayList<Node>();
 
-    public NarrativeInstance(NarrativeTemplate template) throws NullPointerException { // TODO testing
+    public NarrativeInstance(NarrativeTemplate template) {
         NarrativeInstance base = template.generateInstance();
         this.routes = base.routes;
         this.nodes = base.nodes;
@@ -27,7 +27,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         this.properties = base.properties;
     }
 
-    public NarrativeInstance(HashMap<String, Route> routes, HashMap<String, Node> nodes, Node start) {
+    public NarrativeInstance(HashMap<String, Route> routes, HashMap<String, Node> nodes, SynchronizationNode start) {
         this.routes = routes;
         this.nodes = nodes;
         this.start = start;
@@ -51,13 +51,20 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 
     public BaseBundle startRoute(String id) {
         Route route = getRoute(id);
-        route.start.startRoute(route);
-        return route.getProperties();
+        Node startNode = route.getStart();
+        activeNodes.remove(startNode); // TODO handle error - return false
+        return startNode.startRoute(route);
     }
 
     public GameChoice endRoute(String id) {
-        Route finished = getRoute(id);
-        return finished.getEnd().onEntry(finished, this);
+        Route route = getRoute(id);
+        Node endNode = route.getEnd(); // TODO handle error - return null
+        activeNodes.add(endNode);
+        // increments routes completed (if not found initialised to 0)
+        int routesCompleted = endNode.getProperties().getInt("Impl.Node.Completed");
+        endNode.getProperties().putInt("Impl.Node.Completed", ++routesCompleted);
+        
+        return endNode.onEntry(route, this);
     }
 
     /**
@@ -110,7 +117,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         // TODO and update event if instanceof sync node? i.e. change to ACTION_CONTINUE?
 
         Node nStart = route.getStart();
-        nStart.getOptions().remove(route); // TODO should return true, otherwise something's broken
+        nStart.getOptions().remove(route); // Should return true, otherwise something's broken
 
         routes.remove(route.getIdentifier());
         return true;
@@ -134,11 +141,18 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         return true;
     }
 
-    public ArrayList<Route> getPlayableRoutes() { // TODO implementation + todo's
-        return null;
+    public ArrayList<Route> getPlayableRoutes() {
+        ArrayList<Route> r_routes = new ArrayList<Route>();
+        for (Node node : activeNodes) {
+            for (Route route : node.options) {
+                r_routes.add(route);
+            }
+        }
+        return r_routes;
     }
 
     public void setActive(Node node) {
-        activeNodes.add(node);
+        if (!activeNodes.contains(node))
+            activeNodes.add(node);
     }
 }

@@ -13,7 +13,7 @@ import android.os.BaseBundle;
  *
  */
 
-public abstract class EditableNarrative extends MultiNarrative { //TODO Todo's and documentation
+public abstract class EditableNarrative extends MultiNarrative { //TODO Documentation
     private static final long serialVersionUID = 1;
     public void addRoute(Route route) {
         routes.put(route.getIdentifier(), route);
@@ -24,7 +24,7 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Todo's a
         nodes.put(node.getIdentifier(), node);
     }
     
-    public boolean removeRoute(String id) { // TODO: test this!
+    public boolean removeRoute(String id) { 
         Route route = routes.remove(id);
         if (route == null) 
             return false;
@@ -34,7 +34,7 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Todo's a
         return true;
     }
     
-    public boolean removeNode(String id) { // TODO: test this!
+    public boolean removeNode(String id) {
         Node node = nodes.remove(id);
         if (node == null) 
             return false;
@@ -53,7 +53,7 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Todo's a
         return true;		
     }
     
-    public boolean renameRoute(String id, String newName) { // TODO: test this!
+    public boolean renameRoute(String id, String newName) { 
         Route route = routes.remove(id);
         if (route == null)
             return false;
@@ -69,12 +69,12 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Todo's a
         return true;
     }
     
-    public boolean renameNode(String id, String newName) { // TODO: test this!
+    public boolean renameNode(String id, String newName) {
         Node node = nodes.remove(id);
         if (node == null) 
             return false;
         
-        Node newNode = node.callConstructor(newName);
+        Node newNode = node.newInstance(newName);
         if (node.getProperties() != null) 
             newNode.setProperties(new BaseBundle(node.getProperties()));
         
