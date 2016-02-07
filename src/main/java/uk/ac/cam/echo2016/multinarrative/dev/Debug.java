@@ -1,5 +1,7 @@
 package uk.ac.cam.echo2016.multinarrative.dev;
 
+import com.google.gson.*;
+
 /**
  * This is a class that provides several useful methods that can help in debugging.
  * 
@@ -37,6 +39,24 @@ public class Debug {
     //The types of information you wish to see printed.                                                          
     private static final int RELAVENT_TYPES = TYPE_ALL; //TODO(tr395): read this from config file at runtime
     
+    private static Debug instance = null;
+    
+    private Debug() {
+        //TODO(tr395): initialise and read data from config.json.
+        String jsonString = "{\"log\": {\"console\": {\"all\": 3,\"gui\": 5,\"error\": {\"level\": 4,\"colour\":\"red\"}},\"file\": {\"error\": 5,\"all\": 3}}";
+
+        //JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
+
+        //jsonObject.get("name").getAsString(); //John
+    }
+    
+    public static Debug getInstance() {
+       if(instance == null) {
+           instance = new Debug();
+       }
+       return instance;
+    }
+    
     /**
      * Prints out the provided string provided the current PRIORITY_LEVEL for the type provided is at least
      * as great as the priority level provided and the type is one of the types configured to be printed.
@@ -71,7 +91,7 @@ public class Debug {
      *        If a particular piece of information belongs to multiple types, you can bitwise or them together.
      *        eg. TYPE_PUDDING | TYPE FAIRY.
      */
-    public static void printInfo(String s, int priorityLevel, int type) {
+    public void printInfo(String s, int priorityLevel, int type) {
         if((
             (priorityLevel <= PRIORITY_LEVEL) &&
             ((type | RELAVENT_TYPES) != 0)
@@ -116,7 +136,12 @@ public class Debug {
      *        If a particular piece of information belongs to multiple types, you can bitwise or them together.
      *        eg. TYPE_PUDDING | TYPE FAIRY.
      */
-    public static void printError(String s, int priorityLevel, int type) {
+    public void printError(String s, int priorityLevel, int type) {
         printInfo(s, priorityLevel, type | TYPE_ERROR);
+    }
+    
+    public static void main(String[] args) {
+        System.out.println("testing debug class");
+        Debug d = Debug.getInstance();
     }
 }

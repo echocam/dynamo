@@ -16,6 +16,8 @@ repositories {
 
 dependencies {
   testCompile 'junit:junit:4.12'
+  compile 'com.google.code.gson:gson:2.5'
+  runtime 'com.google.code.gson:gson:2.5'
 }
 
 compileJava {
@@ -48,7 +50,12 @@ task copyFXMLandCSS (type: Copy) {
     include('**/*.fxml', '**/*.css')
 }
 
+task copyConfig (type: Copy) {
+    //
+}
+
 assemble.dependsOn copyFXMLandCSS
+assemble.dependsOn copyConfig
 
 task runGui(type: JavaExec) {
       workingDir = main_build
@@ -57,4 +64,10 @@ task runGui(type: JavaExec) {
 
 runGui.dependsOn assemble
 
+task runDeb(type: JavaExec) {
+      workingDir = main_build
+      main = 'uk.ac.cam.echo2016.multinarrative.dev.Debug'
+}
+
+runDeb.dependsOn assemble
 
