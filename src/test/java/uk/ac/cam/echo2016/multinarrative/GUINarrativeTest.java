@@ -15,15 +15,15 @@ import org.junit.Before;
  */
 public class GUINarrativeTest { // TODO add actual GUINarrative tests
     public static void follow(Route route) {
-        System.out.println("This route is " + route.getIdentifier());
-        System.out.println("It connects " + route.getStart().getIdentifier() + " to " + route.getEnd().getIdentifier());
+        System.out.println("This route is " + route.getId());
+        System.out.println("It connects " + route.getStart().getId() + " to " + route.getEnd().getId());
         System.out.println();
     }
     public static void traverse(Node node) { // TODO: move to multinarrative/dev
-        System.out.println("This node is " + node.getIdentifier());
+        System.out.println("This node is " + node.getId());
         System.out.println("Exiting this node are the following routes:");
         for (Route n : node.getOptions()) {
-            System.out.println("    " + n.getIdentifier());
+            System.out.println("    " + n.getId());
         }
         System.out.println();
         for (Route n : node.getOptions()) {
@@ -63,11 +63,11 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
         SynchronizationNode s2 = new SynchronizationNode("left");
         SynchronizationNode s3 = new SynchronizationNode("right");
         SynchronizationNode s4 = new SynchronizationNode("end");
-        Route l1 = new Route("link1", s1, c1);
-        Route l2 = new Route("link2", c1, s2);
-        Route l3 = new Route("link3", c1, s3);
-        Route l4 = new Route("link4", s2, s4);
-        Route l5 = new Route("link5", s3, s4);
+        Route l1 = new Route("link1", "Chris", s1, c1);
+        Route l2 = new Route("link2", "Chris", c1, s2);
+        Route l3 = new Route("link3", "Chris", c1, s3);
+        Route l4 = new Route("link4", "Chris", s2, s4);
+        Route l5 = new Route("link5", "Chris", s3, s4);
         gNarr.addNode(s1);
         gNarr.addNode(c1);
         gNarr.addNode(s2);
@@ -89,21 +89,21 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     @Test
     public void renameRouteTest() {
         gNarr.renameRoute("link4", "fromLeftToEnd");
-        assertEquals("Check link4 renamed internally", "fromLeftToEnd", gNarr.routes.get("fromLeftToEnd").getIdentifier());
-        assertEquals("Check link4 renamed in start Node", "fromLeftToEnd", gNarr.nodes.get("left").getOptions().get(0).getIdentifier());
+        assertEquals("Check link4 renamed internally", "fromLeftToEnd", gNarr.routes.get("fromLeftToEnd").getId());
+        assertEquals("Check link4 renamed in start Node", "fromLeftToEnd", gNarr.nodes.get("left").getOptions().get(0).getId());
         //traverse(gNarr.start);
     }
     
     @Test
     public void renameNodeTest() {
         gNarr.renameNode("choice1", "FirstChoice");
-        assertEquals("check choice1 renamed internally", "FirstChoice", gNarr.nodes.get("FirstChoice").getIdentifier());
-        assertEquals("check choice1 renamed in entering narr", "FirstChoice", gNarr.routes.get("link1").getEnd().getIdentifier());
-        assertEquals("check choice1 renamed in exiting left", "FirstChoice", gNarr.routes.get("link2").getStart().getIdentifier());
-        assertEquals("check choice1 renamed in exiting right", "FirstChoice", gNarr.routes.get("link3").getStart().getIdentifier());
+        assertEquals("check choice1 renamed internally", "FirstChoice", gNarr.nodes.get("FirstChoice").getId());
+        assertEquals("check choice1 renamed in entering narr", "FirstChoice", gNarr.routes.get("link1").getEnd().getId());
+        assertEquals("check choice1 renamed in exiting left", "FirstChoice", gNarr.routes.get("link2").getStart().getId());
+        assertEquals("check choice1 renamed in exiting right", "FirstChoice", gNarr.routes.get("link3").getStart().getId());
         assertEquals("check choice1 still has options", 2, gNarr.nodes.get("FirstChoice").getOptions().size());
         for (Route n : gNarr.nodes.get("FirstChoice").getOptions()) {
-            assertEquals("check choice1 renamed in options", "FirstChoice", n.getStart().getIdentifier());
+            assertEquals("check choice1 renamed in options", "FirstChoice", n.getStart().getId());
         }
         //traverse(gNarr.start);
     }
@@ -147,27 +147,27 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     @Test
     public void newRouteTest() throws NonUniqueIdException, GraphElementNotFoundException {
     	gNarr.removeRoute("link4");
-    	gNarr.newRoute("newLink4", "left", "end");
+    	gNarr.newRoute("newLink4", "Chris", "left", "end");
     	
     	assertNotNull("Check route added to routes", gNarr.getRoute("newLink4"));
-    	assertEquals("Check start node has correct name reference", "newLink4", gNarr.getRoute("newLink4").getStart().getOptions().get(0).getIdentifier());
+    	assertEquals("Check start node has correct name reference", "newLink4", gNarr.getRoute("newLink4").getStart().getOptions().get(0).getId());
     	assertEquals("Check route has been added only once", 1, gNarr.getRoute("newLink4").getStart().getOptions().size());
     	//traverse(gNarr.start);
     }
     
     @Test(expected=GraphElementNotFoundException.class)
     public void newRouteWrongStartTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.newRoute("newLink", "badStart", "end");
+    	gNarr.newRoute("newLink", "Chris", "badStart", "end");
     }
     
     @Test(expected=GraphElementNotFoundException.class)
     public void newRouteWrongEndTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.newRoute("newLink", "start", "badEnd");
+    	gNarr.newRoute("newLink", "Chris", "start", "badEnd");
     }
     
     @Test(expected=NonUniqueIdException.class) // TODO test GraphElementNotFoundExceptions
     public void newRouteExceptionTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.newRoute("link2", "start", "end");
+    	gNarr.newRoute("link2", "Chris", "start", "end");
     }
     
     @Test
@@ -193,72 +193,72 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     
     @Test
     public void insertChoiceOnRoute1Test() throws NonUniqueIdException, GraphElementNotFoundException {
-    	// Tests insertChoiceOnRoute(String routeId, String newChoiceId, String newRouteId)
-    	gNarr.insertChoiceOnRoute("link2", "newChoice", "newLink");
+    	// Tests insertChoiceOnRoute(String routeId, String charId, String newChoiceId, String newRouteId)
+    	gNarr.insertChoiceOnRoute("link2", "Chris", "newChoice", "newLink");
     	
     	assertNotNull("Check new node in nodes", gNarr.getNode("newChoice"));
     	assertNotNull("Check new route in routes", gNarr.getRoute("newLink"));
-    	assertEquals("Check choice1 has link2", "link2", gNarr.getNode("choice1").getOptions().get(0).getIdentifier());
-    	assertEquals("Check link2 has choice1 as start", "choice1", gNarr.getRoute("link2").getStart().getIdentifier());
-    	assertEquals("Check link2 has newChoice as end", "newChoice", gNarr.getRoute("link2").getEnd().getIdentifier());
-    	assertEquals("Check newChoice has newLink", "newLink", gNarr.getNode("newChoice").getOptions().get(0).getIdentifier());
-    	assertEquals("Check newLink has newChoice as start", "newChoice", gNarr.getRoute("newLink").getStart().getIdentifier());
-    	assertEquals("Check newLink has left as end", "left", gNarr.getRoute("newLink").getEnd().getIdentifier());
+    	assertEquals("Check choice1 has link2", "link2", gNarr.getNode("choice1").getOptions().get(0).getId());
+    	assertEquals("Check link2 has choice1 as start", "choice1", gNarr.getRoute("link2").getStart().getId());
+    	assertEquals("Check link2 has newChoice as end", "newChoice", gNarr.getRoute("link2").getEnd().getId());
+    	assertEquals("Check newChoice has newLink", "newLink", gNarr.getNode("newChoice").getOptions().get(0).getId());
+    	assertEquals("Check newLink has newChoice as start", "newChoice", gNarr.getRoute("newLink").getStart().getId());
+    	assertEquals("Check newLink has left as end", "left", gNarr.getRoute("newLink").getEnd().getId());
     
     	//traverse(gNarr.start);
     }
     
     @Test(expected=NonUniqueIdException.class)
     public void insertChoiceOnRoute1StartExceptionTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.insertChoiceOnRoute("link2", "start", "newlink");
+    	gNarr.insertChoiceOnRoute("link2", "Chris", "start", "newlink");
     }
     
     @Test(expected=NonUniqueIdException.class)
     public void insertChoiceOnRoute1RouteExceptionTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.insertChoiceOnRoute("link2", "newChoice", "link3");
+    	gNarr.insertChoiceOnRoute("link2", "Chris", "newChoice", "link3");
     }
     
     @Test(expected=GraphElementNotFoundException.class)
     public void insertChoiceOnRoute1WrongLinkTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.insertChoiceOnRoute("wrongLink", "newChoice", "newLink");
+    	gNarr.insertChoiceOnRoute("wrongLink", "Chris", "newChoice", "newLink");
     }
     
     @Test
     public void insertChoiceOnRoute2Test() throws NonUniqueIdException, GraphElementNotFoundException {
     	// Tests insertChoiceOnRoute(String routeId, String newChoiceId, String newRouteId1, String newRouteId2) 
-    	gNarr.insertChoiceOnRoute("link5", "newChoice", "link5.1", "link5.2");
+    	gNarr.insertChoiceOnRoute("link5", "Chris", "newChoice", "link5.1", "link5.2");
     	
     	assertNotNull("Check new node in nodes", gNarr.getNode("newChoice"));
     	assertNotNull("Check first route in routes", gNarr.getRoute("link5.1"));
     	assertNotNull("Check second route in routes", gNarr.getRoute("link5.2"));
     	assertNull("Check link5 removed", gNarr.getRoute("link5"));
-    	assertEquals("Check right has link5.1", "link5.1", gNarr.getNode("right").options.get(0).getIdentifier());
-    	assertEquals("Check link5.1 has right as start", "right", gNarr.getRoute("link5.1").getStart().getIdentifier());
-    	assertEquals("Check link5.1 has newChoice as end", "newChoice", gNarr.getRoute("link5.1").getEnd().getIdentifier());
-    	assertEquals("Check newChoice has link5.2", "link5.2", gNarr.getNode("newChoice").getOptions().get(0).getIdentifier());
-    	assertEquals("Check link5.2 has newChoice as start", "newChoice", gNarr.getRoute("link5.2").getStart().getIdentifier());
-    	assertEquals("Check link5.2 has end as end", "end", gNarr.getRoute("link5.2").getEnd().getIdentifier());
+    	assertEquals("Check right has link5.1", "link5.1", gNarr.getNode("right").options.get(0).getId());
+    	assertEquals("Check link5.1 has right as start", "right", gNarr.getRoute("link5.1").getStart().getId());
+    	assertEquals("Check link5.1 has newChoice as end", "newChoice", gNarr.getRoute("link5.1").getEnd().getId());
+    	assertEquals("Check newChoice has link5.2", "link5.2", gNarr.getNode("newChoice").getOptions().get(0).getId());
+    	assertEquals("Check link5.2 has newChoice as start", "newChoice", gNarr.getRoute("link5.2").getStart().getId());
+    	assertEquals("Check link5.2 has end as end", "end", gNarr.getRoute("link5.2").getEnd().getId());
     	//traverse(gNarr.start);
     }
     
     @Test(expected=NonUniqueIdException.class)
     public void insertChoiceOnRoute2StartExceptionTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.insertChoiceOnRoute("link2", "start", "newLink1", "newlink2");
+    	gNarr.insertChoiceOnRoute("link2", "Chris", "start", "newLink1", "newlink2");
     }
     
     @Test(expected=NonUniqueIdException.class)
     public void insertChoiceOnRoute2StartRouteExceptionTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.insertChoiceOnRoute("link2", "newChoice", "link3", "newLink");
+    	gNarr.insertChoiceOnRoute("link2", "Chris", "newChoice", "link3", "newLink");
     }
     
     @Test(expected=NonUniqueIdException.class)
     public void insertChoiceOnRoute2EndRouteExceptionTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.insertChoiceOnRoute("link2", "newChoice", "newLink", "link3");
+    	gNarr.insertChoiceOnRoute("link2", "Chris", "newChoice", "newLink", "link3");
     }
     
     @Test(expected=GraphElementNotFoundException.class)
     public void insertChoiceOnRoute2WrongLinkTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.insertChoiceOnRoute("wrongLink", "newChoice", "newLink1", "newLink2");
+    	gNarr.insertChoiceOnRoute("wrongLink", "Chris", "newChoice", "newLink1", "newLink2");
     }
     	
 }
