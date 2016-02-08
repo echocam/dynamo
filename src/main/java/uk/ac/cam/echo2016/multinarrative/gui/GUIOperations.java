@@ -1,17 +1,20 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
 
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ADD_EMPTY_STRING;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ALREADY_EXISTS;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_DOES_NOT_EXIST;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_MISSING;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Queue;
 
+import android.os.BaseBundle;
 import uk.ac.cam.echo2016.multinarrative.GUINarrative;
 import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.Node;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
 import uk.ac.cam.echo2016.multinarrative.Route;
-import android.os.BaseBundle;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.*;
 
 /**
  * @author jr650
