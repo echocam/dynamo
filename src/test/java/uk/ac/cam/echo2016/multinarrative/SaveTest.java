@@ -48,5 +48,20 @@ public class SaveTest {
     @Test
     public void structureTest() {
         assertEquals("Check root is correct", "start", gNarr.start.getId());
+        assertEquals("Check root has correct exit route", "link1", gNarr.start.getOptions().get(0).getId());
+        Node c1 = gNarr.start.getOptions().get(0).getEnd();
+        assertEquals("Check child of link1", "choice1", c1.getId());
+        assertEquals("Check choice1 has correct number of children", 2, c1.getOptions().size());
+        assertEquals("Check choice1 has correct left route", "link2", c1.getOptions().get(0).getId());
+        assertEquals("Check choice1 has correct right route", "link3", c1.getOptions().get(1).getId());
+        Node left = c1.getOptions().get(0).getEnd();
+        Node right = c1.getOptions().get(1).getEnd();
+        assertEquals("Check choice1 has correct left child", "left", left.getId());
+        assertEquals("Check choice1 has correct right child", "right", right.getId());
+        assertEquals("Check left has correct child route", "link4", left.getOptions().get(0).getId());
+        assertEquals("Check right has correct child route", "link5", right.getOptions().get(0).getId());
+        assertEquals("Check left leads into end node", "end", left.getOptions().get(0).getEnd().getId());
+        assertEquals("Check right leads into end node", "end", right.getOptions().get(0).getEnd().getId());
+
     }
 }
