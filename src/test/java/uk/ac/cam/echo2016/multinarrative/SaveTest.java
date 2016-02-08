@@ -59,6 +59,8 @@ public class SaveTest {
         assertEquals("Check choice1 has correct number of children", 2, c1.getExiting().size());
         assertEquals("Check choice1 has correct left route", "link2", c1.getExiting().get(0).getId());
         assertEquals("Check choice1 has correct right route", "link3", c1.getExiting().get(1).getId());
+        assertEquals("Check choice1 has correct number of parents", 1, c1.getEntering().size());
+        assertEquals("Check choice1 has correct parent", "link1", c1.getEntering().get(0).getId());
         Node left = c1.getExiting().get(0).getEnd();
         Node right = c1.getExiting().get(1).getEnd();
         assertEquals("Check choice1 has correct left child", "left", left.getId());
@@ -67,6 +69,11 @@ public class SaveTest {
         assertEquals("Check right has correct child route", "link5", right.getExiting().get(0).getId());
         assertEquals("Check left leads into end node", "end", left.getExiting().get(0).getEnd().getId());
         assertEquals("Check right leads into end node", "end", right.getExiting().get(0).getEnd().getId());
-
+        assertEquals("Check left has correct parent", "link2", left.getEntering().get(0).getId());
+        assertEquals("Check right has correct parent", "link3", right.getEntering().get(0).getId());
+        Node end = left.getExiting().get(0).getEnd();
+        assertEquals("Check end has correct number of parents", 2, end.getEntering().size());
+        assertEquals("Check end has left as parent node", left, end.getEntering().get(0).getStart());
+        assertEquals("Check end has right as parent node", right, end.getEntering().get(1).getStart());
     }
 }
