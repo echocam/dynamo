@@ -1,6 +1,5 @@
 package uk.ac.cam.echo2016.multinarrative;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
