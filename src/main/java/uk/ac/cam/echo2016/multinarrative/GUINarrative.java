@@ -202,7 +202,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
         if (node instanceof SynchronizationNode) {
             start = (SynchronizationNode) node;
             return true;
-        } else { 
+        } else {
             return false;
         }
     }

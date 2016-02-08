@@ -45,6 +45,7 @@ public class NarrativeTemplate extends MultiNarrative {
             Node r_node = node.clone();
             r_node.createProperties();
             r_node.setExiting(new ArrayList<Route>());
+            r_node.setEntering(new ArrayList<Route>());
             r_nodes.put(node.getId(), r_node);
         }
 
