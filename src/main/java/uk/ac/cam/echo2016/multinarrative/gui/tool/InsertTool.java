@@ -21,6 +21,7 @@ import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphTool;
 public class InsertTool implements GraphTool {
     
     private GraphNode start;
+    private GraphEdge pressed;
 
     private Graph graph;
 
@@ -34,7 +35,7 @@ public class InsertTool implements GraphTool {
 
     @Override
     public void mouseReleased(MouseEvent event) {
-	if (start == null) {
+	if (start == null && pressed == null) {
 	    try {
 		String name = graph.getOperations().getUniqueNodeName();
 		graph.getOperations().addSynchNode(name, event.getX(), event.getSceneY());
@@ -54,6 +55,7 @@ public class InsertTool implements GraphTool {
         }
 	}
 	start = null;
+	pressed = null;
     }
 
     @Override
@@ -67,6 +69,7 @@ public class InsertTool implements GraphTool {
 
     @Override
     public void mousePressedOnEdge(MouseEvent event, GraphEdge edge) {
+	pressed=edge;
     }
 
     @Override
