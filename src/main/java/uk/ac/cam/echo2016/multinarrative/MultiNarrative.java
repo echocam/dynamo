@@ -19,6 +19,7 @@ public abstract class MultiNarrative implements Serializable { //TODO Documentat
     protected HashMap<String, Node> nodes = new HashMap<String, Node>();
     protected SynchronizationNode start;
 
+    // TODO change ALL getters and setters to protected?
     public Node getNode(String id) {
         return nodes.get(id);
     }

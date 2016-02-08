@@ -19,9 +19,9 @@ public class Route implements Serializable, Cloneable { // TODO Documentation
     private static final long serialVersionUID = 1;
     private final String id;
     private String charId;
-    protected Node start;
-    protected Node end;
-    protected BaseBundle properties;
+    private Node start;
+    private Node end;
+    private BaseBundle properties;
 
     public Route(String id, String charId, Node start, Node end) {
         this.id = id;

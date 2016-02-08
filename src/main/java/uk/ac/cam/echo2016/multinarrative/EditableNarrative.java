@@ -17,7 +17,8 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Document
     private static final long serialVersionUID = 1;
     public void addRoute(Route route) {
         routes.put(route.getId(), route);
-        route.getStart().getOptions().add(route);
+        route.getStart().getExiting().add(route);
+        route.getEnd().getEntering().add(route);
     }
     
     public void addNode(Node node) {
@@ -26,10 +27,12 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Document
     
     public boolean removeRoute(String id) { 
         Route route = routes.remove(id);
-        if (route == null) 
+        if (route == null)
             return false;
         
-        route.getStart().getOptions().remove(route);	
+        // Should not return null else graph is broken
+        route.getStart().getExiting().remove(route);
+        route.getEnd().getEntering().remove(route);
         
         return true;
     }
@@ -39,6 +42,7 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Document
         if (node == null) 
             return false;
 
+        // TODO replace with verion using enteringRoutes, or merge with kill()
         for (Route route : new ArrayList<Route>(routes.values())) {
             if (route.getStart() == node) {
                 removeRoute(route.getId());
@@ -46,7 +50,7 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Document
                 removeRoute(route.getId());			
             }
         }
-        
+
         return true;		
     }
     
@@ -59,10 +63,13 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Document
         if (route.getProperties() != null)
             newRoute.setProperties(new BaseBundle(route.getProperties()));
         
-        routes.put(newName, newRoute);
-        newRoute.getStart().getOptions().remove(route);
-        newRoute.getStart().getOptions().add(newRoute);
+        // Update references of nodes at either end
+        newRoute.getStart().getExiting().remove(route);
+        newRoute.getStart().getExiting().add(newRoute);
+        newRoute.getEnd().getEntering().remove(route);
+        newRoute.getEnd().getEntering().add(newRoute);
         
+        routes.put(newName, newRoute);
         return true;
     }
     
@@ -75,18 +82,23 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Document
         if (node.getProperties() != null) 
             newNode.setProperties(new BaseBundle(node.getProperties()));
         
-        nodes.put(newName, newNode);
-        for (Route route : routes.values()) {
-            if (route.getStart() == node) {
-                route.setStart(newNode);
-            } else if (route.getEnd() == node) {
-                route.setEnd(newNode);	
-            }
+        // Update references to the node
+        for (Route route : node.getExiting()) {
+            route.setEnd(newNode);
         }
-        for (Route route : node.getOptions()) {
-            newNode.getOptions().add(route);
+        for (Route route : node.getEntering()) {
+            route.setStart(newNode);
+        }
+
+        // Assign the nodes references to routes
+        for (Route route : node.getExiting()) {
+            newNode.getExiting().add(route);
+        }
+        for (Route route : node.getEntering()) {
+            newNode.getEntering().add(route);
         }
         
+        nodes.put(newName, newNode);
         return true;
     }
 }

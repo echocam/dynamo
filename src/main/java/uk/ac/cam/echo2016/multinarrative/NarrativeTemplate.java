@@ -44,7 +44,7 @@ public class NarrativeTemplate extends MultiNarrative {
         for (Node node : nodes.values()) {
             Node r_node = node.clone();
             r_node.createProperties();
-            r_node.setOptions(new ArrayList<Route>());
+            r_node.setExiting(new ArrayList<Route>());
             r_nodes.put(node.getId(), r_node);
         }
 
@@ -54,7 +54,8 @@ public class NarrativeTemplate extends MultiNarrative {
             
             r_route.setStart(r_nodes.get(route.getStart().getId()));
             r_route.setEnd(r_nodes.get(route.getEnd().getId()));
-            r_route.getStart().getOptions().add(r_route);
+            r_route.getStart().getExiting().add(r_route);
+            r_route.getEnd().getEntering().add(r_route);
             
             // Increments the route entries property (if not found initialised to 0)
             int routeEntries = r_route.getEnd().getProperties().getInt("Impl.Node.Entries");
@@ -107,7 +108,7 @@ public class NarrativeTemplate extends MultiNarrative {
         if (node.getProperties() != null) // Copy getProperties() across, if any
             result.setProperties(BaseBundle.deepcopy(node.getProperties()));
         // Copy each route leaving node node and call copyGraph on their end nodes
-        for (Route templateRoute : node.options) {
+        for (Route templateRoute : node.getExiting()) {
             Node endNodeCopy;
             if (!instance.nodes.containsKey(templateRoute.getEnd().getId())) {
                 // Not already copied
@@ -122,7 +123,7 @@ public class NarrativeTemplate extends MultiNarrative {
 
                 endNodeCopy = instance.getNode(templateRoute.getEnd().getId()); // Get reference to copied end
                 // Update entryList property
-
+                
                 int routeEntries = endNodeCopy.getProperties().getInt("Impl.Node.Entries");
                 routeEntries++;
                 endNodeCopy.getProperties().putInt("Impl.Node.Entries", routeEntries);
@@ -133,7 +134,9 @@ public class NarrativeTemplate extends MultiNarrative {
             routeCopy.setProperties(templateRoute.getProperties());
             
             // Update route references
-            result.getOptions().add(routeCopy);
+            endNodeCopy.getEntering().add(routeCopy);
+            result.getExiting().add(routeCopy);
+            
             // Update graph references
             instance.routes.put(routeCopy.getId(), routeCopy);
         }

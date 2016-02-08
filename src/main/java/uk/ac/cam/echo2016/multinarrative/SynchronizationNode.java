@@ -35,7 +35,7 @@ public class SynchronizationNode extends Node { // TODO Documentation
 
     public GameChoice onEntry(Route completed, NarrativeInstance instance) {
         GameChoice gameChoice = new GameChoice();
-        if (!this.getOptions().contains(completed)) {
+        if (!this.getExiting().contains(completed)) {
         } // TODO Exception needed???
         
         //TODO initialise gameChoice

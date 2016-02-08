@@ -22,14 +22,14 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     public static void traverse(Node node) { // TODO: move to multinarrative/dev
         System.out.println("This node is " + node.getId());
         System.out.println("Exiting this node are the following routes:");
-        for (Route n : node.getOptions()) {
+        for (Route n : node.getExiting()) {
             System.out.println("    " + n.getId());
         }
         System.out.println();
-        for (Route n : node.getOptions()) {
+        for (Route n : node.getExiting()) {
             follow(n);
         }
-        for (Route n : node.getOptions()) {
+        for (Route n : node.getExiting()) {
             traverse(n.getEnd());
         }
     }
@@ -90,7 +90,7 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     public void renameRouteTest() {
         gNarr.renameRoute("link4", "fromLeftToEnd");
         assertEquals("Check link4 renamed internally", "fromLeftToEnd", gNarr.routes.get("fromLeftToEnd").getId());
-        assertEquals("Check link4 renamed in start Node", "fromLeftToEnd", gNarr.nodes.get("left").getOptions().get(0).getId());
+        assertEquals("Check link4 renamed in start Node", "fromLeftToEnd", gNarr.nodes.get("left").getExiting().get(0).getId());
         //traverse(gNarr.start);
     }
     
@@ -101,8 +101,8 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
         assertEquals("check choice1 renamed in entering narr", "FirstChoice", gNarr.routes.get("link1").getEnd().getId());
         assertEquals("check choice1 renamed in exiting left", "FirstChoice", gNarr.routes.get("link2").getStart().getId());
         assertEquals("check choice1 renamed in exiting right", "FirstChoice", gNarr.routes.get("link3").getStart().getId());
-        assertEquals("check choice1 still has options", 2, gNarr.nodes.get("FirstChoice").getOptions().size());
-        for (Route n : gNarr.nodes.get("FirstChoice").getOptions()) {
+        assertEquals("check choice1 still has options", 2, gNarr.nodes.get("FirstChoice").getExiting().size());
+        for (Route n : gNarr.nodes.get("FirstChoice").getExiting()) {
             assertEquals("check choice1 renamed in options", "FirstChoice", n.getStart().getId());
         }
         //traverse(gNarr.start);
@@ -112,11 +112,11 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     public void removeRouteTest() {
         gNarr.removeRoute("link1");
         assertNull("Check link1 removed from routes", gNarr.routes.get("link1"));
-        assertEquals("Check link1 removed from start options", 0, gNarr.start.getOptions().size());
+        assertEquals("Check link1 removed from start options", 0, gNarr.start.getExiting().size());
         //traverse(gNarr.start);
         
         gNarr.removeRoute("link3");
-        assertEquals("Check link3 removed from choice1 options", 1, gNarr.nodes.get("choice1").getOptions().size());
+        assertEquals("Check link3 removed from choice1 options", 1, gNarr.nodes.get("choice1").getExiting().size());
         //traverse(gNarr.nodes.get("choice1"));
     }
     
@@ -150,8 +150,8 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     	gNarr.newRoute("newLink4", "Chris", "left", "end");
     	
     	assertNotNull("Check route added to routes", gNarr.getRoute("newLink4"));
-    	assertEquals("Check start node has correct name reference", "newLink4", gNarr.getRoute("newLink4").getStart().getOptions().get(0).getId());
-    	assertEquals("Check route has been added only once", 1, gNarr.getRoute("newLink4").getStart().getOptions().size());
+    	assertEquals("Check start node has correct name reference", "newLink4", gNarr.getRoute("newLink4").getStart().getExiting().get(0).getId());
+    	assertEquals("Check route has been added only once", 1, gNarr.getRoute("newLink4").getStart().getExiting().size());
     	//traverse(gNarr.start);
     }
     
@@ -198,10 +198,10 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     	
     	assertNotNull("Check new node in nodes", gNarr.getNode("newChoice"));
     	assertNotNull("Check new route in routes", gNarr.getRoute("newLink"));
-    	assertEquals("Check choice1 has link2", "link2", gNarr.getNode("choice1").getOptions().get(0).getId());
+    	assertEquals("Check choice1 has link2", "link2", gNarr.getNode("choice1").getExiting().get(0).getId());
     	assertEquals("Check link2 has choice1 as start", "choice1", gNarr.getRoute("link2").getStart().getId());
     	assertEquals("Check link2 has newChoice as end", "newChoice", gNarr.getRoute("link2").getEnd().getId());
-    	assertEquals("Check newChoice has newLink", "newLink", gNarr.getNode("newChoice").getOptions().get(0).getId());
+    	assertEquals("Check newChoice has newLink", "newLink", gNarr.getNode("newChoice").getExiting().get(0).getId());
     	assertEquals("Check newLink has newChoice as start", "newChoice", gNarr.getRoute("newLink").getStart().getId());
     	assertEquals("Check newLink has left as end", "left", gNarr.getRoute("newLink").getEnd().getId());
     
@@ -235,7 +235,7 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     	assertEquals("Check right has link5.1", "link5.1", gNarr.getNode("right").options.get(0).getId());
     	assertEquals("Check link5.1 has right as start", "right", gNarr.getRoute("link5.1").getStart().getId());
     	assertEquals("Check link5.1 has newChoice as end", "newChoice", gNarr.getRoute("link5.1").getEnd().getId());
-    	assertEquals("Check newChoice has link5.2", "link5.2", gNarr.getNode("newChoice").getOptions().get(0).getId());
+    	assertEquals("Check newChoice has link5.2", "link5.2", gNarr.getNode("newChoice").getExiting().get(0).getId());
     	assertEquals("Check link5.2 has newChoice as start", "newChoice", gNarr.getRoute("link5.2").getStart().getId());
     	assertEquals("Check link5.2 has end as end", "end", gNarr.getRoute("link5.2").getEnd().getId());
     	//traverse(gNarr.start);
