@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javafx.css.PseudoClass;
 import javafx.scene.input.MouseEvent;
+import uk.ac.cam.echo2016.multinarrative.gui.IllegalOperationException;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphEdge;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphNode;
@@ -93,7 +94,12 @@ public class SelectionTool implements GraphTool {
 		graph.updateEdge(press);
 	    } else if (!selection.isEmpty()) {
 		for (GraphNode node : selection) {
-		    graph.getOperations().translateNode(node.getName(), movementX, movementY);
+		    try {
+            graph.getOperations().translateNode(node.getName(), movementX, movementY);
+        } catch (IllegalOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 		    node.translate(movementX, movementY, graph.getInput().getScale());
 		    graph.updateNode(node);
 		}

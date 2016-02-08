@@ -1,6 +1,5 @@
 package uk.ac.cam.echo2016.multinarrative.gui.graph;
 
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 
 public interface GraphTool {
