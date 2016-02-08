@@ -17,10 +17,9 @@ import android.os.BaseBundle;
  */
 public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     private static final long serialVersionUID = 1;
-    protected BaseBundle properties;
     protected ArrayList<Node> activeNodes = new ArrayList<Node>();
 
-    public NarrativeInstance(NarrativeTemplate template) {
+    public NarrativeInstance(NarrativeTemplate template) { // TODO Clean this up?
         NarrativeInstance base = template.generateInstance();
         this.routes = base.routes;
         this.nodes = base.nodes;
@@ -28,28 +27,17 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         this.properties = base.properties;
     }
 
-    public NarrativeInstance(HashMap<String, Route> routes, HashMap<String, Node> nodes, SynchronizationNode start) {
+    public NarrativeInstance(HashMap<String, Route> routes, HashMap<String, Node> nodes, SynchronizationNode start, BaseBundle properties) {
         this.routes = routes;
         this.nodes = nodes;
         this.start = start;
+        this.properties = properties;
     }
 
     public NarrativeInstance() {
         
     }
-
-    public BaseBundle getGlobalProperties() {
-        return properties;
-    }
-
-    public BaseBundle getRouteProperties(String id) {
-        return getRoute(id).getProperties();
-    }
-
-    public BaseBundle getNodeProperties(String id) {
-        return getNode(id).getProperties();
-    }
-
+    
     public BaseBundle startRoute(String id) {
         Route route = getRoute(id);
         Node startNode = route.getStart();

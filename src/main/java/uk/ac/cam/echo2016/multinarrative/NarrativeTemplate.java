@@ -3,6 +3,8 @@ package uk.ac.cam.echo2016.multinarrative;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Template;
+
 import android.os.BaseBundle;
 
 /**
@@ -65,7 +67,7 @@ public class NarrativeTemplate extends MultiNarrative {
         }
         SynchronizationNode r_start = (SynchronizationNode) r_nodes.get(start.getId()); // TODO CHECK
 
-        NarrativeInstance instance = new NarrativeInstance(r_routes, r_nodes, r_start);
+        NarrativeInstance instance = new NarrativeInstance(r_routes, r_nodes, r_start, BaseBundle.deepcopy(this.properties));
         return instance;
     }
     
