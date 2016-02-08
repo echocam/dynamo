@@ -10,6 +10,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.CubicCurve;
 import javafx.scene.shape.StrokeLineCap;
+import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
+import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
 import uk.ac.cam.echo2016.multinarrative.gui.IllegalOperationException;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphEdge;
@@ -46,7 +48,10 @@ public class InsertTool implements GraphTool {
 		throw new RuntimeException("FXML files not configured correctly", ioe);
 	    } catch (IllegalOperationException e) {
 		graph.getController().setInfo(e.getMessage());
-	    }
+	    } catch (NonUniqueIdException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 	}
 	start = null;
     }
@@ -81,7 +86,13 @@ public class InsertTool implements GraphTool {
 		graph.updateEdge(edge);
 	    } catch (IllegalOperationException e) {
 		graph.getController().setInfo(e.getMessage());
-	    }
+	    } catch (NonUniqueIdException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (GraphElementNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 	}
     }
 

@@ -50,7 +50,7 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
 
     public abstract GameChoice onEntry(Route played, NarrativeInstance instance);
 
-    public String getIdentifier() {
+    public String getId() {
         return id;
     }
 
