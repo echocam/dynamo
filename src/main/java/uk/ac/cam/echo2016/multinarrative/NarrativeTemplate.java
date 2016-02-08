@@ -65,7 +65,7 @@ public class NarrativeTemplate extends MultiNarrative {
             
             r_routes.put(route.getId(), r_route);
         }
-        SynchronizationNode r_start = (SynchronizationNode) r_nodes.get(start.getId()); // TODO CHECK
+        SynchronizationNode r_start = (SynchronizationNode) r_nodes.get(start.getId());
 
         NarrativeInstance instance = new NarrativeInstance(r_routes, r_nodes, r_start, BaseBundle.deepcopy(this.properties));
         return instance;
@@ -133,11 +133,8 @@ public class NarrativeTemplate extends MultiNarrative {
 
             // Create route using references obtained/created above, linking node node to the new end nodes
             Route routeCopy = new Route(templateRoute.getId(), templateRoute.getCharId(), result, endNodeCopy);
-            routeCopy.setProperties(templateRoute.getProperties());
-            
-            // Update route references
-            endNodeCopy.getEntering().add(routeCopy);
-            result.getExiting().add(routeCopy);
+            routeCopy.setup();
+            routeCopy.setProperties(BaseBundle.deepcopy(templateRoute.getProperties()));
             
             // Update graph references
             instance.routes.put(routeCopy.getId(), routeCopy);

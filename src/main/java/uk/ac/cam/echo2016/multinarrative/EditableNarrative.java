@@ -58,14 +58,16 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Document
             return false;
         
         Route newRoute = new Route(newName, route.getCharId(), route.getStart(), route.getEnd());
-        if (route.getProperties() != null)
-            newRoute.setProperties(new BaseBundle(route.getProperties()));
         
         // Update references of nodes at either end
+        // Note setup must be called afterwards in case of the ids being the same
         newRoute.getStart().getExiting().remove(route);
-        newRoute.getStart().getExiting().add(newRoute);
         newRoute.getEnd().getEntering().remove(route);
-        newRoute.getEnd().getEntering().add(newRoute);
+        newRoute.setup();
+        
+        
+        if (route.getProperties() != null)
+            newRoute.setProperties(new BaseBundle(route.getProperties()));
         
         routes.put(newName, newRoute);
         return true;

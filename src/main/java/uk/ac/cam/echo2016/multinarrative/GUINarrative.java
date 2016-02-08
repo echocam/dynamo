@@ -98,7 +98,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
     public void insertChoiceOnRoute(String routeId, String charId, String newChoiceId, String newRouteId) 
     		throws NonUniqueIdException, GraphElementNotFoundException {
         
-        if (!isUniqueId(newChoiceId) || !isUniqueId(newRouteId)) {
+        if (!isUniqueId(newChoiceId) || !isUniqueId(newRouteId)) {// TODO Add tests for inequality
             throw new NonUniqueIdException(
                     "Invalid id: " + (isUniqueId(newChoiceId) ? newChoiceId : newRouteId) + " is not unique.");
         }
@@ -109,9 +109,8 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
         ChoiceNode choice = new ChoiceNode(newChoiceId);
         // Connect route2 start and end
         Route route2 = new Route(newRouteId, charId, choice, route1.getEnd());
+        route2.setup();
         route2.getEnd().getEntering().remove(route1);
-        route2.getEnd().getEntering().add(route2);
-        choice.getExiting().add(route2);
         
         // route1.start and start.exitRoutes already correct
         route1.setEnd(choice);
@@ -157,7 +156,8 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
      */
     public void insertChoiceOnRoute(String routeId, String charId, String newChoiceId, String newRouteId1,
             String newRouteId2) throws NonUniqueIdException, GraphElementNotFoundException {
-        if (!isUniqueId(newChoiceId) || !isUniqueId(newRouteId1) || !isUniqueId(newRouteId2)) {
+        
+        if (!isUniqueId(newChoiceId) || !isUniqueId(newRouteId1) || !isUniqueId(newRouteId2)) { // TODO Add tests for inequality
             throw new NonUniqueIdException("Invalid id: "
                     + (isUniqueId(newChoiceId) ? (isUniqueId(newRouteId1) ? newRouteId2 : newRouteId1) : newChoiceId)
                     + " is not unique.");
@@ -174,15 +174,13 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
         
         // Connect route1
         Route route1 = new Route(newRouteId1, charId, start, choice);
+        route1.setup();
         start.getExiting().remove(route);
-        start.getExiting().add(route1);
-        choice.getEntering().add(route1);
         
         // Connect route2
         Route route2 = new Route(newRouteId2, charId, choice, end);
+        route2.setup();
         end.getEntering().remove(route);
-        end.getEntering().add(route2);
-        choice.getExiting().add(route2);
         
         // Update GuiNarrative references
         routes.remove(route.getId());
