@@ -33,6 +33,7 @@ public class GUIOperations{
      * Construtor. Creates a new GUIOperations.
      */
     public GUIOperations() {
+        multinarrative = new GUINarrative();
         properties = new HashMap<String, BaseBundle>();
         nodes = new HashMap<String, Coordinate>();
         nodeslist = new HashMap<String, Node>();
@@ -222,8 +223,10 @@ public class GUIOperations{
      */
     public void addNarrative(String name, String start, String end)
             throws IllegalOperationException, NonUniqueIdException, 
-            GraphElementNotFoundException{       
-        multinarrative.newRoute(name, start, end);
+            GraphElementNotFoundException{
+        //TODO Figure out how to get charID and REMOOOOOOOVE DIS
+        String charID = "Filler";
+        multinarrative.newRoute(name, charID, start, end);
         DFSCycleDetect cycleDetect = new DFSCycleDetect(multinarrative.getNode(start));
         if (cycleDetect.hasCycle()) {
             throw new IllegalOperationException("Cannot add route: Graph will contain a cycle");
