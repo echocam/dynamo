@@ -78,7 +78,7 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Document
         if (node == null) 
             return false;
         
-        Node newNode = node.newInstance(newName);
+        Node newNode = node.create(newName);
         if (node.getProperties() != null) 
             newNode.setProperties(new BaseBundle(node.getProperties()));
         

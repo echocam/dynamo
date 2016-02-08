@@ -46,7 +46,7 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
      * @param id
      * @return
      */
-    protected abstract Node newInstance(String id);
+    protected abstract Node create(String id);
 
     public abstract BaseBundle startRoute(Route option);
 

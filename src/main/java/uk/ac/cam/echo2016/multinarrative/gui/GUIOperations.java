@@ -34,7 +34,7 @@ public class GUIOperations{
     private static int narrativeCounter = 1;
     
     /**
-     * Construtor. Creates a new GUIOperations.
+     * Constructor. Creates a new GUIOperations.
      */
     public GUIOperations() {
         multinarrative = new GUINarrative();

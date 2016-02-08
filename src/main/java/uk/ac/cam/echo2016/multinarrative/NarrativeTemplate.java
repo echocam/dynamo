@@ -77,7 +77,7 @@ public class NarrativeTemplate extends MultiNarrative {
         if (start == null) {
             throw new RuntimeException();
         } // TODO better exception
-        instance.start = (SynchronizationNode) copyToGraph(this.start, instance);
+        instance.start = (SynchronizationNode) copyToInstance(this.start, instance);
         instance.setActive(start);
         return instance;
     }
@@ -89,10 +89,10 @@ public class NarrativeTemplate extends MultiNarrative {
      * 
      * @param instance
      */
-    public Node copyToGraph(Node node, NarrativeInstance instance) { // TODO More Documentation
+    public Node copyToInstance(Node node, NarrativeInstance instance) { // TODO More Documentation
 
         // Eventually calls Node(this.id) via subclass's constructor
-        Node result = node.newInstance(node.getId());
+        Node result = node.create(node.getId());
         
 //        Node result = null;
 //        try {
@@ -112,7 +112,7 @@ public class NarrativeTemplate extends MultiNarrative {
             Node endNodeCopy;
             if (!instance.nodes.containsKey(templateRoute.getEnd().getId())) {
                 // Not already copied
-                endNodeCopy = copyToGraph(templateRoute.getEnd(), instance); // Recursively copy nodes at the ends of
+                endNodeCopy = copyToInstance(templateRoute.getEnd(), instance); // Recursively copy nodes at the ends of
 
                 // Create and update entryList property
                 endNodeCopy.createProperties();

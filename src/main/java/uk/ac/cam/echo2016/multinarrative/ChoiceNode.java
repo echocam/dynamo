@@ -24,7 +24,7 @@ public class ChoiceNode extends Node { // TODO Implementation and documentation
 		super(id);
 	}
 
-	protected Node newInstance(String id) {
+	protected Node create(String id) {
 		return new ChoiceNode(id);
 	}
 

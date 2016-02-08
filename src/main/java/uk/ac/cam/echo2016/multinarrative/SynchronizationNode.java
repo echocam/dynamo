@@ -25,7 +25,7 @@ public class SynchronizationNode extends Node { // TODO Documentation
 		super(id);
 	}
 
-    protected Node newInstance(String id) {
+    protected Node create(String id) {
         return new SynchronizationNode(id);
     }
 
