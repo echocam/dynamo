@@ -2,6 +2,8 @@ package uk.ac.cam.echo2016.multinarrative.gui;
 
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ADD_EMPTY_STRING;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ALREADY_EXISTS;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NARRATIVE_PREFIX;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_PREFIX;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_DOES_NOT_EXIST;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_MISSING;
 
@@ -24,12 +26,11 @@ public class GUIOperations{
     
     private GUINarrative multinarrative;
 
+    //TODO Use a GUINarrative, instead of several datastructures.
     private HashMap<String, BaseBundle> properties;
     private HashMap<String, Node> nodeslist;
     private HashMap<String, Coordinate> nodes;
-    private static final String NODE_PREFIX = "Node-";
     private static int nodeCounter = 1;
-    private static final String NARRATIVE_PREFIX = "Narrative-";
     private static int narrativeCounter = 1;
     
     /**
@@ -142,14 +143,14 @@ public class GUIOperations{
      * @return new node name
      */
     public String getUniqueNodeName(){
-        String newName = NODE_PREFIX + nodeCounter;
+        String newName = Strings.populateString(NODE_PREFIX, nodeCounter) ;
         if (!nodes.containsKey(newName)) {
             nodeCounter += 1;
             return newName;
         } else {
             while (nodes.containsKey(newName)) {
                 nodeCounter += 1;
-                newName = NODE_PREFIX + nodeCounter;
+                newName = Strings.populateString(NODE_PREFIX, nodeCounter);
             }
             nodeCounter += 1;
             return newName;
@@ -201,14 +202,14 @@ public class GUIOperations{
      * @return unique narrative name
      */
     public String getUniqueNarrativeName(){
-        String newName = NARRATIVE_PREFIX + narrativeCounter;
+        String newName = Strings.populateString(NARRATIVE_PREFIX, narrativeCounter);
         if (!nodes.containsKey(newName)) {
             narrativeCounter += 1;
             return newName;
         } else {
             while (nodes.containsKey(newName)) {
                 narrativeCounter += 1;
-                newName = NARRATIVE_PREFIX + narrativeCounter;
+                newName = Strings.populateString(NARRATIVE_PREFIX, narrativeCounter);
             }
             narrativeCounter += 1;
             return newName;
