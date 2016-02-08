@@ -279,7 +279,7 @@ public class GUIOperations{
             marked.add(n);
             onStack.add(n);
 
-            for (Route rt : n.getOptions()) {
+            for (Route rt : n.getExiting()) {
                 Node next = rt.getEnd();
                 if(!marked.contains(next)) {
                     findCycle(next);

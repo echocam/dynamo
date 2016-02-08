@@ -232,7 +232,7 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     	assertNotNull("Check first route in routes", gNarr.getRoute("link5.1"));
     	assertNotNull("Check second route in routes", gNarr.getRoute("link5.2"));
     	assertNull("Check link5 removed", gNarr.getRoute("link5"));
-    	assertEquals("Check right has link5.1", "link5.1", gNarr.getNode("right").options.get(0).getId());
+    	assertEquals("Check right has link5.1", "link5.1", gNarr.getNode("right").getExiting().get(0).getId());
     	assertEquals("Check link5.1 has right as start", "right", gNarr.getRoute("link5.1").getStart().getId());
     	assertEquals("Check link5.1 has newChoice as end", "newChoice", gNarr.getRoute("link5.1").getEnd().getId());
     	assertEquals("Check newChoice has link5.2", "link5.2", gNarr.getNode("newChoice").getExiting().get(0).getId());
