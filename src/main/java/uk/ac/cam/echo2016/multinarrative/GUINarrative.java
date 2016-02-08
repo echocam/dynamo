@@ -42,6 +42,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
 
             Route route = new Route(id, charId, startNode, endNode);
             // Updates references of graph and nodes
+            route.setup();
             addRoute(route);
         } else {
             throw new NonUniqueIdException("Invalid id: " + id + " is not unique.");

@@ -22,6 +22,8 @@ public class NodeTest {
         assertEquals("choiceTestID", choiceTest.getId());
         assertEquals(new ArrayList<Route>(), syncTest.getExiting());
         assertEquals(new ArrayList<Route>(), choiceTest.getExiting());
+        assertEquals(new ArrayList<Route>(), syncTest.getEntering());
+        assertEquals(new ArrayList<Route>(), choiceTest.getEntering());
         assertNull(syncTest.getProperties());
         assertNull(choiceTest.getProperties());
     }

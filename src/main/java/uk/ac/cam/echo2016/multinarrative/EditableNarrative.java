@@ -17,8 +17,6 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Document
     private static final long serialVersionUID = 1;
     public void addRoute(Route route) {
         routes.put(route.getId(), route);
-        route.getStart().getExiting().add(route);
-        route.getEnd().getEntering().add(route);
     }
     
     public void addNode(Node node) {
@@ -84,10 +82,10 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Document
         
         // Update references to the node
         for (Route route : node.getExiting()) {
-            route.setEnd(newNode);
+            route.setStart(newNode);
         }
         for (Route route : node.getEntering()) {
-            route.setStart(newNode);
+            route.setEnd(newNode);
         }
 
         // Assign the nodes references to routes
