@@ -58,7 +58,8 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 
     public GameChoice endRoute(String id) throws GraphElementNotFoundException {
         Route route = getRoute(id);
-        Node endNode = route.getEnd(); // TODO handle error - return null
+        if (route == null) throw new GraphElementNotFoundException("Error: Route with id: " + id + " not found");
+        Node endNode = route.getEnd();
         activeNodes.add(endNode);
         route.getProperties().putBoolean("System.isCompleted", true);        
         return endNode.onEntry(route, this);
@@ -96,11 +97,9 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     public boolean kill(Route route) {
         if (route == null)
             return false;
-        
-//        System.out.println("Killing: " + route.getId());
         Node nEnd = route.getEnd();
         
-        Debug.logInfo("Killing " + route.getId(), 4, 0); // TODO change class
+        Debug.logInfo("Killing " + route.getId(), 4, Debug.SYSTEM_ALL);
 
         nEnd.getEntering().remove(route);
         // If there are now no routes entering the node, kill it

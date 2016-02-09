@@ -176,17 +176,17 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     
     @Test(expected=GraphElementNotFoundException.class)
     public void newRouteWrongStartTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.newRoute("newLink", "Chris", "badStart", "end");
+    	gNarr.newRoute("newLink", "badStart", "end");
     }
     
     @Test(expected=GraphElementNotFoundException.class)
     public void newRouteWrongEndTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.newRoute("newLink", "Chris", "start", "badEnd");
+    	gNarr.newRoute("newLink", "start", "badEnd");
     }
     
     @Test(expected=NonUniqueIdException.class) // TODO test GraphElementNotFoundExceptions
     public void newRouteExceptionTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.newRoute("link2", "Chris", "start", "end");
+    	gNarr.newRoute("link2", "start", "end");
     }
     
     @Test

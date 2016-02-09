@@ -57,7 +57,7 @@ public class Route implements Serializable, Cloneable { // TODO Documentation
         this.start = start;
     }
 
-    public Node getEnd() {
+    public Node getEnd() { // TODO enforce InvalidGraphException?
         return end;
     }
 
@@ -67,7 +67,7 @@ public class Route implements Serializable, Cloneable { // TODO Documentation
 
     public void createProperties() {
         if (properties == null)
-            properties = new BaseBundle(); // TODO Initialize with default starting size?
+            properties = new BaseBundle(4);
     }
 
     public BaseBundle getProperties() {

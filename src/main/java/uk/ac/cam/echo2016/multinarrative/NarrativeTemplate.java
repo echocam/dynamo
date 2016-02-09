@@ -39,7 +39,7 @@ public class NarrativeTemplate extends MultiNarrative {
         HashMap<String, Node> r_nodes = new HashMap<>();
         HashMap<String, Route> r_routes = new HashMap<>();
         
-        if (start == null) {throw new InvalidGraphException("Graph does not have a start node.");} 
+        if (start == null) {throw new InvalidGraphException("Error: Graph does not have a start node.");} 
         
         for (Node node : nodes.values()) {
             Node r_node = node.clone();
@@ -70,7 +70,7 @@ public class NarrativeTemplate extends MultiNarrative {
         NarrativeInstance instance = new NarrativeInstance();
 
         if (start == null)
-            throw new InvalidGraphException("Graph does not have a start node.");
+            throw new InvalidGraphException("Error: Graph does not have a start node.");
         instance.start = (SynchronizationNode) copyToInstance(this.start, instance);
         instance.setActive(start);
         return instance;
