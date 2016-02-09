@@ -355,4 +355,28 @@ public class GUIOperations {
     public void renameNode(String from, String to) throws IllegalOperationException{
         
     }
+    
+    /**
+     * TODO 
+     * @param id
+     */
+    public void deleteNode(String id){
+    	
+    }
+    
+    /**
+     * TODO 
+     * @param id
+     */
+    public void deleteNarrative(String id){
+    	
+    }
+    
+    /**
+     * TODO 
+     * @param id
+     */
+    public void deleteRoute(String id){
+    	
+    }
  }
