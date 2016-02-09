@@ -4,31 +4,38 @@ import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_ADDED;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_REMOVED;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-import com.google.code.javafxgraph.FXGraph;
-
-import uk.ac.cam.echo2016.multinarrative.gui.IllegalOperationException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
+import uk.ac.cam.echo2016.multinarrative.gui.tool.InsertTool;
+import uk.ac.cam.echo2016.multinarrative.gui.tool.SelectionTool;
 
 /**
  * @author jr650
  */
-public class FXMLController implements Initializable {
+public class FXMLController {
 
     @FXML
     private BorderPane root;
+    @FXML
+    private ScrollPane scroll;
+    @FXML
+    private Pane graphArea;
     @FXML
     private Text infoBar;
     @FXML
@@ -41,9 +48,51 @@ public class FXMLController implements Initializable {
     private ListView<String> nodes;
     @FXML
     private ListView<String> routes;
+    
+    @FXML
+    private RadioButton select;
+    @FXML
+    private RadioButton insert;
+        
+    @FXML
+    private TitledPane itemEditor;
+    @FXML
+    private TextField itemName;
+    @FXML
+    private TextField itemProperties;
 
+    private ToggleGroup group = new ToggleGroup();
+    
     private GUIOperations operations = new GUIOperations();
-
+    
+    private Graph graph;
+    
+    private SelectionTool selectTool;
+    private InsertTool insertTool;
+    
+    public void init(){
+	graphArea.minHeightProperty().bind(scroll.heightProperty());
+	graphArea.minWidthProperty().bind(scroll.widthProperty());
+	graph = new Graph(scroll, graphArea, getOperations(), this);
+	selectTool = new SelectionTool(graph);
+	insertTool = new InsertTool(graph, this);
+	selectMode();
+	itemEditor.setDisable(true);
+	select.setToggleGroup(group);
+	insert.setToggleGroup(group);
+    }
+    
+    @FXML 
+    protected void insertMode(){
+	selectTool.resetSelection();
+	graph.setTool(insertTool);
+    }
+    
+    @FXML 
+    protected void selectMode(){
+	graph.setTool(selectTool);
+    }
+    
     @FXML
     protected void addPropertyButtonAction(ActionEvent event) {
 
@@ -59,13 +108,23 @@ public class FXMLController implements Initializable {
 
 	}
     }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-	FXGraph g = new FXGraph();
-	String css = getClass().getResource("Style.css").toExternalForm();
-	g.getStylesheets().add(css);
-	root.centerProperty().set(g);
+    
+    @FXML
+    protected void onKeyPress(KeyEvent event){
+	System.out.println("Press "+event);
+	if (event.getCode()==KeyCode.SHIFT){
+	    insert.fire();
+	    System.out.println(graph.getTool());
+	}
+    }
+    
+    @FXML
+    protected void onKeyRelease(KeyEvent event){
+	System.out.println("Release "+event);
+	if (event.getCode()==KeyCode.SHIFT){
+	    select.fire();
+	    System.out.println(graph.getTool());
+	}
     }
 
     protected void addProperty(String s) {
@@ -101,6 +160,22 @@ public class FXMLController implements Initializable {
 
     public GUIOperations getOperations() {
 	return operations;
+    }
+    
+    public void addNode(String name){
+	nodes.getItems().add(name);
+    }
+    
+    public void addRoute(String name){
+	routes.getItems().add(name);
+    }
+    
+    public void removeNode(String name){
+	nodes.getItems().remove(name);
+    }
+    
+    public void removeRoute(String name){
+	routes.getItems().remove(name);
     }
 
 }

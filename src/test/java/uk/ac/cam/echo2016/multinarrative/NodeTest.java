@@ -18,22 +18,24 @@ public class NodeTest {
     
     @Test
     public void testConstructor() {
-        assertEquals("syncTestID", syncTest.getIdentifier());
-        assertEquals("choiceTestID", choiceTest.getIdentifier());
-        assertEquals(new ArrayList<Route>(), syncTest.getOptions());
-        assertEquals(new ArrayList<Route>(), choiceTest.getOptions());
+        assertEquals("syncTestID", syncTest.getId());
+        assertEquals("choiceTestID", choiceTest.getId());
+        assertEquals(new ArrayList<Route>(), syncTest.getExiting());
+        assertEquals(new ArrayList<Route>(), choiceTest.getExiting());
+        assertEquals(new ArrayList<Route>(), syncTest.getEntering());
+        assertEquals(new ArrayList<Route>(), choiceTest.getEntering());
         assertNull(syncTest.getProperties());
         assertNull(choiceTest.getProperties());
     }
     
-    @Test
-    public void testCallConstructor() {		
-        Node newSync = syncTest.callConstructor("newSyncNode");
-        Node newChoice = choiceTest.callConstructor("newChoiceNode");
-        
-        assertEquals("Test type", SynchronizationNode.class, newSync.getClass());
-        assertEquals("Test type", ChoiceNode.class, newChoice.getClass());
-        assertEquals("Test new ID", "newSyncNode", newSync.getIdentifier());
-        assertEquals("Test new ID", "newChoiceNode", newChoice.getIdentifier());
-    }
+//    @Test
+//    public void testCallConstructor() {		
+//        Node newSync = syncTest.callConstructor("newSyncNode");
+//        Node newChoice = choiceTest.callConstructor("newChoiceNode");
+//        
+//        assertEquals("Test type", SynchronizationNode.class, newSync.getClass());
+//        assertEquals("Test type", ChoiceNode.class, newChoice.getClass());
+//        assertEquals("Test new ID", "newSyncNode", newSync.getIdentifier());
+//        assertEquals("Test new ID", "newChoiceNode", newChoice.getIdentifier());
+//    }
 }

@@ -86,9 +86,9 @@ public class FXMLPropertyController implements Initializable {
     }
 
     public void init(String name, FXMLController parent) {
-	this.name.setText(name);
 	propName = name;
 	controller = parent;
+	this.name.setText(name);
     }
 
     protected void textChangeAction() {
@@ -133,4 +133,8 @@ public class FXMLPropertyController implements Initializable {
 
     }
 
+    @FXML
+    protected void changeTypeAction(ActionEvent event){
+	System.out.println("Type CHanged "+type.getValue());
+    }
 }
