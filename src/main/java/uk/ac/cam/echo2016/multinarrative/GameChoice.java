@@ -16,6 +16,13 @@ public class GameChoice { //TODO Todo's and documentation
     protected boolean eventTrigger;
     protected String eventIdentifier;
     protected int action;
+    
+    public GameChoice(boolean isTriggered, String nodeId, int actionName, ArrayList<Route> choices) {
+    	eventTrigger = isTriggered;
+    	eventIdentifier = nodeId;
+    	action = actionName;
+    	options = choices;
+    }
 
     public boolean hasEvent() {return eventTrigger;}
     

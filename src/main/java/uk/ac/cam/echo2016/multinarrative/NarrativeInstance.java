@@ -56,10 +56,11 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         return startNode.startRoute(route);
     }
 
-    public GameChoice endRoute(String id) {
+    public GameChoice endRoute(String id) throws GraphElementNotFoundException {
         Route route = getRoute(id);
         Node endNode = route.getEnd(); // TODO handle error - return null
         activeNodes.add(endNode);
+        route.getProperties().putBoolean("System.isCompleted", true);
         /*// increments routes completed (if not found initialised to 0)
         int routesCompleted = endNode.getProperties().getInt("Impl.Node.Completed");
         endNode.getProperties().putInt("Impl.Node.Completed", ++routesCompleted);*/
