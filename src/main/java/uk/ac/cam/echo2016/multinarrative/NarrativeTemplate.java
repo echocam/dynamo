@@ -39,7 +39,7 @@ public class NarrativeTemplate extends MultiNarrative {
         HashMap<String, Node> r_nodes = new HashMap<>();
         HashMap<String, Route> r_routes = new HashMap<>();
         
-        if (start == null) {throw new InvalidGraphException("Graph does not have a start node.");} 
+        if (start == null) {throw new InvalidGraphException("Error: Graph does not have a start node.");} 
         
         for (Node node : nodes.values()) {
             Node r_node = node.clone();
@@ -66,12 +66,11 @@ public class NarrativeTemplate extends MultiNarrative {
         return instance;
     }
     
-    
-    
-	 public NarrativeInstance generateInstance2() throws InvalidGraphException {
-	 NarrativeInstance instance = new NarrativeInstance();
+    public NarrativeInstance generateInstance2() throws InvalidGraphException {
+        NarrativeInstance instance = new NarrativeInstance();
 
-        if (start == null) { throw new InvalidGraphException("Graph does not have a start node."); }
+        if (start == null)
+            throw new InvalidGraphException("Error: Graph does not have a start node.");
         instance.start = (SynchronizationNode) copyToInstance(this.start, instance);
         instance.setActive(start);
         return instance;
@@ -88,20 +87,10 @@ public class NarrativeTemplate extends MultiNarrative {
 
         // Eventually calls Node(this.id) via subclass's constructor
         Node result = node.create(node.getId());
-        
-//        Node result = null;
-//        try {
-//            result = node.getClass().getConstructor(String.class).newInstance(node.getIdentifier());
-//        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-//                | NoSuchMethodException | SecurityException e) {
-//            e.printStackTrace();
-//        }
-        
-//        Node result = (node instanceof ChoiceNode) ? new ChoiceNode(node.getIdentifier())
-//                : new SynchronizationNode(node.getIdentifier());
 
         if (node.getProperties() != null) // Copy getProperties() across, if any
             result.setProperties(BaseBundle.deepcopy(node.getProperties()));
+        
         // Copy each route leaving node node and call copyGraph on their end nodes
         for (Route templateRoute : node.getExiting()) {
             Node endNodeCopy;

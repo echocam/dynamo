@@ -245,10 +245,12 @@ public class GUIOperations {
     public void addNarrative(String name, String start, String end) throws IllegalOperationException
     {
         // TODO Figure out how to get charID and REMOOOOOOOVE DIS
-        String charID = "Filler";
+        // String charID = "Filler"; //TODO replace with "primary properties"
+        //i.e. putStringArrayList("Primaries", propertyId); e.g. "Mike"
+        //Note: may change name from "Primaries"
         try {
-            multinarrative.newRoute(name, charID, start, end);
-        }catch(NonUniqueIdException e){
+            multinarrative.newRoute(name, start, end);
+        } catch (NonUniqueIdException e) {
             throw new IllegalOperationException(NARRATIVE_ALREADY_EXISTS);
         }catch(GraphElementNotFoundException e){
             throw new IllegalOperationException(NODE_DOES_NOT_EXIST);

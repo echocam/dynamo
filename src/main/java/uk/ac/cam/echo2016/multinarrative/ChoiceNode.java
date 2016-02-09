@@ -17,7 +17,7 @@ import android.os.BaseBundle;
  * @see SyncronizationNode
  * @see MultiNarrative 
  */
-public class ChoiceNode extends Node { // TODO Implementation and documentation
+public class ChoiceNode extends Node { // TODO Documentation
     private static final long serialVersionUID = 1;
 
     public ChoiceNode(String id) {
@@ -34,7 +34,7 @@ public class ChoiceNode extends Node { // TODO Implementation and documentation
 
     public GameChoice onEntry(Route completed, NarrativeInstance instance) throws GraphElementNotFoundException {
         if (!this.getEntering().contains(completed)) {
-        	throw new GraphElementNotFoundException("completed route not in this node's entering list");
+        	throw new GraphElementNotFoundException("Completed route not in this node's entering list");
         } 
         GameChoice gameChoice = new GameChoice(true, getId(), GameChoice.ACTION_MAJOR_DECISION, getExiting());
         
