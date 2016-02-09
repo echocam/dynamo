@@ -1,7 +1,6 @@
 package uk.ac.cam.echo2016.multinarrative;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.os.BaseBundle;
