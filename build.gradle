@@ -51,23 +51,19 @@ task copyFXMLandCSS (type: Copy) {
 }
 
 task copyConfig (type: Copy) {
-    //
+    from main_src
+    into main_build
+    include('**/*.json')
 }
 
 assemble.dependsOn copyFXMLandCSS
 assemble.dependsOn copyConfig
 
 task runGui(type: JavaExec) {
+      classpath = sourceSets.main.runtimeClasspath
       workingDir = main_build
       main = 'uk.ac.cam.echo2016.multinarrative.gui.FXMLGUI'
 }
 
 runGui.dependsOn assemble
-
-task runDeb(type: JavaExec) {
-      workingDir = main_build
-      main = 'uk.ac.cam.echo2016.multinarrative.dev.Debug'
-}
-
-runDeb.dependsOn assemble
 

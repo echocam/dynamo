@@ -3,8 +3,6 @@ package uk.ac.cam.echo2016.multinarrative;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.Template;
-
 import android.os.BaseBundle;
 
 /**
@@ -35,12 +33,13 @@ public class NarrativeTemplate extends MultiNarrative {
     /**
      *
      * @return
+     * @throws InvalidGraphException 
      */
-    public NarrativeInstance generateInstance() {
+    public NarrativeInstance generateInstance() throws InvalidGraphException {
         HashMap<String, Node> r_nodes = new HashMap<>();
         HashMap<String, Route> r_routes = new HashMap<>();
         
-        if (start == null) {throw new RuntimeException();} // TODO better exception
+        if (start == null) {throw new InvalidGraphException("Graph does not have a start node.");} 
         
         for (Node node : nodes.values()) {
             Node r_node = node.clone();
@@ -59,10 +58,6 @@ public class NarrativeTemplate extends MultiNarrative {
             r_route.getStart().getExiting().add(r_route);
             r_route.getEnd().getEntering().add(r_route);
             
-            // Increments the route entries property (if not found initialised to 0)
-            int routeEntries = r_route.getEnd().getProperties().getInt("Impl.Node.Entries");
-            r_route.getEnd().getProperties().putInt("Impl.Node.Entries", ++routeEntries);
-            
             r_routes.put(route.getId(), r_route);
         }
         SynchronizationNode r_start = (SynchronizationNode) r_nodes.get(start.getId());
@@ -73,12 +68,10 @@ public class NarrativeTemplate extends MultiNarrative {
     
     
     
-	 public NarrativeInstance generateInstance2() { // TODO more appropriate exception?
+	 public NarrativeInstance generateInstance2() throws InvalidGraphException {
 	 NarrativeInstance instance = new NarrativeInstance();
 
-        if (start == null) {
-            throw new RuntimeException();
-        } // TODO better exception
+        if (start == null) { throw new InvalidGraphException("Graph does not have a start node."); }
         instance.start = (SynchronizationNode) copyToInstance(this.start, instance);
         instance.setActive(start);
         return instance;
@@ -115,24 +108,13 @@ public class NarrativeTemplate extends MultiNarrative {
             if (!instance.nodes.containsKey(templateRoute.getEnd().getId())) {
                 // Not already copied
                 endNodeCopy = copyToInstance(templateRoute.getEnd(), instance); // Recursively copy nodes at the ends of
-
-                // Create and update entryList property
-                endNodeCopy.createProperties();
-
-                endNodeCopy.getProperties().putInt("Impl.Node.Entries", 1);
             } else {
                 // Already copied
-
                 endNodeCopy = instance.getNode(templateRoute.getEnd().getId()); // Get reference to copied end
-                // Update entryList property
-                
-                int routeEntries = endNodeCopy.getProperties().getInt("Impl.Node.Entries");
-                routeEntries++;
-                endNodeCopy.getProperties().putInt("Impl.Node.Entries", routeEntries);
             }
 
             // Create route using references obtained/created above, linking node node to the new end nodes
-            Route routeCopy = new Route(templateRoute.getId(), templateRoute.getCharId(), result, endNodeCopy);
+            Route routeCopy = new Route(templateRoute.getId(), result, endNodeCopy);
             routeCopy.setup();
             routeCopy.setProperties(BaseBundle.deepcopy(templateRoute.getProperties()));
             

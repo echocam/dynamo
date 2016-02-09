@@ -25,7 +25,7 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
         this.id = id;
         this.exitRoutes = new ArrayList<Route>();
         this.entryRoutes = new ArrayList<Route>();
-}
+    }
 
     @Override
     public Node clone() {
@@ -50,7 +50,7 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
 
     public abstract BaseBundle startRoute(Route option);
 
-    public abstract GameChoice onEntry(Route played, NarrativeInstance instance);
+    public abstract GameChoice onEntry(Route played, NarrativeInstance instance) throws GraphElementNotFoundException;
 
     public String getId() {
         return id;

@@ -40,7 +40,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
             if (endNode == null)
                 throw new GraphElementNotFoundException("Node with id: " + endId + " not found");
 
-            Route route = new Route(id, charId, startNode, endNode);
+            Route route = new Route(id, startNode, endNode);
             // Updates references of graph and nodes
             route.setup();
             addRoute(route);
@@ -108,7 +108,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
 
         ChoiceNode choice = new ChoiceNode(newChoiceId);
         // Connect route2 start and end
-        Route route2 = new Route(newRouteId, charId, choice, route1.getEnd());
+        Route route2 = new Route(newRouteId, choice, route1.getEnd());
         route2.setup();
         route2.getEnd().getEntering().remove(route1);
         
@@ -173,12 +173,12 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
         Node end = route.getEnd();
         
         // Connect route1
-        Route route1 = new Route(newRouteId1, charId, start, choice);
+        Route route1 = new Route(newRouteId1, start, choice);
         route1.setup();
         start.getExiting().remove(route);
         
         // Connect route2
-        Route route2 = new Route(newRouteId2, charId, choice, end);
+        Route route2 = new Route(newRouteId2, choice, end);
         route2.setup();
         end.getEntering().remove(route);
         
@@ -206,10 +206,10 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
         }
     }
     
-    public void setCharacter(String routeId, String charId) throws GraphElementNotFoundException { // TODO add to tests?
-        Route route = getRoute(routeId);
-        route.setCharId(charId);
-    }
+//    public void setCharacter(String routeId, String charId) throws GraphElementNotFoundException { // TODO add to tests?
+//        Route route = getRoute(routeId);
+//        route.setCharId(charId);
+//    }
     
     public BaseBundle getProperties(String id) throws GraphElementNotFoundException {
         Route route = getRoute(id);
