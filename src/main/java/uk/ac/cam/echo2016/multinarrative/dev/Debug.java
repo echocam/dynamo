@@ -107,7 +107,7 @@ public class Debug {
      *        If a particular piece of information belongs to multiple types, you can bitwise or them together.
      *        eg. TYPE_PUDDING | TYPE FAIRY.
      */
-    public void printInfo(String s, int logLevel, int logType) {
+    public static void logInfo(String s, int logLevel, int logType) {
         Writer[] logOutputs = new Writer[1];
         logOutputs[0] = new PrintWriter(System.out);
         
@@ -164,24 +164,23 @@ public class Debug {
      *        If a particular piece of information belongs to multiple types, you can bitwise or them together.
      *        eg. TYPE_PUDDING | TYPE FAIRY.
      */
-    public void printError(String s, int logLevel, int type) {
-        printInfo(s, logLevel, type | TYPE_ERROR);
+    public static void logError(String s, int logLevel, int type) {
+        logInfo(s, logLevel, type | TYPE_ERROR);
     }
     
     public static void main(String[] args) {
         System.out.println("testing debug class");
-        Debug d = Debug.getInstance();
-        d.printInfo("Testing TYPE_GUI level 5", 5, TYPE_GUI);
-        d.printInfo("Testing TYPE_GUI_USE level 5", 5, TYPE_GUI_USE);
-        d.printInfo("Testing TYPE_GUI_DISPLAY level 5", 5, TYPE_GUI_DISPLAY);
-        d.printInfo("Testing TYPE_GUI_DISPLAY level 2", 2, TYPE_GUI_DISPLAY);
-        d.printInfo("Testing TYPE_ROUTE level 5", 5, TYPE_ROUTE);
-        d.printInfo("Testing TYPE_ROUTE level 1", 1, TYPE_ROUTE);
-        d.printInfo("Testing TYPE_ERROR level 5", 5, TYPE_ERROR);
-        d.printInfo("Testing TYPE_ERROR level 4", 4, TYPE_ERROR);
-        d.printInfo("Testing TYPE_ERROR level 3", 3, TYPE_ERROR);
-        d.printInfo("Testing TYPE_ERROR level 2", 2, TYPE_ERROR);
-        d.printInfo("Testing TYPE_ERROR level 1", 1, TYPE_ERROR);
+        Debug.logInfo("Testing TYPE_GUI level 5", 5, TYPE_GUI);
+        Debug.logInfo("Testing TYPE_GUI_USE level 5", 5, TYPE_GUI_USE);
+        Debug.logInfo("Testing TYPE_GUI_DISPLAY level 5", 5, TYPE_GUI_DISPLAY);
+        Debug.logInfo("Testing TYPE_GUI_DISPLAY level 2", 2, TYPE_GUI_DISPLAY);
+        Debug.logInfo("Testing TYPE_ROUTE level 5", 5, TYPE_ROUTE);
+        Debug.logInfo("Testing TYPE_ROUTE level 1", 1, TYPE_ROUTE);
+        Debug.logInfo("Testing TYPE_ERROR level 5", 5, TYPE_ERROR);
+        Debug.logInfo("Testing TYPE_ERROR level 4", 4, TYPE_ERROR);
+        Debug.logInfo("Testing TYPE_ERROR level 3", 3, TYPE_ERROR);
+        Debug.logInfo("Testing TYPE_ERROR level 2", 2, TYPE_ERROR);
+        Debug.logInfo("Testing TYPE_ERROR level 1", 1, TYPE_ERROR);
 
 
 
