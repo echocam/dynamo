@@ -34,13 +34,19 @@ public class Debug {
     public static final int SYSTEM_GUI         = 0b10000000000000000000000000000000;  
     public static final int SYSTEM_IO          = 0b01000000000000000000000000000000;
     
-    private final int[] consoleLogLevels; //
+    // Different console log-levels, each index into the array represents a log-level.
+    // eg. if consoleLogLevels[3] = SYSTEM_ALL
+    // when logInfo is called and the level is 2, everything will be logged
+    // on initialisation, this array is set up so that the lower indexes in the array
+    // are configured to log everything from the higher indexes
+    private final int[] consoleLogLevels;
     
     private static Debug instance = null;
     
     /**
      * Create a new instance of the Debug class,
      * mainly loads in configuration data from the config.json file.
+     * 
      */
     private Debug() {
     	//initialise the configuration an array, each integer representing which systems should be logged at each level.
@@ -55,7 +61,7 @@ public class Debug {
 			JsonObject consoleConfig = logConfig.getAsJsonObject("console");
 			
 			//for every logging level, read in details of systems to log
-			for(int logLevel = 1; logLevel <= 5; logLevel++) {
+			for(int logLevel = consoleLogLevels.length; logLevel > 0; logLevel--) {
 				//check if systems have been configured for that particular level
 				if(consoleConfig.has(Integer.toString(logLevel))) {
 					
@@ -83,11 +89,17 @@ public class Debug {
 					consoleLogLevels[logLevel - 1] = systemsLogged;
 				}
 			}
-			//go through each log level and make it so that the higher ones include the lower ones.
-			for(int i = consoleLogLevels.length - 1; i > 0; i--) {
-				consoleLogLevels[i - 1] = consoleLogLevels[i] | consoleLogLevels[i-1];
+			
+			//small optimisation, make it so that higher-priority log-events are considered low-priority as well
+			for(int logLevel = consoleLogLevels.length - 1; logLevel > 0; logLevel--) {
+				consoleLogLevels[logLevel - 1] = consoleLogLevels[logLevel] | consoleLogLevels[logLevel - 1];
 			}
-		} catch (IOException | ClassCastException | IllegalStateException e) { //config.json doesn't exist
+			
+		} catch (IOException | ClassCastException | IllegalStateException e) { //config.json doesn't exist, so log everything
+			consoleLogLevels[0] = SYSTEM_ALL; //TODO(tr395): log everything
+			consoleLogLevels[1] = SYSTEM_ALL; //TODO(tr395): log everything
+			consoleLogLevels[2] = SYSTEM_ALL; //TODO(tr395): log everything
+			consoleLogLevels[3] = SYSTEM_ALL; //TODO(tr395): log everything
 			consoleLogLevels[4] = SYSTEM_ALL; //TODO(tr395): log everything
 		}
     }
@@ -185,8 +197,12 @@ public class Debug {
     public static void main(String[] args) {
         System.out.println("testing debug class");
         Debug.logInfo("Testing TYPE_GUI level 5", 5, SYSTEM_GUI);
-        Debug.logInfo("Testing TYPE_ROUTE level 5", 5, SYSTEM_IO);
-        Debug.logInfo("Testing TYPE_ROUTE level 1", 1, SYSTEM_IO);
+        Debug.logInfo("Testing TYPE_GUI level 3", 3, SYSTEM_GUI);
+        Debug.logInfo("Testing TYPE_GUI level 1", 1, SYSTEM_GUI);
+        Debug.logInfo("Testing TYPE_IO level 5", 5, SYSTEM_IO);
+        Debug.logInfo("Testing TYPE_IO level 3", 3, SYSTEM_IO);
+        Debug.logInfo("Testing TYPE_IO level 2", 2, SYSTEM_IO);
+        Debug.logInfo("Testing TYPE_IO level 1", 1, SYSTEM_IO);
         Debug.logInfo("Testing TYPE_ERROR level 5", 5, SYSTEM_ERROR);
         Debug.logInfo("Testing TYPE_ERROR level 4", 4, SYSTEM_ERROR);
         Debug.logInfo("Testing TYPE_ERROR level 3", 3, SYSTEM_ERROR);
