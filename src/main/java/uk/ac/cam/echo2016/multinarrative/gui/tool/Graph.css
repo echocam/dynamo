@@ -1,4 +1,4 @@
-.button, .button:pressed {
+.button {
     -fx-background-color:
         #222222,
         #333333;
@@ -6,7 +6,7 @@
     -fx-text-fill: white;
 }
 
-.button:hover {
+.button:hover, .button:pressed {
 	-fx-background-color:
         #444444,
         #333333;
