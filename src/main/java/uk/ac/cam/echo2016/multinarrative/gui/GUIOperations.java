@@ -11,6 +11,7 @@ import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.Node;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
 import uk.ac.cam.echo2016.multinarrative.Route;
+import uk.ac.cam.echo2016.multinarrative.gui.IllegalOperationException;
 
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.*;
 
@@ -25,6 +26,7 @@ public class GUIOperations {
     private HashMap<String, BaseBundle> properties;
     private HashMap<String, Node> nodeslist;// TODO remove this as it isn't used
     private HashMap<String, Coordinate> nodes;
+    private static final String SYNCH_NODE_PREFIX = "SynchNode-";
     private static int nodeCounter = 1;
     private static int narrativeCounter = 1;
 
@@ -145,6 +147,7 @@ public class GUIOperations {
      * 
      * @return new node name
      */
+
     public String getUniqueNodeName() {
         String newName = Strings.populateString(NODE_PREFIX, nodeCounter);
         if (!nodes.containsKey(newName)) {
@@ -252,8 +255,10 @@ public class GUIOperations {
         }
         DFSCycleDetect cycleDetect = new DFSCycleDetect(multinarrative.getNode(start));
         if (cycleDetect.hasCycle()) {
+            multinarrative.removeRoute(name);
             throw new IllegalOperationException("Cannot add route: Graph will contain a cycle");
         }
+        
     }
 
     /**
@@ -262,8 +267,11 @@ public class GUIOperations {
      * @return List of properties in the form "name=value"
      */
     public List<String> getNodeProperties(String node) {
+         BaseBundle props =  multinarrative.getNode(node).getProperties();
          ArrayList<String> r = new ArrayList<String>();
-         r.add("Hello World!");
+         for (String name : props.keySet()) {
+             r.add(name + "=" + props.get(name).toString());
+         }
          return r;
     }
     
@@ -273,9 +281,12 @@ public class GUIOperations {
      * @return List of properties in the form "name=value"
      */
     public List<String> getRouteProperties(String route) {
-         ArrayList<String> r = new ArrayList<String>();
-         r.add("Hello World!");
-         return r;
+        BaseBundle props =  multinarrative.getRoute(route).getProperties();
+        ArrayList<String> r = new ArrayList<String>();
+        for (String name : props.keySet()) {
+            r.add(name + "=" + props.get(name).toString());
+        }
+        return r;
     }
     
     /**
@@ -285,7 +296,8 @@ public class GUIOperations {
      * @throws IllegalOperationException
      */
     public void renameNode(String from, String to) throws IllegalOperationException{
-        
+        Node n = multinarrative.getNode(from);
+        //if (multinarrative.)
     }
     
     /**
