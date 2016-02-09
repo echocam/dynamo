@@ -44,6 +44,7 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     /**
      * Builds graph structure. Uncomment the traverse statement in addRouteAndNodeTest to see 
      * the structure.
+     * <pre>
      * ________________
      * _____start______
      * ______1|________
@@ -55,7 +56,7 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
      * _____\___/______
      * ______end_______
      * ________________
-     * 
+     * </pre>
      * @see addRouteAndNodeTest
      */
     @Before

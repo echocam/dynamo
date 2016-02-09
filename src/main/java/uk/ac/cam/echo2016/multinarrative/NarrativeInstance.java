@@ -20,7 +20,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     private static final long serialVersionUID = 1;
     protected ArrayList<Node> activeNodes = new ArrayList<Node>();
 
-    public NarrativeInstance(NarrativeTemplate template) { // TODO Clean this up?
+    public NarrativeInstance(NarrativeTemplate template) throws InvalidGraphException { // TODO Clean this up?
         NarrativeInstance base = template.generateInstance();
         this.routes = base.routes;
         this.nodes = base.nodes;
