@@ -12,7 +12,6 @@ import uk.ac.cam.echo2016.multinarrative.Node;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
 import uk.ac.cam.echo2016.multinarrative.Route;
 import uk.ac.cam.echo2016.multinarrative.gui.IllegalOperationException;
-import uk.ac.cam.echo2016.multinarrative.gui.GUIOperations.DFSCycleDetect;
 
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.*;
 
@@ -27,10 +26,7 @@ public class GUIOperations {
     private HashMap<String, BaseBundle> properties;
     private HashMap<String, Node> nodeslist;// TODO remove this as it isn't used
     private HashMap<String, Coordinate> nodes;
-<<<<<<< HEAD
     private static final String SYNCH_NODE_PREFIX = "SynchNode-";
-=======
->>>>>>> f612303aba6a48ddc5ed055a0fa55bc7a275e9cc
     private static int nodeCounter = 1;
     private static int narrativeCounter = 1;
 
@@ -151,24 +147,16 @@ public class GUIOperations {
      * 
      * @return new node name
      */
-<<<<<<< HEAD
-    public String getUniqueNodeName(){
-        String newName = SYNCH_NODE_PREFIX + nodeCounter;
-=======
+
     public String getUniqueNodeName() {
         String newName = Strings.populateString(NODE_PREFIX, nodeCounter);
->>>>>>> f612303aba6a48ddc5ed055a0fa55bc7a275e9cc
         if (!nodes.containsKey(newName)) {
             nodeCounter += 1;
             return newName;
         } else {
             while (nodes.containsKey(newName)) {
                 nodeCounter += 1;
-<<<<<<< HEAD
-                newName = SYNCH_NODE_PREFIX + nodeCounter;
-=======
                 newName = Strings.populateString(NODE_PREFIX, nodeCounter);
->>>>>>> f612303aba6a48ddc5ed055a0fa55bc7a275e9cc
             }
             nodeCounter += 1;
             return newName;
@@ -279,8 +267,11 @@ public class GUIOperations {
      * @return List of properties in the form "name=value"
      */
     public List<String> getNodeProperties(String node) {
+         BaseBundle props =  multinarrative.getNode(node).getProperties();
          ArrayList<String> r = new ArrayList<String>();
-         r.add("Hello World!");
+         for (String name : props.keySet()) {
+             r.add(name + "=" + props.get(name).toString());
+         }
          return r;
     }
     
@@ -290,9 +281,12 @@ public class GUIOperations {
      * @return List of properties in the form "name=value"
      */
     public List<String> getRouteProperties(String route) {
-         ArrayList<String> r = new ArrayList<String>();
-         r.add("Hello World!");
-         return r;
+        BaseBundle props =  multinarrative.getRoute(route).getProperties();
+        ArrayList<String> r = new ArrayList<String>();
+        for (String name : props.keySet()) {
+            r.add(name + "=" + props.get(name).toString());
+        }
+        return r;
     }
     
     /**
@@ -302,6 +296,7 @@ public class GUIOperations {
      * @throws IllegalOperationException
      */
     public void renameNode(String from, String to) throws IllegalOperationException{
-        
+        Node n = multinarrative.getNode(from);
+        //if (multinarrative.)
     }
  }
