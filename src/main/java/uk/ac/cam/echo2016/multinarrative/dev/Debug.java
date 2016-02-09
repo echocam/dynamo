@@ -25,42 +25,70 @@ public class Debug {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
     
-    public static final int TYPE_NONE  = 0b00000000000000000000000000000000;
-    public static final int TYPE_ALL   = 0b11111111111111111111111111111111;
+    public static final int SYSTEM_NONE        = 0b00000000000000000000000000000000;
+    public static final int SYSTEM_ALL         = 0b11111111111111111111111111111111;
     
-    public static final int TYPE_ERROR       = 0b00000000000000000000000000000001;
+    public static final int SYSTEM_ERROR       = 0b00000000000000000000000000000001;
 
-    //The types below are all placeholder!
-    public static final int TYPE_GUI_DISPLAY = 0b10000000000000000000000000000000;
-    public static final int TYPE_GUI_USE     = 0b01000000000000000000000000000000;
-    public static final int TYPE_GUI         = TYPE_GUI_DISPLAY | TYPE_GUI_USE;
+    //The types of configurable things
+    public static final int SYSTEM_GUI         = 0b10000000000000000000000000000000;  
+    public static final int SYSTEM_IO          = 0b01000000000000000000000000000000;
     
-    public static final int TYPE_ROUTE       = 0b00100000000000000000000000000000;
-    
-    private final int[] consoleLogLevels;
+    private final int[] consoleLogLevels; //
     
     private static Debug instance = null;
     
+    /**
+     * Create a new instance of the Debug class,
+     * mainly loads in configuration data from the config.json file.
+     */
     private Debug() {
+    	//initialise the configuration an array, each integer representing which systems should be logged at each level.
+		consoleLogLevels = new int[5];
+		
     	try {
+    		//Read-in the config file and convert it to a JsonObject
 			String jsonString = new String(Files.readAllBytes(Paths.get("config.json")));
 			JsonObject logConfig = new JsonParser().parse(jsonString).getAsJsonObject().getAsJsonObject("log");
 			
+			//get the configuration for logging to the console
 			JsonObject consoleConfig = logConfig.getAsJsonObject("console");
-			consoleLogLevels = new int[5];
+			
+			//for every logging level, read in details of systems to log
 			for(int logLevel = 1; logLevel <= 5; logLevel++) {
+				//check if systems have been configured for that particular level
 				if(consoleConfig.has(Integer.toString(logLevel))) {
+					
+					//read in the array of different systems to log for this particular level
 					JsonArray logLevelConfig = consoleConfig.getAsJsonArray(Integer.toString(logLevel));
-					int configType = TYPE_NONE;
+					int systemsLogged = SYSTEM_NONE; //assume nothing is logged for this level
+					
+					//for every system in this log level, add it to the configuration array
 					for(int j = 0; j < logLevelConfig.size(); j++) {
-						String configTypeName = logLevelConfig.get(j).getAsString();
-						configType = configType | Debug.class.getField("TYPE_" + configTypeName.toUpperCase()).getInt(this);
+						String systemName = logLevelConfig.get(j).getAsString();
+						try {
+							//get the binary representation of the system and OR it so it is configured to be logged.
+							int newSys = Debug.class.getField("TYPE_" + systemName.toUpperCase()).getInt(this);
+							systemsLogged = systemsLogged | newSys;
+						} catch (IllegalAccessException |
+								 IllegalArgumentException |
+								 NoSuchFieldException |
+								 SecurityException e) 
+						{
+							//TODO(tr395): handle these exceptions more sanely!
+							e.printStackTrace();
+						}
 					}
-					consoleLogLevels[logLevel - 1] = configType;
+					//update the array
+					consoleLogLevels[logLevel - 1] = systemsLogged;
 				}
 			}
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+			//go through each log level and make it so that the higher ones include the lower ones.
+			for(int i = consoleLogLevels.length - 1; i > 0; i--) {
+				consoleLogLevels[i - 1] = consoleLogLevels[i] | consoleLogLevels[i-1];
+			}
+		} catch (IOException | ClassCastException | IllegalStateException e) { //config.json doesn't exist
+			consoleLogLevels[4] = SYSTEM_ALL; //TODO(tr395): log everything
 		}
     }
     
@@ -105,25 +133,17 @@ public class Debug {
      *        If a particular piece of information belongs to multiple types, you can bitwise or them together.
      *        eg. TYPE_PUDDING | TYPE FAIRY.
      */
-    public static void logInfo(String s, int logLevel, int logType) {
-        Writer[] logOutputs = new Writer[1];
-        logOutputs[0] = new PrintWriter(System.out);
+    public static void logInfo(String s, int level, int system) {
         Debug d = Debug.getInstance();
-        
-        int[] logTypes = d.consoleLogLevels;
-        
-        for(Writer logOutput: logOutputs) {
-            for(int i = logLevel - 1; i < 5; i++) {
-                if((logTypes[i] & logType) != 0) {
-                	StackTraceElement stackTrace = Thread.currentThread().getStackTrace()[2];
-                    int lineNumber = stackTrace.getLineNumber();
-                    String fileName = stackTrace.getFileName();
-                    String debugString = lineNumber + " " + fileName +": " + s;
-                    System.out.println(debugString);
-                    break;
-                }
-            }
+        int[] logSystems = d.consoleLogLevels; //get config info
+        if((logSystems[level - 1] & system) != 0) {
+        	StackTraceElement stackTrace = Thread.currentThread().getStackTrace()[2];
+            int lineNumber = stackTrace.getLineNumber();
+            String fileName = stackTrace.getFileName();
+            String debugString = lineNumber + " " + fileName +": " + s;
+            System.out.println(debugString);
         }
+        
     }
     
     /**
@@ -159,21 +179,18 @@ public class Debug {
      *        eg. TYPE_PUDDING | TYPE FAIRY.
      */
     public static void logError(String s, int logLevel, int type) {
-        logInfo(s, logLevel, type | TYPE_ERROR);
+        logInfo(s, logLevel, type | SYSTEM_ERROR);
     }
     
     public static void main(String[] args) {
         System.out.println("testing debug class");
-        Debug.logInfo("Testing TYPE_GUI level 5", 5, TYPE_GUI);
-        Debug.logInfo("Testing TYPE_GUI_USE level 5", 5, TYPE_GUI_USE);
-        Debug.logInfo("Testing TYPE_GUI_DISPLAY level 5", 5, TYPE_GUI_DISPLAY);
-        Debug.logInfo("Testing TYPE_GUI_DISPLAY level 2", 2, TYPE_GUI_DISPLAY);
-        Debug.logInfo("Testing TYPE_ROUTE level 5", 5, TYPE_ROUTE);
-        Debug.logInfo("Testing TYPE_ROUTE level 1", 1, TYPE_ROUTE);
-        Debug.logInfo("Testing TYPE_ERROR level 5", 5, TYPE_ERROR);
-        Debug.logInfo("Testing TYPE_ERROR level 4", 4, TYPE_ERROR);
-        Debug.logInfo("Testing TYPE_ERROR level 3", 3, TYPE_ERROR);
-        Debug.logInfo("Testing TYPE_ERROR level 2", 2, TYPE_ERROR);
-        Debug.logInfo("Testing TYPE_ERROR level 1", 1, TYPE_ERROR);
+        Debug.logInfo("Testing TYPE_GUI level 5", 5, SYSTEM_GUI);
+        Debug.logInfo("Testing TYPE_ROUTE level 5", 5, SYSTEM_IO);
+        Debug.logInfo("Testing TYPE_ROUTE level 1", 1, SYSTEM_IO);
+        Debug.logInfo("Testing TYPE_ERROR level 5", 5, SYSTEM_ERROR);
+        Debug.logInfo("Testing TYPE_ERROR level 4", 4, SYSTEM_ERROR);
+        Debug.logInfo("Testing TYPE_ERROR level 3", 3, SYSTEM_ERROR);
+        Debug.logInfo("Testing TYPE_ERROR level 2", 2, SYSTEM_ERROR);
+        Debug.logInfo("Testing TYPE_ERROR level 1", 1, SYSTEM_ERROR);
     }
 }

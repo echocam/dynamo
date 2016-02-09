@@ -72,7 +72,7 @@ public class FXMLController {
     private InsertTool insertTool;
     
     public void init(){
-	Debug.logInfo("Init Controller", 5, Debug.TYPE_GUI);
+	Debug.logInfo("Init Controller", 5, Debug.SYSTEM_GUI);
 	graphArea.minHeightProperty().bind(scroll.heightProperty());
 	graphArea.minWidthProperty().bind(scroll.widthProperty());
 	graph = new Graph(scroll, graphArea, getOperations(), this);
@@ -82,25 +82,25 @@ public class FXMLController {
 	itemEditor.setDisable(true);
 	select.setToggleGroup(group);
 	insert.setToggleGroup(group);
-	Debug.logInfo("Controller Inited", 5, Debug.TYPE_GUI);
+	Debug.logInfo("Controller Inited", 5, Debug.SYSTEM_GUI);
     }
     
     @FXML 
     protected void insertMode(){
-	Debug.logInfo("Insert Mode", 5, Debug.TYPE_GUI);
+	Debug.logInfo("Insert Mode", 5, Debug.SYSTEM_GUI);
 	selectTool.resetSelection();
 	graph.setTool(insertTool);
     }
     
     @FXML 
     protected void selectMode(){
-	Debug.logInfo("SelectMode", 5, Debug.TYPE_GUI);
+	Debug.logInfo("SelectMode", 5, Debug.SYSTEM_GUI);
 	graph.setTool(selectTool);
     }
     
     @FXML
     protected void addPropertyButtonAction(ActionEvent event) {
-	Debug.logInfo("Add property", 5, Debug.TYPE_GUI);
+	Debug.logInfo("Add property", 5, Debug.SYSTEM_GUI);
 	String name = propertyName.getText();
 	try {
 	    operations.addProperty(name);// Throws
@@ -116,7 +116,7 @@ public class FXMLController {
     
     @FXML
     protected void onKeyPress(KeyEvent event){
-	Debug.logInfo("Key Pressed: "+event, 5, Debug.TYPE_GUI);
+	Debug.logInfo("Key Pressed: "+event, 5, Debug.SYSTEM_GUI);
 	System.out.println("Press "+event);
 	if (event.getCode()==KeyCode.SHIFT){
 	    insert.fire();
@@ -126,7 +126,7 @@ public class FXMLController {
     
     @FXML
     protected void onKeyRelease(KeyEvent event){
-	Debug.logInfo("Key Released: "+event, 5, Debug.TYPE_GUI);
+	Debug.logInfo("Key Released: "+event, 5, Debug.SYSTEM_GUI);
 	System.out.println("Release "+event);
 	if (event.getCode()==KeyCode.SHIFT){
 	    select.fire();
@@ -135,7 +135,7 @@ public class FXMLController {
     }
 
     protected void addProperty(String s) {
-	Debug.logInfo("Add property: "+s, 5, Debug.TYPE_GUI);
+	Debug.logInfo("Add property: "+s, 5, Debug.SYSTEM_GUI);
 	try {
 	    propertyName.setText("");
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml_property.fxml"));
@@ -151,7 +151,7 @@ public class FXMLController {
     }
 
     protected boolean removeProperty(String s, TitledPane pane) {
-	Debug.logInfo("Remove property: "+s, 5, Debug.TYPE_GUI);
+	Debug.logInfo("Remove property: "+s, 5, Debug.SYSTEM_GUI);
 	try {
 	    operations.removeProperty(s);
 	    properties.getPanes().remove(pane);
