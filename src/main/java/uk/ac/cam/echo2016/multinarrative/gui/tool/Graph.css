@@ -1,9 +1,16 @@
-.button, .button:hover, .button:pressed {
+.button {
     -fx-background-color:
         #222222,
         #333333;
     -fx-background-insets: 0, 1;
     -fx-text-fill: white;
+}
+
+.button:hover, .button:pressed {
+	-fx-background-color:
+        #444444,
+        #333333;
+    -fx-background-insets: 0, 1;
 }
 
 .button:selected {
