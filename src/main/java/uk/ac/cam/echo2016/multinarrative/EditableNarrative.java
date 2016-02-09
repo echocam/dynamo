@@ -38,10 +38,11 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Document
         Node node = nodes.remove(id);
         if (node == null) 
             return false;
-        for (Route route : node.getEntering()) {
+
+        for (Route route : new ArrayList<Route> (node.getEntering())) {
             removeRoute(route.getId());
         }
-        for (Route route : node.getExiting()) {
+        for (Route route : new ArrayList<Route> (node.getExiting())) {
             removeRoute(route.getId());
         }
 //        for (Route route : new ArrayList<Route>(routes.values())) {
