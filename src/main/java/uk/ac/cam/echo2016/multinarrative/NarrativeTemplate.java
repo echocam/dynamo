@@ -3,8 +3,6 @@ package uk.ac.cam.echo2016.multinarrative;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.Template;
-
 import android.os.BaseBundle;
 
 /**
@@ -132,7 +130,7 @@ public class NarrativeTemplate extends MultiNarrative {
             }
 
             // Create route using references obtained/created above, linking node node to the new end nodes
-            Route routeCopy = new Route(templateRoute.getId(), templateRoute.getCharId(), result, endNodeCopy);
+            Route routeCopy = new Route(templateRoute.getId(), result, endNodeCopy);
             routeCopy.setup();
             routeCopy.setProperties(BaseBundle.deepcopy(templateRoute.getProperties()));
             
