@@ -100,22 +100,23 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 //        System.out.println("Killing: " + route.getId());
         Node nEnd = route.getEnd();
         
-        //Debug.logInfo("Killing " + route.getId(), 4, 0); // TODO change class
+        Debug.logInfo("Killing " + route.getId(), 4, 0); // TODO change class
 
         nEnd.getEntering().remove(route);
         // If there are now no routes entering the node, kill it
         if (nEnd.getEntering().size() == 0) {
             kill(nEnd);
-        } else {
+        } else if (route.getProperties() != null){
+            ArrayList<String> primaries = new ArrayList<String>(route.getProperties().getStringArrayList("Primaries"));
             // Kills all methods leaving the end node if they have the same primary property and no entering routes also
             // have that property TODO specify in documentation
-            for (String primary : route.getProperties().getStringArrayList("Primaries")) {
+            for (String primary : primaries) {
                 boolean similarRouteExists = false;
                 for(Route entry : nEnd.getEntering()) {
                     if (entry.getProperties().getStringArrayList("Primaries").contains(primary))
                         similarRouteExists = true;
                 }
-                if (similarRouteExists) {
+                if (!similarRouteExists) {
                     for(Route option : nEnd.getExiting()) {
                         if (option.getProperties().getStringArrayList("Primaries").contains(primary)) {
                             kill(option);
