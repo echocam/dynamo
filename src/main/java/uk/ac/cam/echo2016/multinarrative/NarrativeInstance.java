@@ -103,6 +103,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         
         Debug.printInfo("Killing " + route.getId(), 4, 0); // TODO change class
 
+        nEnd.getEntering().remove(route);
         // If there are now no routes entering the node, kill it
         if (nEnd.getEntering().size() == 0) {
             kill(nEnd);
@@ -137,7 +138,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         }
 
         // As specified in the javadoc
-        assert node.getProperties().getInt("Impl.Node.Entries") == 0;
+        assert node.getEntering().size() == 0;
         
         nodes.remove(node.getId());
         return true;
