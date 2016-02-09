@@ -11,14 +11,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
-import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphTool;
 import uk.ac.cam.echo2016.multinarrative.gui.tool.InsertTool;
 import uk.ac.cam.echo2016.multinarrative.gui.tool.SelectionTool;
 
@@ -45,25 +48,43 @@ public class FXMLController {
     private ListView<String> nodes;
     @FXML
     private ListView<String> routes;
+    
+    @FXML
+    private RadioButton select;
+    @FXML
+    private RadioButton insert;
+        
+    @FXML
+    private TitledPane itemEditor;
+    @FXML
+    private TextField itemName;
+    @FXML
+    private TextField itemProperties;
 
+    private ToggleGroup group = new ToggleGroup();
+    
     private GUIOperations operations = new GUIOperations();
     
     private Graph graph;
     
-    private GraphTool selectTool;
-    private GraphTool insertTool;
+    private SelectionTool selectTool;
+    private InsertTool insertTool;
     
     public void init(){
 	graphArea.minHeightProperty().bind(scroll.heightProperty());
 	graphArea.minWidthProperty().bind(scroll.widthProperty());
 	graph = new Graph(scroll, graphArea, getOperations(), this);
 	selectTool = new SelectionTool(graph);
-	insertTool = new InsertTool(graph);
+	insertTool = new InsertTool(graph, this);
 	selectMode();
+	itemEditor.setDisable(true);
+	select.setToggleGroup(group);
+	insert.setToggleGroup(group);
     }
     
     @FXML 
     protected void insertMode(){
+	selectTool.resetSelection();
 	graph.setTool(insertTool);
     }
     
@@ -85,6 +106,24 @@ public class FXMLController {
 	} catch (IllegalOperationException ioe) {
 	    setInfo(ioe.getMessage(), name);
 
+	}
+    }
+    
+    @FXML
+    protected void onKeyPress(KeyEvent event){
+	System.out.println("Press "+event);
+	if (event.getCode()==KeyCode.SHIFT){
+	    insert.fire();
+	    System.out.println(graph.getTool());
+	}
+    }
+    
+    @FXML
+    protected void onKeyRelease(KeyEvent event){
+	System.out.println("Release "+event);
+	if (event.getCode()==KeyCode.SHIFT){
+	    select.fire();
+	    System.out.println(graph.getTool());
 	}
     }
 
@@ -121,6 +160,22 @@ public class FXMLController {
 
     public GUIOperations getOperations() {
 	return operations;
+    }
+    
+    public void addNode(String name){
+	nodes.getItems().add(name);
+    }
+    
+    public void addRoute(String name){
+	routes.getItems().add(name);
+    }
+    
+    public void removeNode(String name){
+	nodes.getItems().remove(name);
+    }
+    
+    public void removeRoute(String name){
+	routes.getItems().remove(name);
     }
 
 }
