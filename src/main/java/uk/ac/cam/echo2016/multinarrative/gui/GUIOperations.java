@@ -299,4 +299,28 @@ public class GUIOperations {
         Node n = multinarrative.getNode(from);
         //if (multinarrative.)
     }
+    
+    /**
+     * TODO 
+     * @param id
+     */
+    public void deleteNode(String id){
+    	
+    }
+    
+    /**
+     * TODO 
+     * @param id
+     */
+    public void deleteNarrative(String id){
+    	
+    }
+    
+    /**
+     * TODO 
+     * @param id
+     */
+    public void deleteRoute(String id){
+    	
+    }
  }
