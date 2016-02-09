@@ -17,10 +17,9 @@ import android.os.BaseBundle;
  */
 public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     private static final long serialVersionUID = 1;
-    protected BaseBundle properties;
     protected ArrayList<Node> activeNodes = new ArrayList<Node>();
 
-    public NarrativeInstance(NarrativeTemplate template) {
+    public NarrativeInstance(NarrativeTemplate template) { // TODO Clean this up?
         NarrativeInstance base = template.generateInstance();
         this.routes = base.routes;
         this.nodes = base.nodes;
@@ -28,28 +27,17 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         this.properties = base.properties;
     }
 
-    public NarrativeInstance(HashMap<String, Route> routes, HashMap<String, Node> nodes, SynchronizationNode start) {
+    public NarrativeInstance(HashMap<String, Route> routes, HashMap<String, Node> nodes, SynchronizationNode start, BaseBundle properties) {
         this.routes = routes;
         this.nodes = nodes;
         this.start = start;
+        this.properties = properties;
     }
 
     public NarrativeInstance() {
         
     }
-
-    public BaseBundle getGlobalProperties() {
-        return properties;
-    }
-
-    public BaseBundle getRouteProperties(String id) {
-        return getRoute(id).getProperties();
-    }
-
-    public BaseBundle getNodeProperties(String id) {
-        return getNode(id).getProperties();
-    }
-
+    
     public BaseBundle startRoute(String id) {
         Route route = getRoute(id);
         Node startNode = route.getStart();
@@ -71,7 +59,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     /**
      * Recursively deletes an item from the graph according to the instance this method is called from. Only nodes and
      * routes further down the tree are deleted, so nodes must have no entering routes and routes must start
-     * from a node with other options available.
+     * from a node with other exiting routes available.
      * 
      * @param id
      *            string identifier for the item to be deleted
@@ -118,7 +106,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
             kill(nEnd);
         } /*else {
             // If there are no routes entering of the same charId {
-            for(Route option : nEnd.options) {
+            for(Route option : nEnd.getExiting()) {
                 if (option.getCharId() == route.getCharId()) {
                     kill(option);
                 }
@@ -126,9 +114,9 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         }*/
         // TODO and update event if instanceof sync node? i.e. change to ACTION_CONTINUE?
         
-        // Remove the route from the options of the node it comes from
+        // Remove the route from the exiting routes of the node it comes from
         Node nStart = route.getStart();
-        nStart.getOptions().remove(route); // Should return true, otherwise something's broken
+        nStart.getExiting().remove(route); // Should return true, otherwise something's broken
 
         routes.remove(route.getId());
         return true;
@@ -142,7 +130,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     public boolean kill(Node node) {
         if (node == null)
             return false;
-        for (Route route : new ArrayList<Route>(node.getOptions())) {
+        for (Route route : new ArrayList<Route>(node.getExiting())) {
             kill(route); // Copy of ArrayList used to allow deletion of nodes within the function
         }
 
@@ -156,7 +144,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     public ArrayList<Route> getPlayableRoutes() {
         ArrayList<Route> r_routes = new ArrayList<Route>();
         for (Node node : activeNodes) {
-            for (Route route : node.options) {
+            for (Route route : node.getExiting()) {
                 r_routes.add(route);
             }
         }

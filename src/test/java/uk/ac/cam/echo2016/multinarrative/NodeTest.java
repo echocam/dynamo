@@ -20,8 +20,10 @@ public class NodeTest {
     public void testConstructor() {
         assertEquals("syncTestID", syncTest.getId());
         assertEquals("choiceTestID", choiceTest.getId());
-        assertEquals(new ArrayList<Route>(), syncTest.getOptions());
-        assertEquals(new ArrayList<Route>(), choiceTest.getOptions());
+        assertEquals(new ArrayList<Route>(), syncTest.getExiting());
+        assertEquals(new ArrayList<Route>(), choiceTest.getExiting());
+        assertEquals(new ArrayList<Route>(), syncTest.getEntering());
+        assertEquals(new ArrayList<Route>(), choiceTest.getEntering());
         assertNull(syncTest.getProperties());
         assertNull(choiceTest.getProperties());
     }

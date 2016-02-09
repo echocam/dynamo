@@ -41,6 +41,8 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
                 throw new GraphElementNotFoundException("Node with id: " + endId + " not found");
 
             Route route = new Route(id, charId, startNode, endNode);
+            // Updates references of graph and nodes
+            route.setup();
             addRoute(route);
         } else {
             throw new NonUniqueIdException("Invalid id: " + id + " is not unique.");
@@ -62,9 +64,8 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
     }
 
     /**
-     * Takes the route with ID {@code routeId} and splits it in two, where the divisor is a new 
-     * {@code ChoiceNode} with ID {@code newChoiceId}. Here, the original route is preserved between 
-     * its start and the new node.
+     * Takes the route with ID {@code routeId} and splits it in two, where the divisor is a new {@code ChoiceNode} with
+     * ID {@code newChoiceId}. Here, the original route is preserved between its start and the new node.
      * 
      * <pre>
      * Before:
@@ -73,19 +74,19 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
      *             | routeId
      *             |
      *            end  
-     *         
+     *
      * After:
      *           start
      *             |
-     *             | routeId
-     *             |    
-     *        newChoiceId  
+     *             | newRouteId1 (=routeId)
      *             |
-     *             | NewRouteId
+     *        newChoiceId
+     *             |
+     *             | newRouteId2
      *             |
      *            end
      * </pre>
-     *      
+     * 
      * @see insertChoiceOnRoute
      * @param routeId
      * @param newChoiceId
@@ -96,20 +97,27 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
     // TODO better refactoring?
     public void insertChoiceOnRoute(String routeId, String charId, String newChoiceId, String newRouteId) 
     		throws NonUniqueIdException, GraphElementNotFoundException {
-        if (isUniqueId(newChoiceId) && isUniqueId(newRouteId)) {
-            Route route1 = getRoute(routeId);
-            if (route1 == null) throw new GraphElementNotFoundException("Route with id: " + routeId + " not found");
-
-            ChoiceNode choice = new ChoiceNode(newChoiceId);
-            Route route2 = new Route(newRouteId, charId, choice, route1.getEnd());
-            route1.setEnd(choice);
-            choice.getOptions().add(route2);
-            routes.put(route2.getId(), route2);
-            nodes.put(choice.getId(), choice);
-        } else {
+        
+        if (!isUniqueId(newChoiceId) || !isUniqueId(newRouteId)) {// TODO Add tests for inequality
             throw new NonUniqueIdException(
                     "Invalid id: " + (isUniqueId(newChoiceId) ? newChoiceId : newRouteId) + " is not unique.");
         }
+        Route route1 = getRoute(routeId);
+        if (route1 == null)
+            throw new GraphElementNotFoundException("Route with id: " + routeId + " not found");
+
+        ChoiceNode choice = new ChoiceNode(newChoiceId);
+        // Connect route2 start and end
+        Route route2 = new Route(newRouteId, charId, choice, route1.getEnd());
+        route2.setup();
+        route2.getEnd().getEntering().remove(route1);
+        
+        // route1.start and start.exitRoutes already correct
+        route1.setEnd(choice);
+        choice.getEntering().add(route1);
+        
+        routes.put(route2.getId(), route2);
+        nodes.put(choice.getId(), choice);
     }
 
     /**
@@ -146,28 +154,39 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
      * @throws NonUniqueIdException
      * @throws GraphElementNotFoundException
      */
-    public void insertChoiceOnRoute(String routeId, String charId, String newChoiceId, String newRouteId1, String newRouteId2)
-            throws NonUniqueIdException, GraphElementNotFoundException {
-        if (isUniqueId(newChoiceId) && isUniqueId(newRouteId1) && isUniqueId(newRouteId2)) {
-            Route route = getRoute(routeId);
-            if (route == null) throw new GraphElementNotFoundException("Route with id: " + routeId + " not found");
-            
-            ChoiceNode choice = new ChoiceNode(newChoiceId);
-            Route route1 = new Route(newRouteId1, charId, route.getStart(), choice);
-            Route route2 = new Route(newRouteId2, charId, choice, route.getEnd());
-            routes.remove(route.getId());
-            Node start = route.getStart();
-            start.getOptions().remove(route);
-            start.getOptions().add(route1);
-            choice.getOptions().add(route2);
-            routes.put(route1.getId(), route1);
-            routes.put(route2.getId(),route2);
-            nodes.put(choice.getId(), choice);
-        } else {
+    public void insertChoiceOnRoute(String routeId, String charId, String newChoiceId, String newRouteId1,
+            String newRouteId2) throws NonUniqueIdException, GraphElementNotFoundException {
+        
+        if (!isUniqueId(newChoiceId) || !isUniqueId(newRouteId1) || !isUniqueId(newRouteId2)) { // TODO Add tests for inequality
             throw new NonUniqueIdException("Invalid id: "
                     + (isUniqueId(newChoiceId) ? (isUniqueId(newRouteId1) ? newRouteId2 : newRouteId1) : newChoiceId)
                     + " is not unique.");
         }
+
+        Route route = getRoute(routeId);
+        if (route == null)
+            throw new GraphElementNotFoundException("Route with id: " + routeId + " not found");
+
+        ChoiceNode choice = new ChoiceNode(newChoiceId);
+        
+        Node start = route.getStart();
+        Node end = route.getEnd();
+        
+        // Connect route1
+        Route route1 = new Route(newRouteId1, charId, start, choice);
+        route1.setup();
+        start.getExiting().remove(route);
+        
+        // Connect route2
+        Route route2 = new Route(newRouteId2, charId, choice, end);
+        route2.setup();
+        end.getEntering().remove(route);
+        
+        // Update GuiNarrative references
+        routes.remove(route.getId());
+        routes.put(route1.getId(), route1);
+        routes.put(route2.getId(), route2);
+        nodes.put(choice.getId(), choice);
     }
 
     private boolean isUniqueId(String id) {
@@ -182,7 +201,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
         if (node instanceof SynchronizationNode) {
             start = (SynchronizationNode) node;
             return true;
-        } else { 
+        } else {
             return false;
         }
     }

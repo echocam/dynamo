@@ -27,13 +27,13 @@ public class GUIOperations {
     private GUINarrative multinarrative;
 
     private HashMap<String, BaseBundle> properties;
-    private HashMap<String, Node> nodeslist;
+    private HashMap<String, Node> nodeslist;// TODO remove this as it isn't used
     private HashMap<String, Coordinate> nodes;
     private static int nodeCounter = 1;
     private static int narrativeCounter = 1;
 
     /**
-     * Construtor. Creates a new GUIOperations.
+     * Constructor. Creates a new GUIOperations.
      */
     public GUIOperations() {
 	multinarrative = new GUINarrative();
@@ -309,7 +309,7 @@ public class GUIOperations {
 	    marked.add(n);
 	    onStack.add(n);
 
-	    for (Route rt : n.getOptions()) {
+	    for (Route rt : n.getExiting()) {
 		Node next = rt.getEnd();
 		if (!marked.contains(next)) {
 		    findCycle(next);
