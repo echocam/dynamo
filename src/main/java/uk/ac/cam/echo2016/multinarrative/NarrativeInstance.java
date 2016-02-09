@@ -107,22 +107,23 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         if (nEnd.getEntering().size() == 0) {
             kill(nEnd);
         } else if (route.getProperties() != null){
-            ArrayList<String> primaries = new ArrayList<String>(route.getProperties().getStringArrayList("Primaries"));
+            if (route.getProperties().getStringArrayList("Primaries") != null) {;
             // Kills all methods leaving the end node if they have the same primary property and no entering routes also
             // have that property TODO specify in documentation
-            for (String primary : primaries) {
+            for (String primary : route.getProperties().getStringArrayList("Primaries")) {
                 boolean similarRouteExists = false;
                 for(Route entry : nEnd.getEntering()) {
                     if (entry.getProperties().getStringArrayList("Primaries").contains(primary))
                         similarRouteExists = true;
                 }
                 if (!similarRouteExists) {
-                    for(Route option : nEnd.getExiting()) {
+                    for(Route option : new ArrayList<Route>(nEnd.getExiting())) {
                         if (option.getProperties().getStringArrayList("Primaries").contains(primary)) {
                             kill(option);
                         }
                     }
                 }
+            }
             }
         }
         // Remove the route from the exiting routes of the node it comes from

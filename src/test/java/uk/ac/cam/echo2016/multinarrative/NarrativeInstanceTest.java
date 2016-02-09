@@ -246,7 +246,7 @@ public class NarrativeInstanceTest {
 
         // Tests whether the kill method works correctly NOTE: may need changing to 20 with character association
         sampleInst.kill("routeMike1");
-        assertEquals("Testing kill method: ", 21, sampleInst.routes.size());
+        assertEquals("Testing kill method: ", 20, sampleInst.routes.size());
 
         // Load Test //
 
