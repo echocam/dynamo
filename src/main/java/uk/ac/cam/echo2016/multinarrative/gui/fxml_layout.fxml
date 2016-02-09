@@ -71,80 +71,58 @@
       </ScrollPane>
    </center>
    <left>
-      <Accordion BorderPane.alignment="CENTER">
-        <panes>
-            <TitledPane expanded="false" text="Graph Settings">
-               <content>
-                  <AnchorPane>
-                     <children>
-                        <ToolBar AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <items>
-                              <RadioButton fx:id="select" mnemonicParsing="false" onAction="#selectMode" selected="true" text="Select" />
-                              <RadioButton fx:id="insert" mnemonicParsing="false" onAction="#insertMode" text="Insert" />
-                           </items>
-                        </ToolBar>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </TitledPane>
-            <TitledPane expanded="false" text="Selection">
-               <content>
-                  <VBox>
-                     <children>
-                        <TitledPane fx:id="itemEditor" expanded="false" text="Properties">
-                           <content>
-                              <BorderPane prefWidth="100.0">
-                                 <top>
-                                    <TextField fx:id="itemName" promptText="Name" BorderPane.alignment="CENTER" />
-                                 </top>
-                                 <center>
-                                    <ListView fx:id="itemProperties" BorderPane.alignment="CENTER">
-                                       <opaqueInsets>
-                                          <Insets />
-                                       </opaqueInsets>
-                                       <BorderPane.margin>
+      <VBox>
+               <children>
+                  <TitledPane fx:id="itemEditor" expanded="false" text="Properties">
+                     <content>
+                        <BorderPane prefWidth="100.0">
+                           <top>
+                              <TextField fx:id="itemName" promptText="Name" BorderPane.alignment="CENTER" />
+                           </top>
+                           <center>
+                              <ListView fx:id="itemProperties" BorderPane.alignment="CENTER">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <BorderPane.margin>
+                                    <Insets top="3.0" />
+                                 </BorderPane.margin>
+                              </ListView>
+                           </center>
+                           <left>
+                              <VBox BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteItemAction" text="X">
+                                       <VBox.margin>
                                           <Insets top="3.0" />
-                                       </BorderPane.margin>
-                                    </ListView>
-                                 </center>
-                                 <left>
-                                    <VBox BorderPane.alignment="CENTER">
-                                       <children>
-                                          <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="X">
-                                             <VBox.margin>
-                                                <Insets top="3.0" />
-                                             </VBox.margin>
-                                          </Button>
-                                          <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="-">
-                                             <VBox.margin>
-                                                <Insets top="3.0" />
-                                             </VBox.margin>
-                                          </Button>
-                                       </children>
-                                    </VBox>
-                                 </left>
-                              </BorderPane>
-                           </content>
-                        </TitledPane>
-                        <TabPane tabClosingPolicy="UNAVAILABLE">
-                          <tabs>
-                            <Tab text="Nodes">
-                              <content>
-                                    <ListView fx:id="nodes" prefWidth="100.0" />
-                              </content>
-                            </Tab>
-                            <Tab text="Narratives">
-                              <content>
-                                    <ListView fx:id="routes" prefWidth="100.0" />
-                              </content>
-                            </Tab>
-                          </tabs>
-                        </TabPane>
-                     </children>
-                  </VBox>
-               </content>
-            </TitledPane>
-        </panes>
-      </Accordion>
+                                       </VBox.margin>
+                                    </Button>
+                                    <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="-">
+                                       <VBox.margin>
+                                          <Insets top="3.0" />
+                                       </VBox.margin>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                           </left>
+                        </BorderPane>
+                     </content>
+                  </TitledPane>
+                  <TabPane tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="Nodes">
+                        <content>
+                              <ListView fx:id="nodes" prefWidth="100.0" />
+                        </content>
+                      </Tab>
+                      <Tab text="Narratives">
+                        <content>
+                              <ListView fx:id="routes" prefWidth="100.0" />
+                        </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+               </children>
+            </VBox>
    </left>
 </BorderPane>

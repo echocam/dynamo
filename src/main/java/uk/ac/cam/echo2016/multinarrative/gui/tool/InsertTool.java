@@ -93,25 +93,22 @@ public class InsertTool implements GraphTool {
     }
 
     public void addSynchNode(Double x, Double y) {
-	try {
-	    String name = graph.getOperations().getUniqueNodeName();
-	    graph.getOperations().addSynchNode(name, x, y);
-	    Button b = FXMLLoader.load(getClass().getResource("graph_button.fxml"));
-	    b.setText(name);
-	    GraphNode newNode = new GraphNode(b, b.textProperty());
-	    graph.addNode(newNode);
-	    graph.getController().addNode(name);
-	    newNode.setPosition(x, y);
-	} catch (IOException ioe) {
-	    // Error with fxml files
-	    throw new RuntimeException("FXML files not configured correctly", ioe);
-	} catch (IllegalOperationException e) {
-	    graph.getController().setInfo(e.getMessage());
-	} catch (NonUniqueIdException e) {
-	    // TODO Replace with Illegal Operation Exception with sensible
-	    // message
+		try {
+			String name = graph.getOperations().getUniqueNodeName();
+			graph.getOperations().addSynchNode(name, x, y);
+			Button b = FXMLLoader.load(getClass().getResource("graph_button.fxml"));
+			b.setText(name);
+			GraphNode newNode = new GraphNode(b, b.textProperty());
+			graph.addNode(newNode);
+			graph.getController().addNode(name);
+			newNode.setPosition(x, y);
+		} catch (IOException ioe) {
+			// Error with fxml files
+			throw new RuntimeException("FXML files not configured correctly", ioe);
+		} catch (IllegalOperationException e) {
+			graph.getController().setInfo(e.getMessage());
+		}
 	}
-    }
 
     public void addRoute(GraphNode from, GraphNode to) {
 	try {
@@ -129,12 +126,6 @@ public class InsertTool implements GraphTool {
 	    graph.updateEdge(edge);
 	} catch (IllegalOperationException e) {
 	    graph.getController().setInfo(e.getMessage());
-	} catch (NonUniqueIdException e) {
-	    // TODO Replace with Illegal Operation Exception with sensible
-	    // message
-	} catch (GraphElementNotFoundException e) {
-	    // TODO Replace with Illegal Operation Exception with sensible
-	    // message
 	}
     }
 

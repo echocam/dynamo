@@ -13,12 +13,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -53,11 +50,6 @@ public class FXMLController {
     private ListView<String> routes;
 
     @FXML
-    private RadioButton select;
-    @FXML
-    private RadioButton insert;
-
-    @FXML
     private TitledPane itemEditor;
     @FXML
     private TextField itemName;
@@ -68,8 +60,6 @@ public class FXMLController {
 
     private Boolean itemNode = null;
 
-    private ToggleGroup group = new ToggleGroup();
-
     private GUIOperations operations = new GUIOperations();
 
     private Graph graph;
@@ -78,7 +68,8 @@ public class FXMLController {
     private InsertTool insertTool;
 
     public void init() {
-	      Debug.logInfo("Init Controller", 5, Debug.SYSTEM_GUI);
+	    Debug.logInfo("Init Controller", 5, Debug.SYSTEM_GUI);
+	    addProperty.disableProperty().bind(propertyName.textProperty().isEmpty());
         graphArea.minHeightProperty().bind(scroll.heightProperty());
         graphArea.minWidthProperty().bind(scroll.widthProperty());
         graph = new Graph(scroll, graphArea, getOperations(), this);
@@ -86,8 +77,6 @@ public class FXMLController {
         insertTool = new InsertTool(graph);
         selectMode();
         itemEditor.setDisable(true);
-        select.setToggleGroup(group);
-        insert.setToggleGroup(group);
         nodes.getSelectionModel().selectedItemProperty()
                 .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
                     if (newValue != null) {
@@ -142,20 +131,36 @@ public class FXMLController {
             setInfo(ioe.getMessage(), name);
         }
     }
+    
+    @FXML
+    protected void deleteItemAction(ActionEvent e){
+    	Debug.logInfo("DeleteItemAction", 5, Debug.SYSTEM_GUI);
+    	removeSelect();
+    }
 
     @FXML
     protected void onKeyPress(KeyEvent event) {
       	Debug.logInfo("Key Pressed: "+event, 5, Debug.SYSTEM_GUI);
-        if (event.getCode() == KeyCode.SHIFT) {
-            insert.fire();
-        }
+      	switch(event.getCode()){
+      	case SHIFT:
+      		insertMode();
+      		break;
+      	case DELETE:
+      	case BACK_SPACE:
+      		removeSelect();
+      		break;
+      	default:
+      	}
     }
 
     @FXML
     protected void onKeyRelease(KeyEvent event) {
 	Debug.logInfo("Key Released: "+event, 5, Debug.SYSTEM_GUI);
-        if (event.getCode() == KeyCode.SHIFT) {
-            select.fire();
+        switch(event.getCode()){
+        case SHIFT:
+            selectMode();
+            break;
+        default:
         }
     }
 
@@ -257,6 +262,29 @@ public class FXMLController {
         }
     }
 
+    public void removeSelect() {
+    	Debug.logInfo("Remove Selection", 5, Debug.SYSTEM_GUI);
+    	if(itemNode != null){
+    		if(itemNode){
+    			String name = nodes.getSelectionModel().getSelectedItem();
+    			operations.deleteNode(name);
+    			graph.deleteNode(name);
+    			nodes.getSelectionModel().clearSelection();
+    			nodes.getItems().remove(name);
+    			selectTool.resetSelection();
+    			itemNode = null;
+    		}else{
+    			String name = routes.getSelectionModel().getSelectedItem();
+    			operations.deleteRoute(name);
+    			graph.deleteRoute(name);
+    			routes.getSelectionModel().clearSelection();
+    			routes.getItems().remove(name);
+    			itemNode = null;
+    		}
+    		initSelect();
+    	}
+    }
+    
     public void initSelect() {
         itemEditor.setExpanded(itemNode != null);
         itemEditor.setDisable(itemNode == null);
