@@ -68,7 +68,7 @@ public class Debug {
 						String systemName = logLevelConfig.get(j).getAsString();
 						try {
 							//get the binary representation of the system and OR it so it is configured to be logged.
-							int newSys = Debug.class.getField("TYPE_" + systemName.toUpperCase()).getInt(this);
+							int newSys = Debug.class.getField("SYSTEM_" + systemName.toUpperCase()).getInt(this);
 							systemsLogged = systemsLogged | newSys;
 						} catch (IllegalAccessException |
 								 IllegalArgumentException |
