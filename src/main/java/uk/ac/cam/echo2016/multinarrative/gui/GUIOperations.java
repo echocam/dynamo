@@ -15,6 +15,8 @@ import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.Node;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
 import uk.ac.cam.echo2016.multinarrative.Route;
+import uk.ac.cam.echo2016.multinarrative.gui.IllegalOperationException;
+import uk.ac.cam.echo2016.multinarrative.gui.GUIOperations.DFSCycleDetect;
 
 /**
  * @author jr650
@@ -27,7 +29,7 @@ public class GUIOperations{
     private HashMap<String, BaseBundle> properties;
     private HashMap<String, Node> nodeslist;
     private HashMap<String, Coordinate> nodes;
-    private static final String NODE_PREFIX = "Node-";
+    private static final String SYNCH_NODE_PREFIX = "SynchNode-";
     private static int nodeCounter = 1;
     private static final String NARRATIVE_PREFIX = "Narrative-";
     private static int narrativeCounter = 1;
@@ -142,14 +144,14 @@ public class GUIOperations{
      * @return new node name
      */
     public String getUniqueNodeName(){
-        String newName = NODE_PREFIX + nodeCounter;
+        String newName = SYNCH_NODE_PREFIX + nodeCounter;
         if (!nodes.containsKey(newName)) {
             nodeCounter += 1;
             return newName;
         } else {
             while (nodes.containsKey(newName)) {
                 nodeCounter += 1;
-                newName = NODE_PREFIX + nodeCounter;
+                newName = SYNCH_NODE_PREFIX + nodeCounter;
             }
             nodeCounter += 1;
             return newName;
@@ -218,8 +220,8 @@ public class GUIOperations{
     /**
      * Adds a narrative, throwing exception if it fails.
      * @param name - unique id of the narrative
-     * @param start - starting node. If node does not exist creates a new node.
-     * @param end - ending node. If node does not exist creates a new node.
+     * @param start - starting node id. If node does not exist creates a new node.
+     * @param end - ending node id. If node does not exist creates a new node.
      * Do cycle detection here!!
      * @throws GraphElementNotFoundException 
      * @throws NonUniqueIdException 
@@ -232,8 +234,10 @@ public class GUIOperations{
         multinarrative.newRoute(name, charID, start, end);
         DFSCycleDetect cycleDetect = new DFSCycleDetect(multinarrative.getNode(start));
         if (cycleDetect.hasCycle()) {
+            multinarrative.removeRoute(name);
             throw new IllegalOperationException("Cannot add route: Graph will contain a cycle");
         }
+        
     }
     
     
