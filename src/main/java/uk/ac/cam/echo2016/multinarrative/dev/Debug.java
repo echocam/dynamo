@@ -1,12 +1,12 @@
 package uk.ac.cam.echo2016.multinarrative.dev;
 
-import com.google.gson.*;
-
 import java.io.IOException;
-import java.io.Writer;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
  * This is a class that provides several useful methods that can help in debugging.
