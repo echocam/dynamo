@@ -1,5 +1,6 @@
 package uk.ac.cam.echo2016.multinarrative.gui.graph;
 
+import javafx.beans.property.StringProperty;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -20,9 +21,9 @@ public class GraphEdge {
     private CubicCurve display;
     private Circle control;
 
-    private String name;
+    private StringProperty name;
 
-    public GraphEdge(String name, GraphNode source, GraphNode dest, CubicCurve curve, Circle midpoint) {
+    public GraphEdge(StringProperty name, GraphNode source, GraphNode dest, CubicCurve curve, Circle midpoint) {
 	this.name = name;
 	from = source;
 	to = dest;
@@ -94,8 +95,12 @@ public class GraphEdge {
 	yOffset += yOff;
     }
 
-    public String getName() {
+    public StringProperty getNameProperty() {
 	return name;
+    }
+    
+    public String getName(){
+        return name.get();
     }
 
 }

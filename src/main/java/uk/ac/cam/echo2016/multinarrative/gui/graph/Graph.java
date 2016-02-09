@@ -126,5 +126,22 @@ public class Graph {
     public Pane getPane(){
 	return pane;
     }
+    
+    public void renameNode(String from, String to){
+        for(GraphNode node: nodes){
+            if(node.getName().equals(from)){
+                node.getNameProperty().set(to);
+                updateNode(node);
+            }
+        }
+    }
+    
+    public void renameRoute(String from, String to){
+        for(GraphEdge edge: edges){
+            if(edge.getName().equals(from)){
+                edge.getNameProperty().set(to);
+            }
+        }
+    }
 
 }

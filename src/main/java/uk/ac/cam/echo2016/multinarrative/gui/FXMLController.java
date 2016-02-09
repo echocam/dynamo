@@ -62,6 +62,8 @@ public class FXMLController {
     private TextField itemName;
     @FXML
     private ListView<String> itemProperties;
+    @FXML
+    private Button itemPropertyDelete;
 
     private Boolean itemNode = null;
 
@@ -78,25 +80,40 @@ public class FXMLController {
         graphArea.minHeightProperty().bind(scroll.heightProperty());
         graphArea.minWidthProperty().bind(scroll.widthProperty());
         graph = new Graph(scroll, graphArea, getOperations(), this);
-        selectTool = new SelectionTool(graph, this);
-        insertTool = new InsertTool(graph, this);
+        selectTool = new SelectionTool(graph);
+        insertTool = new InsertTool(graph);
         selectMode();
         itemEditor.setDisable(true);
         select.setToggleGroup(group);
         insert.setToggleGroup(group);
         nodes.getSelectionModel().selectedItemProperty()
                 .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-                    routes.getSelectionModel().clearSelection();
-                    itemNode = true;
-                    selectTool.setSelection(newValue);
-                    initSelect();
+                    if (newValue != null) {
+                        routes.getSelectionModel().clearSelection();
+                        itemNode = true;
+                        selectTool.setSelection(newValue);
+                        initSelect();
+                    }
                 });
         routes.getSelectionModel().selectedItemProperty()
                 .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-                    nodes.getSelectionModel().clearSelection();
-                    itemNode = true;
-                    initSelect();
+                    if (newValue != null) {
+                        nodes.getSelectionModel().clearSelection();
+                        itemNode = true;
+                        initSelect();
+                    }
                 });
+        itemProperties.getSelectionModel().selectedItemProperty()
+                .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+                    itemPropertyDelete.setDisable(newValue == null);
+                });
+
+        itemName.textProperty()
+                .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+                    changeSelectName();
+                });
+        nodes.itemsProperty().set(FXCollections.observableArrayList());
+        routes.itemsProperty().set(FXCollections.observableArrayList());
     }
 
     @FXML
@@ -127,19 +144,15 @@ public class FXMLController {
 
     @FXML
     protected void onKeyPress(KeyEvent event) {
-        System.out.println("Press " + event);
         if (event.getCode() == KeyCode.SHIFT) {
             insert.fire();
-            System.out.println(graph.getTool());
         }
     }
 
     @FXML
     protected void onKeyRelease(KeyEvent event) {
-        System.out.println("Release " + event);
         if (event.getCode() == KeyCode.SHIFT) {
             select.fire();
-            System.out.println(graph.getTool());
         }
     }
 
@@ -179,11 +192,20 @@ public class FXMLController {
     }
 
     public void addNode(String name) {
-        nodes.getItems().add(name);
+        int i = 0;
+        while (i < nodes.getItems().size() && nodes.getItems().get(i).compareTo(name) < 0) {
+            i++;
+        }
+        nodes.getItems().add(i, name);
+
     }
 
     public void addRoute(String name) {
-        routes.getItems().add(name);
+        int i = 0;
+        while (i < routes.getItems().size() && routes.getItems().get(i).compareTo(name) < 0) {
+            i++;
+        }
+        routes.getItems().add(i, name);
     }
 
     public void removeNode(String name) {
@@ -207,6 +229,29 @@ public class FXMLController {
         initSelect();
     }
 
+    public void changeSelectName() {
+        System.out.println("Change Select Name");
+        String prevName = itemNode ? nodes.getSelectionModel().getSelectedItem()
+                : routes.getSelectionModel().getSelectedItem();
+        String newName = itemName.getText();
+
+        if (itemNode != null) {
+            try {
+                if (itemNode) {
+                    operations.renameNode(prevName, newName);
+                    graph.renameNode(prevName, newName);
+                    removeNode(prevName);
+                    addNode(newName);
+                    nodes.getSelectionModel().select(newName);
+                } else {
+                    // TODO rename route
+                }
+            } catch (IllegalOperationException ioe) {
+                setInfo(ioe.getMessage(), prevName, newName);
+            }
+        }
+    }
+
     public void initSelect() {
         itemEditor.setExpanded(itemNode != null);
         itemEditor.setDisable(itemNode == null);
@@ -214,13 +259,17 @@ public class FXMLController {
             itemName.setText("");
             itemProperties.getItems().clear();
         } else if (itemNode) {
+            itemNode = null;
             itemName.setText(nodes.getSelectionModel().getSelectedItem());
-            itemProperties.setItems(FXCollections
-                    .observableList(GUIOperations.getNodeProperties(nodes.getSelectionModel().getSelectedItem())));
+            itemNode = true;
+            itemProperties.getItems().clear();
+            itemProperties.getItems().addAll(operations.getNodeProperties(nodes.getSelectionModel().getSelectedItem()));
         } else {
+            itemNode = null;
             itemName.setText(routes.getSelectionModel().getSelectedItem());
+            itemNode = false;
             itemProperties.setItems(FXCollections
-                    .observableList(GUIOperations.getRouteProperties(routes.getSelectionModel().getSelectedItem())));
+                    .observableList(operations.getRouteProperties(routes.getSelectionModel().getSelectedItem())));
         }
     }
 

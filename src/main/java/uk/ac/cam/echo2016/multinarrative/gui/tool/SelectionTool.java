@@ -5,7 +5,6 @@ import java.util.Set;
 
 import javafx.css.PseudoClass;
 import javafx.scene.input.MouseEvent;
-import uk.ac.cam.echo2016.multinarrative.gui.FXMLController;
 import uk.ac.cam.echo2016.multinarrative.gui.IllegalOperationException;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphEdge;
@@ -28,11 +27,8 @@ public class SelectionTool implements GraphTool {
 
     private Set<GraphNode> selection = new HashSet<GraphNode>();
 
-    private FXMLController controller;
-
-    public SelectionTool(Graph graph, FXMLController controller) {
+    public SelectionTool(Graph graph) {
         this.graph = graph;
-        this.controller = controller;
     }
 
     public void resetSelection() {
@@ -106,8 +102,7 @@ public class SelectionTool implements GraphTool {
                     try {
                         graph.getOperations().translateNode(node.getName(), movementX, movementY);
                     } catch (IllegalOperationException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        graph.getController().setInfo(e.getMessage(), event.getSceneX()+"", event.getSceneY()+"");
                     }
                     node.translate(movementX, movementY);
                     graph.updateNode(node);
@@ -139,14 +134,14 @@ public class SelectionTool implements GraphTool {
         }
         selectMade = true;
         mousePressed(event);
-        controller.selectNode(node.getName());
+        graph.getController().selectNode(node.getName());
     }
 
     @Override
     public void mousePressedOnEdge(MouseEvent event, GraphEdge edge) {
         press = edge;
         mousePressed(event);
-        controller.selectRoute(edge.getName());
+        graph.getController().selectRoute(edge.getName());
 
     }
 

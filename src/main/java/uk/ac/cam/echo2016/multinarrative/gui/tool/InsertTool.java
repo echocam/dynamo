@@ -2,6 +2,7 @@ package uk.ac.cam.echo2016.multinarrative.gui.tool;
 
 import java.io.IOException;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -12,7 +13,6 @@ import javafx.scene.shape.CubicCurve;
 import javafx.scene.shape.StrokeLineCap;
 import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
-import uk.ac.cam.echo2016.multinarrative.gui.FXMLController;
 import uk.ac.cam.echo2016.multinarrative.gui.IllegalOperationException;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphEdge;
@@ -31,11 +31,8 @@ public class InsertTool implements GraphTool {
 
     private Graph graph;
 
-    private FXMLController controller;
-
-    public InsertTool(Graph graph, FXMLController controller) {
+    public InsertTool(Graph graph) {
 	this.graph = graph;
-	this.controller = controller;
     }
 
     @Override
@@ -101,9 +98,9 @@ public class InsertTool implements GraphTool {
 	    graph.getOperations().addSynchNode(name, x, y);
 	    Button b = FXMLLoader.load(getClass().getResource("graph_button.fxml"));
 	    b.setText(name);
-	    GraphNode newNode = new GraphNode(b, name);
+	    GraphNode newNode = new GraphNode(b, b.textProperty());
 	    graph.addNode(newNode);
-	    controller.addNode(name);
+	    graph.getController().addNode(name);
 	    newNode.setPosition(x, y);
 	} catch (IOException ioe) {
 	    // Error with fxml files
@@ -126,9 +123,9 @@ public class InsertTool implements GraphTool {
 	    c.setStrokeLineCap(StrokeLineCap.ROUND);
 	    c.setFill(Color.TRANSPARENT);
 	    Circle ci = new Circle(4, Color.rgb(51, 51, 51));
-	    GraphEdge edge = new GraphEdge(name, from, to, c, ci);
+	    GraphEdge edge = new GraphEdge(new SimpleStringProperty(name), from, to, c, ci);
 	    graph.addEdge(edge);
-	    controller.addRoute(name);
+	    graph.getController().addRoute(name);
 	    graph.updateEdge(edge);
 	} catch (IllegalOperationException e) {
 	    graph.getController().setInfo(e.getMessage());

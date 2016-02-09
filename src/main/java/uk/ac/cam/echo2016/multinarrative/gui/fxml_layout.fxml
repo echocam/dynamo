@@ -98,7 +98,7 @@
                                     <TextField fx:id="itemName" promptText="Name" BorderPane.alignment="CENTER" />
                                  </top>
                                  <center>
-                                    <ListView BorderPane.alignment="CENTER">
+                                    <ListView fx:id="itemProperties" BorderPane.alignment="CENTER">
                                        <opaqueInsets>
                                           <Insets />
                                        </opaqueInsets>
