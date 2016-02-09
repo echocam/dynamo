@@ -22,7 +22,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.tool.InsertTool;
@@ -63,7 +62,7 @@ public class FXMLController {
     private TextField itemName;
     @FXML
     private TextField itemProperties;
-    
+
     private Boolean itemNode = null;
 
     private ToggleGroup group = new ToggleGroup();
@@ -198,11 +197,17 @@ public class FXMLController {
     public void selectNode(String name) {
 	nodes.getSelectionModel().select(name);
 	itemNode = true;
+	initSelect();
     }
 
     public void selectRoute(String name) {
 	routes.getSelectionModel().select(name);
 	itemNode = false;
+	initSelect();
+    }
+
+    public void initSelect() {
+
     }
 
 }
