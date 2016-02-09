@@ -1,12 +1,5 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
 
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ADD_EMPTY_STRING;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ALREADY_EXISTS;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NARRATIVE_PREFIX;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_PREFIX;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_DOES_NOT_EXIST;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_MISSING;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,6 +11,8 @@ import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.Node;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
 import uk.ac.cam.echo2016.multinarrative.Route;
+
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.*;
 
 /**
  * @author jr650
@@ -171,31 +166,23 @@ public class GUIOperations {
      * @throws NonUniqueIdException
      */
     // TODO: Check if node is out of bounds/illegal coordinate
-    public void addSynchNode(String name, double x, double y) throws IllegalOperationException, NonUniqueIdException// TODO
-                                                                                                                    // replace
-                                                                                                                    // this
-                                                                                                                    // exception
-                                                                                                                    // with
-                                                                                                                    // a
-                                                                                                                    // IllegalOperationException
-                                                                                                                    // with
-                                                                                                                    // sensible
-                                                                                                                    // error
-                                                                                                                    // message
+    public void addSynchNode(String name, double x, double y) throws IllegalOperationException
     {
         Coordinate coor = new Coordinate(x, y);
         if (nodes.containsKey(name)) {
-            // TODO replace this exception with a IllegalOperationException with
-            // sensible error message
-            throw new NonUniqueIdException("Node name already exists.");
+            throw new IllegalOperationException(NODE_ALREADY_EXISTS);
         }
         for (String nodename : nodes.keySet()) {
             if (coor.equals(nodes.get(nodename))) {
-                throw new IllegalOperationException("Node already exists at given position.");
+                throw new IllegalOperationException(NODE_ALREADY_AT_POSITION);
             }
         }
         nodes.put(name, coor);
-        multinarrative.newSynchronizationNode(name);
+        try {
+            multinarrative.newSynchronizationNode(name);
+        }catch (NonUniqueIdException e){
+            throw new IllegalOperationException(NODE_ALREADY_EXISTS);
+        }
     }
 
     /**
@@ -252,17 +239,17 @@ public class GUIOperations {
      * @throws GraphElementNotFoundException
      * @throws NonUniqueIdException
      */
-    public void addNarrative(String name, String start, String end) throws IllegalOperationException, // ok
-            NonUniqueIdException, // TODO replace this exception with a
-                                  // IllegalOperationException
-                                  // with a sensible error message
-            GraphElementNotFoundException// TODO replace this exception with a
-                                         // IllegalOperationException with
-                                         // sensible error message
+    public void addNarrative(String name, String start, String end) throws IllegalOperationException
     {
         // TODO Figure out how to get charID and REMOOOOOOOVE DIS
         String charID = "Filler";
-        multinarrative.newRoute(name, charID, start, end);
+        try {
+            multinarrative.newRoute(name, charID, start, end);
+        }catch(NonUniqueIdException e){
+            throw new IllegalOperationException(NARRATIVE_ALREADY_EXISTS);
+        }catch(GraphElementNotFoundException e){
+            throw new IllegalOperationException(NODE_DOES_NOT_EXIST);
+        }
         DFSCycleDetect cycleDetect = new DFSCycleDetect(multinarrative.getNode(start));
         if (cycleDetect.hasCycle()) {
             throw new IllegalOperationException("Cannot add route: Graph will contain a cycle");
