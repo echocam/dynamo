@@ -22,8 +22,17 @@ public class Debug {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
     
-    public static final int TYPE_NONE        = 0b00000000000000000000000000000000;
-    public static final int TYPE_ALL         = 0b11111111111111111111111111111111;
+    public static final class Type {
+    	public final int value;
+    	public final String name;
+    	public Type(int v, String n) {
+    		value = v;
+    		name = n;
+    	}
+    }
+    
+    public static final int TYPE_NONE  = 0b00000000000000000000000000000000;
+    public static final int TYPE_ALL   = 0b11111111111111111111111111111111;
     
     public static final int TYPE_ERROR       = 0b00000000000000000000000000000001;
 
@@ -111,13 +120,14 @@ public class Debug {
         Writer[] logOutputs = new Writer[1];
         logOutputs[0] = new PrintWriter(System.out);
         
-        int[] logTypes = {
+        int[] logTypes = { //TEMPORARY CONFIG
             TYPE_ALL,
             TYPE_GUI,
             TYPE_NONE,
             TYPE_GUI_USE,
             TYPE_ERROR
         };
+        
         for(Writer logOutput: logOutputs) {
             for(int i = logLevel - 1; i < 5; i++) {
                 if((logTypes[i] & logType) != 0) {
@@ -182,10 +192,5 @@ public class Debug {
         d.printInfo("Testing TYPE_ERROR level 3", 3, TYPE_ERROR);
         d.printInfo("Testing TYPE_ERROR level 2", 2, TYPE_ERROR);
         d.printInfo("Testing TYPE_ERROR level 1", 1, TYPE_ERROR);
-
-
-
-
-
     }
 }
