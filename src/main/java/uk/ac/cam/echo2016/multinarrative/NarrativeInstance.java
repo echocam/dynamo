@@ -104,16 +104,11 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         Node nEnd = route.getEnd();
 //        String s = nEnd == null ? "null"
 //            : nEnd + " " + (nEnd.getProperties() == null ? "null"
-//                : nEnd.getProperties() + " " + nEnd.getProperties().getInt("Impl.Node.Entries"));
+//                : nEnd.getProperties() + " " + nEnd.getEntering().size());
 //        System.out.println(s);
-        
-        // Decrement the entering routes counter
-        int routeEntres = nEnd.getProperties().getInt("Impl.Node.Entries"); // TODO improve naming convention?
-        --routeEntres;
-        nEnd.getProperties().putInt("Impl.Node.Entries", routeEntres);
 
         // If there are now no routes entering the node, kill it
-        if (routeEntres == 0) {
+        if (nEnd.getEntering().size() == 0) {
             kill(nEnd);
         } /*else {
             // If there are no routes entering of the same charId {
