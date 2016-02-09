@@ -5,6 +5,8 @@ import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_REMOVED;
 
 import java.io.IOException;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.tool.InsertTool;
@@ -48,29 +51,31 @@ public class FXMLController {
     private ListView<String> nodes;
     @FXML
     private ListView<String> routes;
-    
+
     @FXML
     private RadioButton select;
     @FXML
     private RadioButton insert;
-        
+
     @FXML
     private TitledPane itemEditor;
     @FXML
     private TextField itemName;
     @FXML
     private TextField itemProperties;
+    
+    private Boolean itemNode = null;
 
     private ToggleGroup group = new ToggleGroup();
-    
+
     private GUIOperations operations = new GUIOperations();
-    
+
     private Graph graph;
-    
+
     private SelectionTool selectTool;
     private InsertTool insertTool;
-    
-    public void init(){
+
+    public void init() {
 	graphArea.minHeightProperty().bind(scroll.heightProperty());
 	graphArea.minWidthProperty().bind(scroll.widthProperty());
 	graph = new Graph(scroll, graphArea, getOperations(), this);
@@ -80,19 +85,31 @@ public class FXMLController {
 	itemEditor.setDisable(true);
 	select.setToggleGroup(group);
 	insert.setToggleGroup(group);
+	nodes.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+	    @Override
+	    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+		routes.getSelectionModel().clearSelection();
+	    }
+	});
+	routes.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+	    @Override
+	    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+		nodes.getSelectionModel().clearSelection();
+	    }
+	});
     }
-    
-    @FXML 
-    protected void insertMode(){
+
+    @FXML
+    protected void insertMode() {
 	selectTool.resetSelection();
 	graph.setTool(insertTool);
     }
-    
-    @FXML 
-    protected void selectMode(){
+
+    @FXML
+    protected void selectMode() {
 	graph.setTool(selectTool);
     }
-    
+
     @FXML
     protected void addPropertyButtonAction(ActionEvent event) {
 
@@ -108,20 +125,20 @@ public class FXMLController {
 
 	}
     }
-    
+
     @FXML
-    protected void onKeyPress(KeyEvent event){
-	System.out.println("Press "+event);
-	if (event.getCode()==KeyCode.SHIFT){
+    protected void onKeyPress(KeyEvent event) {
+	System.out.println("Press " + event);
+	if (event.getCode() == KeyCode.SHIFT) {
 	    insert.fire();
 	    System.out.println(graph.getTool());
 	}
     }
-    
+
     @FXML
-    protected void onKeyRelease(KeyEvent event){
-	System.out.println("Release "+event);
-	if (event.getCode()==KeyCode.SHIFT){
+    protected void onKeyRelease(KeyEvent event) {
+	System.out.println("Release " + event);
+	if (event.getCode() == KeyCode.SHIFT) {
 	    select.fire();
 	    System.out.println(graph.getTool());
 	}
@@ -161,21 +178,31 @@ public class FXMLController {
     public GUIOperations getOperations() {
 	return operations;
     }
-    
-    public void addNode(String name){
+
+    public void addNode(String name) {
 	nodes.getItems().add(name);
     }
-    
-    public void addRoute(String name){
+
+    public void addRoute(String name) {
 	routes.getItems().add(name);
     }
-    
-    public void removeNode(String name){
+
+    public void removeNode(String name) {
 	nodes.getItems().remove(name);
     }
-    
-    public void removeRoute(String name){
+
+    public void removeRoute(String name) {
 	routes.getItems().remove(name);
+    }
+
+    public void selectNode(String name) {
+	nodes.getSelectionModel().select(name);
+	itemNode = true;
+    }
+
+    public void selectRoute(String name) {
+	routes.getSelectionModel().select(name);
+	itemNode = false;
     }
 
 }
