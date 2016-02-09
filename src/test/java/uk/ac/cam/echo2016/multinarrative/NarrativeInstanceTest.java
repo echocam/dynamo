@@ -150,7 +150,7 @@ public class NarrativeInstanceTest {
     }
 
     @Test
-    public void testNodeStructure() throws NullPointerException {
+    public void testNodeStructure() throws NullPointerException, InvalidGraphException {
 
         // Sample Tests //
 
@@ -215,20 +215,26 @@ public class NarrativeInstanceTest {
      * @throws NullPointerException
      */
 
-    /*
-     * @Test(expected = NullPointerException.class) public void testErrorThrown() throws NullPointerException {
-     * NarrativeTemplate template = new NarrativeTemplate(); template.route.putAll(routeMap);
-     * template.nodes.putAll(nodeMap);
-     * 
-     * @SuppressWarnings("unused") NarrativeInstance instance = new NarrativeInstance(template); }
-     */
-
-    /*
-     * @Test(expected = NullPointerException.class) public void testErrorThrown() throws NullPointerException {
-     * NarrativeTemplate template = new NarrativeTemplate(); template.routes.putAll(routeMap);
-     * template.nodes.putAll(nodeMap);
-     * 
-     * @SuppressWarnings("unused") NarrativeInstance instance = template.generateInstance(); }
-     */
-
+    
+    @Test(expected = InvalidGraphException.class) 
+    public void testErrorThrownIn1() throws InvalidGraphException {
+    	// creates template using the maps created above
+        NarrativeTemplate sampleTemplate = new NarrativeTemplate();
+        sampleTemplate.routes.putAll(sampleRoutes);
+        sampleTemplate.nodes.putAll(sampleNodes);
+        
+        @SuppressWarnings("unused")
+		NarrativeInstance sampleInst = sampleTemplate.generateInstance();
+    }
+    
+    @Test(expected = InvalidGraphException.class) 
+    public void testErrorThrownIn2() throws InvalidGraphException {
+    	// creates template using the maps created above
+        NarrativeTemplate sampleTemplate = new NarrativeTemplate();
+        sampleTemplate.routes.putAll(sampleRoutes);
+        sampleTemplate.nodes.putAll(sampleNodes);
+        
+        @SuppressWarnings("unused")
+		NarrativeInstance sampleInst = sampleTemplate.generateInstance2();
+    }
 }
