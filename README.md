@@ -5,7 +5,7 @@ This application is in development by James Riordan, Angus Hammond, Elise Xue, R
 
 
 Building, Running and Testing
-====================
+=============================
 
 You must have Java8 installed or above. The project is built using [Gradle](http://gradle.org/).
 
@@ -43,3 +43,52 @@ If you wish to specify the jdk path for gradle, add the following to the gradle.
 ```
 org.gradle.java.home=/home/tom/Desktop/jdk1.8.0_72
 ```
+
+Project (Java) Style Guide
+--------------------------
+
+### Indentation
+Indentation must be done with 4 spaces. NOT tabs.
+
+### Class Member Ordering
+It is advised that class members are ordered as follows:
+ - Fields
+ - Constructors
+ - Methods
+Then the next level of subordering must be:
+ - static members
+ - instance members
+Finally, within these catagories order things as follows:
+ - public
+ - protected
+ - package
+ - private
+
+Refer to the following example:
+```java
+class TestClass {
+    public static int publicStaticField = 0;
+    protected static int protectedStaticField = 0;
+    
+    public int publicInstanceMember;
+    private int privateInstanceMember;
+
+    public TestClass() {
+        privateInstanceMember = 0;
+    }
+
+    public static int publicStaticMethod() {
+        return publicStaticField;
+    }
+
+    package int packageInstanceMethod() {
+        return privateInstanceMember;
+    }
+}
+```
+Abiding by this is up to the programmer's discretion, but don't diverge from this format unless you have a good reason.
+
+### Maximum Line Length
+Lines must not be longer the 120 characters each.
+
+

@@ -23,6 +23,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.tool.InsertTool;
 import uk.ac.cam.echo2016.multinarrative.gui.tool.SelectionTool;
@@ -77,6 +78,7 @@ public class FXMLController {
     private InsertTool insertTool;
 
     public void init() {
+	      Debug.logInfo("Init Controller", 5, Debug.SYSTEM_GUI);
         graphArea.minHeightProperty().bind(scroll.heightProperty());
         graphArea.minWidthProperty().bind(scroll.widthProperty());
         graph = new Graph(scroll, graphArea, getOperations(), this);
@@ -138,12 +140,12 @@ public class FXMLController {
             addProperty(name);
         } catch (IllegalOperationException ioe) {
             setInfo(ioe.getMessage(), name);
-
         }
     }
 
     @FXML
     protected void onKeyPress(KeyEvent event) {
+      	Debug.logInfo("Key Pressed: "+event, 5, Debug.SYSTEM_GUI);
         if (event.getCode() == KeyCode.SHIFT) {
             insert.fire();
         }
@@ -151,12 +153,14 @@ public class FXMLController {
 
     @FXML
     protected void onKeyRelease(KeyEvent event) {
+	Debug.logInfo("Key Released: "+event, 5, Debug.SYSTEM_GUI);
         if (event.getCode() == KeyCode.SHIFT) {
             select.fire();
         }
     }
 
     protected void addProperty(String s) {
+	      Debug.logInfo("Add property: "+s, 5, Debug.SYSTEM_GUI);
         try {
             propertyName.setText("");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml_property.fxml"));
@@ -172,6 +176,7 @@ public class FXMLController {
     }
 
     protected boolean removeProperty(String s, TitledPane pane) {
+	      Debug.logInfo("Remove property: "+s, 5, Debug.SYSTEM_GUI);
         try {
             operations.removeProperty(s);
             properties.getPanes().remove(pane);
@@ -230,12 +235,12 @@ public class FXMLController {
     }
 
     public void changeSelectName() {
-        System.out.println("Change Select Name");
-        String prevName = itemNode ? nodes.getSelectionModel().getSelectedItem()
-                : routes.getSelectionModel().getSelectedItem();
-        String newName = itemName.getText();
+        Debug.logInfo("Change Selected Item Name", 5, Debug.SYSTEM_GUI);
 
         if (itemNode != null) {
+            String prevName = itemNode ? nodes.getSelectionModel().getSelectedItem()
+                    : routes.getSelectionModel().getSelectedItem();
+            String newName = itemName.getText();
             try {
                 if (itemNode) {
                     operations.renameNode(prevName, newName);
@@ -268,8 +273,8 @@ public class FXMLController {
             itemNode = null;
             itemName.setText(routes.getSelectionModel().getSelectedItem());
             itemNode = false;
-            itemProperties.setItems(FXCollections
-                    .observableList(operations.getRouteProperties(routes.getSelectionModel().getSelectedItem())));
+            itemProperties.getItems().clear();
+            itemProperties.getItems().addAll(operations.getNodeProperties(routes.getSelectionModel().getSelectedItem()));
         }
     }
 

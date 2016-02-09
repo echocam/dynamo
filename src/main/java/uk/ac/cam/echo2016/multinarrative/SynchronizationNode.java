@@ -20,10 +20,10 @@ import android.os.BaseBundle;
  * @see MultiNarrative
  */
 public class SynchronizationNode extends Node { // TODO Documentation
-	private static final long serialVersionUID = 1;
-	public SynchronizationNode(String id) {
-		super(id);
-	}
+    private static final long serialVersionUID = 1;
+    public SynchronizationNode(String id) {
+        super(id);
+    }
 
     protected Node create(String id) {
         return new SynchronizationNode(id);
