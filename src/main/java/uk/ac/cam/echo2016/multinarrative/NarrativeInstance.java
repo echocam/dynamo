@@ -78,14 +78,14 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         Route route = getRoute(id);
         if (route != null) {
             kill(route);
-            return true; // TODO alternate exception handling?
+            return true; // TODO change to throw GraphElementNotFoundException?
         } else {
             Node node = getNode(id);
             if (node != null) {
                 kill(node);
                 return true;
             }
-            return false; // TODO alternate exception handling?
+            return false; // TODO change to throw GraphElementNotFoundException?
         }
     }
 

@@ -27,7 +27,6 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Document
         Route route = routes.remove(id);
         if (route == null)
             return false;
-        
         // Should not return null else graph is broken
         route.getStart().getExiting().remove(route);
         route.getEnd().getEntering().remove(route);
@@ -39,15 +38,19 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Document
         Node node = nodes.remove(id);
         if (node == null) 
             return false;
-
-        // TODO replace with verion using enteringRoutes, or merge with kill()
-        for (Route route : new ArrayList<Route>(routes.values())) {
-            if (route.getStart() == node) {
-                removeRoute(route.getId());
-            } else if (route.getEnd() == node) {
-                removeRoute(route.getId());			
-            }
+        for (Route route : node.getEntering()) {
+            removeRoute(route.getId());
         }
+        for (Route route : node.getExiting()) {
+            removeRoute(route.getId());
+        }
+//        for (Route route : new ArrayList<Route>(routes.values())) {
+//            if (route.getStart() == node) {
+//                removeRoute(route.getId());
+//            } else if (route.getEnd() == node) {
+//                removeRoute(route.getId());			
+//            }
+//        }
 
         return true;		
     }

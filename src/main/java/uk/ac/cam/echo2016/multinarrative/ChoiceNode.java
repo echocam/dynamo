@@ -17,7 +17,7 @@ import android.os.BaseBundle;
  * @see SyncronizationNode
  * @see MultiNarrative 
  */
-public class ChoiceNode extends Node { // TODO Implementation and documentation
+public class ChoiceNode extends Node { // TODO Documentation
     private static final long serialVersionUID = 1;
 
     public ChoiceNode(String id) {
