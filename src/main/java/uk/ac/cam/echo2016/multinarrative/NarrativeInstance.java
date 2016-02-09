@@ -20,14 +20,6 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     private static final long serialVersionUID = 1;
     protected ArrayList<Node> activeNodes = new ArrayList<Node>();
 
-    public NarrativeInstance(NarrativeTemplate template) throws InvalidGraphException { // TODO Clean this up?
-        NarrativeInstance base = template.generateInstance();
-        this.routes = base.routes;
-        this.nodes = base.nodes;
-        this.start = base.start;
-        this.properties = base.properties;
-    }
-
     public NarrativeInstance(HashMap<String, Route> routes, HashMap<String, Node> nodes, SynchronizationNode start, BaseBundle properties) {
         this.routes = routes;
         this.nodes = nodes;

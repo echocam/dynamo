@@ -12,13 +12,16 @@ public class NarrativeInstanceTest {
     HashMap<String, Route> sampleRoutes = new HashMap<String, Route>();
     HashMap<String, Node> sampleNodes = new HashMap<String, Node>();
 
+    static final int LOAD_SIZE = 100000;
     HashMap<String, Route> loadRoutes = new HashMap<String, Route>();
     HashMap<String, Node> loadNodes = new HashMap<String, Node>();
-
+    
+    
+    /**
+     * Generic Test - From the Visual Basic Sample Diagram
+     */
     @Before
-    public void setup() {
-
-        // Standard Test // - From the Visual Basic Sample Diagram
+    public void generateSampleGraph() {
 
         sampleNodes.put("syncStart", new SynchronizationNode("syncStart")); // ___0
         sampleNodes.put("syncEnd", new SynchronizationNode("syncEnd")); // _______1
@@ -158,10 +161,13 @@ public class NarrativeInstanceTest {
         tempRoute.createProperties();
         tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Jessica")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
-
-        // Load Test // - binary tree with node "1X" having children "10X" and "11X"
-
-        for (int i = 1; i < 100000; ++i) {
+    }
+    /**
+     * Load Test - binary tree with node "1X" having children "10X" and "11X"
+     */
+    @Before
+    public void generateLoadGraph() {
+        for (int i = 1; i < LOAD_SIZE; ++i) {
             Node node = new ChoiceNode(Integer.toBinaryString(i));
             loadNodes.put(node.getId(), node);
         }
@@ -191,20 +197,20 @@ public class NarrativeInstanceTest {
                 loadRoutes.put(route2.getId(), route2);
             }
         }
+        // Add a start node (and route)
         SynchronizationNode start = new SynchronizationNode("start");
         Route startRoute = new Route("startRoute", start, loadNodes.get("1"));
         startRoute.setup();
         loadNodes.put("start", start);
         loadRoutes.put("startRoute", startRoute);
-
     }
 
     @Test
-    public void testNodeStructure() throws NullPointerException, InvalidGraphException {
+    public void sampleInstanceCreateAndKillTest() throws InvalidGraphException {
 
         // Sample Tests //
-
-        // creates template using the maps created above
+        
+        // Creates template using the maps created above
         NarrativeTemplate sampleTemplate = new NarrativeTemplate();
         sampleTemplate.routes.putAll(sampleRoutes);
         sampleTemplate.nodes.putAll(sampleNodes);
@@ -244,11 +250,13 @@ public class NarrativeInstanceTest {
         // Tests whether getRoute returns null for incorrect routes
         assertNull("Testing incorrect route: ", sampleInst.getRoute("routeBob1"));
 
-        // Tests whether the kill method works correctly NOTE: may need changing to 20 with character association
+        // Tests whether the kill method works correctly
         sampleInst.kill("routeMike1");
         assertEquals("Testing kill method: ", 20, sampleInst.routes.size());
-
-        // Load Test //
+    }
+    
+    @Test
+    public void loadTest() throws InvalidGraphException {
 
         NarrativeTemplate loadTemplate = new NarrativeTemplate();
         loadTemplate.routes.putAll(loadRoutes);
@@ -259,13 +267,6 @@ public class NarrativeInstanceTest {
         assertTrue("Testing load test constructor: ", loadInst.routes.containsKey("route10101"));
     }
 
-    /**
-     * Here template.start is not set, so an error is thrown.
-     * 
-     * @throws NullPointerException
-     */
-
-    
     @Test(expected = InvalidGraphException.class) 
     public void testErrorThrownIn1() throws InvalidGraphException {
     	// creates template using the maps created above
