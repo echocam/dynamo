@@ -9,19 +9,27 @@ import java.util.ArrayList;
 public class GameChoice { //TODO Todo's and documentation
     
     public static final int ACTION_MAJOR_DECISION = 0;
-    public static final int ACTION_CHOOSE_ROUTE = 0;
-    public static final int ACTION_CONTINUE = 0;
+    public static final int ACTION_CHOOSE_ROUTE = 1;
+    public static final int ACTION_CONTINUE = 2;
     
+    protected ArrayList<Route> options;
     protected boolean eventTrigger;
-    protected boolean eventIdentifier;
+    protected String eventIdentifier;
     protected int action;
+    
+    public GameChoice(boolean isTriggered, String nodeId, int actionName, ArrayList<Route> choices) {
+    	eventTrigger = isTriggered;
+    	eventIdentifier = nodeId;
+    	action = actionName;
+    	options = choices;
+    }
 
-    public boolean hasEvent() {return false;}
+    public boolean hasEvent() {return eventTrigger;}
     
-    public String getEventIdentifier() {return null;}
+    public String getEventIdentifier() {return eventIdentifier;}
     
-    public int getAction() {return 0;}
+    public int getAction() {return action;}
     
-    public ArrayList<Route> getOptions() {return null;}
+    public ArrayList<Route> getOptions() {return options;}
 
 }

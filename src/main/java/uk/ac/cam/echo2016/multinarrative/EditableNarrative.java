@@ -57,7 +57,7 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Document
         if (route == null)
             return false;
         
-        Route newRoute = new Route(newName, route.getCharId(), route.getStart(), route.getEnd());
+        Route newRoute = new Route(newName, route.getStart(), route.getEnd());
         
         // Update references of nodes at either end
         // Note setup must be called afterwards in case of the ids being the same
