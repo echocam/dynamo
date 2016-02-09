@@ -12,35 +12,27 @@ import java.io.PrintWriter;
  *
  */
 public class Debug {
-    private static final String ANSI_RESET = "\u001B[0m";
-    private static final String ANSI_BLACK = "\u001B[30m";
-    private static final String ANSI_RED = "\u001B[31m";
-    private static final String ANSI_GREEN = "\u001B[32m";
-    private static final String ANSI_YELLOW = "\u001B[33m";
-    private static final String ANSI_BLUE = "\u001B[34m";
-    private static final String ANSI_PURPLE = "\u001B[35m";
-    private static final String ANSI_CYAN = "\u001B[36m";
-    private static final String ANSI_WHITE = "\u001B[37m";
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
     
-    private static final int TYPE_NONE  = 0b00000000000000000000000000000000;
-    private static final int TYPE_ALL   = 0b11111111111111111111111111111111;
+    public static final int TYPE_NONE        = 0b00000000000000000000000000000000;
+    public static final int TYPE_ALL         = 0b11111111111111111111111111111111;
     
-    private static final int TYPE_ERROR = 0b00000000000000000000000000000001;
+    public static final int TYPE_ERROR       = 0b00000000000000000000000000000001;
 
     //The types below are all placeholder!
-    private static final int TYPE_GUI_DISPLAY = 0b10000000000000000000000000000000;
-    private static final int TYPE_GUI_USE     = 0b01000000000000000000000000000000;
-    private static final int TYPE_GUI         = TYPE_GUI_DISPLAY | TYPE_GUI_USE;
+    public static final int TYPE_GUI_DISPLAY = 0b10000000000000000000000000000000;
+    public static final int TYPE_GUI_USE     = 0b01000000000000000000000000000000;
+    public static final int TYPE_GUI         = TYPE_GUI_DISPLAY | TYPE_GUI_USE;
     
-    private static final int TYPE_ROUTE = 0b00100000000000000000000000000000;
-    
-    
-    //The base level of stuff you wish to see, the higher the number, the more information will be displayed.
-    private static final int PRIORITY_LEVEL = 3; //TODO(tr395): read this from config file at runtime, 
-                                                 //allow different types to have different priorities!
-    
-    //The types of information you wish to see printed.                                                          
-    private static final int RELAVENT_TYPES = TYPE_ALL; //TODO(tr395): read this from config file at runtime
+    public static final int TYPE_ROUTE       = 0b00100000000000000000000000000000;
     
     private static Debug instance = null;
     
