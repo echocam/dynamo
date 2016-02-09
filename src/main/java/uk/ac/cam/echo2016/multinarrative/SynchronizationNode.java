@@ -50,14 +50,11 @@ public class SynchronizationNode extends Node { // TODO Documentation
         
         GameChoice gameChoice;
         if (getEntering().size() == 1 && getExiting().size() == 1) {
-        	gameChoice = new GameChoice(true, getId(), GameChoice.ACTION_CONTINUE);
-        	gameChoice.getOptions().add(getExiting().get(0));
+        	gameChoice = new GameChoice(true, getId(), GameChoice.ACTION_CONTINUE, getExiting());
         } else if (isCompleted()){
-        	gameChoice = new GameChoice(true, getId(), GameChoice.ACTION_CHOOSE_ROUTE);
-        	gameChoice.getOptions().addAll(instance.getPlayableRoutes());
+        	gameChoice = new GameChoice(true, getId(), GameChoice.ACTION_CHOOSE_ROUTE, instance.getPlayableRoutes());
         } else {
-        	gameChoice = new GameChoice(false, null, GameChoice.ACTION_CHOOSE_ROUTE);
-        	gameChoice.getOptions().addAll(instance.getPlayableRoutes());
+        	gameChoice = new GameChoice(false, null, GameChoice.ACTION_CHOOSE_ROUTE, instance.getPlayableRoutes());
         }
         
         

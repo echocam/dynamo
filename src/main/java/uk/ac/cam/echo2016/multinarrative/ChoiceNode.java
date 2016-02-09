@@ -36,8 +36,7 @@ public class ChoiceNode extends Node { // TODO Implementation and documentation
         if (!this.getEntering().contains(completed)) {
         	throw new GraphElementNotFoundException("completed route not in this node's entering list");
         } 
-        GameChoice gameChoice = new GameChoice(true, getId(), GameChoice.ACTION_MAJOR_DECISION);
-        gameChoice.getOptions().addAll(getExiting());
+        GameChoice gameChoice = new GameChoice(true, getId(), GameChoice.ACTION_MAJOR_DECISION, getExiting());
         
         return gameChoice;
     }
