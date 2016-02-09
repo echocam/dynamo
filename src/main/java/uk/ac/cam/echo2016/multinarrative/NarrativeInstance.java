@@ -41,7 +41,18 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     public BaseBundle startRoute(String id) {
         Route route = getRoute(id);
         Node startNode = route.getStart();
-        activeNodes.remove(startNode); // TODO handle error - return false
+        if (startNode instanceof ChoiceNode) {
+        	activeNodes.remove(startNode);
+        	for (Route deadRoute : startNode.getExiting()) {
+        		if (deadRoute != route) {
+        			kill(deadRoute);
+        		}	
+        	}
+        } else {
+        	if (startNode.getExiting().size() == 1) {
+        		activeNodes.remove(startNode);
+        	}
+        }
         return startNode.startRoute(route);
     }
 
@@ -49,9 +60,9 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         Route route = getRoute(id);
         Node endNode = route.getEnd(); // TODO handle error - return null
         activeNodes.add(endNode);
-        // increments routes completed (if not found initialised to 0)
+        /*// increments routes completed (if not found initialised to 0)
         int routesCompleted = endNode.getProperties().getInt("Impl.Node.Completed");
-        endNode.getProperties().putInt("Impl.Node.Completed", ++routesCompleted);
+        endNode.getProperties().putInt("Impl.Node.Completed", ++routesCompleted);*/
         
         return endNode.onEntry(route, this);
     }
