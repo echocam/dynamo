@@ -2,6 +2,9 @@ package uk.ac.cam.echo2016.multinarrative.dev;
 
 import com.google.gson.*;
 
+import java.io.Writer;
+import java.io.PrintWriter;
+
 /**
  * This is a class that provides several useful methods that can help in debugging.
  * 
@@ -44,6 +47,27 @@ public class Debug {
     private Debug() {
         //TODO(tr395): initialise and read data from config.json.
         String jsonString = "{\"log\": {\"console\": {\"all\": 3,\"gui\": 5,\"error\": {\"level\": 4,\"colour\":\"red\"}},\"file\": {\"error\": 5,\"all\": 3}}";
+        /*
+{
+    "log": {
+        "console": {
+            "4": [
+                "error"
+            ]
+        },
+        "file": {
+            "1": [
+              "all"
+            ],
+            "4": [
+                "error",
+                "gui"
+            ]
+        }
+    }
+}
+
+        */
 
         //JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
 
@@ -91,16 +115,28 @@ public class Debug {
      *        If a particular piece of information belongs to multiple types, you can bitwise or them together.
      *        eg. TYPE_PUDDING | TYPE FAIRY.
      */
-    public void printInfo(String s, int priorityLevel, int type) {
-        if((
-            (priorityLevel <= PRIORITY_LEVEL) &&
-            ((type | RELAVENT_TYPES) != 0)
-           ) ||
-           priorityLevel <= 1
-        ) {
-            int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-            String debugString = lineNumber + ":" + s;
-            System.out.println(debugString);
+    public void printInfo(String s, int logLevel, int logType) {
+        Writer[] logOutputs = new Writer[1];
+        logOutputs[0] = new PrintWriter(System.out);
+        
+        int[] logTypes = {
+            TYPE_ALL,
+            TYPE_GUI,
+            TYPE_NONE,
+            TYPE_GUI_USE,
+            TYPE_ERROR
+        };
+        for(Writer logOutput: logOutputs) {
+            for(int i = logLevel - 1; i < 5; i++) {
+                if((logTypes[i] & logType) != 0) {
+                	StackTraceElement stackTrace = Thread.currentThread().getStackTrace()[2];
+                    int lineNumber = stackTrace.getLineNumber();
+                    String fileName = stackTrace.getFileName();
+                    String debugString = lineNumber + " " + fileName +": " + s;
+                    System.out.println(debugString);
+                    break;
+                }
+            }
         }
     }
     
@@ -136,12 +172,28 @@ public class Debug {
      *        If a particular piece of information belongs to multiple types, you can bitwise or them together.
      *        eg. TYPE_PUDDING | TYPE FAIRY.
      */
-    public void printError(String s, int priorityLevel, int type) {
-        printInfo(s, priorityLevel, type | TYPE_ERROR);
+    public void printError(String s, int logLevel, int type) {
+        printInfo(s, logLevel, type | TYPE_ERROR);
     }
     
     public static void main(String[] args) {
         System.out.println("testing debug class");
         Debug d = Debug.getInstance();
+        d.printInfo("Testing TYPE_GUI level 5", 5, TYPE_GUI);
+        d.printInfo("Testing TYPE_GUI_USE level 5", 5, TYPE_GUI_USE);
+        d.printInfo("Testing TYPE_GUI_DISPLAY level 5", 5, TYPE_GUI_DISPLAY);
+        d.printInfo("Testing TYPE_GUI_DISPLAY level 2", 2, TYPE_GUI_DISPLAY);
+        d.printInfo("Testing TYPE_ROUTE level 5", 5, TYPE_ROUTE);
+        d.printInfo("Testing TYPE_ROUTE level 1", 1, TYPE_ROUTE);
+        d.printInfo("Testing TYPE_ERROR level 5", 5, TYPE_ERROR);
+        d.printInfo("Testing TYPE_ERROR level 4", 4, TYPE_ERROR);
+        d.printInfo("Testing TYPE_ERROR level 3", 3, TYPE_ERROR);
+        d.printInfo("Testing TYPE_ERROR level 2", 2, TYPE_ERROR);
+        d.printInfo("Testing TYPE_ERROR level 1", 1, TYPE_ERROR);
+
+
+
+
+
     }
 }
