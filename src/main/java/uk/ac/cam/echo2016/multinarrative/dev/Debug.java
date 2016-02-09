@@ -2,8 +2,11 @@ package uk.ac.cam.echo2016.multinarrative.dev;
 
 import com.google.gson.*;
 
+import java.io.IOException;
 import java.io.Writer;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * This is a class that provides several useful methods that can help in debugging.
@@ -22,15 +25,6 @@ public class Debug {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
     
-    public static final class Type {
-    	public final int value;
-    	public final String name;
-    	public Type(int v, String n) {
-    		value = v;
-    		name = n;
-    	}
-    }
-    
     public static final int TYPE_NONE  = 0b00000000000000000000000000000000;
     public static final int TYPE_ALL   = 0b11111111111111111111111111111111;
     
@@ -43,36 +37,31 @@ public class Debug {
     
     public static final int TYPE_ROUTE       = 0b00100000000000000000000000000000;
     
+    private final int[] consoleLogLevels;
+    
     private static Debug instance = null;
     
     private Debug() {
-        //TODO(tr395): initialise and read data from config.json.
-        String jsonString = "{\"log\": {\"console\": {\"all\": 3,\"gui\": 5,\"error\": {\"level\": 4,\"colour\":\"red\"}},\"file\": {\"error\": 5,\"all\": 3}}";
-        /*
-{
-    "log": {
-        "console": {
-            "4": [
-                "error"
-            ]
-        },
-        "file": {
-            "1": [
-              "all"
-            ],
-            "4": [
-                "error",
-                "gui"
-            ]
-        }
-    }
-}
-
-        */
-
-        //JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
-
-        //jsonObject.get("name").getAsString(); //John
+    	try {
+			String jsonString = new String(Files.readAllBytes(Paths.get("config.json")));
+			JsonObject logConfig = new JsonParser().parse(jsonString).getAsJsonObject().getAsJsonObject("log");
+			
+			JsonObject consoleConfig = logConfig.getAsJsonObject("console");
+			consoleLogLevels = new int[5];
+			for(int logLevel = 1; logLevel <= 5; logLevel++) {
+				if(consoleConfig.has(Integer.toString(logLevel))) {
+					JsonArray logLevelConfig = consoleConfig.getAsJsonArray(Integer.toString(logLevel));
+					int configType = TYPE_NONE;
+					for(int j = 0; j < logLevelConfig.size(); j++) {
+						String configTypeName = logLevelConfig.get(j).getAsString();
+						configType = configType | Debug.class.getField("TYPE_" + configTypeName.toUpperCase()).getInt(this);
+					}
+					consoleLogLevels[logLevel - 1] = configType;
+				}
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
     }
     
     public static Debug getInstance() {
@@ -119,14 +108,9 @@ public class Debug {
     public static void logInfo(String s, int logLevel, int logType) {
         Writer[] logOutputs = new Writer[1];
         logOutputs[0] = new PrintWriter(System.out);
+        Debug d = Debug.getInstance();
         
-        int[] logTypes = { //TEMPORARY CONFIG
-            TYPE_ALL,
-            TYPE_GUI,
-            TYPE_NONE,
-            TYPE_GUI_USE,
-            TYPE_ERROR
-        };
+        int[] logTypes = d.consoleLogLevels;
         
         for(Writer logOutput: logOutputs) {
             for(int i = logLevel - 1; i < 5; i++) {
