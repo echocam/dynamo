@@ -18,16 +18,16 @@ import android.os.BaseBundle;
  * @see MultiNarrative 
  */
 public class ChoiceNode extends Node { // TODO Implementation and documentation
-	private static final long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
-	public ChoiceNode(String id) {
-		super(id);
-	}
+    public ChoiceNode(String id) {
+        super(id);
+    }
 
 	protected Node create(String id) {
 		return new ChoiceNode(id);
 	}
-
+	
     public BaseBundle startRoute(Route option) {
         return option.getProperties();
     };

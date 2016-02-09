@@ -101,7 +101,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 //        System.out.println("Killing: " + route.getId());
         Node nEnd = route.getEnd();
         
-        Debug.printInfo("Killing " + route.getId(), 4, 0); // TODO change class
+        Debug.logInfo("Killing " + route.getId(), 4, 0); // TODO change class
 
         nEnd.getEntering().remove(route);
         // If there are now no routes entering the node, kill it

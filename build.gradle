@@ -16,6 +16,8 @@ repositories {
 
 dependencies {
   testCompile 'junit:junit:4.12'
+  compile 'com.google.code.gson:gson:2.5'
+  runtime 'com.google.code.gson:gson:2.5'
 }
 
 compileJava {
@@ -40,11 +42,6 @@ test {
   beforeTest { descriptor ->
      logger.lifecycle("Running test: " + descriptor)
   }
-
-  // listen to standard out and standard error of the test JVM(s)
-  onOutput { descriptor, event ->
-     logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
-  }
 }
 
 task copyFXMLandCSS (type: Copy) {
@@ -53,13 +50,20 @@ task copyFXMLandCSS (type: Copy) {
     include('**/*.fxml', '**/*.css')
 }
 
+task copyConfig (type: Copy) {
+    from main_src
+    into main_build
+    include('**/*.json')
+}
+
 assemble.dependsOn copyFXMLandCSS
+assemble.dependsOn copyConfig
 
 task runGui(type: JavaExec) {
+      classpath = sourceSets.main.runtimeClasspath
       workingDir = main_build
       main = 'uk.ac.cam.echo2016.multinarrative.gui.FXMLGUI'
 }
 
 runGui.dependsOn assemble
-
 

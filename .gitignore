@@ -16,7 +16,10 @@ local.properties
 
 /bin/
 
+logs/*
+
 ignore/
 Echo/*
-
+/build/
 test.gui
+
