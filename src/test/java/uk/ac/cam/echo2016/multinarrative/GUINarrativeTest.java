@@ -164,7 +164,7 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     @Test
     public void newRouteTest() throws NonUniqueIdException, GraphElementNotFoundException {
     	gNarr.removeRoute("link4");
-    	gNarr.newRoute("newLink4", "Chris", "left", "end");
+    	gNarr.newRoute("newLink4", "left", "end");
     	
     	assertNotNull("Check route added to routes", gNarr.getRoute("newLink4"));
     	assertNull("Check old route removed", gNarr.getRoute("link4"));
@@ -213,7 +213,7 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     @Test
     public void insertChoiceOnRoute1Test() throws NonUniqueIdException, GraphElementNotFoundException {
     	// Tests insertChoiceOnRoute(String routeId, String charId, String newChoiceId, String newRouteId)
-    	gNarr.insertChoiceOnRoute("link2", "Chris", "newChoice", "newLink");
+    	gNarr.insertChoiceOnRoute("link2", "newChoice", "newLink");
     	
     	assertNotNull("Check new node in nodes", gNarr.getNode("newChoice"));
     	assertNotNull("Check new route in routes", gNarr.getRoute("newLink"));
@@ -231,23 +231,23 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     
     @Test(expected=NonUniqueIdException.class)
     public void insertChoiceOnRoute1StartExceptionTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.insertChoiceOnRoute("link2", "Chris", "start", "newlink");
+    	gNarr.insertChoiceOnRoute("link2", "start", "newlink");
     }
     
     @Test(expected=NonUniqueIdException.class)
     public void insertChoiceOnRoute1RouteExceptionTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.insertChoiceOnRoute("link2", "Chris", "newChoice", "link3");
+    	gNarr.insertChoiceOnRoute("link2", "newChoice", "link3");
     }
     
     @Test(expected=GraphElementNotFoundException.class)
     public void insertChoiceOnRoute1WrongLinkTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.insertChoiceOnRoute("wrongLink", "Chris", "newChoice", "newLink");
+    	gNarr.insertChoiceOnRoute("wrongLink", "newChoice", "newLink");
     }
     
     @Test
     public void insertChoiceOnRoute2Test() throws NonUniqueIdException, GraphElementNotFoundException {
     	// Tests insertChoiceOnRoute(String routeId, String newChoiceId, String newRouteId1, String newRouteId2) 
-    	gNarr.insertChoiceOnRoute("link5", "Chris", "newChoice", "link5.1", "link5.2");
+    	gNarr.insertChoiceOnRoute("link5", "newChoice", "link5.1", "link5.2");
     	
     	assertNotNull("Check new node in nodes", gNarr.getNode("newChoice"));
     	assertNotNull("Check first route in routes", gNarr.getRoute("link5.1"));
@@ -266,22 +266,22 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     
     @Test(expected=NonUniqueIdException.class)
     public void insertChoiceOnRoute2StartExceptionTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.insertChoiceOnRoute("link2", "Chris", "start", "newLink1", "newlink2");
+    	gNarr.insertChoiceOnRoute("link2", "start", "newLink1", "newlink2");
     }
     
     @Test(expected=NonUniqueIdException.class)
     public void insertChoiceOnRoute2StartRouteExceptionTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.insertChoiceOnRoute("link2", "Chris", "newChoice", "link3", "newLink");
+    	gNarr.insertChoiceOnRoute("link2", "newChoice", "link3", "newLink");
     }
     
     @Test(expected=NonUniqueIdException.class)
     public void insertChoiceOnRoute2EndRouteExceptionTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.insertChoiceOnRoute("link2", "Chris", "newChoice", "newLink", "link3");
+    	gNarr.insertChoiceOnRoute("link2", "newChoice", "newLink", "link3");
     }
     
     @Test(expected=GraphElementNotFoundException.class)
     public void insertChoiceOnRoute2WrongLinkTest() throws NonUniqueIdException, GraphElementNotFoundException {
-    	gNarr.insertChoiceOnRoute("wrongLink", "Chris", "newChoice", "newLink1", "newLink2");
+    	gNarr.insertChoiceOnRoute("wrongLink", "newChoice", "newLink1", "newLink2");
     }
     	
 }
