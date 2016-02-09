@@ -29,25 +29,19 @@ public class GraphNode {
 	this.y = y;
     }
 
-    public void translate(double x, double y, double scale) {
-	this.x += x/scale;
-	this.y += y/scale;
+    public void translate(double x, double y) {
+	this.x += x;
+	this.y += y;
 	
 	contents.relocate(contents.getLayoutX()+x, contents.getLayoutY()+y);	
     }
     
-    public void scale(double scale){
-	contents.relocate(x*scale, y*scale);
-	contents.setScaleX(scale);
-	contents.setScaleY(scale);
+    public double getX(){
+	return x;
     }
     
-    public double getX(double scale){
-	return x*scale;
-    }
-    
-    public double getY(double scale){
-	return y*scale;
+    public double getY(){
+	return y;
     }
     
     public Region getContents(){
