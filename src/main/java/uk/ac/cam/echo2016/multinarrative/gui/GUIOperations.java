@@ -329,7 +329,7 @@ public class GUIOperations {
      * @param node Node id
      * @return List of properties in the form "name=value"
      */
-    public static List<String> getNodeProperties(String node) {
+    public List<String> getNodeProperties(String node) {
          ArrayList<String> r = new ArrayList<String>();
          r.add("Hello World!");
          return r;
@@ -340,9 +340,19 @@ public class GUIOperations {
      * @param node Route id
      * @return List of properties in the form "name=value"
      */
-    public static List<String> getRouteProperties(String route) {
+    public List<String> getRouteProperties(String route) {
          ArrayList<String> r = new ArrayList<String>();
          r.add("Hello World!");
          return r;
     }
-}
+    
+    /**
+     * TODO
+     * @param from
+     * @param to
+     * @throws IllegalOperationException
+     */
+    public void renameNode(String from, String to) throws IllegalOperationException{
+        
+    }
+ }
