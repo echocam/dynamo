@@ -14,11 +14,24 @@ public class Strings{
     public static final String ALREADY_EXISTS = "Property %1 already exists.";
     public static final String INVALID_TYPE = "Type cannot be resolved.";
     public static final String PROPERTY_DOES_NOT_EXIST = "Property %1 does not exist.";
+    public static final String NODE_ALREADY_EXISTS = "A node with that name already exists";
+    public static final String NODE_DOES_NOT_EXIST = "No node with that name exists";
+    public static final String NODE_ALREADY_AT_POSITION = "Node already exists at given position.";
+    public static final String NARRATIVE_ALREADY_EXISTS = "A narrative with this name already exists";
 
-    
+    public static final String NARRATIVE_PREFIX = "Narrative-%1";
+    public static final String NODE_PREFIX = "Node-%1";
 
     private Strings(){}
 
+    public static String populateString(String template, Object... values){
+        String r = template;
+        for(int i = 0;i<values.length;i++){
+            r = r.replace((CharSequence)("%"+(i+1)),values[i].toString());
+        }
+        return r;
+    }
+    
     public static String populateString(String template, String... values){
         String r = template;
         for(int i = 0;i<values.length;i++){

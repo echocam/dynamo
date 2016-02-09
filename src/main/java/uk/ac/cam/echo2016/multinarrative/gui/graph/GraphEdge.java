@@ -1,5 +1,6 @@
 package uk.ac.cam.echo2016.multinarrative.gui.graph;
 
+import javafx.beans.property.StringProperty;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -20,9 +21,9 @@ public class GraphEdge {
     private CubicCurve display;
     private Circle control;
 
-    private String name;
+    private StringProperty name;
 
-    public GraphEdge(String name, GraphNode source, GraphNode dest, CubicCurve curve, Circle midpoint) {
+    public GraphEdge(StringProperty name, GraphNode source, GraphNode dest, CubicCurve curve, Circle midpoint) {
 	this.name = name;
 	from = source;
 	to = dest;
@@ -44,12 +45,12 @@ public class GraphEdge {
 	yOffset += y;
     }
 
-    public void update(double scale) {
+    public void update() {
 
-	double startX = from.getX(scale) + from.getContents().getWidth() / 2;
-	double startY = from.getY(scale) + from.getContents().getHeight() / 2;
-	double endX = to.getX(scale) + to.getContents().getWidth() / 2;
-	double endY = to.getY(scale) + to.getContents().getHeight() / 2;
+	double startX = from.getX() + from.getContents().getWidth() / 2;
+	double startY = from.getY() + from.getContents().getHeight() / 2;
+	double endX = to.getX() + to.getContents().getWidth() / 2;
+	double endY = to.getY() + to.getContents().getHeight() / 2;
 
 	display.setStartX(startX);
 	display.setStartY(startY);
@@ -60,8 +61,8 @@ public class GraphEdge {
 	double cY = startY + endY;
 	cX /= 2.0;
 	cY /= 2.0;
-	cX += xOffset * scale;
-	cY += yOffset * scale;
+	cX += xOffset;
+	cY += yOffset;
 	
 	display.setControlX1(cX);
 	display.setControlY1(cY);
@@ -94,8 +95,12 @@ public class GraphEdge {
 	yOffset += yOff;
     }
 
-    public String getName() {
+    public StringProperty getNameProperty() {
 	return name;
+    }
+    
+    public String getName(){
+        return name.get();
     }
 
 }

@@ -33,17 +33,19 @@ public class NarrativeTemplate extends MultiNarrative {
     /**
      *
      * @return
+     * @throws InvalidGraphException 
      */
-    public NarrativeInstance generateInstance() {
+    public NarrativeInstance generateInstance() throws InvalidGraphException {
         HashMap<String, Node> r_nodes = new HashMap<>();
         HashMap<String, Route> r_routes = new HashMap<>();
         
-        if (start == null) {throw new RuntimeException();} // TODO better exception
+        if (start == null) {throw new InvalidGraphException("Graph does not have a start node.");} 
         
         for (Node node : nodes.values()) {
             Node r_node = node.clone();
             r_node.createProperties();
-            r_node.setOptions(new ArrayList<Route>());
+            r_node.setExiting(new ArrayList<Route>());
+            r_node.setEntering(new ArrayList<Route>());
             r_nodes.put(node.getId(), r_node);
         }
 
@@ -53,29 +55,24 @@ public class NarrativeTemplate extends MultiNarrative {
             
             r_route.setStart(r_nodes.get(route.getStart().getId()));
             r_route.setEnd(r_nodes.get(route.getEnd().getId()));
-            r_route.getStart().getOptions().add(r_route);
-            
-            // Increments the route entries property (if not found initialised to 0)
-            int routeEntries = r_route.getEnd().getProperties().getInt("Impl.Node.Entries");
-            r_route.getEnd().getProperties().putInt("Impl.Node.Entries", ++routeEntries);
+            r_route.getStart().getExiting().add(r_route);
+            r_route.getEnd().getEntering().add(r_route);
             
             r_routes.put(route.getId(), r_route);
         }
-        SynchronizationNode r_start = (SynchronizationNode) r_nodes.get(start.getId()); // TODO CHECK
+        SynchronizationNode r_start = (SynchronizationNode) r_nodes.get(start.getId());
 
-        NarrativeInstance instance = new NarrativeInstance(r_routes, r_nodes, r_start);
+        NarrativeInstance instance = new NarrativeInstance(r_routes, r_nodes, r_start, BaseBundle.deepcopy(this.properties));
         return instance;
     }
     
     
     
-	 public NarrativeInstance generateInstance2() { // TODO more appropriate exception?
+	 public NarrativeInstance generateInstance2() throws InvalidGraphException {
 	 NarrativeInstance instance = new NarrativeInstance();
 
-        if (start == null) {
-            throw new RuntimeException();
-        } // TODO better exception
-        instance.start = (SynchronizationNode) copyToGraph(this.start, instance);
+        if (start == null) { throw new InvalidGraphException("Graph does not have a start node."); }
+        instance.start = (SynchronizationNode) copyToInstance(this.start, instance);
         instance.setActive(start);
         return instance;
     }
@@ -87,10 +84,10 @@ public class NarrativeTemplate extends MultiNarrative {
      * 
      * @param instance
      */
-    public Node copyToGraph(Node node, NarrativeInstance instance) { // TODO More Documentation
+    public Node copyToInstance(Node node, NarrativeInstance instance) { // TODO More Documentation
 
         // Eventually calls Node(this.id) via subclass's constructor
-        Node result = node.newInstance(node.getId());
+        Node result = node.create(node.getId());
         
 //        Node result = null;
 //        try {
@@ -106,33 +103,21 @@ public class NarrativeTemplate extends MultiNarrative {
         if (node.getProperties() != null) // Copy getProperties() across, if any
             result.setProperties(BaseBundle.deepcopy(node.getProperties()));
         // Copy each route leaving node node and call copyGraph on their end nodes
-        for (Route templateRoute : node.options) {
+        for (Route templateRoute : node.getExiting()) {
             Node endNodeCopy;
             if (!instance.nodes.containsKey(templateRoute.getEnd().getId())) {
                 // Not already copied
-                endNodeCopy = copyToGraph(templateRoute.getEnd(), instance); // Recursively copy nodes at the ends of
-
-                // Create and update entryList property
-                endNodeCopy.createProperties();
-
-                endNodeCopy.getProperties().putInt("Impl.Node.Entries", 1);
+                endNodeCopy = copyToInstance(templateRoute.getEnd(), instance); // Recursively copy nodes at the ends of
             } else {
                 // Already copied
-
                 endNodeCopy = instance.getNode(templateRoute.getEnd().getId()); // Get reference to copied end
-                // Update entryList property
-
-                int routeEntries = endNodeCopy.getProperties().getInt("Impl.Node.Entries");
-                routeEntries++;
-                endNodeCopy.getProperties().putInt("Impl.Node.Entries", routeEntries);
             }
 
             // Create route using references obtained/created above, linking node node to the new end nodes
-            Route routeCopy = new Route(templateRoute.getId(), templateRoute.getCharId(), result, endNodeCopy);
-            routeCopy.setProperties(templateRoute.getProperties());
+            Route routeCopy = new Route(templateRoute.getId(), result, endNodeCopy);
+            routeCopy.setup();
+            routeCopy.setProperties(BaseBundle.deepcopy(templateRoute.getProperties()));
             
-            // Update route references
-            result.getOptions().add(routeCopy);
             // Update graph references
             instance.routes.put(routeCopy.getId(), routeCopy);
         }

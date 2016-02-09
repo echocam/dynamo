@@ -40,7 +40,7 @@
             </VBox>
          </right>
          <top>
-            <ComboBox fx:id="type" prefWidth="1000.0" promptText="Choose A Type" BorderPane.alignment="CENTER">
+            <ComboBox fx:id="type" onAction="#changeTypeAction" prefWidth="1000.0" promptText="Choose A Type" BorderPane.alignment="CENTER">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
                         <String fx:value="String" />

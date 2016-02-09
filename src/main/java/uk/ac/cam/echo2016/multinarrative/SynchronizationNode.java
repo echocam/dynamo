@@ -20,25 +20,43 @@ import android.os.BaseBundle;
  * @see MultiNarrative
  */
 public class SynchronizationNode extends Node { // TODO Documentation
-	private static final long serialVersionUID = 1;
-	public SynchronizationNode(String id) {
-		super(id);
-	}
+    private static final long serialVersionUID = 1;
+    public SynchronizationNode(String id) {
+        super(id);
+    }
 
-    protected Node newInstance(String id) {
+    protected Node create(String id) {
         return new SynchronizationNode(id);
     }
 
     public BaseBundle startRoute(Route option) {
         return option.getProperties();
     }
+    
+    private boolean isCompleted() {
+    	for (Route route : getEntering()) {
+    		if (!route.getProperties().containsKey("System.isCompleted")) {
+    			return false;
+    		}
+    	}
+    	
+    	return true;
+    }
 
-    public GameChoice onEntry(Route completed, NarrativeInstance instance) {
-        GameChoice gameChoice = new GameChoice();
-        if (!this.getOptions().contains(completed)) {
-        } // TODO Exception needed???
+    public GameChoice onEntry(Route completed, NarrativeInstance instance) throws GraphElementNotFoundException {
+        if (!getEntering().contains(completed)) {
+        	throw new GraphElementNotFoundException("completed route not in this nodes entering list");
+        } 
         
-        //TODO initialise gameChoice
+        GameChoice gameChoice;
+        if (getEntering().size() == 1 && getExiting().size() == 1) {
+        	gameChoice = new GameChoice(true, getId(), GameChoice.ACTION_CONTINUE, getExiting());
+        } else if (isCompleted()){
+        	gameChoice = new GameChoice(true, getId(), GameChoice.ACTION_CHOOSE_ROUTE, instance.getPlayableRoutes());
+        } else {
+        	gameChoice = new GameChoice(false, null, GameChoice.ACTION_CHOOSE_ROUTE, instance.getPlayableRoutes());
+        }
+        
         
         return gameChoice;
     }

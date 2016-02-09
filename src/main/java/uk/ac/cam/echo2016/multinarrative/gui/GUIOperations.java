@@ -1,13 +1,9 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
 
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ADD_EMPTY_STRING;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ALREADY_EXISTS;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_DOES_NOT_EXIST;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_MISSING;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import android.os.BaseBundle;
 import uk.ac.cam.echo2016.multinarrative.GUINarrative;
@@ -18,24 +14,28 @@ import uk.ac.cam.echo2016.multinarrative.Route;
 import uk.ac.cam.echo2016.multinarrative.gui.IllegalOperationException;
 import uk.ac.cam.echo2016.multinarrative.gui.GUIOperations.DFSCycleDetect;
 
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.*;
+
 /**
  * @author jr650
  * @author eyx20
  */
-public class GUIOperations{
-    
+public class GUIOperations {
+
     private GUINarrative multinarrative;
 
     private HashMap<String, BaseBundle> properties;
-    private HashMap<String, Node> nodeslist;
+    private HashMap<String, Node> nodeslist;// TODO remove this as it isn't used
     private HashMap<String, Coordinate> nodes;
+<<<<<<< HEAD
     private static final String SYNCH_NODE_PREFIX = "SynchNode-";
+=======
+>>>>>>> f612303aba6a48ddc5ed055a0fa55bc7a275e9cc
     private static int nodeCounter = 1;
-    private static final String NARRATIVE_PREFIX = "Narrative-";
     private static int narrativeCounter = 1;
-    
+
     /**
-     * Construtor. Creates a new GUIOperations.
+     * Constructor. Creates a new GUIOperations.
      */
     public GUIOperations() {
         multinarrative = new GUINarrative();
@@ -43,14 +43,15 @@ public class GUIOperations{
         nodes = new HashMap<String, Coordinate>();
         nodeslist = new HashMap<String, Node>();
     }
-    
+
     /**
      * Adds the required property
-     * @throws IllegalOperationException if can't add property, 
-     * message of exception is displayed to the user, using the Strings
-     * class for formatting.
-     */    
-    public void addProperty(String s) throws IllegalOperationException{
+     * 
+     * @throws IllegalOperationException
+     *             if can't add property, message of exception is displayed to
+     *             the user, using the Strings class for formatting.
+     */
+    public void addProperty(String s) throws IllegalOperationException {
         if (s.equals("") || s == null) {
             throw new IllegalOperationException(ADD_EMPTY_STRING);
         }
@@ -58,24 +59,29 @@ public class GUIOperations{
             throw new IllegalOperationException(ALREADY_EXISTS);
         }
         properties.put(s, new BaseBundle());
-        
+
     }
-    
+
     /**
      * Adds a value to a given property
-     * @param property - property name to add value to
-     * @param type - data type of the value, selected from {"String", "Integer", "Boolean", "Byte",
-     * "Short", "Long", "Float", "Double"}
-     * @param value - value to be added
-     * @throws IllegalOperationException when value cannot be added to the property.
-     * Informative message is sent to the user.
+     * 
+     * @param property
+     *            - property name to add value to
+     * @param type
+     *            - data type of the value, selected from {"String", "Integer",
+     *            "Boolean", "Byte", "Short", "Long", "Float", "Double"}
+     * @param value
+     *            - value to be added
+     * @throws IllegalOperationException
+     *             when value cannot be added to the property. Informative
+     *             message is sent to the user.
      */
     public void addValue(String property, String type, String value) throws IllegalOperationException {
         if (!properties.containsKey(property)) {
             throw new IllegalOperationException(PROPERTY_DOES_NOT_EXIST);
         }
         switch (type) {
-        case "String": 
+        case "String":
             properties.get(property).putString(value, value);
             break;
         case "Integer":
@@ -101,36 +107,37 @@ public class GUIOperations{
             break;
         default:
             throw new IllegalOperationException("Type " + type + " connot be resolved.");
-        
+
         }
     }
-    
+
     /**
      * Removes the required property
-     * @throws IllegalOperationException if can't remove property, 
-     * message of exception is displayed to the user, using the Strings
-     * class for formatting.
+     * 
+     * @throws IllegalOperationException
+     *             if can't remove property, message of exception is displayed
+     *             to the user, using the Strings class for formatting.
      */
-    public void removeProperty(String s) throws IllegalOperationException{
+    public void removeProperty(String s) throws IllegalOperationException {
         if (!properties.containsKey(s)) {
             throw new IllegalOperationException("Property " + s + " does not exist.");
         }
         properties.remove(s);
     }
-    
+
     /**
      * Changes the name of the required property
-     * @throws IllegalOperationException if can't rename property, 
-     * message of exception is displayed to the user, using the Strings
-     * class for formatting.
+     * 
+     * @throws IllegalOperationException
+     *             if can't rename property, message of exception is displayed
+     *             to the user, using the Strings class for formatting.
      */
-    public void renameProperty(String from, String to) throws IllegalOperationException{
+    public void renameProperty(String from, String to) throws IllegalOperationException {
         if (!properties.containsKey(from)) {
             throw new IllegalOperationException(PROPERTY_MISSING);
         }
         if (properties.containsKey(to)) {
-            throw new IllegalOperationException("Property cannot be renamed to " + to + ": "
-                    + to + " already exists.");
+            throw new IllegalOperationException("Property cannot be renamed to " + to + ": " + to + " already exists.");
         }
 
         BaseBundle oldprop = properties.get(from);
@@ -138,50 +145,66 @@ public class GUIOperations{
 
         properties.remove(from);
     }
-    
+
     /**
      * Gets a name that's not already in the graph.
+     * 
      * @return new node name
      */
+<<<<<<< HEAD
     public String getUniqueNodeName(){
         String newName = SYNCH_NODE_PREFIX + nodeCounter;
+=======
+    public String getUniqueNodeName() {
+        String newName = Strings.populateString(NODE_PREFIX, nodeCounter);
+>>>>>>> f612303aba6a48ddc5ed055a0fa55bc7a275e9cc
         if (!nodes.containsKey(newName)) {
             nodeCounter += 1;
             return newName;
         } else {
             while (nodes.containsKey(newName)) {
                 nodeCounter += 1;
+<<<<<<< HEAD
                 newName = SYNCH_NODE_PREFIX + nodeCounter;
+=======
+                newName = Strings.populateString(NODE_PREFIX, nodeCounter);
+>>>>>>> f612303aba6a48ddc5ed055a0fa55bc7a275e9cc
             }
             nodeCounter += 1;
             return newName;
-        } 
+        }
     }
-    
+
     /**
      * Adds a node, throwing exception if it fails.
-     * @throws NonUniqueIdException 
+     * 
+     * @throws NonUniqueIdException
      */
-    //TODO: Check if node is out of bounds/illegal coordinate
-    public void addSynchNode(String name, double x, double y) throws IllegalOperationException, NonUniqueIdException{
+    // TODO: Check if node is out of bounds/illegal coordinate
+    public void addSynchNode(String name, double x, double y) throws IllegalOperationException
+    {
         Coordinate coor = new Coordinate(x, y);
         if (nodes.containsKey(name)) {
-            throw new NonUniqueIdException("Node name already exists.");
+            throw new IllegalOperationException(NODE_ALREADY_EXISTS);
         }
         for (String nodename : nodes.keySet()) {
             if (coor.equals(nodes.get(nodename))) {
-                throw new IllegalOperationException("Node already exists at given position.");
+                throw new IllegalOperationException(NODE_ALREADY_AT_POSITION);
             }
         }
         nodes.put(name, coor);
-        multinarrative.newSynchronizationNode(name);
+        try {
+            multinarrative.newSynchronizationNode(name);
+        }catch (NonUniqueIdException e){
+            throw new IllegalOperationException(NODE_ALREADY_EXISTS);
+        }
     }
-    
+
     /**
      * Repositions a node by the given offset
      */
-  //TODO: Check if node is out of bounds/illegal coordinate
-    public void translateNode(String name, double x, double y) throws IllegalOperationException{
+    // TODO: Check if node is out of bounds/illegal coordinate
+    public void translateNode(String name, double x, double y) throws IllegalOperationException {
         if (!nodes.containsKey(name)) {
             throw new IllegalOperationException("Node does not exist.");
         }
@@ -195,43 +218,53 @@ public class GUIOperations{
             }
         }
         nodes.put(name, newcoord);
-        
+
     }
 
     /**
      * Gets a name that's not already in the graph.
+     * 
      * @return unique narrative name
      */
-    public String getUniqueNarrativeName(){
-        String newName = NARRATIVE_PREFIX + narrativeCounter;
+    public String getUniqueNarrativeName() {
+        String newName = Strings.populateString(NARRATIVE_PREFIX, narrativeCounter);
         if (!nodes.containsKey(newName)) {
             narrativeCounter += 1;
             return newName;
         } else {
             while (nodes.containsKey(newName)) {
                 narrativeCounter += 1;
-                newName = NARRATIVE_PREFIX + narrativeCounter;
+                newName = Strings.populateString(NARRATIVE_PREFIX, narrativeCounter);
             }
             narrativeCounter += 1;
             return newName;
-        } 
+        }
     }
-    
+
     /**
      * Adds a narrative, throwing exception if it fails.
-     * @param name - unique id of the narrative
-     * @param start - starting node id. If node does not exist creates a new node.
-     * @param end - ending node id. If node does not exist creates a new node.
-     * Do cycle detection here!!
-     * @throws GraphElementNotFoundException 
-     * @throws NonUniqueIdException 
+     * 
+     * @param name
+     *            - unique id of the narrative
+     * @param start
+     *            - starting node. If node does not exist creates a new node.
+     * @param end
+     *            - ending node. If node does not exist creates a new node. Do
+     *            cycle detection here!!
+     * @throws GraphElementNotFoundException
+     * @throws NonUniqueIdException
      */
-    public void addNarrative(String name, String start, String end)
-            throws IllegalOperationException, NonUniqueIdException, 
-            GraphElementNotFoundException{
-        //TODO Figure out how to get charID and REMOOOOOOOVE DIS
+    public void addNarrative(String name, String start, String end) throws IllegalOperationException
+    {
+        // TODO Figure out how to get charID and REMOOOOOOOVE DIS
         String charID = "Filler";
-        multinarrative.newRoute(name, charID, start, end);
+        try {
+            multinarrative.newRoute(name, charID, start, end);
+        }catch(NonUniqueIdException e){
+            throw new IllegalOperationException(NARRATIVE_ALREADY_EXISTS);
+        }catch(GraphElementNotFoundException e){
+            throw new IllegalOperationException(NODE_DOES_NOT_EXIST);
+        }
         DFSCycleDetect cycleDetect = new DFSCycleDetect(multinarrative.getNode(start));
         if (cycleDetect.hasCycle()) {
             multinarrative.removeRoute(name);
@@ -239,60 +272,36 @@ public class GUIOperations{
         }
         
     }
-    
-    
-    private class Coordinate {
-        private double x;
-        private double y;
-        
-        public Coordinate(double x1, double y1) {
-            x = x1;
-            y = y1;
-        }
-        
-        public double getX() {
-            return x;
-        }
-        
-        public double getY() {
-            return y;
-        }
+
+    /**
+     * 
+     * @param node Node id
+     * @return List of properties in the form "name=value"
+     */
+    public List<String> getNodeProperties(String node) {
+         ArrayList<String> r = new ArrayList<String>();
+         r.add("Hello World!");
+         return r;
     }
     
-    private class DFSCycleDetect {
-
-        private HashSet<Node> marked;
-        private ArrayList<Node> onStack;
-        private Node node;
-        private boolean hasCycle;
-
-        public DFSCycleDetect(Node node) {
-            this.node = node;
-            marked = new HashSet<Node>();
-            onStack = new ArrayList<Node>();
-            findCycle(node);
-        }
-
-        public boolean hasCycle() {
-            return hasCycle;
-        }
-
-        public void findCycle(Node n) {
-
-            marked.add(n);
-            onStack.add(n);
-
-            for (Route rt : n.getOptions()) {
-                Node next = rt.getEnd();
-                if(!marked.contains(next)) {
-                    findCycle(next);
-                } else if (onStack.contains(next)) {
-                    hasCycle = true;
-                    return;
-                }
-            }
-
-            onStack.remove(n);
-        }
+    /**
+     * 
+     * @param node Route id
+     * @return List of properties in the form "name=value"
+     */
+    public List<String> getRouteProperties(String route) {
+         ArrayList<String> r = new ArrayList<String>();
+         r.add("Hello World!");
+         return r;
     }
-}
+    
+    /**
+     * TODO
+     * @param from
+     * @param to
+     * @throws IllegalOperationException
+     */
+    public void renameNode(String from, String to) throws IllegalOperationException{
+        
+    }
+ }

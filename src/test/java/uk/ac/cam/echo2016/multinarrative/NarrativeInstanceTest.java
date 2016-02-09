@@ -32,81 +32,81 @@ public class NarrativeInstanceTest {
 
         Route tempRoute;
 
-        tempRoute = new Route("routeMike1", "Mike", sampleNodes.get("syncStart"), sampleNodes.get("choiceMike1"));
-        sampleNodes.get("syncStart").getOptions().add(tempRoute);
+        tempRoute = new Route("routeMike1", sampleNodes.get("syncStart"), sampleNodes.get("choiceMike1"));
+        tempRoute.setup();
         sampleRoutes.put(tempRoute.getId(), tempRoute);
-        tempRoute = new Route("routeMike2", "Mike", sampleNodes.get("choiceMike1"), sampleNodes.get("syncEnd"));
-        sampleNodes.get("choiceMike1").getOptions().add(tempRoute);
+        tempRoute = new Route("routeMike2", sampleNodes.get("choiceMike1"), sampleNodes.get("syncEnd"));
+        tempRoute.setup();
         sampleRoutes.put(tempRoute.getId(), tempRoute);
-        tempRoute = new Route("routeMike3", "Mike", sampleNodes.get("choiceMike1"), sampleNodes.get("sync3"));
-        sampleNodes.get("choiceMike1").getOptions().add(tempRoute);
+        tempRoute = new Route("routeMike3", sampleNodes.get("choiceMike1"), sampleNodes.get("sync3"));
+        tempRoute.setup();
         sampleRoutes.put(tempRoute.getId(), tempRoute);
-        tempRoute = new Route("routeMike4", "Mike", sampleNodes.get("sync3"), sampleNodes.get("syncEnd"));
-        sampleNodes.get("sync3").getOptions().add(tempRoute);
-        sampleRoutes.put(tempRoute.getId(), tempRoute);
-
-        tempRoute = new Route("routeSam1", "Sam", sampleNodes.get("syncStart"), sampleNodes.get("choiceSam1"));
-        sampleNodes.get("syncStart").getOptions().add(tempRoute);
-        sampleRoutes.put(tempRoute.getId(), tempRoute);
-        tempRoute = new Route("routeSam2", "Sam", sampleNodes.get("choiceSam1"), sampleNodes.get("sync3"));
-        sampleNodes.get("choiceSam1").getOptions().add(tempRoute);
-        sampleRoutes.put(tempRoute.getId(), tempRoute);
-        tempRoute = new Route("routeSam3", "Sam", sampleNodes.get("sync3"), sampleNodes.get("syncEnd"));
-        sampleNodes.get("sync3").getOptions().add(tempRoute);
-        sampleRoutes.put(tempRoute.getId(), tempRoute);
-        tempRoute = new Route("routeSam4", "Sam", sampleNodes.get("choiceSam1"), sampleNodes.get("sync4"));
-        sampleNodes.get("choiceSam1").getOptions().add(tempRoute);
-        sampleRoutes.put(tempRoute.getId(), tempRoute);
-        tempRoute = new Route("routeSam5", "Sam", sampleNodes.get("sync4"), sampleNodes.get("syncEnd"));
-        sampleNodes.get("sync4").getOptions().add(tempRoute);
+        tempRoute = new Route("routeMike4", sampleNodes.get("sync3"), sampleNodes.get("syncEnd"));
+        tempRoute.setup();
         sampleRoutes.put(tempRoute.getId(), tempRoute);
 
-        tempRoute = new Route("routeSarah1", "Sarah", sampleNodes.get("syncStart"), sampleNodes.get("choiceSarah1"));
-        sampleNodes.get("syncStart").getOptions().add(tempRoute);
+        tempRoute = new Route("routeSam1", sampleNodes.get("syncStart"), sampleNodes.get("choiceSam1"));
+        tempRoute.setup();
         sampleRoutes.put(tempRoute.getId(), tempRoute);
-        tempRoute = new Route("routeSarah2", "Sarah", sampleNodes.get("choiceSarah1"), sampleNodes.get("sync3"));
-        sampleNodes.get("choiceSarah1").getOptions().add(tempRoute);
+        tempRoute = new Route("routeSam2", sampleNodes.get("choiceSam1"), sampleNodes.get("sync3"));
+        tempRoute.setup();
         sampleRoutes.put(tempRoute.getId(), tempRoute);
-        tempRoute = new Route("routeSarah3", "Sarah", sampleNodes.get("sync3"), sampleNodes.get("syncEnd"));
-        sampleNodes.get("sync3").getOptions().add(tempRoute);
+        tempRoute = new Route("routeSam3", sampleNodes.get("sync3"), sampleNodes.get("syncEnd"));
+        tempRoute.setup();
         sampleRoutes.put(tempRoute.getId(), tempRoute);
-        tempRoute = new Route("routeSarah4", "Sarah", sampleNodes.get("choiceSarah1"), sampleNodes.get("sync1"));
-        sampleNodes.get("choiceSarah1").getOptions().add(tempRoute);
+        tempRoute = new Route("routeSam4", sampleNodes.get("choiceSam1"), sampleNodes.get("sync4"));
+        tempRoute.setup();
         sampleRoutes.put(tempRoute.getId(), tempRoute);
-        tempRoute = new Route("routeSarah5", "Sarah", sampleNodes.get("sync1"), sampleNodes.get("sync3"));
-        sampleNodes.get("sync1").getOptions().add(tempRoute);
-        sampleRoutes.put(tempRoute.getId(), tempRoute);
-
-        tempRoute = new Route("routeChris1", "Chris", sampleNodes.get("syncStart"), sampleNodes.get("choiceChris1"));
-        sampleNodes.get("syncStart").getOptions().add(tempRoute);
-        sampleRoutes.put(tempRoute.getId(), tempRoute);
-        tempRoute = new Route("routeChris2", "Chris", sampleNodes.get("choiceChris1"), sampleNodes.get("sync1"));
-        sampleNodes.get("choiceChris1").getOptions().add(tempRoute);
-        sampleRoutes.put(tempRoute.getId(), tempRoute);
-        tempRoute = new Route("routeChris3", "Chris", sampleNodes.get("sync1"), sampleNodes.get("syncEnd"));
-        sampleNodes.get("sync1").getOptions().add(tempRoute);
-        sampleRoutes.put(tempRoute.getId(), tempRoute);
-        tempRoute = new Route("routeChris4", "Chris", sampleNodes.get("choiceChris1"), sampleNodes.get("sync2"));
-        sampleNodes.get("choiceChris1").getOptions().add(tempRoute);
-        sampleRoutes.put(tempRoute.getId(), tempRoute);
-        tempRoute = new Route("routeChris5", "Chris", sampleNodes.get("sync2"), sampleNodes.get("syncEnd"));
-        sampleNodes.get("sync2").getOptions().add(tempRoute);
+        tempRoute = new Route("routeSam5", sampleNodes.get("sync4"), sampleNodes.get("syncEnd"));
+        tempRoute.setup();
         sampleRoutes.put(tempRoute.getId(), tempRoute);
 
-        tempRoute = new Route("routeJessica1", "Jessica", sampleNodes.get("syncStart"), sampleNodes.get("sync2"));
-        sampleNodes.get("syncStart").getOptions().add(tempRoute);
+        tempRoute = new Route("routeSarah1", sampleNodes.get("syncStart"), sampleNodes.get("choiceSarah1"));
+        tempRoute.setup();
         sampleRoutes.put(tempRoute.getId(), tempRoute);
-        tempRoute = new Route("routeJessica2", "Jessica", sampleNodes.get("sync2"), sampleNodes.get("choiceJessica1"));
-        sampleNodes.get("sync2").getOptions().add(tempRoute);
+        tempRoute = new Route("routeSarah2", sampleNodes.get("choiceSarah1"), sampleNodes.get("sync3"));
+        tempRoute.setup();
         sampleRoutes.put(tempRoute.getId(), tempRoute);
-        tempRoute = new Route("routeJessica3", "Jessica", sampleNodes.get("choiceJessica1"), sampleNodes.get("sync4"));
-        sampleNodes.get("choiceJessica1").getOptions().add(tempRoute);
+        tempRoute = new Route("routeSarah3", sampleNodes.get("sync3"), sampleNodes.get("syncEnd"));
+        tempRoute.setup();
         sampleRoutes.put(tempRoute.getId(), tempRoute);
-        tempRoute = new Route("routeJessica4", "Jessica", sampleNodes.get("sync4"), sampleNodes.get("syncEnd"));
-        sampleNodes.get("sync4").getOptions().add(tempRoute);
+        tempRoute = new Route("routeSarah4", sampleNodes.get("choiceSarah1"), sampleNodes.get("sync1"));
+        tempRoute.setup();
         sampleRoutes.put(tempRoute.getId(), tempRoute);
-        tempRoute = new Route("routeJessica5", "Jessica", sampleNodes.get("choiceJessica1"), sampleNodes.get("syncEnd"));
-        sampleNodes.get("choiceJessica1").getOptions().add(tempRoute);
+        tempRoute = new Route("routeSarah5", sampleNodes.get("sync1"), sampleNodes.get("sync3"));
+        tempRoute.setup();
+        sampleRoutes.put(tempRoute.getId(), tempRoute);
+
+        tempRoute = new Route("routeChris1", sampleNodes.get("syncStart"), sampleNodes.get("choiceChris1"));
+        tempRoute.setup();
+        sampleRoutes.put(tempRoute.getId(), tempRoute);
+        tempRoute = new Route("routeChris2", sampleNodes.get("choiceChris1"), sampleNodes.get("sync1"));
+        tempRoute.setup();
+        sampleRoutes.put(tempRoute.getId(), tempRoute);
+        tempRoute = new Route("routeChris3", sampleNodes.get("sync1"), sampleNodes.get("syncEnd"));
+        tempRoute.setup();
+        sampleRoutes.put(tempRoute.getId(), tempRoute);
+        tempRoute = new Route("routeChris4", sampleNodes.get("choiceChris1"), sampleNodes.get("sync2"));
+        tempRoute.setup();
+        sampleRoutes.put(tempRoute.getId(), tempRoute);
+        tempRoute = new Route("routeChris5", sampleNodes.get("sync2"), sampleNodes.get("syncEnd"));
+        tempRoute.setup();
+        sampleRoutes.put(tempRoute.getId(), tempRoute);
+
+        tempRoute = new Route("routeJessica1", sampleNodes.get("syncStart"), sampleNodes.get("sync2"));
+        tempRoute.setup();
+        sampleRoutes.put(tempRoute.getId(), tempRoute);
+        tempRoute = new Route("routeJessica2", sampleNodes.get("sync2"), sampleNodes.get("choiceJessica1"));
+        tempRoute.setup();
+        sampleRoutes.put(tempRoute.getId(), tempRoute);
+        tempRoute = new Route("routeJessica3", sampleNodes.get("choiceJessica1"), sampleNodes.get("sync4"));
+        tempRoute.setup();
+        sampleRoutes.put(tempRoute.getId(), tempRoute);
+        tempRoute = new Route("routeJessica4", sampleNodes.get("sync4"), sampleNodes.get("syncEnd"));
+        tempRoute.setup();
+        sampleRoutes.put(tempRoute.getId(), tempRoute);
+        tempRoute = new Route("routeJessica5", sampleNodes.get("choiceJessica1"), sampleNodes.get("syncEnd"));
+        tempRoute.setup();
         sampleRoutes.put(tempRoute.getId(), tempRoute);
 
         // Load Test // - binary tree with node "1X" having children "10X" and "11X"
@@ -133,24 +133,24 @@ public class NarrativeInstanceTest {
             Node child1 = loadNodes.get(Integer.toBinaryString(bin1));
             Node child2 = loadNodes.get(Integer.toBinaryString(bin2));
             if (child1 != null && child2 != null) {
-                Route route1 = new Route("route" + Integer.toBinaryString(bin1), "Chris", node, child1);
-                Route route2 = new Route("route" + Integer.toBinaryString(bin2), "Chris", node, child2);
+                Route route1 = new Route("route" + Integer.toBinaryString(bin1), node, child1);
+                route1.setup();
+                Route route2 = new Route("route" + Integer.toBinaryString(bin2), node, child2);
+                route2.setup();
                 loadRoutes.put(route1.getId(), route1);
                 loadRoutes.put(route2.getId(), route2);
-                node.getOptions().add(route1);
-                node.getOptions().add(route2);
             }
         }
         SynchronizationNode start = new SynchronizationNode("start");
-        Route startRoute = new Route("startRoute", "Chris", start, loadNodes.get("1"));
-        start.options.add(startRoute);
+        Route startRoute = new Route("startRoute", start, loadNodes.get("1"));
+        startRoute.setup();
         loadNodes.put("start", start);
         loadRoutes.put("startRoute", startRoute);
 
     }
 
     @Test
-    public void testNodeStructure() throws NullPointerException {
+    public void testNodeStructure() throws NullPointerException, InvalidGraphException {
 
         // Sample Tests //
 
@@ -168,6 +168,8 @@ public class NarrativeInstanceTest {
         assertEquals(24, sampleTemplate.routes.size());
         assertEquals(11, sampleTemplate.nodes.size());
         assertEquals(sampleTemplate.getRoute("routeSarah5").getEnd().getId(), "sync3");
+        assertEquals(sampleTemplate.getNode("choiceMike1").getEntering().get(0).getId(), "routeMike1");
+        assertEquals(sampleTemplate.getNode("choiceMike1").getExiting().size(), 2);
 
         // Copy the template into an instance
         NarrativeInstance sampleInst = sampleTemplate.generateInstance2();
@@ -177,8 +179,10 @@ public class NarrativeInstanceTest {
         assertEquals("Testing correct number of nodes: ", 11, sampleInst.nodes.size());
         assertEquals("Testing \"routeSarah5\" connects to \"sync3\":",
                 sampleInst.getRoute("routeSarah5").getEnd().getId(), "sync3");
-        assertTrue("Testing \"choiceJessica1\" has route \"routeJessica3\":",
-                sampleInst.getNode("choiceJessica1").getOptions().contains(sampleInst.getRoute("routeJessica3")));
+        assertTrue("Testing \"choiceJessica1\" has route \"routeJessica3\" exiting:",
+                sampleInst.getNode("choiceJessica1").getExiting().contains(sampleInst.getRoute("routeJessica3")));
+        assertTrue("Testing \"sync4\" has route \"routeSam4\" entering:",
+                sampleInst.getNode("sync4").getEntering().contains(sampleInst.getRoute("routeSam4")));
 
         // Tests whether the copy has different references
         assertFalse("Testing \"routes\" reference is different: ", sampleInst.routes == sampleTemplate.routes);
@@ -211,20 +215,26 @@ public class NarrativeInstanceTest {
      * @throws NullPointerException
      */
 
-    /*
-     * @Test(expected = NullPointerException.class) public void testErrorThrown() throws NullPointerException {
-     * NarrativeTemplate template = new NarrativeTemplate(); template.route.putAll(routeMap);
-     * template.nodes.putAll(nodeMap);
-     * 
-     * @SuppressWarnings("unused") NarrativeInstance instance = new NarrativeInstance(template); }
-     */
-
-    /*
-     * @Test(expected = NullPointerException.class) public void testErrorThrown() throws NullPointerException {
-     * NarrativeTemplate template = new NarrativeTemplate(); template.routes.putAll(routeMap);
-     * template.nodes.putAll(nodeMap);
-     * 
-     * @SuppressWarnings("unused") NarrativeInstance instance = template.generateInstance(); }
-     */
-
+    
+    @Test(expected = InvalidGraphException.class) 
+    public void testErrorThrownIn1() throws InvalidGraphException {
+    	// creates template using the maps created above
+        NarrativeTemplate sampleTemplate = new NarrativeTemplate();
+        sampleTemplate.routes.putAll(sampleRoutes);
+        sampleTemplate.nodes.putAll(sampleNodes);
+        
+        @SuppressWarnings("unused")
+		NarrativeInstance sampleInst = sampleTemplate.generateInstance();
+    }
+    
+    @Test(expected = InvalidGraphException.class) 
+    public void testErrorThrownIn2() throws InvalidGraphException {
+    	// creates template using the maps created above
+        NarrativeTemplate sampleTemplate = new NarrativeTemplate();
+        sampleTemplate.routes.putAll(sampleRoutes);
+        sampleTemplate.nodes.putAll(sampleNodes);
+        
+        @SuppressWarnings("unused")
+		NarrativeInstance sampleInst = sampleTemplate.generateInstance2();
+    }
 }

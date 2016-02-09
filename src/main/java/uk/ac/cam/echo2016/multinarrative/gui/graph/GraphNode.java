@@ -1,5 +1,6 @@
 package uk.ac.cam.echo2016.multinarrative.gui.graph;
 
+import javafx.beans.property.StringProperty;
 import javafx.scene.layout.Region;
 
 
@@ -11,13 +12,13 @@ import javafx.scene.layout.Region;
 public class GraphNode {
 
     private Region contents;
+    
+    private StringProperty name;
 
     private double x;
     private double y;
-    
-    private String name;
 
-    public GraphNode(Region node, String name) {
+    public GraphNode(Region node, StringProperty name) {
 	node.setUserData(this);
 	contents = node;
 	this.name = name;
@@ -29,33 +30,31 @@ public class GraphNode {
 	this.y = y;
     }
 
-    public void translate(double x, double y, double scale) {
-	this.x += x/scale;
-	this.y += y/scale;
+    public void translate(double x, double y) {
+	this.x += x;
+	this.y += y;
 	
 	contents.relocate(contents.getLayoutX()+x, contents.getLayoutY()+y);	
     }
     
-    public void scale(double scale){
-	contents.relocate(x*scale, y*scale);
-	contents.setScaleX(scale);
-	contents.setScaleY(scale);
+    public double getX(){
+	return x;
     }
     
-    public double getX(double scale){
-	return x*scale;
-    }
-    
-    public double getY(double scale){
-	return y*scale;
+    public double getY(){
+	return y;
     }
     
     public Region getContents(){
 	return contents;
     }
     
-    public String getName(){
+    public StringProperty getNameProperty(){
 	return name;
+    }
+    
+    public String getName(){
+        return name.get();
     }
 
 }
