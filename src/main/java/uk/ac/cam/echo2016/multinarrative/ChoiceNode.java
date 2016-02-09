@@ -24,17 +24,17 @@ public class ChoiceNode extends Node { // TODO Implementation and documentation
         super(id);
     }
 
-    protected Node newInstance(String id) {
-        return new ChoiceNode(id);
-    }
-
+	protected Node create(String id) {
+		return new ChoiceNode(id);
+	}
+	
     public BaseBundle startRoute(Route option) {
         return option.getProperties();
     };
 
     public GameChoice onEntry(Route completed, NarrativeInstance instance) {
         GameChoice gameChoice = new GameChoice();
-        if (!this.getOptions().contains(completed)) {
+        if (!this.getExiting().contains(completed)) {
         } // TODO Exception needed???
         
         //TODO initialise gameChoice

@@ -33,8 +33,9 @@ public class Graph {
 	this.pane = p;
 	this.operations=operations;
 	controller = c;
-	input = new InputMonitor(this, pane);
+	input = new InputMonitor(this);
 	input.registerHandlerFor(p);
+	input.registerHandlerFor(pane);
     }
     
     public void setTool(GraphTool tool){
@@ -60,8 +61,7 @@ public class Graph {
     }
     
     public void updateEdge(GraphEdge edge){
-	System.out.println("Update edge: "+edge.getName());
-	edge.update(input.getScale());
+	edge.update();
     }
     
     public void updateNode(GraphNode node){
@@ -99,7 +99,7 @@ public class Graph {
 	    i++;
 	}
 	pane.getChildren().add(i, c);
-	edge.update(input.getScale());
+	edge.update();
 	edges.add(edge);
 	input.registerHandlerFor(n);
 	input.registerHandlerFor(c);

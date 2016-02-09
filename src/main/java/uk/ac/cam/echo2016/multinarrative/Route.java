@@ -18,14 +18,21 @@ import android.os.BaseBundle;
 public class Route implements Serializable, Cloneable { // TODO Documentation
     private static final long serialVersionUID = 1;
     private final String id;
-    protected Node start;
-    protected Node end;
-    protected BaseBundle properties;
+    private String charId;
+    private Node start;
+    private Node end;
+    private BaseBundle properties;
 
-    public Route(String id, Node start, Node end) {
+    public Route(String id, String charId, Node start, Node end) {
         this.id = id;
+        this.charId = charId;
         this.start = start;
         this.end = end;
+    }
+    
+	public void setup() {
+    	start.getExiting().add(this);
+        end.getEntering().add(this);
     }
 
     @Override
@@ -40,8 +47,16 @@ public class Route implements Serializable, Cloneable { // TODO Documentation
         }
     }
 
-    public String getIdentifier() {
+    public String getId() {
         return id;
+    }
+
+    public String getCharId() {
+        return charId;
+    }
+
+    public void setCharId(String charId) {
+        this.charId = charId;
     }
 
     public Node getStart() {

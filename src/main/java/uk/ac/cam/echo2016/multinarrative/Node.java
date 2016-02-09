@@ -18,12 +18,14 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
     private static final long serialVersionUID = 1;
     private final String id;
     private BaseBundle properties;
-    ArrayList<Route> options;
+    private ArrayList<Route> entryRoutes;
+    private ArrayList<Route> exitRoutes;
 
     public Node(String id) {
         this.id = id;
-        this.options = new ArrayList<Route>();
-    }
+        this.exitRoutes = new ArrayList<Route>();
+        this.entryRoutes = new ArrayList<Route>();
+}
 
     @Override
     public Node clone() {
@@ -44,13 +46,13 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
      * @param id
      * @return
      */
-    protected abstract Node newInstance(String id);
+    protected abstract Node create(String id);
 
     public abstract BaseBundle startRoute(Route option);
 
     public abstract GameChoice onEntry(Route played, NarrativeInstance instance);
 
-    public String getIdentifier() {
+    public String getId() {
         return id;
     }
 
@@ -67,11 +69,19 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
         properties = b;
     }
 
-    public ArrayList<Route> getOptions() {
-        return options;
+    public ArrayList<Route> getEntering() {
+        return entryRoutes;
     }
 
-    public void setOptions(ArrayList<Route> o) {
-        options = o;
+    public void setEntering(ArrayList<Route> entryRoutes) {
+        this.entryRoutes = entryRoutes;
+    }
+
+    public ArrayList<Route> getExiting() {
+        return exitRoutes;
+    }
+
+    public void setExiting(ArrayList<Route> exitRoutes) {
+        this.exitRoutes = exitRoutes;
     }
 }
