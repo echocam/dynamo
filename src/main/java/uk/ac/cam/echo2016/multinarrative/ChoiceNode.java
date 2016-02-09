@@ -32,12 +32,11 @@ public class ChoiceNode extends Node { // TODO Implementation and documentation
         return option.getProperties();
     };
 
-    public GameChoice onEntry(Route completed, NarrativeInstance instance) {
-        GameChoice gameChoice = new GameChoice();
-        if (!this.getExiting().contains(completed)) {
-        } // TODO Exception needed???
-        
-        //TODO initialise gameChoice
+    public GameChoice onEntry(Route completed, NarrativeInstance instance) throws GraphElementNotFoundException {
+        if (!this.getEntering().contains(completed)) {
+        	throw new GraphElementNotFoundException("completed route not in this node's entering list");
+        } 
+        GameChoice gameChoice = new GameChoice(true, getId(), GameChoice.ACTION_MAJOR_DECISION, getExiting());
         
         return gameChoice;
     }

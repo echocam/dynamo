@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.os.BaseBundle;
+import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 
 /**
  * 
@@ -19,7 +20,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     private static final long serialVersionUID = 1;
     protected ArrayList<Node> activeNodes = new ArrayList<Node>();
 
-    public NarrativeInstance(NarrativeTemplate template) { // TODO Clean this up?
+    public NarrativeInstance(NarrativeTemplate template) throws InvalidGraphException { // TODO Clean this up?
         NarrativeInstance base = template.generateInstance();
         this.routes = base.routes;
         this.nodes = base.nodes;
@@ -41,18 +42,26 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     public BaseBundle startRoute(String id) {
         Route route = getRoute(id);
         Node startNode = route.getStart();
-        activeNodes.remove(startNode); // TODO handle error - return false
+        if (startNode instanceof ChoiceNode) {
+        	activeNodes.remove(startNode);
+        	for (Route deadRoute : startNode.getExiting()) {
+        		if (deadRoute != route) {
+        			kill(deadRoute);
+        		}	
+        	}
+        } else {
+        	if (startNode.getExiting().size() == 1) {
+        		activeNodes.remove(startNode);
+        	}
+        }
         return startNode.startRoute(route);
     }
 
-    public GameChoice endRoute(String id) {
+    public GameChoice endRoute(String id) throws GraphElementNotFoundException {
         Route route = getRoute(id);
         Node endNode = route.getEnd(); // TODO handle error - return null
         activeNodes.add(endNode);
-        // increments routes completed (if not found initialised to 0)
-        int routesCompleted = endNode.getProperties().getInt("Impl.Node.Completed");
-        endNode.getProperties().putInt("Impl.Node.Completed", ++routesCompleted);
-        
+        route.getProperties().putBoolean("System.isCompleted", true);        
         return endNode.onEntry(route, this);
     }
 
@@ -91,18 +100,12 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         
 //        System.out.println("Killing: " + route.getId());
         Node nEnd = route.getEnd();
-//        String s = nEnd == null ? "null"
-//            : nEnd + " " + (nEnd.getProperties() == null ? "null"
-//                : nEnd.getProperties() + " " + nEnd.getProperties().getInt("Impl.Node.Entries"));
-//        System.out.println(s);
         
-        // Decrement the entering routes counter
-        int routeEntres = nEnd.getProperties().getInt("Impl.Node.Entries"); // TODO improve naming convention?
-        --routeEntres;
-        nEnd.getProperties().putInt("Impl.Node.Entries", routeEntres);
+        Debug.logInfo("Killing " + route.getId(), 4, 0); // TODO change class
 
+        nEnd.getEntering().remove(route);
         // If there are now no routes entering the node, kill it
-        if (routeEntres == 0) {
+        if (nEnd.getEntering().size() == 0) {
             kill(nEnd);
         } /*else {
             // If there are no routes entering of the same charId {
@@ -135,7 +138,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         }
 
         // As specified in the javadoc
-        assert node.getProperties().getInt("Impl.Node.Entries") == 0;
+        assert node.getEntering().size() == 0;
         
         nodes.remove(node.getId());
         return true;

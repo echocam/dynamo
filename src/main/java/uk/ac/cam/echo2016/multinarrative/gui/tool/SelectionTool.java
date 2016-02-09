@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javafx.css.PseudoClass;
 import javafx.scene.input.MouseEvent;
+import uk.ac.cam.echo2016.multinarrative.gui.FXMLController;
 import uk.ac.cam.echo2016.multinarrative.gui.IllegalOperationException;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphEdge;
@@ -24,114 +25,129 @@ public class SelectionTool implements GraphTool {
     private double mouseY;
 
     private Graph graph;
-    
+
     private Set<GraphNode> selection = new HashSet<GraphNode>();
 
-    public SelectionTool(Graph graph) {
-	this.graph = graph;
+    private FXMLController controller;
+
+    public SelectionTool(Graph graph, FXMLController controller) {
+        this.graph = graph;
+        this.controller = controller;
     }
 
     public void resetSelection() {
-	for (GraphNode node : selection) {
-	    node.getContents().pseudoClassStateChanged(SELECTED, false);
-	}
-	selection.clear();
+        for (GraphNode node : selection) {
+            node.getContents().pseudoClassStateChanged(SELECTED, false);
+        }
+        selection.clear();
     }
 
     public void select(GraphNode node) {
-	node.getContents().pseudoClassStateChanged(SELECTED, true);
-	selection.add(node);
+        node.getContents().pseudoClassStateChanged(SELECTED, true);
+        selection.add(node);
     }
 
     public Set<GraphNode> getSelection() {
-	return selection;
+        return selection;
     }
 
     public boolean isSelected(GraphNode node) {
-	return selection.contains(node);
+        return selection.contains(node);
     }
 
     public void deselect(GraphNode node) {
-	node.getContents().pseudoClassStateChanged(SELECTED, false);
-	selection.remove(node);
+        node.getContents().pseudoClassStateChanged(SELECTED, false);
+        selection.remove(node);
+    }
+
+    public void setSelection(String s) {
+        for (GraphNode node : graph.getNodes()) {
+            if (node.getName().equals(s)) {
+                resetSelection();
+                select(node);
+            }
+        }
     }
 
     @Override
     public void mousePressed(MouseEvent event) {
-	mouseX = event.getSceneX();
-	mouseY = event.getSceneY();
+        mouseX = event.getSceneX();
+        mouseY = event.getSceneY();
     }
 
     @Override
     public void mouseReleased(MouseEvent event) {
-	if (!dragging && press == null && !selectMade) {
-		resetSelection();
-	}
-	dragging = false;
-	selectMade = false;
-	press = null;
-	mouseX = Double.NaN;
-	mouseY = Double.NaN;
+        if (!dragging && press == null && !selectMade) {
+            resetSelection();
+        }
+        dragging = false;
+        selectMade = false;
+        press = null;
+        mouseX = Double.NaN;
+        mouseY = Double.NaN;
     }
 
     @Override
     public void mouseDragged(MouseEvent event) {
-	if(!selectMade){
-	    resetSelection();
-	    selectMade=true;
-	}
-	if (!dragging) {
-	    dragging = true;
-	} else {
-	    double movementX = mouseX == mouseX ? event.getSceneX() - mouseX : 0.0;
-	    double movementY = mouseY == mouseY ? event.getSceneY() - mouseY : 0.0;
-	    if (press != null) {
-		press.translate(movementX, movementY);
-		graph.updateEdge(press);
-	    } else if (!selection.isEmpty()) {
-		for (GraphNode node : selection) {
-		    try {
-			graph.getOperations().translateNode(node.getName(), movementX, movementY);
-		    } catch (IllegalOperationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		    }
-		    node.translate(movementX, movementY);
-		    graph.updateNode(node);
-		}
+        if (!selectMade) {
+            resetSelection();
+            selectMade = true;
+        }
+        if (!dragging) {
+            dragging = true;
+        } else {
+            double movementX = mouseX == mouseX ? event.getSceneX() - mouseX : 0.0;
+            double movementY = mouseY == mouseY ? event.getSceneY() - mouseY : 0.0;
+            if (press != null) {
+                press.translate(movementX, movementY);
+                graph.updateEdge(press);
+            } else if (!selection.isEmpty()) {
+                for (GraphNode node : selection) {
+                    try {
+                        graph.getOperations().translateNode(node.getName(), movementX, movementY);
+                    } catch (IllegalOperationException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    node.translate(movementX, movementY);
+                    graph.updateNode(node);
+                }
 
-	    }
+            }
 
-	}
+        }
 
-	mouseX = event.getSceneX();
-	mouseY = event.getSceneY();
+        mouseX = event.getSceneX();
+        mouseY = event.getSceneY();
     }
 
     @Override
     public void mousePressedOnNode(MouseEvent event, GraphNode node) {
-	if (event.isControlDown()) {
-	    if (!isSelected(node)) {
-		select(node);
-	    } 
-	}else if(event.isAltDown()){
-	    if(isSelected(node)){
-		deselect(node);
-	    }
-	}else{
-	    if(!isSelected(node)){
-		resetSelection();
-		select(node);
-	    }
-	}
-	selectMade = true;
-	mousePressed(event);
+        if (event.isControlDown()) {
+            if (!isSelected(node)) {
+                select(node);
+            }
+        } else if (event.isAltDown()) {
+            if (isSelected(node)) {
+                deselect(node);
+            }
+        } else {
+            if (!isSelected(node)) {
+                resetSelection();
+                select(node);
+            }
+        }
+        selectMade = true;
+        mousePressed(event);
+        controller.selectNode(node.getName());
     }
 
     @Override
     public void mousePressedOnEdge(MouseEvent event, GraphEdge edge) {
-	press = edge;
-	mousePressed(event);
+        press = edge;
+        mousePressed(event);
+        controller.selectRoute(edge.getName());
+
     }
 
     @Override
@@ -144,7 +160,7 @@ public class SelectionTool implements GraphTool {
 
     @Override
     public void dragStart(MouseEvent event) {
-	dragging = true;
+        dragging = true;
     }
 
 }

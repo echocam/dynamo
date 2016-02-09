@@ -6,7 +6,12 @@ import java.io.ObjectOutputStream;
 
 public class SaveWriter {
     public static void saveObject(String filename, Object toSave) throws IOException{
-        ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(filename));
-        ois.writeObject(toSave);
+        ObjectOutputStream oos = null;
+        try {
+            oos = new ObjectOutputStream(new FileOutputStream(filename));
+            oos.writeObject(toSave);
+        } finally {
+            oos.close();
+        }
     }
 }
