@@ -67,11 +67,3 @@ task runGui(type: JavaExec) {
 
 runGui.dependsOn assemble
 
-task runDeb(type: JavaExec) {
-      classpath = sourceSets.main.runtimeClasspath
-      workingDir = main_build
-      main = 'uk.ac.cam.echo2016.multinarrative.dev.Debug'
-}
-
-runDeb.dependsOn assemble
-

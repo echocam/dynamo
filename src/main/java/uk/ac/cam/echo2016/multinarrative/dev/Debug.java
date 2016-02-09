@@ -193,20 +193,4 @@ public class Debug {
     public static void logError(String s, int logLevel, int type) {
         logInfo(s, logLevel, type | SYSTEM_ERROR);
     }
-    
-    public static void main(String[] args) {
-        System.out.println("testing debug class");
-        Debug.logInfo("Testing TYPE_GUI level 5", 5, SYSTEM_GUI);
-        Debug.logInfo("Testing TYPE_GUI level 3", 3, SYSTEM_GUI);
-        Debug.logInfo("Testing TYPE_GUI level 1", 1, SYSTEM_GUI);
-        Debug.logInfo("Testing TYPE_IO level 5", 5, SYSTEM_IO);
-        Debug.logInfo("Testing TYPE_IO level 3", 3, SYSTEM_IO);
-        Debug.logInfo("Testing TYPE_IO level 2", 2, SYSTEM_IO);
-        Debug.logInfo("Testing TYPE_IO level 1", 1, SYSTEM_IO);
-        Debug.logInfo("Testing TYPE_ERROR level 5", 5, SYSTEM_ERROR);
-        Debug.logInfo("Testing TYPE_ERROR level 4", 4, SYSTEM_ERROR);
-        Debug.logInfo("Testing TYPE_ERROR level 3", 3, SYSTEM_ERROR);
-        Debug.logInfo("Testing TYPE_ERROR level 2", 2, SYSTEM_ERROR);
-        Debug.logInfo("Testing TYPE_ERROR level 1", 1, SYSTEM_ERROR);
-    }
 }
