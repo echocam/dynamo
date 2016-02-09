@@ -3,7 +3,8 @@ root {
 }
 
 .menu-bar, .list-view, .label, .button, .tab .tab-label, 
-.combo-box > .list-cell, .text-input, .list-cell, .radio-button,
+.combo-box > .list-cell, .text-input, .list-cell, 
+.radio-button, .titled-pane,
 #label, #infoBar {
     -fx-text-fill: white;
     -fx-font-family: "Arial Narrow";
@@ -25,13 +26,13 @@ root {
     -fx-background-color: #457894;
 }
 
-.root, .list-view, .pane,
+.root, .list-view, .pane, .titled-pane > .content,
 .titled-pane:focused, .tab-pane .tab, 
 #propertyPane, #baseline, #root, .tool-bar {
     -fx-background-color: #333333;
 }
 
-.button, .combo-box-base,.text-field, .radio-button .radio, .titled-pane > .title, .menu-bar{
+.button, .combo-box-base,.text-field, .titled-pane.contents, .radio-button .radio, .titled-pane > .title, .menu-bar{
     -fx-background-color:
         #222222,
         #333333;
@@ -71,7 +72,7 @@ root {
     -fx-opacity: 0;
 }
 
-.tab .tab-label, .titled-pane, .border-pane,
+.tab .tab-label, .titled-pane, .border-pane, .titled-pane > .content,
 .tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator, 
 #label { 
     -fx-border-color: transparent;  

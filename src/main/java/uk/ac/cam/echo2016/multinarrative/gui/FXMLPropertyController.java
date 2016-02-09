@@ -133,4 +133,8 @@ public class FXMLPropertyController implements Initializable {
 
     }
 
+    @FXML
+    protected void changeTypeAction(ActionEvent event){
+	System.out.println("Type CHanged "+type.getValue());
+    }
 }

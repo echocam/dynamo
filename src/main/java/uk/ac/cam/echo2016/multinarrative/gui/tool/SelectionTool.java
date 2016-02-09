@@ -18,14 +18,13 @@ public class SelectionTool implements GraphTool {
     private boolean dragging;
 
     private GraphEdge press;
-
-    private GraphNode select;
+    private boolean selectMade;
 
     private double mouseX;
     private double mouseY;
 
     private Graph graph;
-
+    
     private Set<GraphNode> selection = new HashSet<GraphNode>();
 
     public SelectionTool(Graph graph) {
@@ -65,18 +64,11 @@ public class SelectionTool implements GraphTool {
 
     @Override
     public void mouseReleased(MouseEvent event) {
-	if (!dragging) {
-	    if (press == null && select != null) {
-		if (isSelected(select)) {
-		    deselect(select);
-		} else {
-		    select(select);
-		}
-	    }
+	if (!dragging && press == null && !selectMade) {
+		resetSelection();
 	}
-
 	dragging = false;
-	select = null;
+	selectMade = false;
 	press = null;
 	mouseX = Double.NaN;
 	mouseY = Double.NaN;
@@ -84,23 +76,27 @@ public class SelectionTool implements GraphTool {
 
     @Override
     public void mouseDragged(MouseEvent event) {
+	if(!selectMade){
+	    resetSelection();
+	    selectMade=true;
+	}
 	if (!dragging) {
 	    dragging = true;
 	} else {
 	    double movementX = mouseX == mouseX ? event.getSceneX() - mouseX : 0.0;
-		double movementY = mouseY == mouseY ? event.getSceneY() - mouseY : 0.0;
-	    if(press != null){
+	    double movementY = mouseY == mouseY ? event.getSceneY() - mouseY : 0.0;
+	    if (press != null) {
 		press.translate(movementX, movementY);
 		graph.updateEdge(press);
 	    } else if (!selection.isEmpty()) {
 		for (GraphNode node : selection) {
 		    try {
-            graph.getOperations().translateNode(node.getName(), movementX, movementY);
-        } catch (IllegalOperationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-		    node.translate(movementX, movementY, graph.getInput().getScale());
+			graph.getOperations().translateNode(node.getName(), movementX, movementY);
+		    } catch (IllegalOperationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		    }
+		    node.translate(movementX, movementY);
 		    graph.updateNode(node);
 		}
 
@@ -114,13 +110,28 @@ public class SelectionTool implements GraphTool {
 
     @Override
     public void mousePressedOnNode(MouseEvent event, GraphNode node) {
-	select = node;
+	if (event.isControlDown()) {
+	    if (!isSelected(node)) {
+		select(node);
+	    } 
+	}else if(event.isAltDown()){
+	    if(isSelected(node)){
+		deselect(node);
+	    }
+	}else{
+	    if(!isSelected(node)){
+		resetSelection();
+		select(node);
+	    }
+	}
+	selectMade = true;
 	mousePressed(event);
     }
 
     @Override
     public void mousePressedOnEdge(MouseEvent event, GraphEdge edge) {
 	press = edge;
+	mousePressed(event);
     }
 
     @Override
