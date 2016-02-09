@@ -25,7 +25,7 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
         this.id = id;
         this.exitRoutes = new ArrayList<Route>();
         this.entryRoutes = new ArrayList<Route>();
-}
+    }
 
     @Override
     public Node clone() {

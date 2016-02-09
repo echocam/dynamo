@@ -57,10 +57,6 @@ public class NarrativeTemplate extends MultiNarrative {
             r_route.getStart().getExiting().add(r_route);
             r_route.getEnd().getEntering().add(r_route);
             
-            // Increments the route entries property (if not found initialised to 0)
-            int routeEntries = r_route.getEnd().getProperties().getInt("Impl.Node.Entries");
-            r_route.getEnd().getProperties().putInt("Impl.Node.Entries", ++routeEntries);
-            
             r_routes.put(route.getId(), r_route);
         }
         SynchronizationNode r_start = (SynchronizationNode) r_nodes.get(start.getId());
@@ -113,20 +109,9 @@ public class NarrativeTemplate extends MultiNarrative {
             if (!instance.nodes.containsKey(templateRoute.getEnd().getId())) {
                 // Not already copied
                 endNodeCopy = copyToInstance(templateRoute.getEnd(), instance); // Recursively copy nodes at the ends of
-
-                // Create and update entryList property
-                endNodeCopy.createProperties();
-
-                endNodeCopy.getProperties().putInt("Impl.Node.Entries", 1);
             } else {
                 // Already copied
-
                 endNodeCopy = instance.getNode(templateRoute.getEnd().getId()); // Get reference to copied end
-                // Update entryList property
-                
-                int routeEntries = endNodeCopy.getProperties().getInt("Impl.Node.Entries");
-                routeEntries++;
-                endNodeCopy.getProperties().putInt("Impl.Node.Entries", routeEntries);
             }
 
             // Create route using references obtained/created above, linking node node to the new end nodes

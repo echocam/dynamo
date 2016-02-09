@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.os.BaseBundle;
+import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 
 /**
  * 
@@ -60,11 +61,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         Route route = getRoute(id);
         Node endNode = route.getEnd(); // TODO handle error - return null
         activeNodes.add(endNode);
-        route.getProperties().putBoolean("System.isCompleted", true);
-        /*// increments routes completed (if not found initialised to 0)
-        int routesCompleted = endNode.getProperties().getInt("Impl.Node.Completed");
-        endNode.getProperties().putInt("Impl.Node.Completed", ++routesCompleted);*/
-        
+        route.getProperties().putBoolean("System.isCompleted", true);        
         return endNode.onEntry(route, this);
     }
 
@@ -103,10 +100,8 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         
 //        System.out.println("Killing: " + route.getId());
         Node nEnd = route.getEnd();
-//        String s = nEnd == null ? "null"
-//            : nEnd + " " + (nEnd.getProperties() == null ? "null"
-//                : nEnd.getProperties() + " " + nEnd.getEntering().size());
-//        System.out.println(s);
+        
+        Debug.printInfo("Killing " + route.getId(), 4, 0); // TODO change class
 
         // If there are now no routes entering the node, kill it
         if (nEnd.getEntering().size() == 0) {
