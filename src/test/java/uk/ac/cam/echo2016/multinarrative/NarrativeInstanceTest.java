@@ -2,6 +2,9 @@ package uk.ac.cam.echo2016.multinarrative;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import android.os.BaseBundle;
+
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -278,6 +281,44 @@ public class NarrativeInstanceTest {
         assertEquals("Testing kill method: ", 10, sampleInst.nodes.size());
         
         
+    }
+    
+    /**
+     * This test creates an NarrativeInstance and simulates a playthrough.
+     * 
+     * @throws InvalidGraphException
+     * @throws GraphElementNotFoundException
+     */
+    @Test
+    public void makeChoicesTest() throws InvalidGraphException, GraphElementNotFoundException {
+    	NarrativeInstance choiceInst = sampleTemplate.generateInstance2();
+    	
+    	assertEquals("Check only one active node", 1, choiceInst.activeNodes.size());
+    	
+    	String firstChoice = choiceInst.getPlayableRoutes().get(0).getId();
+    	assertTrue("Check this route is one of the first routes", choiceInst.start.getExiting().contains(choiceInst.routes.get(firstChoice)));
+    	assertEquals("routeMike1", firstChoice);
+    	
+    	choiceInst.routes.get(firstChoice).createProperties();
+    	choiceInst.routes.get(firstChoice).getProperties().putBoolean("Correct", true);
+    	BaseBundle firstChoiceStarted = choiceInst.startRoute(firstChoice);
+    	assertTrue("Check properties returned correctly", firstChoiceStarted.getBoolean("Correct"));
+    	
+    	GameChoice firstChoiceEnded = choiceInst.endRoute(firstChoice);
+    	assertEquals("Check only two active nodes", 2, choiceInst.activeNodes.size());
+    	assertEquals("Check playable routes increased", 6, choiceInst.getPlayableRoutes().size());
+    	assertFalse("Check firstChoice no longer playable", choiceInst.getPlayableRoutes().contains(choiceInst.routes.get(firstChoice)));
+    	assertEquals("Check firstChoiceEnded has correct action", GameChoice.ACTION_MAJOR_DECISION, firstChoiceEnded.getAction());
+    	assertEquals("Check firstChoiceEnded has correct number of exiting routes", 2, firstChoiceEnded.getOptions().size());
+    	
+    	String secondChoice = firstChoiceEnded.getOptions().get(1).getId();
+    	choiceInst.startRoute(secondChoice);
+    	GameChoice secondChoiceEnded = choiceInst.endRoute(secondChoice);
+    	assertEquals("Check only one active node left", 1, choiceInst.activeNodes.size());
+    	assertEquals("Check playable routes decreased", 4, choiceInst.getPlayableRoutes().size());
+    	assertEquals("Check secondChoiceEnded has correct action", GameChoice.ACTION_CHOOSE_ROUTE, secondChoiceEnded.getAction());
+    	assertEquals("Check secondChoiceEnded has correct number of exiting routes", 4, secondChoiceEnded.getOptions().size());
+    	assertFalse("Check other route no longer playable", choiceInst.getPlayableRoutes().contains(firstChoiceEnded.getOptions().get(0)));    	
     }
     
     @Test
