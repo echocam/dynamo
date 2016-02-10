@@ -69,8 +69,11 @@ public class FXMLController {
 
     private SelectionTool selectTool;
     private InsertTool insertTool;
+    
+    private FXMLGUI mainApp;
 
-    public void init() {
+    public void init(FXMLGUI main) {
+    	mainApp = main;
 	    Debug.logInfo("Init Controller", 5, Debug.SYSTEM_GUI);
 	    addProperty.disableProperty().bind(propertyName.textProperty().isEmpty());
         graphArea.minHeightProperty().bind(scroll.heightProperty());
@@ -116,6 +119,11 @@ public class FXMLController {
     @FXML
     protected void close() {
     	System.exit(0);
+    }
+    
+    @FXML
+    protected void registerAboutClicked() {
+    	mainApp.showAbout();
     }
 
     /**
@@ -365,5 +373,4 @@ public class FXMLController {
             itemProperties.getItems().addAll(operations.getNodeProperties(routes.getSelectionModel().getSelectedItem()));
         }
     }
-
 }
