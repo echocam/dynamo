@@ -72,7 +72,7 @@ public class NarrativeTemplate extends MultiNarrative {
         if (start == null)
             throw new InvalidGraphException("Error: Graph does not have a start node.");
         instance.start = (SynchronizationNode) copyToInstance(this.start, instance);
-        instance.setActive(start);
+        instance.setActive(instance.start);
         return instance;
     }
     /**
