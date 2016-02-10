@@ -50,6 +50,32 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
             throw new NonUniqueIdException("Invalid id: " + id + " is not unique.");
         }
     }
+    
+    public void changeRouteStart(String id, String newStartId) throws GraphElementNotFoundException {
+    	Route route = routes.get(id);
+    	if (route == null) throw new GraphElementNotFoundException("Route with id " + id + " not found");
+    	
+    	Node newStart = nodes.get(newStartId);
+    	if (newStart == null) throw new GraphElementNotFoundException("Node with id " + id + " not found");
+    	
+    	Node oldStart = route.getStart();
+    	route.setStart(newStart);
+    	newStart.getExiting().add(route);
+    	oldStart.getExiting().remove(route);
+    }
+    
+    public void changeRouteEnd(String id, String newEndId) throws GraphElementNotFoundException {
+    	Route route = routes.get(id);
+    	if (route == null) throw new GraphElementNotFoundException("Route with id " + id + " not found");
+    	
+    	Node newEnd = nodes.get(newEndId);
+    	if (newEnd == null) throw new GraphElementNotFoundException("Node with id " + id + " not found");
+    	
+    	Node oldEnd = route.getEnd();
+    	route.setEnd(newEnd);
+    	newEnd.getEntering().add(route);
+    	oldEnd.getEntering().remove(route);
+    }
 
     public void newSynchronizationNode(String id) throws NonUniqueIdException {
         if (isUniqueId(id))
