@@ -22,11 +22,11 @@ dependencies {
 }
 
 compileJava {
-    options.compilerArgs << "-Xlint"
+    options.compilerArgs << "-Xlint:all"
 }
 
 compileTestJava {
-    options.compilerArgs << "-Xlint"
+    options.compilerArgs << "-Xlint:all"
 }
 
 test {
