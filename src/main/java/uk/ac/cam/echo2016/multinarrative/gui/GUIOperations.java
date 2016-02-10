@@ -290,37 +290,37 @@ public class GUIOperations {
     }
     
     /**
-     * TODO
+     * renames a node
      * @param from
      * @param to
      * @throws IllegalOperationException
      */
     public void renameNode(String from, String to) throws IllegalOperationException{
-        Node n = multinarrative.getNode(from);
-        //if (multinarrative.)
+        multinarrative.renameNode(from, to);
     }
     
     /**
-     * TODO 
+     * deletes a node
      * @param id
      */
     public void deleteNode(String id){
-    	
+        multinarrative.removeNode(id);
+        
     }
     
     /**
-     * TODO 
+     * TODO
      * @param id
      */
     public void deleteNarrative(String id){
-    	
+        multinarrative.removeRoute(id);
     }
     
     /**
-     * TODO 
+     * deletes a route
      * @param id
      */
     public void deleteRoute(String id){
-    	
+        multinarrative.removeRoute(id);
     }
  }
