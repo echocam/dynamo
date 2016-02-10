@@ -20,14 +20,6 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     private static final long serialVersionUID = 1;
     protected ArrayList<Node> activeNodes = new ArrayList<Node>();
 
-    public NarrativeInstance(NarrativeTemplate template) throws InvalidGraphException { // TODO Clean this up?
-        NarrativeInstance base = template.generateInstance();
-        this.routes = base.routes;
-        this.nodes = base.nodes;
-        this.start = base.start;
-        this.properties = base.properties;
-    }
-
     public NarrativeInstance(HashMap<String, Route> routes, HashMap<String, Node> nodes, SynchronizationNode start, BaseBundle properties) {
         this.routes = routes;
         this.nodes = nodes;
@@ -36,18 +28,18 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     }
 
     public NarrativeInstance() {
-        
     }
     
-    public BaseBundle startRoute(String id) {
+    public BaseBundle startRoute(String id) throws GraphElementNotFoundException {
         Route route = getRoute(id);
+        if (route == null) throw new GraphElementNotFoundException("Error: Route with id: " + id + " not found");
         Node startNode = route.getStart();
         if (startNode instanceof ChoiceNode) {
         	activeNodes.remove(startNode);
         	for (Route deadRoute : startNode.getExiting()) {
         		if (deadRoute != route) {
-        			kill(deadRoute);
-        		}	
+        			kill(deadRoute); 
+        		}
         	}
         } else {
         	if (startNode.getExiting().size() == 1) {
@@ -59,9 +51,10 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 
     public GameChoice endRoute(String id) throws GraphElementNotFoundException {
         Route route = getRoute(id);
-        Node endNode = route.getEnd(); // TODO handle error - return null
+        if (route == null) throw new GraphElementNotFoundException("Error: Route with id: " + id + " not found");
+        Node endNode = route.getEnd();
         activeNodes.add(endNode);
-        route.getProperties().putBoolean("System.isCompleted", true);        
+        route.getProperties().putBoolean("System.isCompleted", true);
         return endNode.onEntry(route, this);
     }
 
@@ -76,16 +69,16 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
      */
     public boolean kill(String id) { // TODO More Documentation, including overloaded methods
         Route route = getRoute(id);
-        if (route != null) { // TODO alternate exception handling?
+        if (route != null) {
             kill(route);
-            return true;
+            return true; // TODO change to throw GraphElementNotFoundException?
         } else {
             Node node = getNode(id);
-            if (node != null) { // TODO alternate exception handling?
+            if (node != null) {
                 kill(node);
                 return true;
             }
-            return false;
+            return false; // TODO change to throw GraphElementNotFoundException?
         }
     }
 
@@ -97,26 +90,34 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     public boolean kill(Route route) {
         if (route == null)
             return false;
-        
-//        System.out.println("Killing: " + route.getId());
         Node nEnd = route.getEnd();
         
-        Debug.logInfo("Killing " + route.getId(), 4, 0); // TODO change class
+        Debug.logInfo("Killing " + route.getId(), 4, Debug.SYSTEM_ALL);
 
         nEnd.getEntering().remove(route);
         // If there are now no routes entering the node, kill it
         if (nEnd.getEntering().size() == 0) {
             kill(nEnd);
-        } /*else {
-            // If there are no routes entering of the same charId {
-            for(Route option : nEnd.getExiting()) {
-                if (option.getCharId() == route.getCharId()) {
-                    kill(option);
+        } else if (route.getProperties() != null){
+            if (route.getProperties().getStringArrayList("Primaries") != null) {;
+            // Kills all methods leaving the end node if they have the same primary property and no entering routes also
+            // have that property TODO specify in documentation
+            for (String primary : route.getProperties().getStringArrayList("Primaries")) {
+                boolean similarRouteExists = false;
+                for(Route entry : nEnd.getEntering()) {
+                    if (entry.getProperties().getStringArrayList("Primaries").contains(primary))
+                        similarRouteExists = true;
+                }
+                if (!similarRouteExists) {
+                    for(Route option : new ArrayList<Route>(nEnd.getExiting())) {
+                        if (option.getProperties().getStringArrayList("Primaries").contains(primary)) {
+                            kill(option);
+                        }
+                    }
                 }
             }
-        }*/
-        // TODO and update event if instanceof sync node? i.e. change to ACTION_CONTINUE?
-        
+            }
+        }
         // Remove the route from the exiting routes of the node it comes from
         Node nStart = route.getStart();
         nStart.getExiting().remove(route); // Should return true, otherwise something's broken
@@ -148,7 +149,9 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         ArrayList<Route> r_routes = new ArrayList<Route>();
         for (Node node : activeNodes) {
             for (Route route : node.getExiting()) {
-                r_routes.add(route);
+                if (!route.getProperties().getBoolean("System.isCompleted")) {
+                    r_routes.add(route);
+                }
             }
         }
         return r_routes;

@@ -4,19 +4,26 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class NarrativeInstanceTest {
+    NarrativeTemplate sampleTemplate;
+    NarrativeTemplate loadTemplate;
+    
     HashMap<String, Route> sampleRoutes = new HashMap<String, Route>();
     HashMap<String, Node> sampleNodes = new HashMap<String, Node>();
 
+    static final int LOAD_SIZE = 100000;
     HashMap<String, Route> loadRoutes = new HashMap<String, Route>();
     HashMap<String, Node> loadNodes = new HashMap<String, Node>();
-
+    
+    /**
+     * Generic Test - From the Visual Basic Sample Diagram
+     */
     @Before
-    public void setup() {
-
-        // Standard Test // - From the Visual Basic Sample Diagram
+    public void generateSampleGraph() {
 
         sampleNodes.put("syncStart", new SynchronizationNode("syncStart")); // ___0
         sampleNodes.put("syncEnd", new SynchronizationNode("syncEnd")); // _______1
@@ -34,84 +41,141 @@ public class NarrativeInstanceTest {
 
         tempRoute = new Route("routeMike1", sampleNodes.get("syncStart"), sampleNodes.get("choiceMike1"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Mike")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeMike2", sampleNodes.get("choiceMike1"), sampleNodes.get("syncEnd"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Mike")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeMike3", sampleNodes.get("choiceMike1"), sampleNodes.get("sync3"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Mike")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeMike4", sampleNodes.get("sync3"), sampleNodes.get("syncEnd"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Mike")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
 
         tempRoute = new Route("routeSam1", sampleNodes.get("syncStart"), sampleNodes.get("choiceSam1"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sam")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeSam2", sampleNodes.get("choiceSam1"), sampleNodes.get("sync3"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sam")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeSam3", sampleNodes.get("sync3"), sampleNodes.get("syncEnd"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sam")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeSam4", sampleNodes.get("choiceSam1"), sampleNodes.get("sync4"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sam")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeSam5", sampleNodes.get("sync4"), sampleNodes.get("syncEnd"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sam")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
 
         tempRoute = new Route("routeSarah1", sampleNodes.get("syncStart"), sampleNodes.get("choiceSarah1"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sarah")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeSarah2", sampleNodes.get("choiceSarah1"), sampleNodes.get("sync3"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sarah")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeSarah3", sampleNodes.get("sync3"), sampleNodes.get("syncEnd"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sarah")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeSarah4", sampleNodes.get("choiceSarah1"), sampleNodes.get("sync1"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sarah")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeSarah5", sampleNodes.get("sync1"), sampleNodes.get("sync3"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sarah")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
 
         tempRoute = new Route("routeChris1", sampleNodes.get("syncStart"), sampleNodes.get("choiceChris1"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Chris")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeChris2", sampleNodes.get("choiceChris1"), sampleNodes.get("sync1"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Chris")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeChris3", sampleNodes.get("sync1"), sampleNodes.get("syncEnd"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Chris")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeChris4", sampleNodes.get("choiceChris1"), sampleNodes.get("sync2"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Chris")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeChris5", sampleNodes.get("sync2"), sampleNodes.get("syncEnd"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Chris")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
 
         tempRoute = new Route("routeJessica1", sampleNodes.get("syncStart"), sampleNodes.get("sync2"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Jessica")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeJessica2", sampleNodes.get("sync2"), sampleNodes.get("choiceJessica1"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Jessica")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeJessica3", sampleNodes.get("choiceJessica1"), sampleNodes.get("sync4"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Jessica")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeJessica4", sampleNodes.get("sync4"), sampleNodes.get("syncEnd"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Jessica")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeJessica5", sampleNodes.get("choiceJessica1"), sampleNodes.get("syncEnd"));
         tempRoute.setup();
+        tempRoute.createProperties();
+        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Jessica")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
-
-        // Load Test // - binary tree with node "1X" having children "10X" and "11X"
-
-        for (int i = 1; i < 100000; ++i) {
+        
+        // Creates template using the maps created above
+        sampleTemplate = new NarrativeTemplate();
+        sampleTemplate.routes.putAll(sampleRoutes);
+        sampleTemplate.nodes.putAll(sampleNodes);
+        sampleTemplate.start = (SynchronizationNode) sampleTemplate.getNode("syncStart");
+    }
+    /**
+     * Load Test - binary tree with node "1X" having children "10X" and "11X"
+     */
+    @Before
+    public void generateLoadGraph() {
+        for (int i = 1; i < LOAD_SIZE; ++i) {
             Node node = new ChoiceNode(Integer.toBinaryString(i));
             loadNodes.put(node.getId(), node);
         }
@@ -141,29 +205,22 @@ public class NarrativeInstanceTest {
                 loadRoutes.put(route2.getId(), route2);
             }
         }
+        // Add a start node (and route)
         SynchronizationNode start = new SynchronizationNode("start");
         Route startRoute = new Route("startRoute", start, loadNodes.get("1"));
         startRoute.setup();
         loadNodes.put("start", start);
         loadRoutes.put("startRoute", startRoute);
-
+        
+        // Creates template using the maps created above
+        loadTemplate = new NarrativeTemplate();
+        loadTemplate.routes.putAll(loadRoutes);
+        loadTemplate.nodes.putAll(loadNodes);
     }
 
     @Test
-    public void testNodeStructure() throws NullPointerException, InvalidGraphException {
-
-        // Sample Tests //
-
-        // creates template using the maps created above
-        NarrativeTemplate sampleTemplate = new NarrativeTemplate();
-        sampleTemplate.routes.putAll(sampleRoutes);
-        sampleTemplate.nodes.putAll(sampleNodes);
-        sampleTemplate.start = (SynchronizationNode) sampleTemplate.getNode("syncStart");
-
-        // Adds a test property for reference test later
-        sampleTemplate.getNode("syncStart").createProperties();
-        sampleTemplate.getNode("syncStart").getProperties().putIntArray("TestProperty", new int[] { 1, 2, 3 });
-
+    public void sampleGenerateTest() throws InvalidGraphException {
+        
         // Tests the template constructor - these are for the full sample graph
         assertEquals(24, sampleTemplate.routes.size());
         assertEquals(11, sampleTemplate.nodes.size());
@@ -171,6 +228,10 @@ public class NarrativeInstanceTest {
         assertEquals(sampleTemplate.getNode("choiceMike1").getEntering().get(0).getId(), "routeMike1");
         assertEquals(sampleTemplate.getNode("choiceMike1").getExiting().size(), 2);
 
+        // Adds a test property for reference test later
+        sampleTemplate.getNode("syncStart").createProperties();
+        sampleTemplate.getNode("syncStart").getProperties().putIntArray("TestProperty", new int[] { 1, 2, 3 });
+        
         // Copy the template into an instance
         NarrativeInstance sampleInst = sampleTemplate.generateInstance2();
 
@@ -183,22 +244,44 @@ public class NarrativeInstanceTest {
                 sampleInst.getNode("choiceJessica1").getExiting().contains(sampleInst.getRoute("routeJessica3")));
         assertTrue("Testing \"sync4\" has route \"routeSam4\" entering:",
                 sampleInst.getNode("sync4").getEntering().contains(sampleInst.getRoute("routeSam4")));
+        assertArrayEquals("Testing Test Property was copied: ", sampleInst.getNode("syncStart").getProperties().getIntArray("TestProperty"), new int[]{1,2,3});
 
         // Tests whether the copy has different references
-        assertFalse("Testing \"routes\" reference is different: ", sampleInst.routes == sampleTemplate.routes);
-        assertFalse("Testing \"nodes\" reference is different: ", sampleInst.nodes == sampleTemplate.nodes);
-        assertFalse("Testing \"start\" reference is different: ", sampleInst.start == sampleTemplate.start);
-        assertFalse("Testing Test Property reference is different: ", sampleInst.getNode("syncStart").getProperties()
-                .get("TestProperty") == sampleTemplate.getNode("syncStart").getProperties().get("TestProperty"));
+        assertNotSame("Testing \"routes\" reference is different: ", sampleInst.routes, sampleTemplate.routes);
+        assertNotSame("Testing \"nodes\" reference is different: ", sampleInst.nodes, sampleTemplate.nodes);
+        assertNotSame("Testing \"start\" reference is different: ", sampleInst.start, sampleTemplate.start);
+        assertNotSame("Testing Test Property reference is different: ", sampleInst.getNode("syncStart").getProperties()
+                .get("TestProperty"), sampleTemplate.getNode("syncStart").getProperties().get("TestProperty"));
+    }
+    
+    @Test
+    public void SampleKillAndGetPlayableTest() throws InvalidGraphException, GraphElementNotFoundException {
+        NarrativeInstance sampleInst = sampleTemplate.generateInstance2();
 
-        // Tests whether getRoute returns null for incorrect routes
-        assertNull("Testing incorrect route: ", sampleInst.getRoute("routeBob1"));
-
-        // Tests whether the kill method works correctly NOTE: may need changing to 20 with character association
+        assertEquals("Testing playable routes: ", 5, sampleInst.getPlayableRoutes().size());
+        assertEquals("", 1, sampleInst.activeNodes.size());
+       
         sampleInst.kill("routeMike1");
-        assertEquals("Testing kill method: ", 21, sampleInst.routes.size());
+        assertEquals("Testing kill method: ", 20, sampleInst.routes.size());
+        assertEquals("Testing kill method: ", 10, sampleInst.nodes.size());
+        
+        assertEquals("Testing playable routes: ", 4, sampleInst.getPlayableRoutes().size());
 
-        // Load Test //
+        sampleInst.startRoute("routeSarah1");
+        sampleInst.endRoute("routeSarah1");
+
+        assertEquals("", 2, sampleInst.activeNodes.size());
+        assertEquals("Testing playable routes: ", 5, sampleInst.getPlayableRoutes().size());
+        
+        sampleInst.kill("routeSarah4");
+        assertEquals("Testing kill method: ", 18, sampleInst.routes.size());
+        assertEquals("Testing kill method: ", 10, sampleInst.nodes.size());
+        
+        
+    }
+    
+    @Test
+    public void loadTest() throws InvalidGraphException {
 
         NarrativeTemplate loadTemplate = new NarrativeTemplate();
         loadTemplate.routes.putAll(loadRoutes);
@@ -209,19 +292,9 @@ public class NarrativeInstanceTest {
         assertTrue("Testing load test constructor: ", loadInst.routes.containsKey("route10101"));
     }
 
-    /**
-     * Here template.start is not set, so an error is thrown.
-     * 
-     * @throws NullPointerException
-     */
-
-    
     @Test(expected = InvalidGraphException.class) 
     public void testErrorThrownIn1() throws InvalidGraphException {
-    	// creates template using the maps created above
-        NarrativeTemplate sampleTemplate = new NarrativeTemplate();
-        sampleTemplate.routes.putAll(sampleRoutes);
-        sampleTemplate.nodes.putAll(sampleNodes);
+        sampleTemplate.start = null;
         
         @SuppressWarnings("unused")
 		NarrativeInstance sampleInst = sampleTemplate.generateInstance();
@@ -229,10 +302,7 @@ public class NarrativeInstanceTest {
     
     @Test(expected = InvalidGraphException.class) 
     public void testErrorThrownIn2() throws InvalidGraphException {
-    	// creates template using the maps created above
-        NarrativeTemplate sampleTemplate = new NarrativeTemplate();
-        sampleTemplate.routes.putAll(sampleRoutes);
-        sampleTemplate.nodes.putAll(sampleNodes);
+        sampleTemplate.start = null;
         
         @SuppressWarnings("unused")
 		NarrativeInstance sampleInst = sampleTemplate.generateInstance2();

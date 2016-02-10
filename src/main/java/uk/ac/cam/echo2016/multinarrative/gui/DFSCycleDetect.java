@@ -10,11 +10,9 @@ public class DFSCycleDetect {
 
     private HashSet<Node> marked;
     private ArrayList<Node> onStack;
-    private Node node;
     private boolean hasCycle;
 
     public DFSCycleDetect(Node node) {
-        this.node = node;
         marked = new HashSet<Node>();
         onStack = new ArrayList<Node>();
         findCycle(node);

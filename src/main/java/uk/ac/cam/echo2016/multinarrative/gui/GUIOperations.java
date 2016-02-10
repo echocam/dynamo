@@ -1,8 +1,20 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
 
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ADD_EMPTY_STRING;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ALREADY_EXISTS;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NARRATIVE_ALREADY_EXISTS;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NARRATIVE_PREFIX;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_ALREADY_AT_POSITION;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_ALREADY_EXISTS;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_DOES_NOT_EXIST;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_PREFIX;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_DOES_NOT_EXIST;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_MISSING;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.COULD_NOT_RENAME;
+
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import android.os.BaseBundle;
@@ -10,10 +22,6 @@ import uk.ac.cam.echo2016.multinarrative.GUINarrative;
 import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.Node;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
-import uk.ac.cam.echo2016.multinarrative.Route;
-import uk.ac.cam.echo2016.multinarrative.gui.IllegalOperationException;
-
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.*;
 
 /**
  * @author jr650
@@ -24,9 +32,7 @@ public class GUIOperations {
     private GUINarrative multinarrative;
 
     private HashMap<String, BaseBundle> properties;
-    private HashMap<String, Node> nodeslist;// TODO remove this as it isn't used
     private HashMap<String, Coordinate> nodes;
-    private static final String SYNCH_NODE_PREFIX = "SynchNode-";
     private static int nodeCounter = 1;
     private static int narrativeCounter = 1;
 
@@ -37,7 +43,6 @@ public class GUIOperations {
         multinarrative = new GUINarrative();
         properties = new HashMap<String, BaseBundle>();
         nodes = new HashMap<String, Coordinate>();
-        nodeslist = new HashMap<String, Node>();
     }
 
     /**
@@ -245,10 +250,12 @@ public class GUIOperations {
     public void addNarrative(String name, String start, String end) throws IllegalOperationException
     {
         // TODO Figure out how to get charID and REMOOOOOOOVE DIS
-        String charID = "Filler";
+        // String charID = "Filler"; //TODO replace with "primary properties"
+        //i.e. putStringArrayList("Primaries", propertyId); e.g. "Mike"
+        //Note: may change name from "Primaries"
         try {
-            multinarrative.newRoute(name, charID, start, end);
-        }catch(NonUniqueIdException e){
+            multinarrative.newRoute(name, start, end);
+        } catch (NonUniqueIdException e) {
             throw new IllegalOperationException(NARRATIVE_ALREADY_EXISTS);
         }catch(GraphElementNotFoundException e){
             throw new IllegalOperationException(NODE_DOES_NOT_EXIST);
@@ -295,8 +302,20 @@ public class GUIOperations {
      * @param to
      * @throws IllegalOperationException
      */
-    public void renameNode(String from, String to) throws IllegalOperationException{
-        multinarrative.renameNode(from, to);
+
+    public void renameNode(String from, String to) throws IllegalOperationException{      
+		try {
+			 Node n = multinarrative.getNode(from);
+		        //if (multinarrative.)
+			Field f = n.getClass().getField("id");
+	        f.setAccessible(true);
+	        f.set(n, to);
+	        
+	        //TODO update in multinarrative
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			throw new IllegalOperationException(COULD_NOT_RENAME, e);
+		}
+
     }
     
     /**

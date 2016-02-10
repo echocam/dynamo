@@ -5,15 +5,18 @@ import java.util.ArrayList;
 import android.os.BaseBundle;
 
 /**
- * Represents a MultiNarrative that can be edited. Included for extensibility. We subclass it with GUINarrative, but
- * this class can be derived for other methods of editing.
+ * Represents a {@code MultiNarrative} that can be modified. Sub-classing this allows alternate ways of generating
+ * templates that do not use {@code GUINarrative}, while retaining implementations of basic operations.
  * 
  * @author tr393
  * @author rjm232
+ * @version 1.0
+ * @see MultiNarrative
+ * @see GUINarrative
  *
  */
 
-public abstract class EditableNarrative extends MultiNarrative { //TODO Documentation
+public abstract class EditableNarrative extends MultiNarrative { // TODO Finish Class Documentation + Method Documentation
     private static final long serialVersionUID = 1;
     public void addRoute(Route route) {
         routes.put(route.getId(), route);
@@ -27,7 +30,6 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Document
         Route route = routes.remove(id);
         if (route == null)
             return false;
-        
         // Should not return null else graph is broken
         route.getStart().getExiting().remove(route);
         route.getEnd().getEntering().remove(route);
@@ -40,14 +42,19 @@ public abstract class EditableNarrative extends MultiNarrative { //TODO Document
         if (node == null) 
             return false;
 
-        // TODO replace with verion using enteringRoutes, or merge with kill()
-        for (Route route : new ArrayList<Route>(routes.values())) {
-            if (route.getStart() == node) {
-                removeRoute(route.getId());
-            } else if (route.getEnd() == node) {
-                removeRoute(route.getId());			
-            }
+        for (Route route : new ArrayList<Route> (node.getEntering())) {
+            removeRoute(route.getId());
         }
+        for (Route route : new ArrayList<Route> (node.getExiting())) {
+            removeRoute(route.getId());
+        }
+//        for (Route route : new ArrayList<Route>(routes.values())) {
+//            if (route.getStart() == node) {
+//                removeRoute(route.getId());
+//            } else if (route.getEnd() == node) {
+//                removeRoute(route.getId());			
+//            }
+//        }
 
         return true;		
     }

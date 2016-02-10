@@ -1,14 +1,13 @@
 package uk.ac.cam.echo2016.multinarrative;
 
+import java.util.ArrayList;
+
 import android.os.BaseBundle;
 
 /**
- * The EditableNarrative that is edited using the GUI.
- * 
- * <p>
- * ALT: The {@code MultiNarrative} graph structure used by the {@code FXMLGUI} editor to store the game design. This
- * graph is generated alongside the editor and used to build the template when the design is finished. New {@code Node}s
- * and {@code Route}s can be added 
+ * The {@code EditableNarrative} used by the {@code FXMLGUI} editor to store the graph structure. This graph is
+ * generated alongside the editor via {@code GUIOperations} and is used to build the template when the design is
+ * exported.
  * 
  * 
  * @author tr393
@@ -30,7 +29,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
      * @throws NonUniqueIdException
      * @throws GraphElementNotFoundException
      */
-    public void newRoute(String id, String charId, String startId, String endId)
+    public void newRoute(String id, String startId, String endId)
             throws NonUniqueIdException, GraphElementNotFoundException {
         if (isUniqueId(id)) {
             Node startNode = getNode(startId);
@@ -94,17 +93,19 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
      * @throws NonUniqueIdException
      * @throws GraphElementNotFoundException
      */
-    // TODO better refactoring?
-    public void insertChoiceOnRoute(String routeId, String charId, String newChoiceId, String newRouteId) 
+    public void insertChoiceOnRoute(String routeId, String newChoiceId, String newRouteId) 
     		throws NonUniqueIdException, GraphElementNotFoundException {
         
-        if (!isUniqueId(newChoiceId) || !isUniqueId(newRouteId)) {// TODO Add tests for inequality
+        if (!isUniqueId(newChoiceId) || !isUniqueId(newRouteId)) {
             throw new NonUniqueIdException(
-                    "Invalid id: " + (isUniqueId(newChoiceId) ? newChoiceId : newRouteId) + " is not unique.");
+                    "Error: Invalid id: " + (isUniqueId(newChoiceId) ? newChoiceId : newRouteId) + " is not unique.");
+        }
+        if(newChoiceId.equals(newRouteId)) {
+            throw new NonUniqueIdException("Error: Arguments not unique");
         }
         Route route1 = getRoute(routeId);
         if (route1 == null)
-            throw new GraphElementNotFoundException("Route with id: " + routeId + " not found");
+            throw new GraphElementNotFoundException("Error: Route with id: " + routeId + " not found");
 
         ChoiceNode choice = new ChoiceNode(newChoiceId);
         // Connect route2 start and end
@@ -154,18 +155,21 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
      * @throws NonUniqueIdException
      * @throws GraphElementNotFoundException
      */
-    public void insertChoiceOnRoute(String routeId, String charId, String newChoiceId, String newRouteId1,
-            String newRouteId2) throws NonUniqueIdException, GraphElementNotFoundException {
+    public void insertChoiceOnRoute(String routeId, String newChoiceId, String newRouteId1, String newRouteId2)
+            throws NonUniqueIdException, GraphElementNotFoundException {
         
-        if (!isUniqueId(newChoiceId) || !isUniqueId(newRouteId1) || !isUniqueId(newRouteId2)) { // TODO Add tests for inequality
-            throw new NonUniqueIdException("Invalid id: "
+        if (!isUniqueId(newChoiceId) || !isUniqueId(newRouteId1) || !isUniqueId(newRouteId2)) {
+            throw new NonUniqueIdException("Error: Invalid id: "
                     + (isUniqueId(newChoiceId) ? (isUniqueId(newRouteId1) ? newRouteId2 : newRouteId1) : newChoiceId)
                     + " is not unique.");
+        }
+        if(newChoiceId.equals(newRouteId1) || newChoiceId.equals(newRouteId2) || newRouteId1.equals(newRouteId2)) {
+            throw new NonUniqueIdException("Error: Arguments are not unique");
         }
 
         Route route = getRoute(routeId);
         if (route == null)
-            throw new GraphElementNotFoundException("Route with id: " + routeId + " not found");
+            throw new GraphElementNotFoundException("Error: Route with id: " + routeId + " not found");
 
         ChoiceNode choice = new ChoiceNode(newChoiceId);
         
@@ -190,14 +194,12 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
     }
 
     private boolean isUniqueId(String id) {
-        Route route = getRoute(id);
-        Node node = getNode(id);
-        return ((route == null) && (node == null));
+        return (!routes.containsKey(id) && !nodes.containsKey(id));
     }
 
     public boolean setStartPoint(String id) throws GraphElementNotFoundException {
         Node node = getNode(id);
-        if (node == null) throw new GraphElementNotFoundException("Node with id: " + id + " not found");
+        if (node == null) throw new GraphElementNotFoundException("Error: Node with id: " + id + " not found");
         if (node instanceof SynchronizationNode) {
             start = (SynchronizationNode) node;
             return true;
@@ -206,11 +208,24 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
         }
     }
     
-//    public void setCharacter(String routeId, String charId) throws GraphElementNotFoundException { // TODO add to tests?
-//        Route route = getRoute(routeId);
-//        route.setCharId(charId);
-//    }
-    
+    public void addPrimaryProperty(String routeId, String property) throws GraphElementNotFoundException { // TODO add to tests
+        Route route = getRoute(routeId);
+        if (route == null) throw new GraphElementNotFoundException("Error: Node with id: " + routeId + " not found");
+        route.createProperties();
+        ArrayList<String> primaries = route.getProperties().getStringArrayList("Primaries");
+        if (primaries == null) primaries = new ArrayList<String>();
+        primaries.add(property);
+    }
+    public boolean removePrimaryProperty(String routeId, String property) throws GraphElementNotFoundException { // TODO add to tests
+        Route route = getRoute(routeId);
+        if (route == null) throw new GraphElementNotFoundException("Error: Node with id: " + routeId + " not found");
+        BaseBundle prop = route.getProperties();
+        if (prop == null) return false;
+        ArrayList<String> primaries = route.getProperties().getStringArrayList("Primaries");
+        if (primaries == null) return false;
+        return primaries.remove(property);
+    }
+
     public BaseBundle getProperties(String id) throws GraphElementNotFoundException {
         Route route = getRoute(id);
         if (route != null) {
@@ -221,6 +236,6 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
                 return node.getProperties();
             }
         }
-        throw new GraphElementNotFoundException("Element with id: " + id + " not found");
+        throw new GraphElementNotFoundException("Error: Element with id: " + id + " not found");
     }
 }
