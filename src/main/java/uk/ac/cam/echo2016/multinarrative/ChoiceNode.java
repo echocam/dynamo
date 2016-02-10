@@ -3,9 +3,13 @@ package uk.ac.cam.echo2016.multinarrative;
 import android.os.BaseBundle;
 
 /**
- * Implements a {@link Node} at a branch point on the {@code MultiNarrative} graph structure. At this
+ * Represents a major decision made in a route that can affect which sync point a character will end up in. Has one
+ * route entering, and several leaving.
+ *
+ * <p>
+ * ALT: Implements a {@link Node} at a branch point on the {@code MultiNarrative} structure. At this
  * point, some decision in the game affects the route taken down the graph. Only one {@code Route} should be
- * entering this node, as opposed to {@link SyncronizationNode}.
+ * entering this node, although this is not enforced?], as opposed to {@link SyncronizationNode}.
  * 
  * @author tr393
  * @author rjm232
@@ -13,7 +17,7 @@ import android.os.BaseBundle;
  * @see SyncronizationNode
  * @see MultiNarrative 
  */
-public class ChoiceNode extends Node { // TODO Finish Class Documentation + Method Documentation
+public class ChoiceNode extends Node { // TODO Documentation
     private static final long serialVersionUID = 1;
 
     public ChoiceNode(String id) {
