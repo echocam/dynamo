@@ -1,4 +1,4 @@
-package uk.ac.cam.echo2016.multinarrative.gui;
+package uk.ac.cam.echo2016.multinarrative.gui.operations;
 
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ADD_EMPTY_STRING;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ALREADY_EXISTS;
@@ -20,6 +20,7 @@ import android.os.BaseBundle;
 import uk.ac.cam.echo2016.multinarrative.GUINarrative;
 import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
+import uk.ac.cam.echo2016.multinarrative.gui.Strings;
 
 /**
  * @author jr650

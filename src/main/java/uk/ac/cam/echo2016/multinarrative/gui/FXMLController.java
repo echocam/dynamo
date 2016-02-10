@@ -29,6 +29,8 @@ import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphEdge;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphNode;
+import uk.ac.cam.echo2016.multinarrative.gui.operations.GUIOperations;
+import uk.ac.cam.echo2016.multinarrative.gui.operations.IllegalOperationException;
 import uk.ac.cam.echo2016.multinarrative.gui.tool.InsertTool;
 import uk.ac.cam.echo2016.multinarrative.gui.tool.SelectionTool;
 
