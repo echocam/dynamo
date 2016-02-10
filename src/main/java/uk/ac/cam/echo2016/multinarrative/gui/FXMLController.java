@@ -1,7 +1,7 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
 
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_ADDED;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_REMOVED;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_ADDED;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_REMOVED;
 
 import java.io.IOException;
 
@@ -31,6 +31,7 @@ import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphEdge;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphNode;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.GUIOperations;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.IllegalOperationException;
+import uk.ac.cam.echo2016.multinarrative.gui.operations.Strings;
 import uk.ac.cam.echo2016.multinarrative.gui.tool.InsertTool;
 import uk.ac.cam.echo2016.multinarrative.gui.tool.SelectionTool;
 

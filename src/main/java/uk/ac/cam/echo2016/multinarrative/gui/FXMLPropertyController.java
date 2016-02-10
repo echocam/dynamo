@@ -20,6 +20,7 @@ import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.IllegalOperationException;
+import uk.ac.cam.echo2016.multinarrative.gui.operations.Strings;
 
 /**
  * @author jr650

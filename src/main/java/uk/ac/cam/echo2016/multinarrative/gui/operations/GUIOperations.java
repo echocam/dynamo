@@ -1,16 +1,6 @@
 package uk.ac.cam.echo2016.multinarrative.gui.operations;
 
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ADD_EMPTY_STRING;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ALREADY_EXISTS;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ROUTE_ALREADY_EXISTS;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ROUTE_PREFIX;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_ALREADY_AT_POSITION;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_ALREADY_EXISTS;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_DOES_NOT_EXIST;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_PREFIX;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_DOES_NOT_EXIST;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_MISSING;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.*;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +10,6 @@ import android.os.BaseBundle;
 import uk.ac.cam.echo2016.multinarrative.GUINarrative;
 import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
-import uk.ac.cam.echo2016.multinarrative.gui.Strings;
 
 /**
  * @author jr650
