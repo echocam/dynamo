@@ -106,6 +106,11 @@ public class FXMLController {
         nodes.itemsProperty().set(FXCollections.observableArrayList());
         routes.itemsProperty().set(FXCollections.observableArrayList());
     }
+    
+    @FXML
+    protected void close() {
+    	System.exit(0);
+    }
 
     @FXML
     protected void insertMode() {
