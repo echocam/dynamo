@@ -26,6 +26,7 @@ import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
 /**
  * @author jr650
  * @author eyx20
+ * @author rjm232
  */
 public class GUIOperations {
 
@@ -54,6 +55,7 @@ public class GUIOperations {
      */
     public void addProperty(String s) throws IllegalOperationException {
         if (s.equals("") || s == null) {
+        	// Shouldn't ever happen.
             throw new IllegalOperationException(ADD_EMPTY_STRING);
         }
         if (properties.containsKey(s)) {

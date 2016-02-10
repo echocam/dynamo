@@ -26,7 +26,10 @@ import uk.ac.cam.echo2016.multinarrative.gui.tool.InsertTool;
 import uk.ac.cam.echo2016.multinarrative.gui.tool.SelectionTool;
 
 /**
+ * The class used by SceneBuilder as the source of all objects and methods.
+ * 
  * @author jr650
+ * @author rjm232
  */
 public class FXMLController {
 
@@ -107,21 +110,35 @@ public class FXMLController {
         routes.itemsProperty().set(FXCollections.observableArrayList());
     }
     
+    /**
+     * Code run when the "Close" menu item is clicked in the File menu.
+     */
     @FXML
     protected void close() {
     	System.exit(0);
     }
 
+    /**
+     * Mode entered when the Shift key on the keyboard is pressed.
+     */
     @FXML
     protected void insertMode() {
         graph.setTool(insertTool);
     }
 
+    /**
+     * Default mode. Also entered when Shift key is released on keyboard.
+     */
     @FXML
     protected void selectMode() {
         graph.setTool(selectTool);
     }
 
+    /**
+     * Code run when "+" button is pressed. "+" button is disabled when the text entry is empty. Adds
+     * node to internal grapha and then adds node to GUI graph.
+     * @param event
+     */
     @FXML
     protected void addPropertyButtonAction(ActionEvent event) {
 
@@ -143,6 +160,10 @@ public class FXMLController {
     	removeSelect();
     }
 
+    /**
+     * Registers a key being pressed on the keyboard and responds depending on the button pressed..
+     * @param event
+     */
     @FXML
     protected void onKeyPress(KeyEvent event) {
       	Debug.logInfo("Key Pressed: "+event, 5, Debug.SYSTEM_GUI);
@@ -158,6 +179,10 @@ public class FXMLController {
       	}
     }
 
+    /**
+     * Registers a key being released on the keyboard and responds only if said key is the Shift key.
+     * @param event
+     */
     @FXML
     protected void onKeyRelease(KeyEvent event) {
 	Debug.logInfo("Key Released: "+event, 5, Debug.SYSTEM_GUI);
@@ -169,6 +194,10 @@ public class FXMLController {
         }
     }
 
+    /**
+     * Code to add the string to the list of properties on the right side of the screen. 
+     * @param s
+     */
     protected void addProperty(String s) {
 	      Debug.logInfo("Add property: "+s, 5, Debug.SYSTEM_GUI);
         try {
@@ -185,6 +214,10 @@ public class FXMLController {
         }
     }
 
+    /**
+     * Code to remove the string from the list of properties on the right side of the screen. 
+     * @param s
+     */
     protected boolean removeProperty(String s, TitledPane pane) {
 	      Debug.logInfo("Remove property: "+s, 5, Debug.SYSTEM_GUI);
         try {
@@ -198,6 +231,12 @@ public class FXMLController {
         }
     }
 
+    /**
+     * Adds the string formed by populating the string {@code template} with the list of strings in 
+     * {@code values} to the info bar on the bottom right of the screen.
+     * @param template
+     * @param values
+     */
     public void setInfo(String template, String... values) {
         infoBar.setText(Strings.populateString(template, values));
     }
@@ -206,6 +245,10 @@ public class FXMLController {
         return operations;
     }
 
+    /**
+     * Adds the node Id {@code name} to the list of nodes displayed on the left.
+     * @param name
+     */
     public void addNode(String name) {
         int i = 0;
         while (i < nodes.getItems().size() && nodes.getItems().get(i).compareTo(name) < 0) {
@@ -215,6 +258,10 @@ public class FXMLController {
 
     }
 
+    /**
+     * Adds the route Id {@code name} to the list of routes displayed on the left.
+     * @param name
+     */
     public void addRoute(String name) {
         int i = 0;
         while (i < routes.getItems().size() && routes.getItems().get(i).compareTo(name) < 0) {
@@ -223,10 +270,18 @@ public class FXMLController {
         routes.getItems().add(i, name);
     }
 
+    /**
+     * Removes the node Id {@code name} from the list of nodes on the left.
+     * @param name
+     */
     public void removeNode(String name) {
         nodes.getItems().remove(name);
     }
 
+    /**
+     * Removes the route Id {@code name} from the list of routes on the left.
+     * @param name
+     */
     public void removeRoute(String name) {
         routes.getItems().remove(name);
     }
