@@ -197,9 +197,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
     }
 
     private boolean isUniqueId(String id) {
-        Route route = getRoute(id);
-        Node node = getNode(id);
-        return ((route == null) && (node == null));
+        return (!routes.containsKey(id) && !nodes.containsKey(id));
     }
 
     public boolean setStartPoint(String id) throws GraphElementNotFoundException {
