@@ -27,8 +27,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         this.properties = properties;
     }
 
-    public NarrativeInstance() {
-    }
+    public NarrativeInstance() { }
     
     public BaseBundle startRoute(String id) throws GraphElementNotFoundException {
         Route route = getRoute(id);
@@ -53,7 +52,9 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         Route route = getRoute(id);
         if (route == null) throw new GraphElementNotFoundException("Error: Route with id: " + id + " not found");
         Node endNode = route.getEnd();
-        activeNodes.add(endNode);
+        if (endNode instanceof ChoiceNode || ((SynchronizationNode)endNode).isCompleted()) {
+        	setActive(endNode);
+        }
         route.getProperties().putBoolean("System.isCompleted", true);
         return endNode.onEntry(route, this);
     }
@@ -92,7 +93,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
             return false;
         Node nEnd = route.getEnd();
         
-        Debug.logInfo("Killing " + route.getId(), 4, Debug.SYSTEM_ALL);
+        //Debug.logInfo("Killing " + route.getId(), 4, Debug.SYSTEM_ALL);
 
         nEnd.getEntering().remove(route);
         // If there are now no routes entering the node, kill it

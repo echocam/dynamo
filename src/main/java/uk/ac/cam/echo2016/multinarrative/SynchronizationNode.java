@@ -33,7 +33,7 @@ public class SynchronizationNode extends Node { // TODO Documentation
         return option.getProperties();
     }
     
-    private boolean isCompleted() {
+    public boolean isCompleted() {
     	for (Route route : getEntering()) {
     		if (!route.getProperties().containsKey("System.isCompleted")) {
     			return false;
