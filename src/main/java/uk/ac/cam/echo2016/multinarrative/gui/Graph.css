@@ -19,3 +19,7 @@
         #333333;
     -fx-background-insets: 0, 2;
 }
+
+.choice {
+    -fx-background-radius: 30;
+}
