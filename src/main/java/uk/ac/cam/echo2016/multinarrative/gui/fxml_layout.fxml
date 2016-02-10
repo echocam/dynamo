@@ -97,7 +97,7 @@
                                           <Insets top="3.0" />
                                        </VBox.margin>
                                     </Button>
-                                    <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="-">
+                                    <Button fx:id="itemPropertyDelete" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="-">
                                        <VBox.margin>
                                           <Insets top="3.0" />
                                        </VBox.margin>
@@ -105,6 +105,45 @@
                                  </children>
                               </VBox>
                            </left>
+                     <bottom>
+                        <VBox BorderPane.alignment="CENTER">
+                           <children>
+                              <TitledPane fx:id="nodeEditor" text="Node Properties">
+                                 <content>
+                                    <VBox>
+                                       <children>
+                                          <RadioButton mnemonicParsing="false" selected="true" text="Synch">
+                                             <toggleGroup>
+                                                <ToggleGroup fx:id="nodeType" />
+                                             </toggleGroup>
+                                          </RadioButton>
+                                          <RadioButton mnemonicParsing="false" text="Choice" toggleGroup="$nodeType" />
+                                       </children>
+                                    </VBox>
+                                 </content>
+                              </TitledPane>
+                              <TitledPane fx:id="routeEditor" text="Route Properties">
+                                 <content>
+                                    <VBox>
+                                       <children>
+                                          <ComboBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+                                          <StackPane>
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="whiteText" text="V" textAlignment="RIGHT" StackPane.alignment="CENTER_RIGHT">
+                                                   <VBox.margin>
+                                                      <Insets left="40.0" />
+                                                   </VBox.margin>
+                                                </Text>
+                                             </children>
+                                          </StackPane>
+                                          <ComboBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+                                       </children>
+                                    </VBox>
+                                 </content>
+                              </TitledPane>
+                           </children>
+                        </VBox>
+                     </bottom>
                         </BorderPane>
                      </content>
                   </TitledPane>

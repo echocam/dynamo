@@ -10,7 +10,7 @@ root {
     -fx-font-family: "Arial Narrow";
 }
 
-#label, #infoBar {
+.whiteText, #infoBar {
     -fx-fill: white;
 }
 

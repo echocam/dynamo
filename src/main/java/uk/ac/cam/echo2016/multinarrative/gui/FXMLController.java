@@ -67,6 +67,10 @@ public class FXMLController {
 	private ListView<String> itemProperties;
 	@FXML
 	private Button itemPropertyDelete;
+	@FXML
+	private TitledPane nodeEditor;
+	@FXML
+	private TitledPane routeEditor;
 
 	private Boolean itemNode = null;
 
@@ -87,6 +91,8 @@ public class FXMLController {
 		insertTool = new InsertTool(graph);
 		selectMode();
 		itemEditor.setDisable(true);
+		nodeEditor.setDisable(true);
+		routeEditor.setDisable(true);
 		nodes.getSelectionModel().selectedItemProperty()
 				.addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
 					if (newValue != null) {
@@ -376,6 +382,10 @@ public class FXMLController {
 	public void initSelect() {
 		itemEditor.setExpanded(itemNode != null);
 		itemEditor.setDisable(itemNode == null);
+		nodeEditor.setExpanded((itemNode != null) && itemNode);
+		nodeEditor.setDisable((itemNode == null) || !itemNode);
+		routeEditor.setExpanded((itemNode != null) && !itemNode);
+		routeEditor.setDisable((itemNode == null) || itemNode);
 		if (itemNode == null) {
 			itemName.setText("");
 			itemProperties.getItems().clear();
