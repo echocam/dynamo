@@ -265,11 +265,13 @@ public class NarrativeInstanceTest {
         assertEquals("Testing kill method: ", 20, sampleInst.routes.size());
         assertEquals("Testing kill method: ", 10, sampleInst.nodes.size());
         
+        assertEquals("Testing playable routes: ", 4, sampleInst.getPlayableRoutes().size());
+
         sampleInst.startRoute("routeSarah1");
         sampleInst.endRoute("routeSarah1");
 
         assertEquals("", 2, sampleInst.activeNodes.size());
-        assertEquals("Testing playable routes: ", 6, sampleInst.getPlayableRoutes().size());
+        assertEquals("Testing playable routes: ", 5, sampleInst.getPlayableRoutes().size());
         
         sampleInst.kill("routeSarah4");
         assertEquals("Testing kill method: ", 18, sampleInst.routes.size());
