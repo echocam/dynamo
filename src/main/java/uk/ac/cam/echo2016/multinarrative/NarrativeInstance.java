@@ -30,8 +30,9 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     public NarrativeInstance() {
     }
     
-    public BaseBundle startRoute(String id) {
+    public BaseBundle startRoute(String id) throws GraphElementNotFoundException {
         Route route = getRoute(id);
+        if (route == null) throw new GraphElementNotFoundException("Error: Route with id: " + id + " not found");
         Node startNode = route.getStart();
         if (startNode instanceof ChoiceNode) {
         	activeNodes.remove(startNode);
@@ -53,7 +54,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         if (route == null) throw new GraphElementNotFoundException("Error: Route with id: " + id + " not found");
         Node endNode = route.getEnd();
         activeNodes.add(endNode);
-        route.getProperties().putBoolean("System.isCompleted", true);        
+        route.getProperties().putBoolean("System.isCompleted", true);
         return endNode.onEntry(route, this);
     }
 
@@ -148,7 +149,9 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         ArrayList<Route> r_routes = new ArrayList<Route>();
         for (Node node : activeNodes) {
             for (Route route : node.getExiting()) {
-                r_routes.add(route);
+                if (!route.getProperties().getBoolean("System.isCompleted")) {
+                    r_routes.add(route);
+                }
             }
         }
         return r_routes;

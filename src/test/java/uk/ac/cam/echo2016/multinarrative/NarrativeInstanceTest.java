@@ -9,13 +9,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class NarrativeInstanceTest {
+    NarrativeTemplate sampleTemplate;
+    NarrativeTemplate loadTemplate;
+    
     HashMap<String, Route> sampleRoutes = new HashMap<String, Route>();
     HashMap<String, Node> sampleNodes = new HashMap<String, Node>();
 
     static final int LOAD_SIZE = 100000;
     HashMap<String, Route> loadRoutes = new HashMap<String, Route>();
     HashMap<String, Node> loadNodes = new HashMap<String, Node>();
-    
     
     /**
      * Generic Test - From the Visual Basic Sample Diagram
@@ -161,6 +163,12 @@ public class NarrativeInstanceTest {
         tempRoute.createProperties();
         tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Jessica")));
         sampleRoutes.put(tempRoute.getId(), tempRoute);
+        
+        // Creates template using the maps created above
+        sampleTemplate = new NarrativeTemplate();
+        sampleTemplate.routes.putAll(sampleRoutes);
+        sampleTemplate.nodes.putAll(sampleNodes);
+        sampleTemplate.start = (SynchronizationNode) sampleTemplate.getNode("syncStart");
     }
     /**
      * Load Test - binary tree with node "1X" having children "10X" and "11X"
@@ -203,23 +211,16 @@ public class NarrativeInstanceTest {
         startRoute.setup();
         loadNodes.put("start", start);
         loadRoutes.put("startRoute", startRoute);
+        
+        // Creates template using the maps created above
+        loadTemplate = new NarrativeTemplate();
+        loadTemplate.routes.putAll(loadRoutes);
+        loadTemplate.nodes.putAll(loadNodes);
     }
 
     @Test
-    public void sampleInstanceCreateAndKillTest() throws InvalidGraphException {
-
-        // Sample Tests //
+    public void sampleGenerateTest() throws InvalidGraphException {
         
-        // Creates template using the maps created above
-        NarrativeTemplate sampleTemplate = new NarrativeTemplate();
-        sampleTemplate.routes.putAll(sampleRoutes);
-        sampleTemplate.nodes.putAll(sampleNodes);
-        sampleTemplate.start = (SynchronizationNode) sampleTemplate.getNode("syncStart");
-
-        // Adds a test property for reference test later
-        sampleTemplate.getNode("syncStart").createProperties();
-        sampleTemplate.getNode("syncStart").getProperties().putIntArray("TestProperty", new int[] { 1, 2, 3 });
-
         // Tests the template constructor - these are for the full sample graph
         assertEquals(24, sampleTemplate.routes.size());
         assertEquals(11, sampleTemplate.nodes.size());
@@ -227,6 +228,10 @@ public class NarrativeInstanceTest {
         assertEquals(sampleTemplate.getNode("choiceMike1").getEntering().get(0).getId(), "routeMike1");
         assertEquals(sampleTemplate.getNode("choiceMike1").getExiting().size(), 2);
 
+        // Adds a test property for reference test later
+        sampleTemplate.getNode("syncStart").createProperties();
+        sampleTemplate.getNode("syncStart").getProperties().putIntArray("TestProperty", new int[] { 1, 2, 3 });
+        
         // Copy the template into an instance
         NarrativeInstance sampleInst = sampleTemplate.generateInstance2();
 
@@ -239,20 +244,38 @@ public class NarrativeInstanceTest {
                 sampleInst.getNode("choiceJessica1").getExiting().contains(sampleInst.getRoute("routeJessica3")));
         assertTrue("Testing \"sync4\" has route \"routeSam4\" entering:",
                 sampleInst.getNode("sync4").getEntering().contains(sampleInst.getRoute("routeSam4")));
+        assertArrayEquals("Testing Test Property was copied: ", sampleInst.getNode("syncStart").getProperties().getIntArray("TestProperty"), new int[]{1,2,3});
 
         // Tests whether the copy has different references
-        assertFalse("Testing \"routes\" reference is different: ", sampleInst.routes == sampleTemplate.routes);
-        assertFalse("Testing \"nodes\" reference is different: ", sampleInst.nodes == sampleTemplate.nodes);
-        assertFalse("Testing \"start\" reference is different: ", sampleInst.start == sampleTemplate.start);
-        assertFalse("Testing Test Property reference is different: ", sampleInst.getNode("syncStart").getProperties()
-                .get("TestProperty") == sampleTemplate.getNode("syncStart").getProperties().get("TestProperty"));
+        assertNotSame("Testing \"routes\" reference is different: ", sampleInst.routes, sampleTemplate.routes);
+        assertNotSame("Testing \"nodes\" reference is different: ", sampleInst.nodes, sampleTemplate.nodes);
+        assertNotSame("Testing \"start\" reference is different: ", sampleInst.start, sampleTemplate.start);
+        assertNotSame("Testing Test Property reference is different: ", sampleInst.getNode("syncStart").getProperties()
+                .get("TestProperty"), sampleTemplate.getNode("syncStart").getProperties().get("TestProperty"));
+    }
+    
+    @Test
+    public void SampleKillAndGetPlayableTest() throws InvalidGraphException, GraphElementNotFoundException {
+        NarrativeInstance sampleInst = sampleTemplate.generateInstance2();
 
-        // Tests whether getRoute returns null for incorrect routes
-        assertNull("Testing incorrect route: ", sampleInst.getRoute("routeBob1"));
-
-        // Tests whether the kill method works correctly
+        assertEquals("Testing playable routes: ", 5, sampleInst.getPlayableRoutes().size());
+        assertEquals("", 1, sampleInst.activeNodes.size());
+       
         sampleInst.kill("routeMike1");
         assertEquals("Testing kill method: ", 20, sampleInst.routes.size());
+        assertEquals("Testing kill method: ", 10, sampleInst.nodes.size());
+        
+        sampleInst.startRoute("routeSarah1");
+        sampleInst.endRoute("routeSarah1");
+
+        assertEquals("", 2, sampleInst.activeNodes.size());
+        assertEquals("Testing playable routes: ", 6, sampleInst.getPlayableRoutes().size());
+        
+        sampleInst.kill("routeSarah4");
+        assertEquals("Testing kill method: ", 18, sampleInst.routes.size());
+        assertEquals("Testing kill method: ", 10, sampleInst.nodes.size());
+        
+        
     }
     
     @Test
@@ -269,10 +292,7 @@ public class NarrativeInstanceTest {
 
     @Test(expected = InvalidGraphException.class) 
     public void testErrorThrownIn1() throws InvalidGraphException {
-    	// creates template using the maps created above
-        NarrativeTemplate sampleTemplate = new NarrativeTemplate();
-        sampleTemplate.routes.putAll(sampleRoutes);
-        sampleTemplate.nodes.putAll(sampleNodes);
+        sampleTemplate.start = null;
         
         @SuppressWarnings("unused")
 		NarrativeInstance sampleInst = sampleTemplate.generateInstance();
@@ -280,10 +300,7 @@ public class NarrativeInstanceTest {
     
     @Test(expected = InvalidGraphException.class) 
     public void testErrorThrownIn2() throws InvalidGraphException {
-    	// creates template using the maps created above
-        NarrativeTemplate sampleTemplate = new NarrativeTemplate();
-        sampleTemplate.routes.putAll(sampleRoutes);
-        sampleTemplate.nodes.putAll(sampleNodes);
+        sampleTemplate.start = null;
         
         @SuppressWarnings("unused")
 		NarrativeInstance sampleInst = sampleTemplate.generateInstance2();
