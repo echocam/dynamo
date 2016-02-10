@@ -57,7 +57,7 @@ public class Route implements Serializable, Cloneable { // TODO Documentation
         this.start = start;
     }
 
-    public Node getEnd() { // TODO enforce InvalidGraphException?
+    public Node getEnd() {
         return end;
     }
 

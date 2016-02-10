@@ -10,6 +10,7 @@ import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_DOES_NOT_EXIST;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_PREFIX;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_DOES_NOT_EXIST;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_MISSING;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -135,7 +136,7 @@ public class GUIOperations {
 			throw new IllegalOperationException(PROPERTY_MISSING);
 		}
 		if (properties.containsKey(to)) {
-			throw new IllegalOperationException("Property cannot be renamed to " + to + ": " + to + " already exists.");
+			throw new IllegalOperationException(PROPERTY_RENAME_EXISTS);
 		}
 
 		BaseBundle oldprop = properties.get(from);
@@ -149,6 +150,7 @@ public class GUIOperations {
 	 * 
 	 * @return new node name
 	 */
+
 	public String getUniqueNodeName() {
 		String newName = Strings.populateString(NODE_PREFIX, nodeCounter);
 		if (!nodes.containsKey(newName)) {
@@ -204,7 +206,7 @@ public class GUIOperations {
 		nodes.put(name, coor);
 		try {
 			multinarrative.newChoiceNode(name);
-			assert(multinarrative.getNode(name)!=null);
+			assert (multinarrative.getNode(name) != null);
 		} catch (NonUniqueIdException e) {
 			throw new IllegalOperationException(NODE_ALREADY_EXISTS);
 		}
@@ -238,11 +240,11 @@ public class GUIOperations {
 	 */
 	public String getUniqueNarrativeName() {
 		String newName = Strings.populateString(ROUTE_PREFIX, narrativeCounter);
-		if (multinarrative.getRoute(newName)==null) {
+		if (!nodes.containsKey(newName)) {
 			narrativeCounter += 1;
 			return newName;
 		} else {
-			while (multinarrative.getRoute(newName)!=null) {
+			while (nodes.containsKey(newName)) {
 				narrativeCounter += 1;
 				newName = Strings.populateString(ROUTE_PREFIX, narrativeCounter);
 			}
@@ -263,6 +265,54 @@ public class GUIOperations {
 	 *            cycle detection here!!
 	 * @throws GraphElementNotFoundException
 	 * @throws NonUniqueIdException
+	 */
+	public void addNarrative(String name, String start, String end) throws IllegalOperationException {
+		// TODO Figure out how to get charID and REMOOOOOOOVE DIS
+		// String charID = "Filler"; //TODO replace with "primary properties"
+		// i.e. putStringArrayList("Primaries", propertyId); e.g. "Mike"
+		// Note: may change name from "Primaries"
+		try {
+			multinarrative.newRoute(name, start, end);
+		} catch (NonUniqueIdException e) {
+			throw new IllegalOperationException(ROUTE_ALREADY_EXISTS);
+		} catch (GraphElementNotFoundException e) {
+			throw new IllegalOperationException(NODE_DOES_NOT_EXIST);
+		}
+		DFSCycleDetect cycleDetect = new DFSCycleDetect(multinarrative.getNode(start));
+		if (cycleDetect.hasCycle()) {
+			multinarrative.removeRoute(name);
+			throw new IllegalOperationException("Cannot add route: Graph will contain a cycle");
+		}
+
+	}
+
+	/**
+	 * 
+	 * @param node
+	 *            Route id
+	 * @return List of properties in the form "name=value"
+	 */
+	public List<String> getRouteProperties(String route) {
+		BaseBundle props = multinarrative.getRoute(route).getProperties();
+		ArrayList<String> r = new ArrayList<String>();
+		if (props != null) {
+			for (String name : props.keySet()) {
+				r.add(name + "=" + props.get(name).toString());
+			}
+		}
+		return r;
+	}
+
+	/**
+	 * Adds a route, throwing exception if it fails, due to names existing or a
+	 * cycle being created.
+	 * 
+	 * @param name
+	 *            - unique id of the route
+	 * @param start
+	 *            - starting node. If node does not exist creates a new node.
+	 * @param end
+	 *            - ending node. If node does not exist creates a new node.
 	 */
 	public void addRoute(String name, String start, String end) throws IllegalOperationException {
 		// TODO Figure out how to get charID and REMOOOOOOOVE DIS
@@ -303,21 +353,6 @@ public class GUIOperations {
 	}
 
 	/**
-	 * 
-	 * @param node
-	 *            Route id
-	 * @return List of properties in the form "name=value"
-	 */
-	public List<String> getRouteProperties(String route) {
-		BaseBundle props = multinarrative.getRoute(route).getProperties();
-		ArrayList<String> r = new ArrayList<String>();
-		for (String name : props.keySet()) {
-			r.add(name + "=" + props.get(name).toString());
-		}
-		return r;
-	}
-
-	/**
 	 * TODO
 	 * 
 	 * @param from
@@ -325,8 +360,8 @@ public class GUIOperations {
 	 * @throws IllegalOperationException
 	 */
 	public void renameNode(String from, String to) throws IllegalOperationException {
-		if(!from.equals(to))
-		multinarrative.renameNode(from, to);
+		if (!from.equals(to))
+			multinarrative.renameNode(from, to);
 	}
 
 	/**
@@ -337,26 +372,8 @@ public class GUIOperations {
 	 * @throws IllegalOperationException
 	 */
 	public void renameRoute(String from, String to) throws IllegalOperationException {
-		if(!from.equals(to))
-		multinarrative.renameRoute(from, to);
-	}
-
-	/**
-	 * TODO
-	 * 
-	 * @param id
-	 */
-	public void deleteNode(String id) {
-
-	}
-
-	/**
-	 * TODO
-	 * 
-	 * @param id
-	 */
-	public void deleteRoute(String id) {
-
+		if (!from.equals(to))
+			multinarrative.renameRoute(from, to);
 	}
 
 	/**
@@ -377,5 +394,24 @@ public class GUIOperations {
 	 */
 	public void setStart(String route, String node) {
 
+	}
+
+	/**
+	 * deletes a node
+	 * 
+	 * @param id
+	 */
+	public void deleteNode(String id) {
+		multinarrative.removeNode(id);
+
+	}
+
+	/**
+	 * deletes a route
+	 * 
+	 * @param id
+	 */
+	public void deleteRoute(String id) {
+		multinarrative.removeRoute(id);
 	}
 }

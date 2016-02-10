@@ -61,8 +61,9 @@ public class NarrativeTemplate extends MultiNarrative {
             r_routes.put(route.getId(), r_route);
         }
         SynchronizationNode r_start = (SynchronizationNode) r_nodes.get(start.getId());
-
+        
         NarrativeInstance instance = new NarrativeInstance(r_routes, r_nodes, r_start, BaseBundle.deepcopy(this.properties));
+        instance.setActive(r_start);
         return instance;
     }
     
@@ -72,7 +73,7 @@ public class NarrativeTemplate extends MultiNarrative {
         if (start == null)
             throw new InvalidGraphException("Error: Graph does not have a start node.");
         instance.start = (SynchronizationNode) copyToInstance(this.start, instance);
-        instance.setActive(start);
+        instance.setActive(instance.start);
         return instance;
     }
     /**
