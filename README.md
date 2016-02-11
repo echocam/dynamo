@@ -46,6 +46,39 @@ If you wish to specify the jdk path for gradle, add the following to the gradle.
 org.gradle.java.home=/home/tom/Desktop/jdk1.8.0_72
 ```
 
+Logging
+-------
+By default, every single debug message with a priority of 4 and above will be logged.
+To customise how things are logged, create a config.json file in src/main/java as follows:
+
+```json
+{
+  "log": {
+    "console": {
+      1 : [
+        "all"  
+      ],
+      2 : [
+        "io"  
+      ],
+      4 : [
+        "gui"            
+      ],
+      5 : [
+        "error"
+      ]
+    }
+  }
+}
+```
+
+This example will log the following to the output console; everything of the highest priority will be logged,
+everything related to I/O operations of level 2 and above (so levels 1 & 2) will be logged. Everything related
+to the GUI of levels 4-1 will be logged and all errors will be logged.
+
+To view all the available systems that can be logged, refer to ```java uk.ac.cam.echo2016.multinarrative.dev.Debug```
+for all constants starting with ```java SYSTEM_```.
+
 Project (Java) Style Guide
 --------------------------
 
