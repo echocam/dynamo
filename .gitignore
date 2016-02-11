@@ -22,12 +22,8 @@ ignore/
 Echo/*
 /build/
 test.gui
-<<<<<<< HEAD
 rt/
-=======
 test.inst
 test.template
 
 config.json
-
->>>>>>> refs/remotes/EchoTeamGithub/master
