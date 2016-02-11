@@ -1,7 +1,5 @@
 package uk.ac.cam.echo2016.multinarrative;
 
-import java.util.ArrayList;
-
 import android.os.BaseBundle;
 
 /**
