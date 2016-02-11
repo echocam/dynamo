@@ -83,8 +83,8 @@ public class FXMLController {
     private FXMLGUI mainApp;
 
     public void init(FXMLGUI main) {
+    	Debug.logInfo("Init Controller", 5, Debug.SYSTEM_GUI);
     	mainApp = main;
-	    Debug.logInfo("Init Controller", 5, Debug.SYSTEM_GUI);
 	    addProperty.disableProperty().bind(propertyName.textProperty().isEmpty());
         graphArea.minHeightProperty().bind(scroll.heightProperty());
         graphArea.minWidthProperty().bind(scroll.widthProperty());
