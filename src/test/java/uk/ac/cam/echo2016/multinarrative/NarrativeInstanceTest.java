@@ -173,7 +173,7 @@ public class NarrativeInstanceTest {
         sampleTemplate.nodes.putAll(sampleNodes);
         sampleTemplate.start = (SynchronizationNode) sampleTemplate.getNode("syncStart");
         
-        sampleTemplate.getGlobalProperties().getStringArrayList("Types").add("Character");
+        sampleTemplate.getGlobalProperties().getStringArrayList("System.Types").add("Character");
     }
     /**
      * Load Test - binary tree with node "1X" having children "10X" and "11X"
@@ -281,8 +281,6 @@ public class NarrativeInstanceTest {
         sampleInst.kill("routeSarah4");
         assertEquals("Testing kill method: ", 18, sampleInst.routes.size());
         assertEquals("Testing kill method: ", 10, sampleInst.nodes.size());
-        
-        
     }
     
     /**

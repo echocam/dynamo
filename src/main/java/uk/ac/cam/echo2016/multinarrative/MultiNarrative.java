@@ -21,7 +21,7 @@ public abstract class MultiNarrative implements Serializable { //TODO Documentat
     protected BaseBundle properties = new BaseBundle();
 
     public MultiNarrative() {
-        properties.putStringArrayList("Types", new ArrayList<String>());
+        properties.putStringArrayList("System.Types", new ArrayList<String>());
     }
     
     // TODO change ALL getters and setters to protected?

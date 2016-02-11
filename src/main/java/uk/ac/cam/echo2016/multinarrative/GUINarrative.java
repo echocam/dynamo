@@ -209,12 +209,12 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
     }
     
     public void addRouteType(String type) { // TODO add to tests
-        if (!this.getGlobalProperties().getStringArrayList("Types").contains(type)) {
-            this.getGlobalProperties().getStringArrayList("Types").add(type);
+        if (!this.getGlobalProperties().getStringArrayList("System.Types").contains(type)) {
+            this.getGlobalProperties().getStringArrayList("System.Types").add(type);
         }
     }
     public boolean removeRouteType(String type) { // TODO add to tests
-        return this.getGlobalProperties().getStringArrayList("Types").remove(type);
+        return this.getGlobalProperties().getStringArrayList("System.Types").remove(type);
     }
 
     public BaseBundle getProperties(String id) throws GraphElementNotFoundException {
