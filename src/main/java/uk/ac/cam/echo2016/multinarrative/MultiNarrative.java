@@ -1,6 +1,7 @@
 package uk.ac.cam.echo2016.multinarrative;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.os.BaseBundle;
@@ -17,8 +18,12 @@ public abstract class MultiNarrative implements Serializable { //TODO Documentat
     protected HashMap<String, Route> routes = new HashMap<String, Route>();
     protected HashMap<String, Node> nodes = new HashMap<String, Node>();
     protected SynchronizationNode start;
-    protected BaseBundle properties;
+    protected BaseBundle properties = new BaseBundle();
 
+    public MultiNarrative() {
+        properties.putStringArrayList("Types", new ArrayList<String>());
+    }
+    
     // TODO change ALL getters and setters to protected?
     public Node getNode(String id) {
         return nodes.get(id);
