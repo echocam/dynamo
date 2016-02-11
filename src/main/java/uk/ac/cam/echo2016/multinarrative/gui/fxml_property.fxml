@@ -40,23 +40,32 @@
             </VBox>
          </right>
          <top>
-            <ComboBox fx:id="type" onAction="#changeTypeAction" prefWidth="1000.0" promptText="Choose A Type" BorderPane.alignment="CENTER">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="String" />
-                        <String fx:value="Integer" />
-                        <String fx:value="Boolean" />
-                        <String fx:value="Byte" />
-                        <String fx:value="Short" />
-                        <String fx:value="Long" />
-                        <String fx:value="Float" />
-                        <String fx:value="Double" />
-                    </FXCollections>
-                </items>
-                <value>
-                    <String fx:value="String" />
-                </value>
-            </ComboBox>
+            <VBox>
+               <children>
+                  <ComboBox fx:id="type" onAction="#changeTypeAction" prefWidth="1000.0" promptText="Choose A Type" BorderPane.alignment="CENTER">
+                      <items>
+                          <FXCollections fx:factory="observableArrayList">
+                              <String fx:value="String" />
+                              <String fx:value="Integer" />
+                              <String fx:value="Boolean" />
+                              <String fx:value="Byte" />
+                              <String fx:value="Short" />
+                              <String fx:value="Long" />
+                              <String fx:value="Float" />
+                              <String fx:value="Double" />
+                          </FXCollections>
+                      </items>
+                      <value>
+                          <String fx:value="String" />
+                      </value>
+                  </ComboBox>
+                  <CheckBox mnemonicParsing="false" text="Route Type">
+                     <VBox.margin>
+                        <Insets top="3.0" />
+                     </VBox.margin>
+                  </CheckBox>
+               </children>
+            </VBox>
          </top>
       </BorderPane>
    </content>

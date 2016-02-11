@@ -31,6 +31,7 @@ public class GUIOperations {
 	//private HashMap<String, Coordinate> nodes;
 	private static int nodeCounter = 1;
 	private static int narrativeCounter = 1;
+	private static int valueCounter = 1;
 
 	/**
 	 * Constructor. Creates a new GUIOperations.
@@ -253,6 +254,37 @@ public class GUIOperations {
 	}
 
 	/**
+	 * Adds a narrative, throwing exception if it fails.
+	 * 
+	 * @param name
+	 *            - unique id of the narrative
+	 * @param start
+	 *            - starting node. If node does not exist creates a new node.
+	 * @param end
+	 *            - ending node. If node does not exist creates a new node. Do
+	 *            cycle detection here!!
+	 * @throws GraphElementNotFoundException
+	 * @throws NonUniqueIdException
+	 */
+	public void addNarrative(String name, String start, String end) throws IllegalOperationException {
+		// TODO Figure out how to get charID and REMOOOOOOOVE DIS
+		// String charID = "Filler"; //TODO replace with "route types"
+		// i.e. multinarrative.getGlobalProperties().putStringArrayList("Types", typeId); e.g. "Character"
+		try {
+			multinarrative.newRoute(name, start, end);
+		} catch (NonUniqueIdException e) {
+			throw new IllegalOperationException(ROUTE_ALREADY_EXISTS);
+		} catch (GraphElementNotFoundException e) {
+			throw new IllegalOperationException(NODE_DOES_NOT_EXIST);
+		}
+		DFSCycleDetect cycleDetect = new DFSCycleDetect(multinarrative.getNode(start));
+		if (cycleDetect.hasCycle()) {
+			multinarrative.removeRoute(name);
+			throw new IllegalOperationException("Cannot add route: Graph will contain a cycle");
+		}
+	}
+
+	/**
 	 * 
 	 * @param node
 	 *            Route id
@@ -282,10 +314,9 @@ public class GUIOperations {
 	 */
 	public void addRoute(String name, String start, String end) throws IllegalOperationException {
 		// TODO Figure out how to get charID and REMOOOOOOOVE DIS
-		// String charID = "Filler"; //TODO replace with "primary properties"
-		// The primaries ArrayList should be a global property!
-		// i.e. putStringArrayList("Primaries", propertyId); e.g. "Mike"
-		// Note: may change name from "Primaries"
+		//String charID = "Filler"; //TODO replace with types
+		// The types ArrayList should be a global property!
+		// i.e. putStringArrayList("Types", typeId); e.g. "Mike"
 		Debug.logInfo("addRoute method call", 4, Debug.SYSTEM_GUI); //TODO remove
 		try {
 			multinarrative.newRoute(name, start, end);
@@ -342,23 +373,21 @@ public class GUIOperations {
 	}
 
 	/**
-	 * TODO
 	 * 
 	 * @param route
 	 * @param node
 	 */
 	public void setEnd(String route, String node) {
-
+	    multinarrative.getRoute(route).setEnd(multinarrative.getNode(node));
 	}
 
 	/**
-	 * TODO
 	 * 
 	 * @param route
 	 * @param node
 	 */
 	public void setStart(String route, String node) {
-
+	    multinarrative.getRoute(route).setStart(multinarrative.getNode(node));
 	}
 
 	/**
@@ -393,5 +422,75 @@ public class GUIOperations {
 	 */
 	public GUINarrative loadInstance(String fileName) throws IOException {
 		return SaveReader.loadGUINarrative(fileName);
+	}
+	
+	/**
+	 * TODO
+	 * @param id
+	 * @param value
+	 */
+	public void addPropertyValue(String id, String value) throws IllegalOperationException{
+		
+	}
+	
+	/**
+	 * TODO
+	 * @param id
+	 * @param value
+	 */
+	public void removePropertyValue(String id, String value){
+		
+	}
+	
+	/**
+	 * TODO
+	 * @param id
+	 * @param value
+	 * @param newValue
+	 * @throws IllegalOperationException
+	 */
+	public void renamePropertyValue(String id, String value, String newValue) throws IllegalOperationException{
+		
+	}
+	
+	public String getDefaultValue(String id, String type){
+		return Strings.populateString(Strings.PROPERTY_VALUE, "" + valueCounter++);
+	}
+
+	/**
+	 * TODO
+	 * @param node
+	 * @param property
+	 * @param type
+	 * @param value
+	 */
+	public void assignPropertyToNode(String node, String property, String type, String value){
+		
+	}
+	
+	/**
+	 * TODO
+	 * @param route
+	 * @param property
+	 * @param type
+	 * @param value
+	 */
+	public void assignPropertyToRoute(String route, String property, String type, String value){
+		
+	}
+	
+	/**
+	 * TODO
+	 * @param property
+	 */
+	public void setAsRouteType(String property){
+		
+	}
+	
+	/**
+	 * TODO
+	 * @param property
+	 */
+	public void clearAsRouteType(String property){
 	}
 }
