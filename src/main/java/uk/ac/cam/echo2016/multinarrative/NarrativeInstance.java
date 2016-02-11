@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.os.BaseBundle;
+import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 
 /**
  * 
@@ -92,25 +93,25 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
             return false;
         Node nEnd = route.getEnd();
         
-        //Debug.logInfo("Killing " + route.getId(), 4, Debug.SYSTEM_ALL);
+        Debug.logInfo("Killing " + route.getId(), 4, Debug.SYSTEM_ALL);
 
         nEnd.getEntering().remove(route);
         // If there are now no routes entering the node, kill it
         if (nEnd.getEntering().size() == 0) {
             kill(nEnd);
-        } else if (route.getProperties() != null){
-            if (route.getProperties().getStringArrayList("Primaries") != null) {;
-            // Kills all methods leaving the end node if they have the same primary property and no entering routes also
+        } else if (route.getProperties() != null) {
+            if (route.getProperties().getStringArrayList("Types") != null) {;
+            // Kills all methods leaving the end node if they have the same type and no entering routes also
             // have that property TODO specify in documentation
-            for (String primary : route.getProperties().getStringArrayList("Primaries")) {
+            for (String type : route.getProperties().getStringArrayList("Types")) {
                 boolean similarRouteExists = false;
                 for(Route entry : nEnd.getEntering()) {
-                    if (entry.getProperties().getStringArrayList("Primaries").contains(primary))
+                    if (entry.getProperties().getStringArrayList("Types").contains(type))
                         similarRouteExists = true;
                 }
                 if (!similarRouteExists) {
                     for(Route option : new ArrayList<Route>(nEnd.getExiting())) {
-                        if (option.getProperties().getStringArrayList("Primaries").contains(primary)) {
+                        if (option.getProperties().getStringArrayList("Types").contains(type)) {
                             kill(option);
                         }
                     }

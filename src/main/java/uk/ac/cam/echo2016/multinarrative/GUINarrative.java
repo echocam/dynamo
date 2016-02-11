@@ -208,22 +208,22 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
         }
     }
     
-    public void addPrimaryProperty(String routeId, String property) throws GraphElementNotFoundException { // TODO add to tests
+    public void addRouteType(String routeId, String type) throws GraphElementNotFoundException { // TODO add to tests
         Route route = getRoute(routeId);
         if (route == null) throw new GraphElementNotFoundException("Error: Node with id: " + routeId + " not found");
         route.createProperties();
-        ArrayList<String> primaries = route.getProperties().getStringArrayList("Primaries");
-        if (primaries == null) primaries = new ArrayList<String>();
-        primaries.add(property);
+        ArrayList<String> types = route.getProperties().getStringArrayList("Types");
+        if (types == null) types = new ArrayList<String>();
+        types.add(type);
     }
-    public boolean removePrimaryProperty(String routeId, String property) throws GraphElementNotFoundException { // TODO add to tests
+    public boolean removeRouteTyep(String routeId, String type) throws GraphElementNotFoundException { // TODO add to tests
         Route route = getRoute(routeId);
         if (route == null) throw new GraphElementNotFoundException("Error: Node with id: " + routeId + " not found");
-        BaseBundle prop = route.getProperties();
-        if (prop == null) return false;
-        ArrayList<String> primaries = route.getProperties().getStringArrayList("Primaries");
-        if (primaries == null) return false;
-        return primaries.remove(property);
+        BaseBundle properties = route.getProperties();
+        if (properties == null) return false;
+        ArrayList<String> types = route.getProperties().getStringArrayList("Types");
+        if (types == null) return false;
+        return types.remove(type);
     }
 
     public BaseBundle getProperties(String id) throws GraphElementNotFoundException {
