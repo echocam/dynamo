@@ -216,7 +216,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
         if (types == null) types = new ArrayList<String>();
         types.add(type);
     }
-    public boolean removeRouteTyep(String routeId, String type) throws GraphElementNotFoundException { // TODO add to tests
+    public boolean removeRouteType(String routeId, String type) throws GraphElementNotFoundException { // TODO add to tests
         Route route = getRoute(routeId);
         if (route == null) throw new GraphElementNotFoundException("Error: Node with id: " + routeId + " not found");
         BaseBundle properties = route.getProperties();
