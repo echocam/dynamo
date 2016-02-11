@@ -1,5 +1,7 @@
 package uk.ac.cam.echo2016.multinarrative.gui.graph;
 
+import java.util.ArrayList;
+
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -8,12 +10,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.CubicCurve;
+import javafx.scene.shape.Shape;
+import uk.ac.cam.echo2016.multinarrative.gui.FXUtil;
 
 public class GraphEdge {
-
-	private static final Stop[] STOPS = { new Stop(0.0, Color.WHITE), new Stop(1.0, Color.rgb(68, 68, 68)) };
 
 	private GraphNode from;
 	private GraphNode to;
@@ -21,17 +22,23 @@ public class GraphEdge {
 	private DoubleProperty xOffset = new SimpleDoubleProperty();
 	private DoubleProperty yOffset = new SimpleDoubleProperty();
 
+	private Double xDisp;
+	private Double yDisp;
+
 	private CubicCurve display;
-	private Circle control;
+	private Shape control;
 
 	private StringProperty name;
 
-	public GraphEdge(StringProperty name, GraphNode source, GraphNode dest, CubicCurve curve, Circle midpoint) {
+	public GraphEdge(StringProperty name, GraphNode source, GraphNode dest, CubicCurve curve, Shape midpoint,
+			double xSize, double ySize) {
 		this.name = name;
 		from = source;
 		to = dest;
 		display = curve;
 		control = midpoint;
+		xDisp = xSize/2;
+		yDisp = ySize/2;
 		control.setUserData(this);
 		build();
 	}
@@ -40,7 +47,7 @@ public class GraphEdge {
 		return display;
 	}
 
-	public Circle getControl() {
+	public Shape getControl() {
 		return control;
 	}
 
@@ -55,7 +62,7 @@ public class GraphEdge {
 
 		display.startXProperty().bind(p_startX);
 		display.startYProperty().bind(p_startY);
-		
+
 		DoubleBinding p_endX = to.xProperty().add(to.getContents().widthProperty().divide(2));
 		DoubleBinding p_endY = to.yProperty().add(to.getContents().heightProperty().divide(2));
 
@@ -70,20 +77,37 @@ public class GraphEdge {
 		display.controlX2Property().bind(p_controlX);
 		display.controlY2Property().bind(p_controlY);
 
+		DoubleBinding rot = FXUtil.degreesAngle(p_endX.subtract(p_startX), p_endY.subtract(p_startY));
+		control.rotateProperty().bind(rot);
+
 		DoubleBinding p_centreX = p_controlX.multiply(6).add(p_endX).add(p_startX).divide(8);
 		DoubleBinding p_centreY = p_controlY.multiply(6).add(p_endY).add(p_startY).divide(8);
 
-		control.centerXProperty().bind(p_centreX);
-		control.centerYProperty().bind(p_centreY);
+		control.layoutXProperty().bind(p_centreX.subtract(xDisp));
+		control.layoutYProperty().bind(p_centreY.add(yDisp));
 	}
 
-	public void update() {
+	public void update(Graph g) {
 		double startX = from.getX() + from.getContents().getWidth() / 2;
 		double startY = from.getY() + from.getContents().getHeight() / 2;
 		double endX = to.getX() + to.getContents().getWidth() / 2;
 		double endY = to.getY() + to.getContents().getHeight() / 2;
 
-		display.setStroke(new LinearGradient(startX, startY, endX, endY, false, CycleMethod.NO_CYCLE, STOPS));
+		ArrayList<Color> c = g.getOperations().getRouteColor(name.get());
+		if (c.isEmpty()) {
+			c.add(Color.rgb(51, 51, 51));
+		}
+		Stop[] stops = new Stop[c.size()];
+		if(c.size()==1){
+			stops[0] = new Stop(0.0, c.get(0));
+		}else{
+		for (int i = 0; i < c.size(); i++) {
+			stops[i] = new Stop(i * 1.0 / (c.size()-1), c.get(i));
+			System.out.println(stops[i]);
+		}
+		}
+
+		display.setStroke(new LinearGradient(startX, startY, endX, endY, false, CycleMethod.NO_CYCLE, stops));
 	}
 
 	public GraphNode getFrom() {
@@ -109,11 +133,11 @@ public class GraphEdge {
 		yOffset.set(yOffset.get() + yOff);
 	}
 
-	public void zeroOffset(){
+	public void zeroOffset() {
 		xOffset.set(0);
 		yOffset.set(0);
 	}
-	
+
 	public StringProperty getNameProperty() {
 		return name;
 	}

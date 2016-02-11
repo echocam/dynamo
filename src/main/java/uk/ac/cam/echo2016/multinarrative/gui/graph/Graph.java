@@ -7,8 +7,8 @@ import java.util.Set;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.CubicCurve;
+import javafx.scene.shape.Shape;
 import uk.ac.cam.echo2016.multinarrative.gui.FXMLController;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.GUIOperations;
 
@@ -62,10 +62,11 @@ public class Graph {
 	}
 
 	public void updateEdge(GraphEdge edge) {
-		edge.update();
+		edge.update(this);
 	}
 
 	public void updateNode(GraphNode node) {
+		node.update(this);
 		for (GraphEdge edge : edges) {
 			if (edge.getFrom() == node || edge.getTo() == node) {
 				updateEdge(edge);
@@ -94,14 +95,14 @@ public class Graph {
 
 	public void addEdge(GraphEdge edge) {
 		CubicCurve n = edge.getNode();
-		Circle c = edge.getControl();
+		Shape c = edge.getControl();
 		pane.getChildren().add(0, n);
 		int i = 1;
 		while (pane.getChildren().get(i) instanceof CubicCurve) {
 			i++;
 		}
 		pane.getChildren().add(i, c);
-		edge.update();
+		edge.update(this);
 		edges.add(edge);
 		input.registerHandlerFor(n);
 		input.registerHandlerFor(c);

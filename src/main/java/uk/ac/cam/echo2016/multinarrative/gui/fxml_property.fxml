@@ -59,7 +59,7 @@
                           <String fx:value="String" />
                       </value>
                   </ComboBox>
-                  <CheckBox mnemonicParsing="false" text="Route Type">
+                  <CheckBox fx:id="routeType" mnemonicParsing="false" text="Route Type">
                      <VBox.margin>
                         <Insets top="3.0" />
                      </VBox.margin>
