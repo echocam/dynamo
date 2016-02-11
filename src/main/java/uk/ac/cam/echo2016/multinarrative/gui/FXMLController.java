@@ -67,11 +67,11 @@ public class FXMLController {
 	private ListView<String> itemProperties;
 	@FXML
 	private Button itemPropertyDelete;
-
+	
 	private Boolean itemNode = null;
 
 	private GUIOperations operations = new GUIOperations();
-
+	
 	private Graph graph;
 
     private SelectionTool selectTool;
