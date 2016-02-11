@@ -23,6 +23,14 @@ public abstract class MultiNarrative implements Serializable { //TODO Documentat
     public Node getNode(String id) {
         return nodes.get(id);
     }
+    
+    public HashMap<String, Node> getNodes() {
+    	return nodes;
+    }
+    
+    public HashMap<String, Route> getRoutes() {
+    	return routes;
+    }
 
     public Route getRoute(String id) {
         return routes.get(id);

@@ -2,25 +2,32 @@ package uk.ac.cam.echo2016.multinarrative.gui.operations;
 
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import android.os.BaseBundle;
+import uk.ac.cam.echo2016.multinarrative.ChoiceNode;
 import uk.ac.cam.echo2016.multinarrative.GUINarrative;
 import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
+import uk.ac.cam.echo2016.multinarrative.Node;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
+import uk.ac.cam.echo2016.multinarrative.SynchronizationNode;
+import uk.ac.cam.echo2016.multinarrative.io.SaveReader;
+import uk.ac.cam.echo2016.multinarrative.io.SaveWriter;
 
 /**
  * @author jr650
  * @author eyx20
+ * @author rjm232
  */
 public class GUIOperations {
 
 	private GUINarrative multinarrative;
 
 	private HashMap<String, BaseBundle> properties;
-	private HashMap<String, Coordinate> nodes;
+	//private HashMap<String, Coordinate> nodes;
 	private static int nodeCounter = 1;
 	private static int narrativeCounter = 1;
 
@@ -30,7 +37,7 @@ public class GUIOperations {
 	public GUIOperations() {
 		multinarrative = new GUINarrative();
 		properties = new HashMap<String, BaseBundle>();
-		nodes = new HashMap<String, Coordinate>();
+		//nodes = new HashMap<String, Coordinate>();
 	}
 
 	/**
@@ -143,11 +150,11 @@ public class GUIOperations {
 
 	public String getUniqueNodeName() {
 		String newName = Strings.populateString(NODE_PREFIX, nodeCounter);
-		if (!nodes.containsKey(newName)) {
+		if (multinarrative.getNode(newName) == null) {
 			nodeCounter += 1;
 			return newName;
 		} else {
-			while (nodes.containsKey(newName)) {
+			while (multinarrative.getNode(newName) != null) {
 				nodeCounter += 1;
 				newName = Strings.populateString(NODE_PREFIX, nodeCounter);
 			}
@@ -163,43 +170,40 @@ public class GUIOperations {
 	 */
 	// TODO: Check if node is out of bounds/illegal coordinate
 	public void addSynchNode(String name, double x, double y) throws IllegalOperationException {
-		Coordinate coor = new Coordinate(x, y);
-		if (nodes.containsKey(name)) {
+		if (multinarrative.getNode(name) != null) {
 			throw new IllegalOperationException(NODE_ALREADY_EXISTS);
 		}
-		for (String nodename : nodes.keySet()) {
-			if (coor.equals(nodes.get(nodename))) {
+		for (String nodename : multinarrative.getNodes().keySet()) {
+			if (multinarrative.getNode(nodename).getProperties().getDouble("GUI.X") == x &&
+					multinarrative.getNode(nodename).getProperties().getDouble("GUI.Y") == y) {
 				throw new IllegalOperationException(NODE_ALREADY_AT_POSITION);
 			}
 		}
-		nodes.put(name, coor);
-		try {
-			multinarrative.newSynchronizationNode(name);
-		} catch (NonUniqueIdException e) {
-			throw new IllegalOperationException(NODE_ALREADY_EXISTS);
-		}
+		SynchronizationNode newNode = new SynchronizationNode(name);
+		newNode.createProperties();
+		newNode.getProperties().putDouble("GUI.X", x);
+		newNode.getProperties().putDouble("GUI.Y", y);
+		multinarrative.getNodes().put(name, newNode);
 	}
 
 	/**
 	 * Adds a choiceNode at the given position, with the given name
 	 */
 	public void addChoiceNode(String name, double x, double y) throws IllegalOperationException {
-		Coordinate coor = new Coordinate(x, y);
-		if (nodes.containsKey(name)) {
+		if (multinarrative.getNode(name) != null) {
 			throw new IllegalOperationException(NODE_ALREADY_EXISTS);
 		}
-		for (String nodename : nodes.keySet()) {
-			if (coor.equals(nodes.get(nodename))) {
+		for (String nodename : multinarrative.getNodes().keySet()) {
+			if (multinarrative.getNode(nodename).getProperties().getDouble("GUI.X") == x &&
+					multinarrative.getNode(nodename).getProperties().getDouble("GUI.Y") == y) {
 				throw new IllegalOperationException(NODE_ALREADY_AT_POSITION);
 			}
 		}
-		nodes.put(name, coor);
-		try {
-			multinarrative.newChoiceNode(name);
-			assert (multinarrative.getNode(name) != null);
-		} catch (NonUniqueIdException e) {
-			throw new IllegalOperationException(NODE_ALREADY_EXISTS);
-		}
+		ChoiceNode newNode = new ChoiceNode(name);
+		newNode.createProperties();
+		newNode.getProperties().putDouble("GUI.X", x);
+		newNode.getProperties().putDouble("GUI.Y", y);
+		multinarrative.getNodes().put(name, newNode);
 	}
 
 	/**
@@ -207,20 +211,22 @@ public class GUIOperations {
 	 */
 	// TODO: Check if node is out of bounds/illegal coordinate
 	public void translateNode(String name, double x, double y) throws IllegalOperationException {
-		if (!nodes.containsKey(name)) {
+		Node theNode = multinarrative.getNode(name);
+		if (theNode == null) {
 			throw new IllegalOperationException("Node does not exist.");
 		}
-		Coordinate coord = nodes.get(name);
-		double transx = coord.getX() + x;
-		double transy = coord.getY() + y;
-		Coordinate newcoord = new Coordinate(transx, transy);
-		for (String nodename : nodes.keySet()) {
-			if (newcoord.equals(nodes.get(nodename))) {
+		double oldX = theNode.getProperties().getDouble("GUI.X");
+		double oldY = theNode.getProperties().getDouble("GUI.Y");
+		double transx = oldX + x;
+		double transy = oldY + y;
+		for (String nodename : multinarrative.getNodes().keySet()) {
+			if (multinarrative.getNode(nodename).getProperties().getDouble("GUI.X") == transx &&
+					multinarrative.getNode(nodename).getProperties().getDouble("GUI.Y") == transy) {
 				throw new IllegalOperationException("Node already exists at given position.");
 			}
 		}
-		nodes.put(name, newcoord);
-
+		theNode.getProperties().putDouble("GUI.X", transx);
+		theNode.getProperties().putDouble("GUI.Y", transy);
 	}
 
 	/**
@@ -230,11 +236,11 @@ public class GUIOperations {
 	 */
 	public String getUniqueNarrativeName() {
 		String newName = Strings.populateString(ROUTE_PREFIX, narrativeCounter);
-		if (!nodes.containsKey(newName)) {
+		if (multinarrative.getNodes().containsKey(newName)) {
 			narrativeCounter += 1;
 			return newName;
 		} else {
-			while (nodes.containsKey(newName)) {
+			while (multinarrative.getNodes().containsKey(newName)) {
 				narrativeCounter += 1;
 				newName = Strings.populateString(ROUTE_PREFIX, narrativeCounter);
 			}
@@ -401,5 +407,20 @@ public class GUIOperations {
 	 */
 	public void deleteRoute(String id) {
 		multinarrative.removeRoute(id);
+	}
+	
+	/**
+	 * Saves the GUINarrative object to the supplied filename
+	 * @throws IOException 
+	 */
+	public void saveInstance(String fileName) throws IOException {
+		SaveWriter.saveObject(fileName, multinarrative);
+	}
+	
+	/**
+	 * Loads the GUINarrative object from the supplied filename
+	 */
+	public GUINarrative loadInstance(String fileName) throws IOException {
+		return SaveReader.loadGUINarrative(fileName);
 	}
 }

@@ -8,12 +8,21 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.io.IOException;
+
+import javafx.stage.FileChooser;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * @author jr650
  */
 public class FXMLGUI extends Application {
+	
+	private Stage theStage;
     
     public static void main(String[] args) {
         Application.launch(FXMLGUI.class, args);
@@ -22,6 +31,8 @@ public class FXMLGUI extends Application {
     @Override
     public void start(Stage stage) throws Exception {        
         try{
+        	theStage = stage;
+        	
             FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml_layout.fxml"));
             
             Parent root = loader.load();
@@ -62,6 +73,46 @@ public class FXMLGUI extends Application {
     		//Indicates that fxml files aren't set up properly...
             throw new RuntimeException("FXML files not configured correctly",ioe);
     	}
+    }
+    
+    /**
+     * Opens the Save As dialog
+     */
+    @FXML
+    public String showSaveAs() {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Save As");
+		File selectedFile = fileChooser.showSaveDialog(theStage);
+		
+		if (selectedFile != null) {
+			return selectedFile.getAbsolutePath();
+		} else return null;
+    }
+    
+    /**
+     * Opens the Open dialog
+     */ //TODO check save as.
+    @FXML
+    public String showOpen() {
+    	FileChooser fileChooser = new FileChooser();
+    	fileChooser.setTitle("Open");
+    	File selectedFile = fileChooser.showOpenDialog(theStage);
+    	
+    	if (selectedFile != null) {
+    		return selectedFile.getAbsolutePath();
+    	} else return null;
+    }
+    
+    /**
+     * Opens the error dialog when an IO operation fails
+     */
+    @FXML
+    public void showError(String message) {
+    	Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Operation Failed");
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+		alert.showAndWait();
     }
 }
 
