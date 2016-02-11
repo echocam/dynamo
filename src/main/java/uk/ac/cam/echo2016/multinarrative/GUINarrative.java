@@ -3,6 +3,7 @@ package uk.ac.cam.echo2016.multinarrative;
 import java.util.ArrayList;
 
 import android.os.BaseBundle;
+import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 
 /**
  * The {@code EditableNarrative} used by the {@code FXMLGUI} editor to store the graph structure. This graph is
@@ -31,6 +32,10 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
      */
     public void newRoute(String id, String startId, String endId)
             throws NonUniqueIdException, GraphElementNotFoundException {
+    	//TODO remove debug statement:
+    	for (Node n : nodes.values()) {
+    		Debug.logInfo(n.getId(), 4, Debug.SYSTEM_GUI);
+    	}
         if (isUniqueId(id)) {
             Node startNode = getNode(startId);
             if (startNode == null)

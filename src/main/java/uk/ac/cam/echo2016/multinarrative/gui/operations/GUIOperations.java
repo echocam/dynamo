@@ -14,6 +14,7 @@ import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.Node;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
 import uk.ac.cam.echo2016.multinarrative.SynchronizationNode;
+import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 import uk.ac.cam.echo2016.multinarrative.io.SaveReader;
 import uk.ac.cam.echo2016.multinarrative.io.SaveWriter;
 
@@ -170,6 +171,7 @@ public class GUIOperations {
 	 */
 	// TODO: Check if node is out of bounds/illegal coordinate
 	public void addSynchNode(String name, double x, double y) throws IllegalOperationException {
+		Debug.logInfo("addSyncNode method call", 4, Debug.SYSTEM_GUI); //TODO remove
 		if (multinarrative.getNode(name) != null) {
 			throw new IllegalOperationException(NODE_ALREADY_EXISTS);
 		}
@@ -190,6 +192,7 @@ public class GUIOperations {
 	 * Adds a choiceNode at the given position, with the given name
 	 */
 	public void addChoiceNode(String name, double x, double y) throws IllegalOperationException {
+		Debug.logInfo("addChoiceNode method call", 4, Debug.SYSTEM_GUI); //TODO remove
 		if (multinarrative.getNode(name) != null) {
 			throw new IllegalOperationException(NODE_ALREADY_EXISTS);
 		}
@@ -250,39 +253,6 @@ public class GUIOperations {
 	}
 
 	/**
-	 * Adds a narrative, throwing exception if it fails.
-	 * 
-	 * @param name
-	 *            - unique id of the narrative
-	 * @param start
-	 *            - starting node. If node does not exist creates a new node.
-	 * @param end
-	 *            - ending node. If node does not exist creates a new node. Do
-	 *            cycle detection here!!
-	 * @throws GraphElementNotFoundException
-	 * @throws NonUniqueIdException
-	 */
-	public void addNarrative(String name, String start, String end) throws IllegalOperationException {
-		// TODO Figure out how to get charID and REMOOOOOOOVE DIS
-		// String charID = "Filler"; //TODO replace with "primary properties"
-		// i.e. putStringArrayList("Primaries", propertyId); e.g. "Mike"
-		// Note: may change name from "Primaries"
-		try {
-			multinarrative.newRoute(name, start, end);
-		} catch (NonUniqueIdException e) {
-			throw new IllegalOperationException(ROUTE_ALREADY_EXISTS);
-		} catch (GraphElementNotFoundException e) {
-			throw new IllegalOperationException(NODE_DOES_NOT_EXIST);
-		}
-		DFSCycleDetect cycleDetect = new DFSCycleDetect(multinarrative.getNode(start));
-		if (cycleDetect.hasCycle()) {
-			multinarrative.removeRoute(name);
-			throw new IllegalOperationException("Cannot add route: Graph will contain a cycle");
-		}
-
-	}
-
-	/**
 	 * 
 	 * @param node
 	 *            Route id
@@ -316,6 +286,7 @@ public class GUIOperations {
 		// The primaries ArrayList should be a global property!
 		// i.e. putStringArrayList("Primaries", propertyId); e.g. "Mike"
 		// Note: may change name from "Primaries"
+		Debug.logInfo("addRoute method call", 4, Debug.SYSTEM_GUI); //TODO remove
 		try {
 			multinarrative.newRoute(name, start, end);
 		} catch (NonUniqueIdException e) {
