@@ -55,16 +55,16 @@ To customise how things are logged, create a config.json file in src/main/java a
 {
   "log": {
     "console": {
-      1 : [
+      "1" : [
         "all"  
       ],
-      2 : [
+      "2" : [
         "io"  
       ],
-      4 : [
+      "4" : [
         "gui"            
       ],
-      5 : [
+      "5" : [
         "error"
       ]
     }
