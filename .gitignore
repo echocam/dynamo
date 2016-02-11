@@ -22,4 +22,6 @@ ignore/
 Echo/*
 /build/
 test.gui
+test.inst
+test.template
 
