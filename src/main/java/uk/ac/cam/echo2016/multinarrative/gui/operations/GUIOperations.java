@@ -23,6 +23,7 @@ public class GUIOperations {
 	private HashMap<String, Coordinate> nodes;
 	private static int nodeCounter = 1;
 	private static int narrativeCounter = 1;
+	private static int valueCounter = 1;
 
 	/**
 	 * Constructor. Creates a new GUIOperations.
@@ -401,5 +402,60 @@ public class GUIOperations {
 	 */
 	public void deleteRoute(String id) {
 		multinarrative.removeRoute(id);
+	}
+	
+	/**
+	 * TODO
+	 * @param id
+	 * @param value
+	 */
+	public void addPropertyValue(String id, String value) throws IllegalOperationException{
+		
+	}
+	
+	/**
+	 * TODO
+	 * @param id
+	 * @param value
+	 */
+	public void removePropertyValue(String id, String value){
+		
+	}
+	
+	/**
+	 * TODO
+	 * @param id
+	 * @param value
+	 * @param newValue
+	 * @throws IllegalOperationException
+	 */
+	public void renamePropertyValue(String id, String value, String newValue) throws IllegalOperationException{
+		
+	}
+	
+	public String getDefaultValue(String id, String type){
+		return Strings.populateString(Strings.PROPERTY_VALUE, "" + valueCounter++);
+	}
+
+	/**
+	 * TODO
+	 * @param node
+	 * @param property
+	 * @param type
+	 * @param value
+	 */
+	public void assignPropertyToNode(String node, String property, String type, String value){
+		
+	}
+	
+	/**
+	 * TODO
+	 * @param route
+	 * @param property
+	 * @param type
+	 * @param value
+	 */
+	public void assignPropertyToRoute(String route, String property, String type, String value){
+		
 	}
 }
