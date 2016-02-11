@@ -25,6 +25,9 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
         this.id = id;
         this.exitRoutes = new ArrayList<Route>();
         this.entryRoutes = new ArrayList<Route>();
+        //TODO: (Please check) I added this bc getProperties was returning null
+        //please fix if this is not createProperties' intended use
+        this.createProperties();
     }
 
     @Override

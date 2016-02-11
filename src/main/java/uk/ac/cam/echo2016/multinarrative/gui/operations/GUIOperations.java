@@ -365,23 +365,21 @@ public class GUIOperations {
 	}
 
 	/**
-	 * TODO
 	 * 
 	 * @param route
 	 * @param node
 	 */
 	public void setEnd(String route, String node) {
-
+	    multinarrative.getRoute(route).setEnd(multinarrative.getNode(node));
 	}
 
 	/**
-	 * TODO
 	 * 
 	 * @param route
 	 * @param node
 	 */
 	public void setStart(String route, String node) {
-
+	    multinarrative.getRoute(route).setStart(multinarrative.getNode(node));
 	}
 
 	/**
