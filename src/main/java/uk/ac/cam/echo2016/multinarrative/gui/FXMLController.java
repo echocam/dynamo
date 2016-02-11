@@ -306,7 +306,7 @@ public class FXMLController {
 			Circle ci = new Circle(4, Color.rgb(51, 51, 51));
 			ci.setOnContextMenuRequested(event -> {
 				propertiesSource = ci;
-				propertiesMenu.show(ci, event.getScreenX(), event.getScreenY());
+				propertiesMenu.show(graphArea, event.getScreenX(), event.getScreenY());
 			});
 			GraphEdge edge = new GraphEdge(new SimpleStringProperty(name), from, to, c, ci);
 			graph.addEdge(edge);
