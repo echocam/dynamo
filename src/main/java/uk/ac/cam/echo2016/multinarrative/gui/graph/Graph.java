@@ -10,7 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.CubicCurve;
 import uk.ac.cam.echo2016.multinarrative.gui.FXMLController;
-import uk.ac.cam.echo2016.multinarrative.gui.GUIOperations;
+import uk.ac.cam.echo2016.multinarrative.gui.operations.GUIOperations;
 
 /**
  * 

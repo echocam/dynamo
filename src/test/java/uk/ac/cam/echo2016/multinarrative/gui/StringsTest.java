@@ -1,7 +1,9 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
 
-import uk.ac.cam.echo2016.multinarrative.gui.Strings;
 import org.junit.Test;
+
+import uk.ac.cam.echo2016.multinarrative.gui.operations.Strings;
+
 import static org.junit.Assert.*;
 
 /**
