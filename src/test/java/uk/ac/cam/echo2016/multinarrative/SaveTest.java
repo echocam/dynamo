@@ -76,4 +76,19 @@ public class SaveTest {
         assertEquals("Check end has left as parent node", left, end.getEntering().get(0).getStart());
         assertEquals("Check end has right as parent node", right, end.getEntering().get(1).getStart());
     }
+
+    @Test
+    public void loadCastTest() throws IOException{
+        NarrativeInstance inst = new NarrativeInstance();
+        SaveWriter.saveObject("test.inst", inst);
+        inst = null;
+        inst = SaveReader.loadNarrativeInstance("test.inst");
+        assertEquals("Check narrativeinstance loaded correctly", NarrativeInstance.class, inst.getClass());
+
+        NarrativeTemplate template = new NarrativeTemplate();
+        SaveWriter.saveObject("test.template", template);
+        template = null;
+        template = SaveReader.loadNarrativeTemplate("test.template");
+        assertEquals("Check NarrativeTemplate loaded correctly", NarrativeTemplate.class, template.getClass());
+    }
 }

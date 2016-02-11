@@ -45,126 +45,126 @@ public class NarrativeInstanceTest {
         tempRoute = new Route("routeMike1", sampleNodes.get("syncStart"), sampleNodes.get("choiceMike1"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Mike")));
+        tempRoute.getProperties().putString("Character", "Mike");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeMike2", sampleNodes.get("choiceMike1"), sampleNodes.get("syncEnd"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Mike")));
+        tempRoute.getProperties().putString("Character", "Mike");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeMike3", sampleNodes.get("choiceMike1"), sampleNodes.get("sync3"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Mike")));
+        tempRoute.getProperties().putString("Character", "Mike");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeMike4", sampleNodes.get("sync3"), sampleNodes.get("syncEnd"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Mike")));
+        tempRoute.getProperties().putString("Character", "Mike");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
 
         tempRoute = new Route("routeSam1", sampleNodes.get("syncStart"), sampleNodes.get("choiceSam1"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sam")));
+        tempRoute.getProperties().putString("Character", "Sam");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeSam2", sampleNodes.get("choiceSam1"), sampleNodes.get("sync3"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sam")));
+        tempRoute.getProperties().putString("Character", "Sam");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeSam3", sampleNodes.get("sync3"), sampleNodes.get("syncEnd"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sam")));
+        tempRoute.getProperties().putString("Character", "Sam");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeSam4", sampleNodes.get("choiceSam1"), sampleNodes.get("sync4"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sam")));
+        tempRoute.getProperties().putString("Character", "Sam");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeSam5", sampleNodes.get("sync4"), sampleNodes.get("syncEnd"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sam")));
+        tempRoute.getProperties().putString("Character", "Sam");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
 
         tempRoute = new Route("routeSarah1", sampleNodes.get("syncStart"), sampleNodes.get("choiceSarah1"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sarah")));
+        tempRoute.getProperties().putString("Character", "Sarah");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeSarah2", sampleNodes.get("choiceSarah1"), sampleNodes.get("sync3"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sarah")));
+        tempRoute.getProperties().putString("Character", "Sarah");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeSarah3", sampleNodes.get("sync3"), sampleNodes.get("syncEnd"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sarah")));
+        tempRoute.getProperties().putString("Character", "Sarah");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeSarah4", sampleNodes.get("choiceSarah1"), sampleNodes.get("sync1"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sarah")));
+        tempRoute.getProperties().putString("Character", "Sarah");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeSarah5", sampleNodes.get("sync1"), sampleNodes.get("sync3"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Sarah")));
+        tempRoute.getProperties().putString("Character", "Sarah");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
 
         tempRoute = new Route("routeChris1", sampleNodes.get("syncStart"), sampleNodes.get("choiceChris1"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Chris")));
+        tempRoute.getProperties().putString("Character", "Chris");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeChris2", sampleNodes.get("choiceChris1"), sampleNodes.get("sync1"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Chris")));
+        tempRoute.getProperties().putString("Character", "Chris");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeChris3", sampleNodes.get("sync1"), sampleNodes.get("syncEnd"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Chris")));
+        tempRoute.getProperties().putString("Character", "Chris");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeChris4", sampleNodes.get("choiceChris1"), sampleNodes.get("sync2"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Chris")));
+        tempRoute.getProperties().putString("Character", "Chris");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeChris5", sampleNodes.get("sync2"), sampleNodes.get("syncEnd"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Chris")));
+        tempRoute.getProperties().putString("Character", "Chris");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
 
         tempRoute = new Route("routeJessica1", sampleNodes.get("syncStart"), sampleNodes.get("sync2"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Jessica")));
+        tempRoute.getProperties().putString("Character", "Jessica");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeJessica2", sampleNodes.get("sync2"), sampleNodes.get("choiceJessica1"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Jessica")));
+        tempRoute.getProperties().putString("Character", "Jessica");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeJessica3", sampleNodes.get("choiceJessica1"), sampleNodes.get("sync4"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Jessica")));
+        tempRoute.getProperties().putString("Character", "Jessica");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeJessica4", sampleNodes.get("sync4"), sampleNodes.get("syncEnd"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Jessica")));
+        tempRoute.getProperties().putString("Character", "Jessica");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         tempRoute = new Route("routeJessica5", sampleNodes.get("choiceJessica1"), sampleNodes.get("syncEnd"));
         tempRoute.setup();
         tempRoute.createProperties();
-        tempRoute.getProperties().putStringArrayList("Primaries", new ArrayList<String>(Arrays.asList("Jessica")));
+        tempRoute.getProperties().putString("Character", "Jessica");
         sampleRoutes.put(tempRoute.getId(), tempRoute);
         
         // Creates template using the maps created above
@@ -172,6 +172,8 @@ public class NarrativeInstanceTest {
         sampleTemplate.routes.putAll(sampleRoutes);
         sampleTemplate.nodes.putAll(sampleNodes);
         sampleTemplate.start = (SynchronizationNode) sampleTemplate.getNode("syncStart");
+        
+        sampleTemplate.getGlobalProperties().getStringArrayList("System.Types").add("Character");
     }
     /**
      * Load Test - binary tree with node "1X" having children "10X" and "11X"
@@ -279,8 +281,6 @@ public class NarrativeInstanceTest {
         sampleInst.kill("routeSarah4");
         assertEquals("Testing kill method: ", 18, sampleInst.routes.size());
         assertEquals("Testing kill method: ", 10, sampleInst.nodes.size());
-        
-        
     }
     
     /**

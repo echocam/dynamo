@@ -259,9 +259,8 @@ public class GUIOperations {
 	 */
 	public void addNarrative(String name, String start, String end) throws IllegalOperationException {
 		// TODO Figure out how to get charID and REMOOOOOOOVE DIS
-		// String charID = "Filler"; //TODO replace with "primary properties"
-		// i.e. putStringArrayList("Primaries", propertyId); e.g. "Mike"
-		// Note: may change name from "Primaries"
+		// String charID = "Filler"; //TODO replace with "route types"
+		// i.e. multinarrative.getGlobalProperties().putStringArrayList("Types", typeId); e.g. "Character"
 		try {
 			multinarrative.newRoute(name, start, end);
 		} catch (NonUniqueIdException e) {
@@ -307,10 +306,9 @@ public class GUIOperations {
 	 */
 	public void addRoute(String name, String start, String end) throws IllegalOperationException {
 		// TODO Figure out how to get charID and REMOOOOOOOVE DIS
-		// String charID = "Filler"; //TODO replace with "primary properties"
-		// The primaries ArrayList should be a global property!
-		// i.e. putStringArrayList("Primaries", propertyId); e.g. "Mike"
-		// Note: may change name from "Primaries"
+		// String charID = "Filler"; //TODO replace with types
+		// The types ArrayList should be a global property!
+		// i.e. putStringArrayList("Types", typeId); e.g. "Mike"
 		try {
 			multinarrative.newRoute(name, start, end);
 		} catch (NonUniqueIdException e) {
@@ -366,23 +364,21 @@ public class GUIOperations {
 	}
 
 	/**
-	 * TODO
 	 * 
 	 * @param route
 	 * @param node
 	 */
 	public void setEnd(String route, String node) {
-
+	    multinarrative.getRoute(route).setEnd(multinarrative.getNode(node));
 	}
 
 	/**
-	 * TODO
 	 * 
 	 * @param route
 	 * @param node
 	 */
 	public void setStart(String route, String node) {
-
+	    multinarrative.getRoute(route).setStart(multinarrative.getNode(node));
 	}
 
 	/**
