@@ -100,23 +100,29 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         if (nEnd.getEntering().size() == 0) {
             kill(nEnd);
         } else if (route.getProperties() != null) {
-            if (route.getProperties().getStringArrayList("Types") != null) {;
-            // Kills all methods leaving the end node if they have the same type and no entering routes also
-            // have that property TODO specify in documentation
-            for (String type : route.getProperties().getStringArrayList("Types")) {
-                boolean similarRouteExists = false;
-                for(Route entry : nEnd.getEntering()) {
-                    if (entry.getProperties().getStringArrayList("Types").contains(type))
-                        similarRouteExists = true;
-                }
-                if (!similarRouteExists) {
-                    for(Route option : new ArrayList<Route>(nEnd.getExiting())) {
-                        if (option.getProperties().getStringArrayList("Types").contains(type)) {
-                            kill(option);
+
+            
+//            if (route.getProperties().getStringArrayList("Types") != null) {;
+//            // Kills all methods leaving the end node if they have the same type and no entering routes also
+//            // have that property TODO specify in documentation
+            for (String key : route.getProperties().keySet()) {
+                if (this.getGlobalProperties().getStringArrayList("Types").contains(key)) {
+                    Object type = route.getProperties().get(key);
+                    
+                    boolean similarRouteExists = false;
+                    for(Route entry : nEnd.getEntering()) {
+                        if (entry.getProperties().containsKey(key) && entry.getProperties().get(key).equals(type)) {
+                            similarRouteExists = true;
+                        }
+                    }
+                    if (!similarRouteExists) {
+                        for(Route option : new ArrayList<Route>(nEnd.getExiting())) {
+                            if (option.getProperties().containsKey(key) && option.getProperties().get(key).equals(type)) {
+                                kill(option);
+                            }
                         }
                     }
                 }
-            }
             }
         }
         // Remove the route from the exiting routes of the node it comes from

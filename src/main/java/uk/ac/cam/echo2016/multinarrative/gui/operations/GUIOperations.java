@@ -259,7 +259,7 @@ public class GUIOperations {
 	public void addNarrative(String name, String start, String end) throws IllegalOperationException {
 		// TODO Figure out how to get charID and REMOOOOOOOVE DIS
 		// String charID = "Filler"; //TODO replace with "route types"
-		// i.e. putStringArrayList("Types", typeId); e.g. "Mike"
+		// i.e. multinarrative.getGlobalProperties().putStringArrayList("Types", typeId); e.g. "Character"
 		try {
 			multinarrative.newRoute(name, start, end);
 		} catch (NonUniqueIdException e) {

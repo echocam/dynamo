@@ -208,22 +208,13 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
         }
     }
     
-    public void addRouteType(String routeId, String type) throws GraphElementNotFoundException { // TODO add to tests
-        Route route = getRoute(routeId);
-        if (route == null) throw new GraphElementNotFoundException("Error: Node with id: " + routeId + " not found");
-        route.createProperties();
-        ArrayList<String> types = route.getProperties().getStringArrayList("Types");
-        if (types == null) types = new ArrayList<String>();
-        types.add(type);
+    public void addRouteType(String type) { // TODO add to tests
+        if (!this.getGlobalProperties().getStringArrayList("Types").contains(type)) {
+            this.getGlobalProperties().getStringArrayList("Types").add(type);
+        }
     }
-    public boolean removeRouteType(String routeId, String type) throws GraphElementNotFoundException { // TODO add to tests
-        Route route = getRoute(routeId);
-        if (route == null) throw new GraphElementNotFoundException("Error: Node with id: " + routeId + " not found");
-        BaseBundle properties = route.getProperties();
-        if (properties == null) return false;
-        ArrayList<String> types = route.getProperties().getStringArrayList("Types");
-        if (types == null) return false;
-        return types.remove(type);
+    public boolean removeRouteType(String type) { // TODO add to tests
+        return this.getGlobalProperties().getStringArrayList("Types").remove(type);
     }
 
     public BaseBundle getProperties(String id) throws GraphElementNotFoundException {
