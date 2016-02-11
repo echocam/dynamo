@@ -10,7 +10,7 @@ root {
     -fx-font-family: "Arial Narrow";
 }
 
-.whiteText, #infoBar {
+.check-box > .text, .whiteText, #infoBar {
     -fx-fill: white;
 }
 
@@ -32,7 +32,9 @@ root {
     -fx-background-color: #333333;
 }
 
-.button, .combo-box-base,.text-field, .titled-pane.contents, .radio-button .radio, .titled-pane > .title, .menu-bar{
+.button, .combo-box-base,.text-field, .titled-pane.contents, 
+.radio-button .radio, .titled-pane > .title, 
+.menu-bar, .check-box >.box {
     -fx-background-color:
         #222222,
         #333333;

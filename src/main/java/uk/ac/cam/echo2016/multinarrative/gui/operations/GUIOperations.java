@@ -454,4 +454,20 @@ public class GUIOperations {
 	public void assignPropertyToRoute(String route, String property, String type, String value){
 		
 	}
+	
+	/**
+	 * TODO
+	 * @param property
+	 */
+	public void setAsRouteType(String property){
+		
+	}
+	
+	/**
+	 * TODO
+	 * @param property
+	 */
+	public void clearAsRouteType(String property){
+		
+	}
 }

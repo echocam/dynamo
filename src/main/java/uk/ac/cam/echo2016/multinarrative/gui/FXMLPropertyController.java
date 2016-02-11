@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
@@ -45,6 +46,8 @@ public class FXMLPropertyController implements Initializable {
 	private Button remove;
 	@FXML
 	private ColorPicker recolour;
+	@FXML
+	private CheckBox routeType;
 
 	private FXMLController controller;
 
@@ -96,6 +99,14 @@ public class FXMLPropertyController implements Initializable {
 				.addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
 					textChangeAction();
 				});
+		routeType.selectedProperty().addListener(
+				(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+				if(routeType.isSelected()){
+					controller.getOperations().setAsRouteType(propName);
+				}else{
+					controller.getOperations().clearAsRouteType(propName);
+				}
+		});
 	}
 
 	public void init(String name, FXMLController parent, Menu menu) {
@@ -162,4 +173,5 @@ public class FXMLPropertyController implements Initializable {
 	protected void changeTypeAction(ActionEvent event) {
 		System.out.println("Type CHanged " + type.getValue());
 	}
+
 }
