@@ -11,7 +11,7 @@ import javafx.scene.control.Label;
  *
  */
 
-public class FXMLErrorController {
+public class FXMLDialogController {
 	
 	@FXML 
 	private Button okButton;

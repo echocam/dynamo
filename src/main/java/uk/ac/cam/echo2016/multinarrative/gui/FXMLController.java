@@ -4,6 +4,7 @@ import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_REMOVED;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -29,6 +30,9 @@ import javafx.scene.shape.CubicCurve;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Text;
 import uk.ac.cam.echo2016.multinarrative.GUINarrative;
+import uk.ac.cam.echo2016.multinarrative.Route;
+import uk.ac.cam.echo2016.multinarrative.StoryNode;
+import uk.ac.cam.echo2016.multinarrative.SynchronizationNode;
 import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphEdge;
@@ -140,6 +144,25 @@ public class FXMLController {
     }
     
     /**
+     * Code run when the "New" menu item is clicked in the File menu.
+     */
+    @FXML
+    protected void registerNewClicked() {
+    	if (mainApp.checkIfShouldSave()) {
+    		registerSaveClicked();
+    	}
+    	
+    	GraphNode[] setCopy = graph.getNodes().toArray(new GraphNode[0]);
+		
+		for (GraphNode n : setCopy) {
+			removeNode(n.getName());
+		}
+		
+		operations = new GUIOperations();
+		graph = new Graph(scroll, graphArea, operations, this);		
+    }
+    
+    /**
      * Code run when the "Close" menu item is clicked in the File menu.
      */
     @FXML
@@ -194,7 +217,7 @@ public class FXMLController {
      */
     @FXML
     protected void showErrorDialog(String message) {
-    	mainApp.showError(message);
+    	mainApp.showDialog("Error while reading file", message);
     }
     
     /**
@@ -202,7 +225,9 @@ public class FXMLController {
      */
     @FXML
     protected void registerOpenClicked() {
-    	Debug.logInfo("registerOpen method call", 4, Debug.SYSTEM_GUI); //TODO remove
+    	if (mainApp.checkIfShouldSave()) {
+    		registerSaveClicked();
+    	}
     	String returnedFile = mainApp.showOpen();
     	if (returnedFile == null) {
     		return;
@@ -214,7 +239,7 @@ public class FXMLController {
     		if (loaded == null) {
     			throw new IOException();
     		}
-    		//buildGraph(loaded);//TODO add back in
+    		buildGraph(loaded);
     	} catch (IOException ioe) {
     		showErrorDialog("Error when trying to open file");
     	}
@@ -243,9 +268,6 @@ public class FXMLController {
      */
     @FXML
     protected void addPropertyButtonAction(ActionEvent event) {
-    	Debug.logInfo("addPropertyButtonAction method call", 4, Debug.SYSTEM_GUI); //TODO remove
-		
-
 		String name = propertyName.getText();
 		try {
 			operations.addProperty(name);// Throws
@@ -279,7 +301,6 @@ public class FXMLController {
 
 	@FXML
 	protected void deleteItemAction(ActionEvent e) {
-		Debug.logInfo("deleteItemAction", 4, Debug.SYSTEM_GUI); //TODO remove
 		removeSelect();
 	}
 
@@ -345,7 +366,6 @@ public class FXMLController {
      * @param values
      */
     public void setInfo(String template, String... values) {
-    	Debug.logInfo("setInfo method call", 4, Debug.SYSTEM_GUI); //TODO remove
         infoBar.setText(Strings.populateString(template, values));
     }
 
@@ -354,7 +374,6 @@ public class FXMLController {
      * @param name
      */
     public void addNode(String name) {
-    	Debug.logInfo("addNode(String name) method call", 4, Debug.SYSTEM_GUI);//TODO remove
         int i = 0;
         while (i < nodes.getItems().size() && nodes.getItems().get(i).compareTo(name) < 0) {
             i++;
@@ -367,7 +386,6 @@ public class FXMLController {
 	}
 
 	public void addSynchNode(String name, double x, double y) {
-    	Debug.logInfo("addSynchNode method call", 4, Debug.SYSTEM_GUI); //TODO remove
 		Debug.logInfo("Adding Synch " + name, 4, Debug.SYSTEM_GUI);
 		try {
 			operations.addSynchNode(name, x, y);
@@ -398,7 +416,6 @@ public class FXMLController {
      * @param name
      */
     public void addRoute(String name) {
-    	Debug.logInfo("addRoute method call", 4, Debug.SYSTEM_GUI); //TODO remove
         int i = 0;
         while (i < routes.getItems().size() && routes.getItems().get(i).compareTo(name) < 0) {
             i++;
@@ -407,7 +424,6 @@ public class FXMLController {
     }
 
 	public GraphNode addChoiceNode(String name, double x, double y) {
-    	Debug.logInfo("addChoiceNode(name,x,y) method call", 4, Debug.SYSTEM_GUI);//TODO remove
 		Debug.logInfo("Adding Choice " + name, 4, Debug.SYSTEM_GUI);
 		try {
 			operations.addChoiceNode(name, x, y);
@@ -436,7 +452,6 @@ public class FXMLController {
 	}
 
 	public void addChoiceNode(String name, GraphEdge edge) {
-    	Debug.logInfo("addChoiceNode(name, edge) method call", 4, Debug.SYSTEM_GUI); //TODO remove
 		GraphNode node = addChoiceNode(name, edge.getControl().getCenterX(), edge.getControl().getCenterY());
 		if (node != null) {
 			GraphNode end = edge.getTo();
@@ -450,7 +465,6 @@ public class FXMLController {
 	}
 
 	public void addRoute(String name, GraphNode from, GraphNode to) {
-    	Debug.logInfo("addRoute method call", 4, Debug.SYSTEM_GUI); //TODO remove
 		Debug.logInfo("Adding Route " + name, 4, Debug.SYSTEM_GUI);
 		try {
 			graph.getOperations().addRoute(name, from.getName(), to.getName());
@@ -478,45 +492,52 @@ public class FXMLController {
 
 	}
 	
-//	public void buildGraph(GUINarrative toBuild) {
-//		operations = new GUIOperations();
-//		
-//		for (Node node : toBuild.getNodes().values()) {
-//			if (node.getProperties() == null) {
-//				showErrorDialog("Node properties null");
-//				return;
-//			}
-//			if (node instanceof SynchronizationNode) {
-//				addSynchNode(node.getId(), node.getProperties().getDouble("GUI.X"), node.getProperties().getDouble("GUI.Y"));
-//			} else {
-//				addChoiceNode(node.getId(), node.getProperties().getDouble("GUI.X"), node.getProperties().getDouble("GUI.Y"));
-//			}
-//		}
-//		
-//		for (Route route : toBuild.getRoutes().values()) {
-//			GraphNode temp;
-//			GraphNode start = new GraphNode();
-//			GraphNode end = new GraphNode();
-//			Iterator<GraphNode> it = graph.getNodes().iterator();
-//			while (it.hasNext()) {
-//				temp = it.next();
-//				if (temp.getName() == route.getStart().getId()) {
-//					Debug.logInfo("Found start node " + temp.getName(), 4, Debug.SYSTEM_GUI); //TODO remove
-//					start = temp;
-//				}
-//			}
-//			Iterator<GraphNode> it2 = graph.getNodes().iterator();
-//			while (it2.hasNext()) {
-//				temp = it2.next();
-//				if (temp.getName() == route.getEnd().getId()) {
-//					Debug.logInfo("Found end node " + temp.getName(), 4, Debug.SYSTEM_GUI); //TODO remove
-//					end = temp;
-//				}
-//			}
-//			addRoute(route.getId(), start, end);
-//		}
-//		
-//	}
+	public void buildGraph(GUINarrative toBuild) {	
+		GraphNode[] setCopy = graph.getNodes().toArray(new GraphNode[0]);
+		
+		for (GraphNode n : setCopy) {
+			removeNode(n.getName());
+		}
+		
+		operations = new GUIOperations();
+		graph = new Graph(scroll, graphArea, operations, this);		
+		
+		for (StoryNode node : toBuild.getNodes().values()) {
+			if (node.getProperties() == null) {
+				showErrorDialog("Node properties null");
+				return;
+			}
+			if (node instanceof SynchronizationNode) {
+				addSynchNode(node.getId(), node.getProperties().getDouble("GUI.X"), node.getProperties().getDouble("GUI.Y"));
+			} else {
+				addChoiceNode(node.getId(), node.getProperties().getDouble("GUI.X"), node.getProperties().getDouble("GUI.Y"));
+			}
+		}
+		
+		for (Route route : toBuild.getRoutes().values()) {
+			GraphNode temp;
+			GraphNode start = new GraphNode();
+			GraphNode end = new GraphNode();
+			Iterator<GraphNode> it = graph.getNodes().iterator();
+			while (it.hasNext()) {
+				temp = it.next();
+				if (temp.getName() == route.getStart().getId()) {
+					start = temp;
+					break;
+				}
+			}
+			Iterator<GraphNode> it2 = graph.getNodes().iterator();
+			while (it2.hasNext()) {
+				temp = it2.next();
+				if (temp.getName() == route.getEnd().getId()) {
+					end = temp;
+					break;
+				}
+			}
+			addRoute(route.getId(), start, end);
+		}
+		
+	}
 
 	public void removeNode(String name) { 
 		operations.deleteNode(name);
@@ -553,7 +574,6 @@ public class FXMLController {
 	}
 
 	public void selectNode(String name) {
-    	Debug.logInfo("selectNode method call", 4, Debug.SYSTEM_GUI); //TODO remove
 		nodes.getSelectionModel().select(name);
 		itemNode = true;
 		initSelect();

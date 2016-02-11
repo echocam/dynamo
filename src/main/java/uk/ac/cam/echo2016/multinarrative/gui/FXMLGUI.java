@@ -89,7 +89,7 @@ public class FXMLGUI extends Application {
     
     /**
      * Opens the Open dialog
-     */ //TODO check save as.
+     */ 
     @FXML
     public String showOpen() {
     	FileChooser fileChooser = new FileChooser();
@@ -102,20 +102,48 @@ public class FXMLGUI extends Application {
     }
     
     /**
-     * Opens the error dialog when an IO operation fails
+     * Checks if a user wants to save before executing the next action
      */
     @FXML
-    public void showError(String message) {
+    public boolean checkIfShouldSave() {
     	try {
-    		FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml_errorDialog.fxml"));
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml_saveYesNoDialog.fxml"));
     		Pane page = loader.load();
     		Stage dialogStage = new Stage();
-    		dialogStage.setTitle("Error");
+    		dialogStage.setTitle("About to Discard Work");
     		Scene scene = new Scene(page);
     		dialogStage.setScene(scene);
     		
     		
-    	    FXMLErrorController controller = loader.getController();
+    	    FXMLSaveYesNoDialogController controller = loader.getController();
+    	    controller.setDialogStage(dialogStage);
+    		
+    	    dialogStage.setAlwaysOnTop(true);
+    	    dialogStage.initModality(Modality.APPLICATION_MODAL);
+    		dialogStage.showAndWait();
+    		
+    		return controller.yesPressed();
+    	} catch (IOException ioe) {
+    		//Indicates that fxml files aren't set up properly...
+            throw new RuntimeException("FXML files not configured correctly",ioe);
+    	}    	
+    }
+    
+    /**
+     * Opens the error dialog when an IO operation fails
+     */
+    @FXML
+    public void showDialog(String header, String message) {
+    	try {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml_okDialog.fxml"));
+    		Pane page = loader.load();
+    		Stage dialogStage = new Stage();
+    		dialogStage.setTitle(header);
+    		Scene scene = new Scene(page);
+    		dialogStage.setScene(scene);
+    		
+    		
+    	    FXMLDialogController controller = loader.getController();
     	    controller.setDialogStage(dialogStage);
     	    controller.submitMessage(message);
     		

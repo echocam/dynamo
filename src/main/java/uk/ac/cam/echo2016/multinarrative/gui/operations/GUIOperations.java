@@ -11,7 +11,7 @@ import android.os.BaseBundle;
 import uk.ac.cam.echo2016.multinarrative.ChoiceNode;
 import uk.ac.cam.echo2016.multinarrative.GUINarrative;
 import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
-import uk.ac.cam.echo2016.multinarrative.Node;
+import uk.ac.cam.echo2016.multinarrative.StoryNode;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
 import uk.ac.cam.echo2016.multinarrative.SynchronizationNode;
 import uk.ac.cam.echo2016.multinarrative.dev.Debug;
@@ -41,6 +41,9 @@ public class GUIOperations {
 		properties = new HashMap<String, BaseBundle>();
 		//nodes = new HashMap<String, Coordinate>();
 	}
+	
+	//TODO remove this method!
+	public GUINarrative returnNarrative() { return multinarrative; }
 
 	/**
 	 * Adds the required property
@@ -215,7 +218,7 @@ public class GUIOperations {
 	 */
 	// TODO: Check if node is out of bounds/illegal coordinate
 	public void translateNode(String name, double x, double y) throws IllegalOperationException {
-		Node theNode = multinarrative.getNode(name);
+		StoryNode theNode = multinarrative.getNode(name);
 		if (theNode == null) {
 			throw new IllegalOperationException("Node does not exist.");
 		}

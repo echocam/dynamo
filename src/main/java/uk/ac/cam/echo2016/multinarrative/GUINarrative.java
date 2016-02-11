@@ -1,7 +1,6 @@
 package uk.ac.cam.echo2016.multinarrative;
 
 import android.os.BaseBundle;
-import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 
 /**
  * The {@code EditableNarrative} used by the {@code FXMLGUI} editor to store the graph structure. This graph is
@@ -30,15 +29,11 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
      */
     public void newRoute(String id, String startId, String endId)
             throws NonUniqueIdException, GraphElementNotFoundException {
-    	//TODO remove debug statement:
-    	for (Node n : nodes.values()) {
-    		Debug.logInfo(n.getId(), 4, Debug.SYSTEM_GUI);
-    	}
         if (isUniqueId(id)) {
-            Node startNode = getNode(startId);
+            StoryNode startNode = getNode(startId);
             if (startNode == null)
                 throw new GraphElementNotFoundException("Node with id: " + startId + " not found");
-            Node endNode = getNode(endId);
+            StoryNode endNode = getNode(endId);
             if (endNode == null)
                 throw new GraphElementNotFoundException("Node with id: " + endId + " not found");
 
@@ -55,10 +50,10 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
     	Route route = routes.get(id);
     	if (route == null) throw new GraphElementNotFoundException("Route with id " + id + " not found");
     	
-    	Node newStart = nodes.get(newStartId);
+    	StoryNode newStart = nodes.get(newStartId);
     	if (newStart == null) throw new GraphElementNotFoundException("Node with id " + id + " not found");
     	
-    	Node oldStart = route.getStart();
+    	StoryNode oldStart = route.getStart();
     	route.setStart(newStart);
     	newStart.getExiting().add(route);
     	oldStart.getExiting().remove(route);
@@ -68,10 +63,10 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
     	Route route = routes.get(id);
     	if (route == null) throw new GraphElementNotFoundException("Route with id " + id + " not found");
     	
-    	Node newEnd = nodes.get(newEndId);
+    	StoryNode newEnd = nodes.get(newEndId);
     	if (newEnd == null) throw new GraphElementNotFoundException("Node with id " + id + " not found");
     	
-    	Node oldEnd = route.getEnd();
+    	StoryNode oldEnd = route.getEnd();
     	route.setEnd(newEnd);
     	newEnd.getEntering().add(route);
     	oldEnd.getEntering().remove(route);
@@ -202,8 +197,8 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
 
         ChoiceNode choice = new ChoiceNode(newChoiceId);
         
-        Node start = route.getStart();
-        Node end = route.getEnd();
+        StoryNode start = route.getStart();
+        StoryNode end = route.getEnd();
         
         // Connect route1
         Route route1 = new Route(newRouteId1, start, choice);
@@ -227,7 +222,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
     }
 
     public boolean setStartPoint(String id) throws GraphElementNotFoundException {
-        Node node = getNode(id);
+        StoryNode node = getNode(id);
         if (node == null) throw new GraphElementNotFoundException("Error: Node with id: " + id + " not found");
         if (node instanceof SynchronizationNode) {
             start = (SynchronizationNode) node;
@@ -251,7 +246,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
         if (route != null) {
             return route.getProperties();
         } else {
-            Node node = getNode(id);
+            StoryNode node = getNode(id);
             if (node != null) {
                 return node.getProperties();
             }
