@@ -5,15 +5,18 @@ import java.util.ArrayList;
 import android.os.BaseBundle;
 
 /**
- * Represents a MultiNarrative that can be edited. Included for extensibility. We subclass it with GUINarrative, but
- * this class can be derived for other methods of editing.
+ * Represents a {@code MultiNarrative} that can be modified. Sub-classing this allows alternate ways of generating
+ * templates that do not use {@code GUINarrative}, while retaining implementations of basic operations.
  * 
  * @author tr393
  * @author rjm232
+ * @version 1.0
+ * @see MultiNarrative
+ * @see GUINarrative
  *
  */
 
-public abstract class EditableNarrative extends MultiNarrative { //TODO Documentation
+public abstract class EditableNarrative extends MultiNarrative { // TODO Finish Class Documentation + Method Documentation
     private static final long serialVersionUID = 1;
     public void addRoute(Route route) {
         routes.put(route.getId(), route);

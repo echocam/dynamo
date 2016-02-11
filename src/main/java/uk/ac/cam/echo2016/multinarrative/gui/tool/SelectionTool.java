@@ -75,6 +75,7 @@ public class SelectionTool implements GraphTool {
     public void mouseReleased(MouseEvent event) {
         if (!dragging && press == null && !selectMade) {
             resetSelection();
+            graph.getController().deselect();
         }
         dragging = false;
         selectMade = false;
@@ -101,15 +102,13 @@ public class SelectionTool implements GraphTool {
                 for (GraphNode node : selection) {
                     try {
                         graph.getOperations().translateNode(node.getName(), movementX, movementY);
+                        node.translate(movementX, movementY);
+                        graph.updateNode(node);
                     } catch (IllegalOperationException e) {
                         graph.getController().setInfo(e.getMessage(), event.getSceneX()+"", event.getSceneY()+"");
                     }
-                    node.translate(movementX, movementY);
-                    graph.updateNode(node);
                 }
-
             }
-
         }
 
         mouseX = event.getSceneX();

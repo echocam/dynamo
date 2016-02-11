@@ -5,12 +5,9 @@ import java.util.ArrayList;
 import android.os.BaseBundle;
 
 /**
- * The EditableNarrative that is edited using the GUI.
- * 
- * <p>
- * ALT: The {@code MultiNarrative} graph structure used by the {@code FXMLGUI} editor to store the game design. This
- * graph is generated alongside the editor and used to build the template when the design is finished. New {@code Node}s
- * and {@code Route}s can be added 
+ * The {@code EditableNarrative} used by the {@code FXMLGUI} editor to store the graph structure. This graph is
+ * generated alongside the editor via {@code GUIOperations} and is used to build the template when the design is
+ * exported.
  * 
  * 
  * @author tr393
@@ -223,9 +220,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
     }
 
     private boolean isUniqueId(String id) {
-        Route route = getRoute(id);
-        Node node = getNode(id);
-        return ((route == null) && (node == null));
+        return (!routes.containsKey(id) && !nodes.containsKey(id));
     }
 
     public boolean setStartPoint(String id) throws GraphElementNotFoundException {

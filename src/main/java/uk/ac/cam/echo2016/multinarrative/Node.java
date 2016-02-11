@@ -84,4 +84,5 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
     public void setExiting(ArrayList<Route> exitRoutes) {
         this.exitRoutes = exitRoutes;
     }
+    
 }
