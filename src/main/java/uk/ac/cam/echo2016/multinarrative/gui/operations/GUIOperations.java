@@ -1,16 +1,6 @@
-package uk.ac.cam.echo2016.multinarrative.gui;
+package uk.ac.cam.echo2016.multinarrative.gui.operations;
 
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ADD_EMPTY_STRING;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ALREADY_EXISTS;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ROUTE_ALREADY_EXISTS;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ROUTE_PREFIX;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_ALREADY_AT_POSITION;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_ALREADY_EXISTS;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_DOES_NOT_EXIST;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_PREFIX;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_DOES_NOT_EXIST;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_MISSING;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.*;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +14,6 @@ import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
 /**
  * @author jr650
  * @author eyx20
- * @author rjm232
  */
 public class GUIOperations {
 
@@ -43,23 +32,22 @@ public class GUIOperations {
 		properties = new HashMap<String, BaseBundle>();
 		nodes = new HashMap<String, Coordinate>();
 	}
-	
-    /**
-     * Adds the required property
-     * 
-     * @throws IllegalOperationException
-     *             if can't add property, message of exception is displayed to
-     *             the user, using the Strings class for formatting.
-     */
-    public void addProperty(String s) throws IllegalOperationException {
-        if (s.equals("") || s == null) {
-        	// Shouldn't ever happen.
-            throw new IllegalOperationException(ADD_EMPTY_STRING);
-        }
-        if (properties.containsKey(s)) {
-            throw new IllegalOperationException(ALREADY_EXISTS);
-        }
-        properties.put(s, new BaseBundle());
+
+	/**
+	 * Adds the required property
+	 * 
+	 * @throws IllegalOperationException
+	 *             if can't add property, message of exception is displayed to
+	 *             the user, using the Strings class for formatting.
+	 */
+	public void addProperty(String s) throws IllegalOperationException {
+		if (s.equals("") || s == null) {
+			throw new IllegalOperationException(ADD_EMPTY_STRING);
+		}
+		if (properties.containsKey(s)) {
+			throw new IllegalOperationException(ALREADY_EXISTS);
+		}
+		properties.put(s, new BaseBundle());
 
 	}
 
@@ -355,7 +343,6 @@ public class GUIOperations {
 	}
 
 	/**
-	 * TODO
 	 * 
 	 * @param from
 	 * @param to
@@ -367,7 +354,6 @@ public class GUIOperations {
 	}
 
 	/**
-	 * TODO
 	 * 
 	 * @param from
 	 * @param to

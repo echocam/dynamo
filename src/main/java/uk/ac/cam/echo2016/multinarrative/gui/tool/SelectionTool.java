@@ -5,11 +5,11 @@ import java.util.Set;
 
 import javafx.css.PseudoClass;
 import javafx.scene.input.MouseEvent;
-import uk.ac.cam.echo2016.multinarrative.gui.IllegalOperationException;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphEdge;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphNode;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphTool;
+import uk.ac.cam.echo2016.multinarrative.gui.operations.IllegalOperationException;
 
 public class SelectionTool implements GraphTool {
 

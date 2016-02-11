@@ -1,4 +1,4 @@
-package uk.ac.cam.echo2016.multinarrative.gui;
+package uk.ac.cam.echo2016.multinarrative.gui.operations;
 
 /**
  * @author jr650
