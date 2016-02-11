@@ -38,7 +38,7 @@
                   <MenuItem mnemonicParsing="false" onAction="#registerOpenClicked" text="Open" />
                   <MenuItem mnemonicParsing="false" onAction="#registerSaveClicked" text="Save" />
                   <MenuItem mnemonicParsing="false" onAction="#registerSaveAsClicked" text="Save As..." />
-              <MenuItem mnemonicParsing="false" onAction="#close" text="Export" />
+                  <MenuItem mnemonicParsing="false" onAction="#close" text="Export" />
                   <MenuItem mnemonicParsing="false" onAction="#close" text="Close" />
             </items>
           </Menu>
@@ -120,7 +120,7 @@
                                  <content>
                                     <VBox>
                                        <children>
-                                          <RadioButton mnemonicParsing="false" selected="true" text="Sync">
+                                          <RadioButton mnemonicParsing="false" selected="true" text="Synch">
                                              <toggleGroup>
                                                 <ToggleGroup fx:id="nodeType" />
                                              </toggleGroup>
