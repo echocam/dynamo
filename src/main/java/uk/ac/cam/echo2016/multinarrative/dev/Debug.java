@@ -100,7 +100,7 @@ public class Debug {
 			consoleLogLevels[1] = SYSTEM_ALL; //TODO(tr395): log everything
 			consoleLogLevels[2] = SYSTEM_ALL; //TODO(tr395): log everything
 			consoleLogLevels[3] = SYSTEM_ALL; //TODO(tr395): log everything
-			consoleLogLevels[4] = SYSTEM_ALL; //TODO(tr395): log everything
+			consoleLogLevels[4] = SYSTEM_NONE;
 		}
     }
     
