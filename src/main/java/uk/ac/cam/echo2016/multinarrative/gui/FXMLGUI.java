@@ -14,8 +14,6 @@ import java.io.IOException;
 
 import javafx.stage.FileChooser;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 
 /**
  * @author jr650
@@ -108,11 +106,26 @@ public class FXMLGUI extends Application {
      */
     @FXML
     public void showError(String message) {
-    	Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Operation Failed");
-		alert.setHeaderText(null);
-		alert.setContentText(message);
-		alert.showAndWait();
+    	try {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml_errorDialog.fxml"));
+    		Pane page = loader.load();
+    		Stage dialogStage = new Stage();
+    		dialogStage.setTitle("Error");
+    		Scene scene = new Scene(page);
+    		dialogStage.setScene(scene);
+    		
+    		
+    	    FXMLErrorController controller = loader.getController();
+    	    controller.setDialogStage(dialogStage);
+    	    controller.submitMessage(message);
+    		
+    	    dialogStage.setAlwaysOnTop(true);
+    	    dialogStage.initModality(Modality.APPLICATION_MODAL);
+    		dialogStage.showAndWait();
+    	} catch (IOException ioe) {
+    		//Indicates that fxml files aren't set up properly...
+            throw new RuntimeException("FXML files not configured correctly",ioe);
+    	}
     }
 }
 

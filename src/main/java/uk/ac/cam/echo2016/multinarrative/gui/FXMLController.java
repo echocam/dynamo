@@ -4,7 +4,6 @@ import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_REMOVED;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -30,8 +29,6 @@ import javafx.scene.shape.CubicCurve;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Text;
 import uk.ac.cam.echo2016.multinarrative.GUINarrative;
-import uk.ac.cam.echo2016.multinarrative.Route;
-import uk.ac.cam.echo2016.multinarrative.SynchronizationNode;
 import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphEdge;
