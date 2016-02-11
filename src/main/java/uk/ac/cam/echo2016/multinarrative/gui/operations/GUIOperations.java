@@ -26,7 +26,6 @@ import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.StoryNode;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
 import uk.ac.cam.echo2016.multinarrative.SynchronizationNode;
-import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 import uk.ac.cam.echo2016.multinarrative.io.SaveReader;
 import uk.ac.cam.echo2016.multinarrative.io.SaveWriter;
 
@@ -54,9 +53,6 @@ public class GUIOperations {
 		properties = new HashMap<String, BaseBundle>();
 		//nodes = new HashMap<String, Coordinate>();
 	}
-	
-	//TODO remove this method!
-	public GUINarrative returnNarrative() { return multinarrative; }
 
 	/**
 	 * Adds the required property
@@ -199,7 +195,6 @@ public class GUIOperations {
 	 */
 	// TODO: remove position checking, it's not needed
 	public void addSynchNode(String name, double x, double y) throws IllegalOperationException {
-		Debug.logInfo("addSyncNode method call", 4, Debug.SYSTEM_GUI); //TODO remove
 		if (multinarrative.getNode(name) != null) {
 			throw new IllegalOperationException(NODE_ALREADY_EXISTS);
 		}
@@ -221,7 +216,6 @@ public class GUIOperations {
 	 */
 	//TODO: remove position checking, it's not needed
 	public void addChoiceNode(String name, double x, double y) throws IllegalOperationException {
-		Debug.logInfo("addChoiceNode method call", 4, Debug.SYSTEM_GUI); //TODO remove
 		if (multinarrative.getNode(name) != null) {
 			throw new IllegalOperationException(NODE_ALREADY_EXISTS);
 		}
