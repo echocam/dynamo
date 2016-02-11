@@ -112,12 +112,12 @@
                                  <content>
                                     <VBox>
                                        <children>
-                                          <RadioButton mnemonicParsing="false" selected="true" text="Synch">
+                                          <RadioButton fx:id="nodeSynch" mnemonicParsing="false" onAction="#setSynch" selected="true" text="Synch">
                                              <toggleGroup>
                                                 <ToggleGroup fx:id="nodeType" />
                                              </toggleGroup>
                                           </RadioButton>
-                                          <RadioButton mnemonicParsing="false" text="Choice" toggleGroup="$nodeType" />
+                                          <RadioButton fx:id="nodeChoice" mnemonicParsing="false" onAction="#setChoice" text="Choice" toggleGroup="$nodeType" />
                                        </children>
                                     </VBox>
                                  </content>

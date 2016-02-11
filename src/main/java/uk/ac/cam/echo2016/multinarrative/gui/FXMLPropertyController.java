@@ -1,8 +1,6 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ObservableValue;
@@ -30,8 +28,8 @@ public class FXMLPropertyController implements Initializable {
 
 	private String propName;
 
-	private Map<String, Color> colours = new HashMap<String, Color>();
-
+	private String typeName ="String";
+	
 	@FXML
 	private TitledPane root;
 	@FXML
@@ -63,17 +61,14 @@ public class FXMLPropertyController implements Initializable {
 		recolour.setDisable(true);
 		recolour.valueProperty()
 				.addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) -> {
-					colours.put(values.getSelectionModel().getSelectedItem(), newValue);
+					
 				});
 		values.getSelectionModel().selectedItemProperty()
 				.addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
 					remove.setDisable(newValue == null);
 					recolour.setDisable(newValue == null);
 					if (newValue != null) {
-						Color c = colours.get(newValue);
-						if (c == null) {
-							c = Color.TRANSPARENT;
-						}
+						Color c = controller.getOperations().getColor(propName, newValue);
 						recolour.valueProperty().set(c);
 					}
 				});
@@ -83,12 +78,7 @@ public class FXMLPropertyController implements Initializable {
 			try {
 				controller.getOperations().renamePropertyValue(propName, oldValue, newValue);
 				values.getItems().set(event.getIndex(), newValue);
-				for (MenuItem i : menu.getItems()) {
-					if (i.getText().equals(oldValue)){
-						i.setText(newValue);
-						break;
-					}
-				}
+				menu.getItems().get(event.getIndex()).setText(newValue);
 				event.consume();
 			} catch (Exception e) {
 				controller.setInfo(e.getMessage(), oldValue, newValue);
@@ -138,13 +128,13 @@ public class FXMLPropertyController implements Initializable {
 
 	@FXML
 	protected void addValueAction(ActionEvent event) {
-		String s = controller.getOperations().getDefaultValue(propName, type.getValue());
+		String s = controller.getOperations().getDefaultValue(propName, typeName);
 		try {
 			controller.getOperations().addPropertyValue(propName, s);
 			values.getItems().add(s);
 			MenuItem item = new MenuItem(s);
 			item.setOnAction(trigger -> {
-				controller.assignProperty(propName, type.getValue(), s);				
+				controller.assignProperty(propName, typeName, s);				
 			});
 			menu.getItems().add(item);
 		} catch (IllegalOperationException e) {
@@ -157,7 +147,6 @@ public class FXMLPropertyController implements Initializable {
 		String selected = values.getSelectionModel().getSelectedItem();
 		controller.getOperations().removePropertyValue(propName, selected);
 		values.getItems().remove(selected);
-		colours.remove(selected);
 		MenuItem remove = null;
 		for (MenuItem item : menu.getItems()) {
 			if (item.getText().equals(selected))
@@ -171,7 +160,12 @@ public class FXMLPropertyController implements Initializable {
 
 	@FXML
 	protected void changeTypeAction(ActionEvent event) {
-		System.out.println("Type CHanged " + type.getValue());
+		try {
+			controller.getOperations().setPropertyType(propName, type.getValue());
+			typeName= type.getValue();
+		} catch (IllegalOperationException e) {
+			type.setValue(typeName);
+		}
 	}
 
 }

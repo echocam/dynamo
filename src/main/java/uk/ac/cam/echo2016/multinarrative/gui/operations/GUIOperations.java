@@ -1,12 +1,24 @@
 package uk.ac.cam.echo2016.multinarrative.gui.operations;
 
-import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.*;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ADD_EMPTY_STRING;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ALREADY_EXISTS;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.NODE_ALREADY_AT_POSITION;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.NODE_ALREADY_EXISTS;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.NODE_DOES_NOT_EXIST;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.NODE_PREFIX;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_DOES_NOT_EXIST;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_MISSING;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_RENAME_EXISTS;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ROUTE_ALREADY_EXISTS;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ROUTE_PREFIX;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.os.BaseBundle;
+import javafx.scene.paint.Color;
 import uk.ac.cam.echo2016.multinarrative.GUINarrative;
 import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
@@ -21,6 +33,7 @@ public class GUIOperations {
 
 	private HashMap<String, BaseBundle> properties;
 	private HashMap<String, Coordinate> nodes;
+	private Map<String, Map<String, Color>> colours = new HashMap<String, Map<String, Color>>();
 	private static int nodeCounter = 1;
 	private static int narrativeCounter = 1;
 	private static int valueCounter = 1;
@@ -51,9 +64,20 @@ public class GUIOperations {
 		properties.put(s, new BaseBundle());
 
 	}
+	
+	/**
+	 * TODO Sets property type, which this class should then use to validate further input.
+	 * @param property
+	 * @param type
+	 * @throws IllegalOperationException
+	 */
+	public void setPropertyType(String property, String type) throws IllegalOperationException {
+		
+	}
 
 	/**
 	 * Adds a value to a given property
+	 * TODO use type to check the input is correct and throw exception if not!
 	 * 
 	 * @param property
 	 *            - property name to add value to
@@ -162,7 +186,7 @@ public class GUIOperations {
 	 * 
 	 * @throws NonUniqueIdException
 	 */
-	// TODO: Check if node is out of bounds/illegal coordinate
+	// TODO: remove position checking, it's not needed
 	public void addSynchNode(String name, double x, double y) throws IllegalOperationException {
 		Coordinate coor = new Coordinate(x, y);
 		if (nodes.containsKey(name)) {
@@ -184,6 +208,7 @@ public class GUIOperations {
 	/**
 	 * Adds a choiceNode at the given position, with the given name
 	 */
+	//TODO: remove position checking, it's not needed
 	public void addChoiceNode(String name, double x, double y) throws IllegalOperationException {
 		Coordinate coor = new Coordinate(x, y);
 		if (nodes.containsKey(name)) {
@@ -206,7 +231,7 @@ public class GUIOperations {
 	/**
 	 * Repositions a node by the given offset
 	 */
-	// TODO: Check if node is out of bounds/illegal coordinate
+	// TODO: Remove position checking info it's not needed
 	public void translateNode(String name, double x, double y) throws IllegalOperationException {
 		if (!nodes.containsKey(name)) {
 			throw new IllegalOperationException("Node does not exist.");
@@ -245,38 +270,6 @@ public class GUIOperations {
 	}
 
 	/**
-	 * Adds a narrative, throwing exception if it fails.
-	 * 
-	 * @param name
-	 *            - unique id of the narrative
-	 * @param start
-	 *            - starting node. If node does not exist creates a new node.
-	 * @param end
-	 *            - ending node. If node does not exist creates a new node. Do
-	 *            cycle detection here!!
-	 * @throws GraphElementNotFoundException
-	 * @throws NonUniqueIdException
-	 */
-	public void addNarrative(String name, String start, String end) throws IllegalOperationException {
-		// TODO Figure out how to get charID and REMOOOOOOOVE DIS
-		// String charID = "Filler"; //TODO replace with "route types"
-		// i.e. multinarrative.getGlobalProperties().putStringArrayList("Types", typeId); e.g. "Character"
-		try {
-			multinarrative.newRoute(name, start, end);
-		} catch (NonUniqueIdException e) {
-			throw new IllegalOperationException(ROUTE_ALREADY_EXISTS);
-		} catch (GraphElementNotFoundException e) {
-			throw new IllegalOperationException(NODE_DOES_NOT_EXIST);
-		}
-		DFSCycleDetect cycleDetect = new DFSCycleDetect(multinarrative.getNode(start));
-		if (cycleDetect.hasCycle()) {
-			multinarrative.removeRoute(name);
-			throw new IllegalOperationException("Cannot add route: Graph will contain a cycle");
-		}
-
-	}
-
-	/**
 	 * 
 	 * @param node
 	 *            Route id
@@ -305,10 +298,6 @@ public class GUIOperations {
 	 *            - ending node. If node does not exist creates a new node.
 	 */
 	public void addRoute(String name, String start, String end) throws IllegalOperationException {
-		// TODO Figure out how to get charID and REMOOOOOOOVE DIS
-		// String charID = "Filler"; //TODO replace with types
-		// The types ArrayList should be a global property!
-		// i.e. putStringArrayList("Types", typeId); e.g. "Mike"
 		try {
 			multinarrative.newRoute(name, start, end);
 		} catch (NonUniqueIdException e) {
@@ -342,7 +331,7 @@ public class GUIOperations {
 	}
 
 	/**
-	 * 
+	 * TODO check that to is unique, unless to === from
 	 * @param from
 	 * @param to
 	 * @throws IllegalOperationException
@@ -353,7 +342,7 @@ public class GUIOperations {
 	}
 
 	/**
-	 * 
+	 * TODO check that to is unique, unless to === from
 	 * @param from
 	 * @param to
 	 * @throws IllegalOperationException
@@ -364,21 +353,21 @@ public class GUIOperations {
 	}
 
 	/**
-	 * 
+	 * TODO cycle detection
 	 * @param route
 	 * @param node
 	 */
 	public void setEnd(String route, String node) {
-	    multinarrative.getRoute(route).setEnd(multinarrative.getNode(node));
+		multinarrative.getRoute(route).setEnd(multinarrative.getNode(node));
 	}
 
 	/**
-	 * 
+	 * TODO cycle detection
 	 * @param route
 	 * @param node
 	 */
 	public void setStart(String route, String node) {
-	    multinarrative.getRoute(route).setStart(multinarrative.getNode(node));
+		multinarrative.getRoute(route).setStart(multinarrative.getNode(node));
 	}
 
 	/**
@@ -388,7 +377,6 @@ public class GUIOperations {
 	 */
 	public void deleteNode(String id) {
 		multinarrative.removeNode(id);
-
 	}
 
 	/**
@@ -399,75 +387,167 @@ public class GUIOperations {
 	public void deleteRoute(String id) {
 		multinarrative.removeRoute(id);
 	}
-	
+
 	/**
-	 * TODO
+	 * TODO add value, ensuring it is unique
+	 * 
 	 * @param id
 	 * @param value
 	 */
-	public void addPropertyValue(String id, String value) throws IllegalOperationException{
-		
+	public void addPropertyValue(String id, String value) throws IllegalOperationException {
+
 	}
-	
+
 	/**
-	 * TODO
+	 * TODO remove value
+	 * 
 	 * @param id
 	 * @param value
 	 */
-	public void removePropertyValue(String id, String value){
-		
+	public void removePropertyValue(String id, String value) {
+
 	}
-	
+
 	/**
-	 * TODO
+	 * TODO rename value, checking it is unique (unless value === newValue)
+	 * 
 	 * @param id
 	 * @param value
 	 * @param newValue
 	 * @throws IllegalOperationException
 	 */
-	public void renamePropertyValue(String id, String value, String newValue) throws IllegalOperationException{
-		
+	public void renamePropertyValue(String id, String value, String newValue) throws IllegalOperationException {
+
 	}
-	
-	public String getDefaultValue(String id, String type){
+
+	/**
+	 * TODO get default value for correct type
+	 * @param id
+	 * @param type
+	 * @return
+	 */
+	public String getDefaultValue(String id, String type) {
 		return Strings.populateString(Strings.PROPERTY_VALUE, "" + valueCounter++);
 	}
 
 	/**
-	 * TODO
+	 * TODO assign the given property to the correct node
+	 * 
 	 * @param node
 	 * @param property
 	 * @param type
 	 * @param value
 	 */
-	public void assignPropertyToNode(String node, String property, String type, String value){
-		
+	public void assignPropertyToNode(String node, String property, String type, String value) {
+
 	}
-	
+
 	/**
-	 * TODO
+	 * TODO Assign the given property to the given route
+	 * 
 	 * @param route
 	 * @param property
 	 * @param type
 	 * @param value
 	 */
-	public void assignPropertyToRoute(String route, String property, String type, String value){
-		
+	public void assignPropertyToRoute(String route, String property, String type, String value) {
+
+	}
+
+	/**
+	 * TODO Add the property to the String ArrayList global property in GUINarrative "System.Types"
+	 * 
+	 * @param property
+	 */
+	public void setAsRouteType(String property) {
+
+	}
+
+	/**
+	 * TODO Remove the property from the String ArrayList global property in GUINarrative "System.Types"
+	 * 
+	 * @param property
+	 */
+	public void clearAsRouteType(String property) {
+
+	}
+
+	/**
+	 * Sets the correct colour for the given value of the given property
+	 * TODO make this use a better data structure
+	 * @param property
+	 * @param value
+	 * @param c
+	 */
+	public void setColor(String property, String value, Color c) {
+		if (colours.get(property) == null) {
+			colours.put(property, new HashMap<String, Color>());
+		}
+		colours.get(property).put(value, c);
+	}
+
+	/**
+	 * Gets the colour associated with this value of this property
+	 * TODO use a better data Structure
+	 * @param property
+	 * @param value
+	 * @return
+	 */
+	public Color getColor(String property, String value) {
+		if (colours.get(property) == null) {
+			return Color.TRANSPARENT;
+		}
+		Color c = colours.get(property).get(value);
+		return c == null ? Color.TRANSPARENT : c;
+	}
+
+	/**
+	 * TODO gets a list of all the non transparent colours of properties
+	 * applying to a node
+	 * 
+	 * @return
+	 */
+	public ArrayList<Color> getNodeColor(String node) {
+		ArrayList<Color> r = new ArrayList<Color>();
+		return r;
+	}
+
+	/**
+	 * TODO gets a list of all the non transparent colours of properties
+	 * applying to a route
+	 * 
+	 * @return
+	 */
+	public ArrayList<Color> getRouteColor(String route) {
+		ArrayList<Color> r = new ArrayList<Color>();
+		return r;
 	}
 	
 	/**
-	 * TODO
-	 * @param property
+	 * Gives whether the give id is a choice node
+	 * @param node node id
+	 * @return true if it's a choice node and false if it's a synch
+	 * @throws IllegalOperationException if node doesn't exist
 	 */
-	public void setAsRouteType(String property){
-		
+	public boolean isChoiceNode(String node) throws IllegalOperationException{
+		try {
+			return multinarrative.isChoiceNode(node);
+		} catch (GraphElementNotFoundException e) {
+			throw new IllegalOperationException(NODE_DOES_NOT_EXIST,e);
+		}
 	}
 	
 	/**
-	 * TODO
-	 * @param property
+	 * Swaps the given node from a choice to a sync or vice versa
+	 * @param node node id
+	 * @return true if it's a choice node and false if it's a synch
+	 * @throws IllegalOperationException if node doesn't exist
 	 */
-	public void clearAsRouteType(String property){
-		
+	public void switchChoiceOrSynch(String node)throws IllegalOperationException{
+		try {
+			multinarrative.swapSyncAndChoice(node);
+		} catch (GraphElementNotFoundException e) {
+			throw new IllegalOperationException(NODE_DOES_NOT_EXIST, e);
+		}
 	}
 }

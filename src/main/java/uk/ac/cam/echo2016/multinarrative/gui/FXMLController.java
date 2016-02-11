@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
@@ -26,6 +27,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.CubicCurve;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Text;
 import uk.ac.cam.echo2016.multinarrative.dev.Debug;
@@ -72,6 +74,10 @@ public class FXMLController {
 	private Button itemPropertyDelete;
 	@FXML
 	private TitledPane nodeEditor;
+	@FXML
+	private RadioButton nodeSynch;
+	@FXML
+	private RadioButton nodeChoice;
 	@FXML
 	private TitledPane routeEditor;
 
@@ -161,6 +167,41 @@ public class FXMLController {
 	}
 
 	@FXML
+	protected void setChoice(ActionEvent event) {
+		if (itemNode != null && itemNode) {
+			String node = nodes.getSelectionModel().getSelectedItem();
+			try {
+				if (!operations.isChoiceNode(node)) {
+					operations.switchChoiceOrSynch(node);
+					for(GraphNode n :selectTool.getSelection()){
+						System.out.println(n.getContents().getShape());
+						n.getContents().setShape(new Circle(10));
+					}
+				}
+			} catch (IllegalOperationException e) {
+				setInfo(e.getMessage(), node);
+			}
+		}
+	}
+	
+	@FXML
+	protected void setSynch(ActionEvent event) {
+		if (itemNode != null && itemNode) {
+			String node = nodes.getSelectionModel().getSelectedItem();
+			try {
+				if (operations.isChoiceNode(node)) {
+					operations.switchChoiceOrSynch(node);
+					for(GraphNode n :selectTool.getSelection()){
+						n.getContents().setShape(null);
+					}
+				}
+			} catch (IllegalOperationException e) {
+				setInfo(e.getMessage(), node);
+			}
+		}
+	}
+
+	@FXML
 	protected void onKeyPress(KeyEvent event) {
 		Debug.logInfo("Key Pressed: " + event, 5, Debug.SYSTEM_GUI);
 		switch (event.getCode()) {
@@ -219,7 +260,9 @@ public class FXMLController {
 	}
 
 	public void setInfo(String template, String... values) {
-		infoBar.setText(Strings.populateString(template, values));
+		String s = Strings.populateString(template, values);
+		Debug.logInfo(s, 3, Debug.SYSTEM_GUI);
+		infoBar.setText(s);
 	}
 
 	public GUIOperations getOperations() {
@@ -236,7 +279,7 @@ public class FXMLController {
 				propertiesSource = b;
 				propertiesMenu.show(b, event.getScreenX(), event.getScreenY());
 			});
-			GraphNode newNode = new GraphNode(b, b.textProperty(), x, y);
+			GraphNode newNode = new GraphNode(b, b.textProperty(), x, y, graph);
 			graph.addNode(newNode);
 			int i = 0;
 			while (i < nodes.getItems().size() && nodes.getItems().get(i).compareTo(name) < 0) {
@@ -247,7 +290,7 @@ public class FXMLController {
 			// Error with fxml files
 			throw new RuntimeException("FXML files not configured correctly", ioe);
 		} catch (IllegalOperationException e) {
-			setInfo(e.getMessage());
+			setInfo(e.getMessage(), name);
 		}
 
 	}
@@ -263,7 +306,7 @@ public class FXMLController {
 				propertiesSource = b;
 				propertiesMenu.show(b, event.getScreenX(), event.getScreenY());
 			});
-			GraphNode newNode = new GraphNode(b, b.textProperty(), x, y);
+			GraphNode newNode = new GraphNode(b, b.textProperty(), x, y, graph);
 			graph.addNode(newNode);
 			int i = 0;
 			while (i < nodes.getItems().size() && nodes.getItems().get(i).compareTo(name) < 0) {
@@ -275,13 +318,13 @@ public class FXMLController {
 			// Error with fxml files
 			throw new RuntimeException("FXML files not configured correctly", ioe);
 		} catch (IllegalOperationException e) {
-			setInfo(e.getMessage());
+			setInfo(e.getMessage(), name);
 		}
 		return null;
 	}
 
 	public void addChoiceNode(String name, GraphEdge edge) {
-		GraphNode node = addChoiceNode(name, edge.getControl().getCenterX(), edge.getControl().getCenterY());
+		GraphNode node = addChoiceNode(name, edge.getControl().getLayoutX(), edge.getControl().getLayoutY());
 		if (node != null) {
 			GraphNode end = edge.getTo();
 			operations.setEnd(edge.getName(), name);
@@ -303,12 +346,15 @@ public class FXMLController {
 			c.setStrokeWidth(2);
 			c.setStrokeLineCap(StrokeLineCap.ROUND);
 			c.setFill(Color.TRANSPARENT);
-			Circle ci = new Circle(4, Color.rgb(51, 51, 51));
-			ci.setOnContextMenuRequested(event -> {
-				propertiesSource = ci;
+			Polygon p = new Polygon();
+			p.getPoints().addAll(25.0, 0.0, 0.0, 8.0, 0.0, -8.0);
+			p.setStroke(Color.rgb(127, 127, 127));
+			p.setFill(Color.TRANSPARENT);
+			p.setOnContextMenuRequested(event -> {
+				propertiesSource = p;
 				propertiesMenu.show(graphArea, event.getScreenX(), event.getScreenY());
 			});
-			GraphEdge edge = new GraphEdge(new SimpleStringProperty(name), from, to, c, ci);
+			GraphEdge edge = new GraphEdge(new SimpleStringProperty(name), from, to, c, p, 25, 0);
 			graph.addEdge(edge);
 			graph.updateEdge(edge);
 			int i = 0;
@@ -317,7 +363,7 @@ public class FXMLController {
 			}
 			routes.getItems().add(i, name);
 		} catch (IllegalOperationException e) {
-			graph.getController().setInfo(e.getMessage());
+			graph.getController().setInfo(e.getMessage(), name);
 		}
 
 	}
@@ -339,21 +385,26 @@ public class FXMLController {
 	}
 
 	public void assignProperty(String property, String type, String value) {
-		Debug.logInfo("Assigning " + property + ":" + type + "=" + value+" to "+propertiesSource, 4, Debug.SYSTEM_GUI);
+		Debug.logInfo("Assigning " + property + ":" + type + "=" + value + " to " + propertiesSource, 4,
+				Debug.SYSTEM_GUI);
 		if (propertiesSource != null) {
 			Object o = propertiesSource.getUserData();
 			if (o instanceof GraphNode) {
-				operations.assignPropertyToNode(((GraphNode) o).getName(), property, type, value);
+				GraphNode n = ((GraphNode) o);
+				operations.assignPropertyToNode(n.getName(), property, type, value);
+				graph.updateNode(n);
 				if (itemNode != null && itemNode) {
 					initSelect();
 				}
 			} else if (o instanceof GraphEdge) {
-				operations.assignPropertyToRoute(((GraphEdge) o).getName(), property, type, value);
+				GraphEdge e = ((GraphEdge) o);
+				operations.assignPropertyToRoute(e.getName(), property, type, value);
+				graph.updateEdge(e);
 				if (itemNode != null && !itemNode) {
 					initSelect();
 				}
 			}
-			propertiesSource=null;
+			propertiesSource = null;
 		}
 	}
 
@@ -366,6 +417,7 @@ public class FXMLController {
 	public void selectRoute(String name) {
 		routes.getSelectionModel().select(name);
 		itemNode = false;
+		selectTool.resetSelection();
 		initSelect();
 	}
 
@@ -439,11 +491,21 @@ public class FXMLController {
 			itemName.setText("");
 			itemProperties.getItems().clear();
 		} else if (itemNode) {
+			String node = nodes.getSelectionModel().getSelectedItem();
 			itemNode = null;
-			itemName.setText(nodes.getSelectionModel().getSelectedItem());
+			itemName.setText(node);
 			itemNode = true;
 			itemProperties.getItems().clear();
-			itemProperties.getItems().addAll(operations.getNodeProperties(nodes.getSelectionModel().getSelectedItem()));
+			itemProperties.getItems().addAll(operations.getNodeProperties(node));
+			try {
+				if (operations.isChoiceNode(node)) {
+					nodeChoice.fire();
+				} else {
+					nodeSynch.fire();
+				}
+			} catch (IllegalOperationException e) {
+				setInfo(e.getMessage(), node);
+			}
 		} else {
 			itemNode = null;
 			itemName.setText(routes.getSelectionModel().getSelectedItem());
