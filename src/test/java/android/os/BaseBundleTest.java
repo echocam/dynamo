@@ -20,4 +20,16 @@ public class BaseBundleTest {
         assertEquals(baseBundle.getBoolean(testKey1), testVal1);
         assertEquals(baseBundle.getBoolean(testKey2), testVal2);
     }
+    @Test
+    public void deepcopyTest(){
+        BaseBundle b = new BaseBundle();
+
+        b.putBoolean("t", true);
+        b.putBoolean("f", false);
+
+        BaseBundle copy = BaseBundle.deepcopy(b);
+
+        assertEquals(copy.getBoolean("t"), true);
+        assertEquals(copy.getBoolean("f"), false);
+    }
 }

@@ -19,6 +19,8 @@ public class SaveTest {
         gNarr = new GUINarrative();
 
         SynchronizationNode s1 = new SynchronizationNode("start");
+        s1.createProperties();
+        s1.getProperties().putBoolean("t", true);
         ChoiceNode c1 = new ChoiceNode("choice1");
         SynchronizationNode s2 = new SynchronizationNode("left");
         SynchronizationNode s3 = new SynchronizationNode("right");
@@ -75,5 +77,10 @@ public class SaveTest {
         assertEquals("Check end has correct number of parents", 2, end.getEntering().size());
         assertEquals("Check end has left as parent node", left, end.getEntering().get(0).getStart());
         assertEquals("Check end has right as parent node", right, end.getEntering().get(1).getStart());
+    }
+
+    @Test
+    public void propertiesTest(){
+        assertEquals("Check properties are loaded", true, gNarr.start.getProperties().getBoolean("t"));
     }
 }
