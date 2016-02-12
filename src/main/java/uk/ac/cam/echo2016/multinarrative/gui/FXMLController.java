@@ -224,7 +224,7 @@ public class FXMLController {
      */
     @FXML
     protected void showErrorDialog(String message) {
-    	mainApp.showDialog("Error while reading file", message);
+    	mainApp.showError(message);
     }
     
     /**

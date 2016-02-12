@@ -130,27 +130,12 @@ public class FXMLGUI extends Application {
      * Opens the error dialog when an IO operation fails
      */
     @FXML
-    public void showDialog(String header, String message) {
-    	try {
-    		FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml_okDialog.fxml"));
-    		Pane page = loader.load();
-    		Stage dialogStage = new Stage();
-    		dialogStage.setTitle(header);
-    		Scene scene = new Scene(page);
-    		dialogStage.setScene(scene);
-    		
-    		
-    	    FXMLDialogController controller = loader.getController();
-    	    controller.setDialogStage(dialogStage);
-    	    controller.submitMessage(message);
-    		
-    	    dialogStage.setAlwaysOnTop(true);
-    	    dialogStage.initModality(Modality.APPLICATION_MODAL);
-    		dialogStage.showAndWait();
-    	} catch (IOException ioe) {
-    		//Indicates that fxml files aren't set up properly...
-            throw new RuntimeException("FXML files not configured correctly",ioe);
-    	}
+    public void showError(String message) {
+    	Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Operation Failed");
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+		alert.showAndWait();
     }
 }
 
