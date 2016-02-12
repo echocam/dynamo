@@ -1,13 +1,11 @@
 package uk.ac.cam.echo2016.multinarrative;
 
-import uk.ac.cam.echo2016.multinarrative.gui.commands.CommandException;
-
 /**
  * 
  * @author tr393
  * @version 1.0
  */
-public class NonUniqueIdException extends CommandException {
+public class NonUniqueIdException extends Exception {
 
     private static final long serialVersionUID = -5346075710013301725L;
 

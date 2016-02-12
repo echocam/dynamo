@@ -59,14 +59,27 @@ public class GUIOperations {
      *             the user, using the Strings class for formatting.
      */
     public void addProperty(String s) throws IllegalOperationException {
-        if (s.equals("") || s == null) {
-            throw new IllegalOperationException(ADD_EMPTY_STRING);
-        }
-        if (properties.containsKey(s)) {
-            throw new IllegalOperationException(ALREADY_EXISTS);
-        }
-        properties.put(s, new BaseBundle());
+        class AddPropertyCommand implements Command {
+            @Override
+            public void execute() throws  IllegalOperationException{
+                if (s.equals("") || s == null) {
+                    throw new IllegalOperationException(ADD_EMPTY_STRING);
+                }
+                if (properties.containsKey(s)) {
+                    throw new IllegalOperationException(ALREADY_EXISTS);
+                }
+                properties.put(s, new BaseBundle());
+            }
 
+            @Override
+            public void undo() throws IllegalOperationException {
+                // TODO Implement logical undo of the add property command and test it.
+            }
+        }
+        
+        Command c = new AddPropertyCommand();
+        
+        Command.storeAndExecute(c);
     }
 
     /**

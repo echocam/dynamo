@@ -1,7 +1,5 @@
 package uk.ac.cam.echo2016.multinarrative;
 
-import uk.ac.cam.echo2016.multinarrative.gui.commands.CommandException;
-
 /**
  * This is thrown if an identifier for an expected {@code Route} or {@code Node}
  * is not found in the {@code MultiNarrative} being searched.
@@ -11,7 +9,7 @@ import uk.ac.cam.echo2016.multinarrative.gui.commands.CommandException;
  *
  */
 
-public class GraphElementNotFoundException extends CommandException {
+public class GraphElementNotFoundException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
