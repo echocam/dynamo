@@ -1054,4 +1054,12 @@ public class GUIOperations {
 
         Operation.storeAndExecute(c);
     }
+    
+    public void undoLastOperation() {
+        Operation.undoLastOperation();
+    }
+    
+    public void redoLastUndo() {
+        Operation.redoLastUndo();
+    }
 }

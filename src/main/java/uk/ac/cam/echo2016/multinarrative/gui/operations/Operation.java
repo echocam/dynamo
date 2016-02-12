@@ -16,9 +16,11 @@ import java.util.Deque;
  *
  */
 public interface Operation {
-    public static final Deque<Operation> undoHistory = new ArrayDeque<Operation>(64); // TODO(tr395): Make this configurable
-                                                                                  // undo limit!
-    public static final Deque<Operation> redoHistory = new ArrayDeque<Operation>(16);
+    public static final int undoLimit = 64; // TODO(tr395): Make this configurable
+    public static final int redoLimit = 16; // TODO(tr395): Make this configurable
+
+    public static final Deque<Operation> undoHistory = new ArrayDeque<Operation>(undoLimit);
+    public static final Deque<Operation> redoHistory = new ArrayDeque<Operation>(redoLimit);
 
     /**
      * Executes a command and stores it on the undoHistory Stack.
@@ -33,7 +35,7 @@ public interface Operation {
      */
     public static void storeAndExecute(Operation c) throws IllegalOperationException {
         c.execute();
-        if (undoHistory.size() > 63) // TODO(tr395): make this configurable undo limit!
+        if (undoHistory.size() >= undoLimit)
             undoHistory.removeLast();
         undoHistory.addFirst(c);
         redoHistory.clear();
@@ -42,10 +44,10 @@ public interface Operation {
     /**
      * Undo the last command.
      */
-    public static void undoLastCommand() {
+    public static void undoLastOperation() {
         Operation c = undoHistory.removeFirst();
         c.undo();
-        if (redoHistory.size() > 15)
+        if (redoHistory.size() >= redoLimit)
             redoHistory.removeLast();
         redoHistory.addFirst(c);
     }
