@@ -12,7 +12,8 @@ import java.util.Deque;
  *
  */
 public interface Command {
-    public static final Deque<Command> undoHistory = new ArrayDeque<Command>(64);
+    public static final Deque<Command> undoHistory = new ArrayDeque<Command>(64); // TODO(tr395): Make this configurable
+                                                                                  // undo limit!
     public static final Deque<Command> redoHistory = new ArrayDeque<Command>(16);
 
     /**
@@ -28,6 +29,8 @@ public interface Command {
      */
     public static void storeAndExecute(Command c) throws IllegalOperationException {
         c.execute();
+        if (undoHistory.size() > 63) // TODO(tr395): make this configurable undo limit!
+            undoHistory.removeLast();
         undoHistory.addFirst(c);
         redoHistory.clear();
     }
@@ -38,6 +41,8 @@ public interface Command {
     public static void undoLastCommand() {
         Command c = undoHistory.removeFirst();
         c.undo();
+        if (redoHistory.size() > 15)
+            redoHistory.removeLast();
         redoHistory.addFirst(c);
     }
 
