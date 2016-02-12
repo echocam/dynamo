@@ -12,7 +12,7 @@ import uk.ac.cam.echo2016.multinarrative.gui.commands.CommandException;
  */
 
 public class GraphElementNotFoundException extends CommandException {
-    
+
     private static final long serialVersionUID = 1L;
 
     public GraphElementNotFoundException() {

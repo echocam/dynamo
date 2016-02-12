@@ -61,14 +61,15 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
         try {
             Command.storeAndExecute(n);
         } catch (CommandException e) {
-            if(e instanceof NonUniqueIdException) {
+            if (e instanceof NonUniqueIdException) {
                 NonUniqueIdException nuie = (NonUniqueIdException) e;
                 throw nuie;
-            } else if(e instanceof GraphElementNotFoundException) {
+            } else if (e instanceof GraphElementNotFoundException) {
                 GraphElementNotFoundException genfe = (GraphElementNotFoundException) e;
                 throw genfe;
             } else {
-                throw new RuntimeException(e); //This piece of code should never be reached!!!
+                throw new RuntimeException(e); // This piece of code should
+                                               // never be reached!!!
             }
         }
     }
