@@ -19,7 +19,7 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
         System.out.println("It connects " + route.getStart().getId() + " to " + route.getEnd().getId());
         System.out.println();
     }
-    public static void traverse(StoryNode node) { // TODO: move to multinarrative/dev
+    public static void traverse(Node node) { // TODO: move to multinarrative/dev
         System.out.println("This node is " + node.getId());
         System.out.println("Entering this node are the following routes:");
         for (Route n : node.getEntering()) {

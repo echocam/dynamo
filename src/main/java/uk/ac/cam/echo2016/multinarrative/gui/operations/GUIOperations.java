@@ -23,7 +23,7 @@ import javafx.scene.paint.Color;
 import uk.ac.cam.echo2016.multinarrative.ChoiceNode;
 import uk.ac.cam.echo2016.multinarrative.GUINarrative;
 import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
-import uk.ac.cam.echo2016.multinarrative.StoryNode;
+import uk.ac.cam.echo2016.multinarrative.Node;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
 import uk.ac.cam.echo2016.multinarrative.Route;
 import uk.ac.cam.echo2016.multinarrative.SynchronizationNode;
@@ -285,7 +285,7 @@ public class GUIOperations {
         class TranslateNodeCommand implements Command {
             @Override
             public void execute() throws IllegalOperationException {
-                StoryNode theNode = multinarrative.getNode(name);
+                Node theNode = multinarrative.getNode(name);
                 if (theNode == null) {
                     throw new IllegalOperationException("Node does not exist.");
                 }
@@ -600,7 +600,7 @@ public class GUIOperations {
             throw new IOException();
         }
         
-        StoryNode node;
+        Node node;
         for (String nodeName : loaded.getNodes().keySet()) {
             node = loaded.getNode(nodeName);
             if (node instanceof SynchronizationNode) {

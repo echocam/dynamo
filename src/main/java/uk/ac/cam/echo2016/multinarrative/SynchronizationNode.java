@@ -7,7 +7,7 @@ import android.os.BaseBundle;
  * multiple exiting routes.
  * 
  * <p>
- * ALT: Implements a {@link StoryNode} at an intersection point on the {@code MultiNarrative} graph structure. At this point,
+ * ALT: Implements a {@link Node} at an intersection point on the {@code MultiNarrative} graph structure. At this point,
  * multiple {@code Route}s interact and affect each other's gameplay. There should be at least 2 {@code Route}s
  * entering the {@code Node} for the {@code Node} to be meaningful. The most typical use would be to have the same number of entering
  * {@code Route}s also exiting (one for each character), but this isn't required.
@@ -15,17 +15,17 @@ import android.os.BaseBundle;
  * @author tr393
  * @author rjm232
  * @version 1.0
- * @see StoryNode
+ * @see Node
  * @see ChoiceNode
  * @see MultiNarrative
  */
-public class SynchronizationNode extends StoryNode { // TODO Documentation
+public class SynchronizationNode extends Node { // TODO Documentation
     private static final long serialVersionUID = 1;
     public SynchronizationNode(String id) {
         super(id);
     }
 
-    protected StoryNode create(String id) {
+    protected Node create(String id) {
         return new SynchronizationNode(id);
     }
 

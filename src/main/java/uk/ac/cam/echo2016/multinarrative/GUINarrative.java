@@ -24,7 +24,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
     }
 
     public boolean isChoiceNode(String nodeId) throws GraphElementNotFoundException {
-        StoryNode node = nodes.get(nodeId);
+        Node node = nodes.get(nodeId);
         return node instanceof ChoiceNode;
     }
 
@@ -40,10 +40,10 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
     public void newRoute(String id, String startId, String endId)
             throws NonUniqueIdException, GraphElementNotFoundException {
         if (isUniqueId(id)) {
-            StoryNode startNode = getNode(startId);
+            Node startNode = getNode(startId);
             if (startNode == null)
                 throw new GraphElementNotFoundException("Node with id: " + startId + " not found");
-            StoryNode endNode = getNode(endId);
+            Node endNode = getNode(endId);
             if (endNode == null)
                 throw new GraphElementNotFoundException("Node with id: " + endId + " not found");
 
@@ -87,7 +87,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
         if (route != null) {
             return route.getProperties();
         } else {
-            StoryNode node = getNode(id);
+            Node node = getNode(id);
             if (node != null) {
                 return node.getProperties();
             }
@@ -208,8 +208,8 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
 
         ChoiceNode choice = new ChoiceNode(newChoiceId);
 
-        StoryNode start = route.getStart();
-        StoryNode end = route.getEnd();
+        Node start = route.getStart();
+        Node end = route.getEnd();
 
         // Connect route1
         Route route1 = new Route(newRouteId1, start, choice);
@@ -229,7 +229,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
     }
 
     public boolean setStartPoint(String id) throws GraphElementNotFoundException {
-        StoryNode node = getNode(id);
+        Node node = getNode(id);
         if (node == null)
             throw new GraphElementNotFoundException("Error: Node with id: " + id + " not found");
         if (node instanceof SynchronizationNode) {
@@ -250,8 +250,8 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
      * @throws GraphElementNotFoundException
      */
     public void swapSyncAndChoice(String nodeId) throws GraphElementNotFoundException {
-        StoryNode node = nodes.get(nodeId);
-        StoryNode newNode;
+        Node node = nodes.get(nodeId);
+        Node newNode;
         if (isChoiceNode(nodeId)) {
             newNode = new SynchronizationNode(nodeId);
         } else {

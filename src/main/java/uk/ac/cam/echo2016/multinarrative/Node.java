@@ -14,14 +14,14 @@ import android.os.BaseBundle;
  * @version 1.0
  *
  */
-public abstract class StoryNode implements Serializable, Cloneable { // TODO Documentation
+public abstract class Node implements Serializable, Cloneable { // TODO Documentation
     private static final long serialVersionUID = 1;
     private final String id;
     private BaseBundle properties;
     private ArrayList<Route> entryRoutes;
     private ArrayList<Route> exitRoutes;
 
-    public StoryNode(String id) {
+    public Node(String id) {
         this.id = id;
         this.exitRoutes = new ArrayList<Route>();
         this.entryRoutes = new ArrayList<Route>();
@@ -31,9 +31,9 @@ public abstract class StoryNode implements Serializable, Cloneable { // TODO Doc
     }
 
     @Override
-    public StoryNode clone() {
+    public Node clone() {
         try {
-            StoryNode clone = (StoryNode) super.clone();
+            Node clone = (Node) super.clone();
             clone.properties = BaseBundle.deepcopy(this.properties);
 
             return clone;
@@ -49,7 +49,7 @@ public abstract class StoryNode implements Serializable, Cloneable { // TODO Doc
      * @param id
      * @return
      */
-    protected abstract StoryNode create(String id);
+    protected abstract Node create(String id);
 
     public abstract BaseBundle startRoute(Route option);
 

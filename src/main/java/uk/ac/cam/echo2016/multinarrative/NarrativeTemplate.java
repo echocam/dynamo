@@ -36,13 +36,13 @@ public class NarrativeTemplate extends MultiNarrative {
      * @throws InvalidGraphException 
      */
     public NarrativeInstance generateInstance() throws InvalidGraphException {
-        HashMap<String, StoryNode> r_nodes = new HashMap<>();
+        HashMap<String, Node> r_nodes = new HashMap<>();
         HashMap<String, Route> r_routes = new HashMap<>();
         
         if (start == null) {throw new InvalidGraphException("Error: Graph does not have a start node.");} 
         
-        for (StoryNode node : nodes.values()) {
-            StoryNode r_node = node.clone();
+        for (Node node : nodes.values()) {
+            Node r_node = node.clone();
             r_node.createProperties();
             r_node.setExiting(new ArrayList<Route>());
             r_node.setEntering(new ArrayList<Route>());
@@ -86,17 +86,17 @@ public class NarrativeTemplate extends MultiNarrative {
      * 
      * @param instance
      */
-    public StoryNode copyToInstance(StoryNode node, NarrativeInstance instance) { // TODO More Documentation
+    public Node copyToInstance(Node node, NarrativeInstance instance) { // TODO More Documentation
 
         // Eventually calls Node(this.id) via subclass's constructor
-        StoryNode result = node.create(node.getId());
+        Node result = node.create(node.getId());
 
         if (node.getProperties() != null) // Copy getProperties() across, if any
             result.setProperties(BaseBundle.deepcopy(node.getProperties()));
         
         // Copy each route leaving node node and call copyGraph on their end nodes
         for (Route templateRoute : node.getExiting()) {
-            StoryNode endNodeCopy;
+            Node endNodeCopy;
             if (!instance.nodes.containsKey(templateRoute.getEnd().getId())) {
                 // Not already copied
                 endNodeCopy = copyToInstance(templateRoute.getEnd(), instance); // Recursively copy nodes at the ends of

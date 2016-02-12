@@ -18,11 +18,11 @@ import android.os.BaseBundle;
 public class Route implements Serializable, Cloneable { // TODO Documentation
     private static final long serialVersionUID = 1;
     private final String id;
-    private StoryNode start;
-    private StoryNode end;
+    private Node start;
+    private Node end;
     private BaseBundle properties;
 
-    public Route(String id, StoryNode start, StoryNode end) {
+    public Route(String id, Node start, Node end) {
         this.id = id;
         this.start = start;
         this.end = end;
@@ -49,19 +49,19 @@ public class Route implements Serializable, Cloneable { // TODO Documentation
         return id;
     }
 
-    public StoryNode getStart() {
+    public Node getStart() {
         return start;
     }
 
-    public void setStart(StoryNode start) {
+    public void setStart(Node start) {
         this.start = start;
     }
 
-    public StoryNode getEnd() {
+    public Node getEnd() {
         return end;
     }
 
-    public void setEnd(StoryNode end) {
+    public void setEnd(Node end) {
         this.end = end;
     }
 

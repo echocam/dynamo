@@ -18,11 +18,11 @@ public class NarrativeInstanceTest {
     NarrativeTemplate loadTemplate;
     
     HashMap<String, Route> sampleRoutes = new HashMap<String, Route>();
-    HashMap<String, StoryNode> sampleNodes = new HashMap<String, StoryNode>();
+    HashMap<String, Node> sampleNodes = new HashMap<String, Node>();
 
     static final int LOAD_SIZE = 100000;
     HashMap<String, Route> loadRoutes = new HashMap<String, Route>();
-    HashMap<String, StoryNode> loadNodes = new HashMap<String, StoryNode>();
+    HashMap<String, Node> loadNodes = new HashMap<String, Node>();
     
     /**
      * Generic Test - From the Visual Basic Sample Diagram
@@ -183,10 +183,10 @@ public class NarrativeInstanceTest {
     @Before
     public void generateLoadGraph() {
         for (int i = 1; i < LOAD_SIZE; ++i) {
-            StoryNode node = new ChoiceNode(Integer.toBinaryString(i));
+            Node node = new ChoiceNode(Integer.toBinaryString(i));
             loadNodes.put(node.getId(), node);
         }
-        for (StoryNode node : loadNodes.values()) {
+        for (Node node : loadNodes.values()) {
             String id = node.getId();
             int binary = Integer.parseInt(id, 2);
             int binCopy = binary;
@@ -201,8 +201,8 @@ public class NarrativeInstanceTest {
             if (bin1 == 0 || bin2 == 0) {
                 System.out.println("?");
             }
-            StoryNode child1 = loadNodes.get(Integer.toBinaryString(bin1));
-            StoryNode child2 = loadNodes.get(Integer.toBinaryString(bin2));
+            Node child1 = loadNodes.get(Integer.toBinaryString(bin1));
+            Node child2 = loadNodes.get(Integer.toBinaryString(bin2));
             if (child1 != null && child2 != null) {
                 Route route1 = new Route("route" + Integer.toBinaryString(bin1), node, child1);
                 route1.setup();

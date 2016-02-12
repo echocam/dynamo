@@ -22,7 +22,7 @@ public abstract class EditableNarrative extends MultiNarrative { // TODO Finish 
         routes.put(route.getId(), route);
     }
     
-    public void addNode(StoryNode node) {
+    public void addNode(Node node) {
         nodes.put(node.getId(), node);
     }
     
@@ -38,7 +38,7 @@ public abstract class EditableNarrative extends MultiNarrative { // TODO Finish 
     }
     
     public boolean removeNode(String id) {
-        StoryNode node = nodes.remove(id);
+        Node node = nodes.remove(id);
         if (node == null) 
             return false;
 
@@ -74,11 +74,11 @@ public abstract class EditableNarrative extends MultiNarrative { // TODO Finish 
     }
     
     public boolean renameNode(String id, String newName) {
-        StoryNode node = nodes.remove(id);
+        Node node = nodes.remove(id);
         if (node == null) 
             return false;
         
-        StoryNode newNode = node.create(newName);
+        Node newNode = node.create(newName);
         if (node.getProperties() != null) 
             newNode.setProperties(new BaseBundle(node.getProperties()));
         
