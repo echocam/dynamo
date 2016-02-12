@@ -475,7 +475,7 @@ public class GUIOperations {
         }
 
         Command c = new SetEndCommand();
-        
+
         try {
             Command.storeAndExecute(c);
         } catch (IllegalOperationException e) {
@@ -512,7 +512,7 @@ public class GUIOperations {
      * 
      * @param id
      */
-    public void deleteNode(String id)  {
+    public void deleteNode(String id) {
         class DeleteNodeCommand implements Command {
             @Override
             public void execute() throws IllegalOperationException {
