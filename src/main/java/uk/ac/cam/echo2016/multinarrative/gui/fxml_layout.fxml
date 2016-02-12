@@ -126,7 +126,7 @@
                                  <content>
                                     <VBox>
                                        <children>
-                                          <ComboBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+                                          <ComboBox fx:id="routeStart" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#changeStartAction" />
                                           <StackPane>
                                              <children>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="whiteText" text="V" textAlignment="RIGHT" StackPane.alignment="CENTER_RIGHT">
@@ -136,7 +136,7 @@
                                                 </Text>
                                              </children>
                                           </StackPane>
-                                          <ComboBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+                                          <ComboBox fx:id="routeEnd" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#changeEndAction" />
                                        </children>
                                     </VBox>
                                  </content>

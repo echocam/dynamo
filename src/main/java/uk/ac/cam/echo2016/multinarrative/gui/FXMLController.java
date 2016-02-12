@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
@@ -80,6 +81,10 @@ public class FXMLController {
 	private RadioButton nodeChoice;
 	@FXML
 	private TitledPane routeEditor;
+	@FXML
+	private ComboBox<String> routeStart;
+	@FXML
+	private ComboBox<String> routeEnd;
 
 	private Boolean itemNode = null;
 
@@ -133,6 +138,9 @@ public class FXMLController {
 				});
 		nodes.itemsProperty().set(FXCollections.observableArrayList());
 		routes.itemsProperty().set(FXCollections.observableArrayList());
+
+		routeStart.itemsProperty().bind(nodes.itemsProperty());
+		routeEnd.itemsProperty().bind(nodes.itemsProperty());
 	}
 
 	@FXML
@@ -173,7 +181,7 @@ public class FXMLController {
 			try {
 				if (!operations.isChoiceNode(node)) {
 					operations.switchChoiceOrSynch(node);
-					for(GraphNode n :selectTool.getSelection()){
+					for (GraphNode n : selectTool.getSelection()) {
 						System.out.println(n.getContents().getShape());
 						n.getContents().setShape(new Circle(10));
 					}
@@ -183,7 +191,7 @@ public class FXMLController {
 			}
 		}
 	}
-	
+
 	@FXML
 	protected void setSynch(ActionEvent event) {
 		if (itemNode != null && itemNode) {
@@ -191,12 +199,44 @@ public class FXMLController {
 			try {
 				if (operations.isChoiceNode(node)) {
 					operations.switchChoiceOrSynch(node);
-					for(GraphNode n :selectTool.getSelection()){
+					for (GraphNode n : selectTool.getSelection()) {
 						n.getContents().setShape(null);
 					}
 				}
 			} catch (IllegalOperationException e) {
 				setInfo(e.getMessage(), node);
+			}
+		}
+	}
+
+	@FXML
+	protected void changeStartAction(ActionEvent event) {
+		if (itemNode != null && !itemNode) {
+			String edge = routes.getSelectionModel().getSelectedItem();
+			String start = routeStart.getValue();
+			GraphEdge gEdge = graph.getEdges().get(edge);
+			try {
+				operations.setStart(edge, start);
+				gEdge.setFrom(graph.getNodes().get(start));
+			} catch (IllegalOperationException e) {
+				setInfo(e.getMessage(), edge, start);
+				routeStart.setValue(gEdge.getFrom().getName());
+			}
+		}
+	}
+	
+	@FXML
+	protected void changeEndAction(ActionEvent event) {
+		if (itemNode != null && !itemNode) {
+			String edge = routes.getSelectionModel().getSelectedItem();
+			String end = routeEnd.getValue();
+			GraphEdge gEdge = graph.getEdges().get(edge);
+			try {
+				operations.setEnd(edge, end);
+				gEdge.setTo(graph.getNodes().get(end));
+			} catch (IllegalOperationException e) {
+				setInfo(e.getMessage(), edge, end);
+				routeStart.setValue(gEdge.getFrom().getName());
 			}
 		}
 	}
@@ -327,7 +367,11 @@ public class FXMLController {
 		GraphNode node = addChoiceNode(name, edge.getControl().getLayoutX(), edge.getControl().getLayoutY());
 		if (node != null) {
 			GraphNode end = edge.getTo();
+			try{
 			operations.setEnd(edge.getName(), name);
+			}catch(IllegalOperationException e){
+				setInfo(e.getMessage(), edge.getName(), name);
+			}
 			edge.setTo(node);
 			edge.zeroOffset();
 			String s = operations.getUniqueNarrativeName();
@@ -507,12 +551,17 @@ public class FXMLController {
 				setInfo(e.getMessage(), node);
 			}
 		} else {
+			String edge = routes.getSelectionModel().getSelectedItem();
 			itemNode = null;
-			itemName.setText(routes.getSelectionModel().getSelectedItem());
+			itemName.setText(edge);
 			itemNode = false;
 			itemProperties.getItems().clear();
-			itemProperties.getItems()
-					.addAll(operations.getRouteProperties(routes.getSelectionModel().getSelectedItem()));
+			itemProperties.getItems().addAll(operations.getRouteProperties(edge));
+			GraphEdge gEdge = graph.getEdges().get(edge);
+			if (gEdge != null) {
+				routeStart.setValue(gEdge.getFrom().getName());
+				routeEnd.setValue(gEdge.getTo().getName());
+			}
 		}
 	}
 

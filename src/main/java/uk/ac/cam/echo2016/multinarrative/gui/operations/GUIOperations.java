@@ -461,7 +461,7 @@ public class GUIOperations {
      * @param route
      * @param node
      */
-    public void setEnd(String route, String node) {
+    public void setEnd(String route, String node) throws IllegalOperationException {
         class SetEndCommand implements Command {
             @Override
             public void execute() throws IllegalOperationException {
