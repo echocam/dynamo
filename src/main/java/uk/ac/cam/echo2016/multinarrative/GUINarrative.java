@@ -100,7 +100,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
             }
         }
 
-        NewSyncNodeCommand n = new NewSyncNodeCommand();
+        Command n = new NewSyncNodeCommand();
 
         try {
             Command.storeAndExecute(n);
@@ -130,7 +130,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
             }
         }
 
-        NewChoiceNodeCommand n = new NewChoiceNodeCommand();
+        Command n = new NewChoiceNodeCommand();
 
         try {
             Command.storeAndExecute(n);
@@ -156,8 +156,26 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
     }
 
     public void addRouteType(String type) { // TODO add to tests
-        if (!this.getGlobalProperties().getStringArrayList("System.Types").contains(type)) {
-            this.getGlobalProperties().getStringArrayList("System.Types").add(type);
+        class AddRouteTypeCommand implements Command {
+            @Override
+            public void execute() throws CommandException {
+                if (!getGlobalProperties().getStringArrayList("System.Types").contains(type)) {
+                    getGlobalProperties().getStringArrayList("System.Types").add(type);
+                }
+            }
+
+            @Override
+            public void undo() throws CommandException {
+                // TODO Auto-generated method stub
+
+            }
+        }
+        
+        Command a = new AddRouteTypeCommand();
+        try {
+            Command.storeAndExecute(a);
+        } catch (CommandException e) {
+            throw new RuntimeException(e); //this piece of code should not be reached!
         }
     }
 
