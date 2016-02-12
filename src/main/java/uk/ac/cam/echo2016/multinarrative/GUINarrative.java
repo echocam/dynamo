@@ -41,6 +41,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
      */
     public void newRoute(String id, String startId, String endId)
             throws NonUniqueIdException, GraphElementNotFoundException {
+
         class NewRoute implements Command {
             @Override
             public void execute() throws CommandException {
@@ -66,7 +67,9 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
                 // TODO: write the undo method for this Command
             }
         }
+
         NewRoute n = new NewRoute();
+
         try {
             Command.storeAndExecute(n);
         } catch (CommandException e) {
@@ -81,10 +84,34 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
     }
 
     public void newSynchronizationNode(String id) throws NonUniqueIdException {
-        if (isUniqueId(id))
-            nodes.put(id, new SynchronizationNode(id));
-        else
-            throw new NonUniqueIdException("Invalid id: " + id + " is not unique.");
+
+        class NewSyncNodeCommand implements Command {
+            @Override
+            public void execute() throws CommandException {
+                if (isUniqueId(id))
+                    nodes.put(id, new SynchronizationNode(id));
+                else
+                    throw new NonUniqueIdException("Invalid id: " + id + " is not unique.");
+            }
+
+            @Override
+            public void undo() throws CommandException {
+                // TODO Auto-generated method stub
+
+            }
+        }
+
+        NewSyncNodeCommand n = new NewSyncNodeCommand();
+
+        try {
+            Command.storeAndExecute(n);
+        } catch (CommandException e) {
+            if (e instanceof NonUniqueIdException)
+                throw (NonUniqueIdException) e;
+            else
+                throw new RuntimeException(e); // this code shold never be
+                                               // reached!
+        }
     }
 
     public void newChoiceNode(String id) throws NonUniqueIdException {
