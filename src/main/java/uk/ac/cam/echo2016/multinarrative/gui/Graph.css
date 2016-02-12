@@ -1,21 +1,13 @@
 .button {
-    -fx-background-color:
-        #222222,
-        #333333;
-    -fx-background-insets: 0, 1;
+    -fx-border-color: #222222;
+    -fx-border-radius: 3;
     -fx-text-fill: white;
 }
 
 .button:hover, .button:pressed {
-	-fx-background-color:
-        #444444,
-        #333333;
-    -fx-background-insets: 0, 1;
+	-fx-border-color: #444444;
 }
 
 .button:selected {
-    -fx-background-color:
-        #ffffff,
-        #333333;
-    -fx-background-insets: 0, 2;
+    -fx-border-color: #ffffff;
 }
