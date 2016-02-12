@@ -170,12 +170,14 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
 
             }
         }
-        
+
         Command a = new AddRouteTypeCommand();
+
         try {
             Command.storeAndExecute(a);
         } catch (CommandException e) {
-            throw new RuntimeException(e); //this piece of code should not be reached!
+            throw new RuntimeException(e); // this piece of code should not be
+                                           // reached!
         }
     }
 
