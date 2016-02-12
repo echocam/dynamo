@@ -42,7 +42,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
     public void newRoute(String id, String startId, String endId)
             throws NonUniqueIdException, GraphElementNotFoundException {
 
-        class NewRoute implements Command {
+        class NewRouteCommand implements Command {
             @Override
             public void execute() throws CommandException {
                 if (isUniqueId(id)) {
@@ -68,7 +68,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
             }
         }
 
-        NewRoute n = new NewRoute();
+        NewRouteCommand n = new NewRouteCommand();
 
         try {
             Command.storeAndExecute(n);
@@ -108,7 +108,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
             if (e instanceof NonUniqueIdException)
                 throw (NonUniqueIdException) e;
             else
-                throw new RuntimeException(e); // this code shold never be
+                throw new RuntimeException(e); // this code should never be
                                                // reached!
         }
     }
@@ -138,7 +138,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
             if (e instanceof NonUniqueIdException)
                 throw (NonUniqueIdException) e;
             else
-                throw new RuntimeException(e); // this code shold never be
+                throw new RuntimeException(e); // this code should never be
                                                // reached!
         }
     }
