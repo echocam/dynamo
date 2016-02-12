@@ -47,7 +47,7 @@ public class GUIOperations {
     private GUINarrative multinarrative;
 
     private Map<String, BaseBundle> properties;
-    private Map<String, Map<String, Color>> colours = new HashMap<String, Map<String, Color>>();
+    private Map<String, Map<String, Color>> colors = new HashMap<String, Map<String, Color>>();
     private static int nodeCounter = 1;
     private static int narrativeCounter = 1;
     private static int valueCounter = 1;
@@ -617,7 +617,7 @@ public class GUIOperations {
         narrativeCounter = 1;
         valueCounter = 1;
         multinarrative = new GUINarrative();
-        colours = new HashMap<String, Map<String, Color>>();
+        colors = new HashMap<String, Map<String, Color>>();
         properties = new HashMap<String, BaseBundle>();
 
         GUINarrative loaded = loadInstance(fileName);
@@ -870,25 +870,25 @@ public class GUIOperations {
      * @param c
      */
     public void setColor(String property, String value, Color c) throws IllegalOperationException {
-        if (colours.get(property) == null) {
-            colours.put(property, new HashMap<String, Color>());
+        if (colors.get(property) == null) {
+            colors.put(property, new HashMap<String, Color>());
         }
 
         class SetColorCommand implements Command {
-            private Color mOldColor = colours.get(property).get(value);
+            private Color mOldColor = colors.get(property).get(value);
 
             @Override
             public void execute() throws IllegalOperationException {
-                if (colours.get(property) == null) {
-                    colours.put(property, new HashMap<String, Color>());
+                if (colors.get(property) == null) {
+                    colors.put(property, new HashMap<String, Color>());
                 }
-                colours.get(property).put(value, c);
+                colors.get(property).put(value, c);
             }
 
             @Override
             public void undo() {
                 // TODO test it.
-                colours.get(property).put(value, mOldColor);
+                colors.get(property).put(value, mOldColor);
             }
         }
 
@@ -905,15 +905,15 @@ public class GUIOperations {
      * @return
      */
     public Color getColor(String property, String value) {
-        if (colours.get(property) == null) {
+        if (colors.get(property) == null) {
             return Color.TRANSPARENT;
         }
-        Color c = colours.get(property).get(value);
+        Color c = colors.get(property).get(value);
         return c == null ? Color.TRANSPARENT : c;
     }
 
     /**
-     * TODO gets a list of all the non transparent colours of properties applying to a node
+     * TODO gets a list of all the non transparent colors of properties applying to a node
      * 
      * @return
      */
@@ -923,7 +923,7 @@ public class GUIOperations {
     }
 
     /**
-     * TODO gets a list of all the non transparent colours of properties applying to a route
+     * TODO gets a list of all the non transparent colors of properties applying to a route
      * 
      * @return
      */
