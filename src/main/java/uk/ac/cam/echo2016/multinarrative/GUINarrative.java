@@ -24,10 +24,12 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
     public boolean isUniqueId(String id) {
         return (!routes.containsKey(id) && !nodes.containsKey(id));
     }
+
     public boolean isChoiceNode(String nodeId) throws GraphElementNotFoundException {
         Node node = nodes.get(nodeId);
         return node instanceof ChoiceNode;
     }
+
     /**
      * Adds a route with ID {@code id} to the graph, connecting the node with ID
      * {@code startId} to the route with ID {@code endId}.
@@ -68,16 +70,13 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
         try {
             Command.storeAndExecute(n);
         } catch (CommandException e) {
-            if (e instanceof NonUniqueIdException) {
-                NonUniqueIdException nuie = (NonUniqueIdException) e;
-                throw nuie;
-            } else if (e instanceof GraphElementNotFoundException) {
-                GraphElementNotFoundException genfe = (GraphElementNotFoundException) e;
-                throw genfe;
-            } else {
+            if (e instanceof NonUniqueIdException)
+                throw (NonUniqueIdException) e;
+            else if (e instanceof GraphElementNotFoundException)
+                throw (GraphElementNotFoundException) e;
+            else
                 throw new RuntimeException(e); // This piece of code should
                                                // never be reached!!!
-            }
         }
     }
 
@@ -97,7 +96,8 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
 
     public boolean setStartPoint(String id) throws GraphElementNotFoundException {
         Node node = getNode(id);
-        if (node == null) throw new GraphElementNotFoundException("Error: Node with id: " + id + " not found");
+        if (node == null)
+            throw new GraphElementNotFoundException("Error: Node with id: " + id + " not found");
         if (node instanceof SynchronizationNode) {
             start = (SynchronizationNode) node;
             return true;
@@ -105,12 +105,13 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
             return false;
         }
     }
-    
+
     public void addRouteType(String type) { // TODO add to tests
         if (!this.getGlobalProperties().getStringArrayList("System.Types").contains(type)) {
             this.getGlobalProperties().getStringArrayList("System.Types").add(type);
         }
     }
+
     public boolean removeRouteType(String type) { // TODO add to tests
         return this.getGlobalProperties().getStringArrayList("System.Types").remove(type);
     }
@@ -127,7 +128,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
         }
         throw new GraphElementNotFoundException("Error: Element with id: " + id + " not found");
     }
-    
+
     /**
      * Takes the route with ID {@code routeId} and splits it in two, where the
      * divisor is a new {@code ChoiceNode} with ID {@code newChoiceId}. Here,
@@ -260,10 +261,11 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
         routes.put(route2.getId(), route2);
         nodes.put(choice.getId(), choice);
     }
-    
+
     /**
-     * Swaps a Node's type from {@code SynchronizationNode} to {@code ChoiceNode} and vica versa. Note that this may
-     * create a choice node with multiple entering routes.
+     * Swaps a Node's type from {@code SynchronizationNode} to
+     * {@code ChoiceNode} and vica versa. Note that this may create a choice
+     * node with multiple entering routes.
      * 
      * @param nodeId
      * @return
