@@ -1,7 +1,5 @@
 package uk.ac.cam.echo2016.multinarrative;
 
-import java.util.ArrayList;
-
 import android.os.BaseBundle;
 
 /**
@@ -19,6 +17,13 @@ import android.os.BaseBundle;
 public class GUINarrative extends EditableNarrative { // TODO Finish Documentation
     private static final long serialVersionUID = 1;
 
+    public boolean isUniqueId(String id) {
+        return (!routes.containsKey(id) && !nodes.containsKey(id));
+    }
+    public boolean isChoiceNode(String nodeId) throws GraphElementNotFoundException {
+        Node node = nodes.get(nodeId);
+        return node instanceof ChoiceNode;
+    }
     /**
      * Adds a route with ID {@code id} to the graph, connecting the node with ID {@code startId} to the route with
      * ID {@code endId}.
@@ -61,7 +66,29 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
         else
             throw new NonUniqueIdException("Invalid id: " + id + " is not unique.");
     }
+    
+    public void addRouteType(String type) { // TODO add to tests
+        if (!this.getGlobalProperties().getStringArrayList("System.Types").contains(type)) {
+            this.getGlobalProperties().getStringArrayList("System.Types").add(type);
+        }
+    }
+    public boolean removeRouteType(String type) { // TODO add to tests
+        return this.getGlobalProperties().getStringArrayList("System.Types").remove(type);
+    }
 
+    public BaseBundle getProperties(String id) throws GraphElementNotFoundException {
+        Route route = getRoute(id);
+        if (route != null) {
+            return route.getProperties();
+        } else {
+            Node node = getNode(id);
+            if (node != null) {
+                return node.getProperties();
+            }
+        }
+        throw new GraphElementNotFoundException("Error: Element with id: " + id + " not found");
+    }
+    
     /**
      * Takes the route with ID {@code routeId} and splits it in two, where the divisor is a new {@code ChoiceNode} with
      * ID {@code newChoiceId}. Here, the original route is preserved between its start and the new node.
@@ -193,10 +220,6 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
         nodes.put(choice.getId(), choice);
     }
 
-    private boolean isUniqueId(String id) {
-        return (!routes.containsKey(id) && !nodes.containsKey(id));
-    }
-
     public boolean setStartPoint(String id) throws GraphElementNotFoundException {
         Node node = getNode(id);
         if (node == null) throw new GraphElementNotFoundException("Error: Node with id: " + id + " not found");
@@ -208,25 +231,26 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
         }
     }
     
-    public void addRouteType(String type) { // TODO add to tests
-        if (!this.getGlobalProperties().getStringArrayList("System.Types").contains(type)) {
-            this.getGlobalProperties().getStringArrayList("System.Types").add(type);
-        }
-    }
-    public boolean removeRouteType(String type) { // TODO add to tests
-        return this.getGlobalProperties().getStringArrayList("System.Types").remove(type);
-    }
-
-    public BaseBundle getProperties(String id) throws GraphElementNotFoundException {
-        Route route = getRoute(id);
-        if (route != null) {
-            return route.getProperties();
+    /**
+     * Swaps a Node's type from {@code SynchronizationNode} to {@code ChoiceNode} and vica versa. Note that this may
+     * create a choice node with multiple entering routes.
+     * 
+     * @param nodeId
+     * @return
+     * @throws GraphElementNotFoundException
+     */
+    public void swapSyncAndChoice(String nodeId) throws GraphElementNotFoundException {
+        Node node = nodes.get(nodeId);
+        Node newNode;
+        if (isChoiceNode(nodeId)) {
+            newNode = new SynchronizationNode(nodeId);
         } else {
-            Node node = getNode(id);
-            if (node != null) {
-                return node.getProperties();
-            }
+            newNode = new ChoiceNode(nodeId);
         }
-        throw new GraphElementNotFoundException("Error: Element with id: " + id + " not found");
+        nodes.remove(nodeId);
+        newNode.setEntering(node.getEntering());
+        newNode.setExiting(node.getExiting());
+        newNode.setProperties(node.getProperties());
+        nodes.put(nodeId, newNode);
     }
 }
