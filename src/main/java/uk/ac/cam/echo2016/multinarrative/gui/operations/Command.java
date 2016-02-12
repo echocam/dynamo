@@ -13,5 +13,5 @@ public interface Command {
 
     public void execute() throws IllegalOperationException;
 
-    public void undo() throws IllegalOperationException;
+    public void undo();
 }
