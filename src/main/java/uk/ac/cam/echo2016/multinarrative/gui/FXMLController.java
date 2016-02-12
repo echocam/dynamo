@@ -224,7 +224,7 @@ public class FXMLController {
      */
     @FXML
     protected void showErrorDialog(String message) {
-    	mainApp.showError(message);
+    	mainApp.showDialog("Error while reading file", message);
     }
     
     /**
@@ -310,6 +310,7 @@ public class FXMLController {
 	protected void deleteItemAction(ActionEvent e) {
 		removeSelect();
 	}
+
 
     /**
      * Registers a key being released on the keyboard and responds only if said key is the Shift key.
@@ -424,6 +425,7 @@ public class FXMLController {
         }
         nodes.getItems().add(i, name);
 	}
+	
 
 	public GUIOperations getOperations() {
 		return operations;
@@ -539,8 +541,16 @@ public class FXMLController {
 
 	}
 	
-	public void buildGraph(GUINarrative toBuild) {
+
+	public void buildGraph(GUINarrative toBuild) {	
+		GraphNode[] setCopy = graph.getNodes().toArray(new GraphNode[0]);
+		
+		for (GraphNode n : setCopy) {
+			removeNode(n.getName());
+		}
+		
 		operations = new GUIOperations();
+		graph = new Graph(scroll, graphArea, operations, this);		
 		
 		for (StoryNode node : toBuild.getNodes().values()) {
 			if (node.getProperties() == null) {
@@ -563,6 +573,7 @@ public class FXMLController {
 				temp = it.next();
 				if (temp.getName() == route.getStart().getId()) {
 					start = temp;
+					break;
 				}
 			}
 			Iterator<GraphNode> it2 = graph.getNodes().iterator();
@@ -570,6 +581,7 @@ public class FXMLController {
 				temp = it2.next();
 				if (temp.getName() == route.getEnd().getId()) {
 					end = temp;
+					break;
 				}
 			}
 			addRoute(route.getId(), start, end);
