@@ -357,7 +357,7 @@ public class GUIOperations {
 	 * @param route
 	 * @param node
 	 */
-	public void setEnd(String route, String node) {
+	public void setEnd(String route, String node) throws IllegalOperationException{
 		multinarrative.getRoute(route).setEnd(multinarrative.getNode(node));
 	}
 
@@ -366,7 +366,7 @@ public class GUIOperations {
 	 * @param route
 	 * @param node
 	 */
-	public void setStart(String route, String node) {
+	public void setStart(String route, String node) throws IllegalOperationException{
 		multinarrative.getRoute(route).setStart(multinarrative.getNode(node));
 	}
 
