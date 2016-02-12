@@ -11,11 +11,14 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 import javafx.stage.FileChooser;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 
 /**
  * @author jr650
@@ -91,7 +94,7 @@ public class FXMLGUI extends Application {
     
     /**
      * Opens the Open dialog
-     */ //TODO check save as.
+     */ 
     @FXML
     public String showOpen() {
     	FileChooser fileChooser = new FileChooser();
@@ -101,6 +104,24 @@ public class FXMLGUI extends Application {
     	if (selectedFile != null) {
     		return selectedFile.getAbsolutePath();
     	} else return null;
+    }
+    
+    /**
+     * Checks if a user wants to save before executing the next action
+     */
+    @FXML
+    public boolean checkIfShouldSave() {
+    	Alert alert = new Alert(AlertType.WARNING);
+    	alert.setTitle("Do you want to save?");
+    	alert.setHeaderText(null);
+    	alert.setContentText("Your work will be lost if you don't save.");
+    	
+    	ButtonType yesButton = new ButtonType("Yes");
+    	ButtonType noButton = new ButtonType("No", ButtonData.CANCEL_CLOSE);
+    	
+    	alert.getButtonTypes().setAll(yesButton, noButton);
+    	
+    	Optional<ButtonType> result = alert.showAndWait();
     }
     
     /**
