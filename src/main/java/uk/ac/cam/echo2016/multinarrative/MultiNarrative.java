@@ -16,7 +16,7 @@ import android.os.BaseBundle;
 public abstract class MultiNarrative implements Serializable { //TODO Documentation
     private static final long serialVersionUID = 1;
     protected HashMap<String, Route> routes = new HashMap<String, Route>();
-    protected HashMap<String, Node> nodes = new HashMap<String, Node>();
+    protected HashMap<String, StoryNode> nodes = new HashMap<String, StoryNode>();
     protected SynchronizationNode start;
     protected BaseBundle properties = new BaseBundle();
 
@@ -25,11 +25,11 @@ public abstract class MultiNarrative implements Serializable { //TODO Documentat
     }
     
     // TODO change ALL getters and setters to protected?
-    public Node getNode(String id) {
+    public StoryNode getNode(String id) {
         return nodes.get(id);
     }
     
-    public HashMap<String, Node> getNodes() {
+    public HashMap<String, StoryNode> getNodes() {
     	return nodes;
     }
     

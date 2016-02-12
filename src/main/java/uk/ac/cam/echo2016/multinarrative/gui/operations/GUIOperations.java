@@ -12,6 +12,7 @@ import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ROUTE_ALREADY_EXISTS;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ROUTE_PREFIX;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,9 +23,12 @@ import javafx.scene.paint.Color;
 import uk.ac.cam.echo2016.multinarrative.ChoiceNode;
 import uk.ac.cam.echo2016.multinarrative.GUINarrative;
 import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
-import uk.ac.cam.echo2016.multinarrative.Node;
+import uk.ac.cam.echo2016.multinarrative.StoryNode;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
 import uk.ac.cam.echo2016.multinarrative.SynchronizationNode;
+import uk.ac.cam.echo2016.multinarrative.io.SaveReader;
+import uk.ac.cam.echo2016.multinarrative.io.SaveWriter;
+
 
 /**
  * The class that encapsulates all GUI operations.
@@ -42,7 +46,6 @@ public class GUIOperations {
     private GUINarrative multinarrative;
 
     private HashMap<String, BaseBundle> properties;
-    // private HashMap<String, Coordinate> nodes;
     private Map<String, Map<String, Color>> colours = new HashMap<String, Map<String, Color>>();
     private static int nodeCounter = 1;
     private static int narrativeCounter = 1;
@@ -54,7 +57,6 @@ public class GUIOperations {
     public GUIOperations() {
         multinarrative = new GUINarrative();
         properties = new HashMap<String, BaseBundle>();
-        // nodes = new HashMap<String, Coordinate>();
     }
 
     /**
@@ -280,7 +282,7 @@ public class GUIOperations {
         class TranslateNodeCommand implements Command {
             @Override
             public void execute() throws IllegalOperationException {
-                Node theNode = multinarrative.getNode(name);
+                StoryNode theNode = multinarrative.getNode(name);
                 if (theNode == null) {
                     throw new IllegalOperationException("Node does not exist.");
                 }
@@ -314,7 +316,7 @@ public class GUIOperations {
      * 
      * @return unique narrative name
      */
-    public String getUniqueNarrativeName() {
+    public String getUniqueRouteName() {
         String newName = Strings.populateString(ROUTE_PREFIX, narrativeCounter);
         if (multinarrative.getNodes().containsKey(newName)) {
             narrativeCounter += 1;
@@ -559,6 +561,22 @@ public class GUIOperations {
         } catch (IllegalOperationException e) {
             throw new RuntimeException(e); // TODO: resolve this
         }
+    }
+    
+    /**
+     * Saves the GUINarrative object to the supplied filename
+     * 
+     * @throws IOException
+     */
+    public void saveInstance(String fileName) throws IOException {
+        SaveWriter.saveObject(fileName, multinarrative);
+    }
+
+    /**
+     * Loads the GUINarrative object from the supplied filename
+     */
+    public GUINarrative loadInstance(String fileName) throws IOException {
+        return SaveReader.loadGUINarrative(fileName);
     }
 
     /**

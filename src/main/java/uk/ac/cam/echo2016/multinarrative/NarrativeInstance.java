@@ -18,9 +18,9 @@ import uk.ac.cam.echo2016.multinarrative.dev.Debug;
  */
 public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     private static final long serialVersionUID = 1;
-    protected ArrayList<Node> activeNodes = new ArrayList<Node>();
+    protected ArrayList<StoryNode> activeNodes = new ArrayList<StoryNode>();
 
-    public NarrativeInstance(HashMap<String, Route> routes, HashMap<String, Node> nodes, SynchronizationNode start, BaseBundle properties) {
+    public NarrativeInstance(HashMap<String, Route> routes, HashMap<String, StoryNode> nodes, SynchronizationNode start, BaseBundle properties) {
         this.routes = routes;
         this.nodes = nodes;
         this.start = start;
@@ -32,7 +32,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     public BaseBundle startRoute(String id) throws GraphElementNotFoundException {
         Route route = getRoute(id);
         if (route == null) throw new GraphElementNotFoundException("Error: Route with id: " + id + " not found");
-        Node startNode = route.getStart();
+        StoryNode startNode = route.getStart();
         if (startNode instanceof ChoiceNode) {
         	activeNodes.remove(startNode);
         	for (Route deadRoute : startNode.getExiting()) {
@@ -51,7 +51,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     public GameChoice endRoute(String id) throws GraphElementNotFoundException {
         Route route = getRoute(id);
         if (route == null) throw new GraphElementNotFoundException("Error: Route with id: " + id + " not found");
-        Node endNode = route.getEnd();
+        StoryNode endNode = route.getEnd();
         if (endNode instanceof ChoiceNode || ((SynchronizationNode)endNode).isCompleted()) {
         	setActive(endNode);
         }
@@ -74,7 +74,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
             kill(route);
             return true; // TODO change to throw GraphElementNotFoundException?
         } else {
-            Node node = getNode(id);
+            StoryNode node = getNode(id);
             if (node != null) {
                 kill(node);
                 return true;
@@ -91,7 +91,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     public boolean kill(Route route) {
         if (route == null)
             return false;
-        Node nEnd = route.getEnd();
+        StoryNode nEnd = route.getEnd();
         
         Debug.logInfo("Killing " + route.getId(), 4, Debug.SYSTEM_ALL);
 
@@ -123,7 +123,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
             }
         }
         // Remove the route from the exiting routes of the node it comes from
-        Node nStart = route.getStart();
+        StoryNode nStart = route.getStart();
         nStart.getExiting().remove(route); // Should return true, otherwise something's broken
 
         routes.remove(route.getId());
@@ -135,7 +135,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
      * 
      * @see NarrativeInstance#kill(String)
      */
-    public boolean kill(Node node) {
+    public boolean kill(StoryNode node) {
         if (node == null)
             return false;
         for (Route route : new ArrayList<Route>(node.getExiting())) {
@@ -151,7 +151,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 
     public ArrayList<Route> getPlayableRoutes() {
         ArrayList<Route> r_routes = new ArrayList<Route>();
-        for (Node node : activeNodes) {
+        for (StoryNode node : activeNodes) {
             for (Route route : node.getExiting()) {
                 if (!route.getProperties().getBoolean("System.isCompleted")) {
                     r_routes.add(route);
@@ -161,7 +161,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         return r_routes;
     }
 
-    public void setActive(Node node) {
+    public void setActive(StoryNode node) {
         if (!activeNodes.contains(node))
             activeNodes.add(node);
     }
