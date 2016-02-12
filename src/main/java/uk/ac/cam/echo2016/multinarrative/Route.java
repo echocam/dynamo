@@ -27,9 +27,9 @@ public class Route implements Serializable, Cloneable { // TODO Documentation
         this.start = start;
         this.end = end;
     }
-    
-	public void setup() {
-    	start.getExiting().add(this);
+
+    public void setup() {
+        start.getExiting().add(this);
         end.getEntering().add(this);
     }
 

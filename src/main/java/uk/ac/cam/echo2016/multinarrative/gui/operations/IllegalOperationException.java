@@ -3,19 +3,19 @@ package uk.ac.cam.echo2016.multinarrative.gui.operations;
 /**
  * @author jr650
  */
-public class IllegalOperationException extends Exception{
+public class IllegalOperationException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
-    public IllegalOperationException(String message){
+    public IllegalOperationException(String message) {
         super(message);
     }
 
-    public IllegalOperationException(Throwable cause){
+    public IllegalOperationException(Throwable cause) {
         super(cause);
     }
 
-    public IllegalOperationException(String message, Throwable cause){
+    public IllegalOperationException(String message, Throwable cause) {
         super(message, cause);
     }
 

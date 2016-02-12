@@ -21,20 +21,20 @@ public class ChoiceNode extends StoryNode { // TODO Documentation
         super(id);
     }
 
-	protected StoryNode create(String id) {
-		return new ChoiceNode(id);
-	}
-	
+    protected StoryNode create(String id) {
+        return new ChoiceNode(id);
+    }
+
     public BaseBundle startRoute(Route option) {
         return option.getProperties();
     };
 
     public GameChoice onEntry(Route completed, NarrativeInstance instance) throws GraphElementNotFoundException {
         if (!this.getEntering().contains(completed)) {
-        	throw new GraphElementNotFoundException("Completed route not in this node's entering list");
-        } 
+            throw new GraphElementNotFoundException("Completed route not in this node's entering list");
+        }
         GameChoice gameChoice = new GameChoice(true, getId(), GameChoice.ACTION_MAJOR_DECISION, getExiting());
-        
+
         return gameChoice;
     }
 

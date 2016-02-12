@@ -25,9 +25,9 @@ public abstract class StoryNode implements Serializable, Cloneable { // TODO Doc
         this.id = id;
         this.exitRoutes = new ArrayList<Route>();
         this.entryRoutes = new ArrayList<Route>();
-        //TODO: (Please check) I added this bc getProperties was returning null
-        //please fix if this is not createProperties' intended use
-        //this.createProperties();
+        // TODO: (Please check) I added this bc getProperties was returning null
+        // please fix if this is not createProperties' intended use
+        // this.createProperties();
     }
 
     @Override
@@ -87,5 +87,5 @@ public abstract class StoryNode implements Serializable, Cloneable { // TODO Doc
     public void setExiting(ArrayList<Route> exitRoutes) {
         this.exitRoutes = exitRoutes;
     }
-    
+
 }

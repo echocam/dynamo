@@ -20,40 +20,44 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     private static final long serialVersionUID = 1;
     protected ArrayList<StoryNode> activeNodes = new ArrayList<StoryNode>();
 
-    public NarrativeInstance(HashMap<String, Route> routes, HashMap<String, StoryNode> nodes, SynchronizationNode start, BaseBundle properties) {
+    public NarrativeInstance(HashMap<String, Route> routes, HashMap<String, StoryNode> nodes, SynchronizationNode start,
+            BaseBundle properties) {
         this.routes = routes;
         this.nodes = nodes;
         this.start = start;
         this.properties = properties;
     }
 
-    public NarrativeInstance() { }
-    
+    public NarrativeInstance() {
+    }
+
     public BaseBundle startRoute(String id) throws GraphElementNotFoundException {
         Route route = getRoute(id);
-        if (route == null) throw new GraphElementNotFoundException("Error: Route with id: " + id + " not found");
+        if (route == null)
+            throw new GraphElementNotFoundException("Error: Route with id: " + id + " not found");
         StoryNode startNode = route.getStart();
         if (startNode instanceof ChoiceNode) {
-        	activeNodes.remove(startNode);
-        	for (Route deadRoute : startNode.getExiting()) {
-        		if (deadRoute != route) {
-        			kill(deadRoute); 
-        		}
-        	}
+            activeNodes.remove(startNode);
+            for (Route deadRoute : startNode.getExiting()) {
+                if (deadRoute != route) {
+                    kill(deadRoute);
+                }
+            }
         } else {
-        	if (startNode.getExiting().size() == 1) {
-        		activeNodes.remove(startNode);
-        	}
+            if (startNode.getExiting().size() == 1) {
+                activeNodes.remove(startNode);
+            }
         }
         return startNode.startRoute(route);
     }
 
     public GameChoice endRoute(String id) throws GraphElementNotFoundException {
         Route route = getRoute(id);
-        if (route == null) throw new GraphElementNotFoundException("Error: Route with id: " + id + " not found");
+        if (route == null)
+            throw new GraphElementNotFoundException("Error: Route with id: " + id + " not found");
         StoryNode endNode = route.getEnd();
-        if (endNode instanceof ChoiceNode || ((SynchronizationNode)endNode).isCompleted()) {
-        	setActive(endNode);
+        if (endNode instanceof ChoiceNode || ((SynchronizationNode) endNode).isCompleted()) {
+            setActive(endNode);
         }
         route.getProperties().putBoolean("System.isCompleted", true);
         return endNode.onEntry(route, this);
@@ -61,8 +65,8 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 
     /**
      * Recursively deletes an item from the graph according to the instance this method is called from. Only nodes and
-     * routes further down the tree are deleted, so nodes must have no entering routes and routes must start
-     * from a node with other exiting routes available.
+     * routes further down the tree are deleted, so nodes must have no entering routes and routes must start from a node
+     * with other exiting routes available.
      * 
      * @param id
      *            string identifier for the item to be deleted
@@ -92,7 +96,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         if (route == null)
             return false;
         StoryNode nEnd = route.getEnd();
-        
+
         Debug.logInfo("Killing " + route.getId(), 4, Debug.SYSTEM_ALL);
 
         nEnd.getEntering().remove(route);
@@ -100,21 +104,24 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         if (nEnd.getEntering().size() == 0) {
             kill(nEnd);
         } else if (route.getProperties() != null) {
-//            // Kills all methods leaving the end node if they have the same type and no entering routes also
-//            // have that property TODO specify in documentation
+            // // Kills all methods leaving the end node if they have the same type and no entering routes also
+            // // have that property TODO specify in documentation
             for (String key : route.getProperties().keySet()) {
-                if (this.getGlobalProperties().getStringArrayList("System.Types").contains(key)) { // TODO error if no global "Types" property
+                if (this.getGlobalProperties().getStringArrayList("System.Types").contains(key)) { // TODO error if no
+                                                                                                   // global "Types"
+                                                                                                   // property
                     Object type = route.getProperties().get(key);
-                    
+
                     boolean similarRouteExists = false;
-                    for(Route entry : nEnd.getEntering()) {
+                    for (Route entry : nEnd.getEntering()) {
                         if (entry.getProperties().containsKey(key) && entry.getProperties().get(key).equals(type)) {
                             similarRouteExists = true;
                         }
                     }
                     if (!similarRouteExists) {
-                        for(Route option : new ArrayList<Route>(nEnd.getExiting())) {
-                            if (option.getProperties().containsKey(key) && option.getProperties().get(key).equals(type)) {
+                        for (Route option : new ArrayList<Route>(nEnd.getExiting())) {
+                            if (option.getProperties().containsKey(key)
+                                    && option.getProperties().get(key).equals(type)) {
                                 kill(option);
                             }
                         }
@@ -144,7 +151,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 
         // As specified in the javadoc
         assert node.getEntering().size() == 0;
-        
+
         nodes.remove(node.getId());
         return true;
     }

@@ -11,47 +11,48 @@ import javafx.scene.control.Button;
  */
 
 public class FXMLSaveYesNoDialogController {
-	
-	@FXML 
-	private Button yesButton;
-	@FXML
-	private Button noButton;
-	
-	private Stage dialogStage;
-	
-	private boolean yesPressed = false;
-	
-	/**
+
+    @FXML
+    private Button yesButton;
+    @FXML
+    private Button noButton;
+
+    private Stage dialogStage;
+
+    private boolean yesPressed = false;
+
+    /**
      * Initializes the controller class. This method is automatically called after the fxml file has been loaded.
      */
     @FXML
     private void initialize() {
     }
-    
+
     /**
      * Sets the stage of this dialog.
+     * 
      * @param dialogStage
      */
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
     }
-    
+
     /**
      * Returns true if "Yes" button pressed.
      */
     public boolean yesPressed() {
-    	return yesPressed;
+        return yesPressed;
     }
-    
+
     /**
      * Called when the user clicks the "Yes" button.
      */
     @FXML
     private void yesButton() {
-    	yesPressed = true;
+        yesPressed = true;
         dialogStage.close();
     }
-    
+
     /**
      * Called when the user clicks the "No" button.
      */

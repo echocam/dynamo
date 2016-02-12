@@ -5,7 +5,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class BaseBundleTest {
-    @Test public void testSetAndGetBoolean() {
+    @Test
+    public void testSetAndGetBoolean() {
         BaseBundle baseBundle = new BaseBundle();
 
         final String testKey1 = "Test";
@@ -20,8 +21,9 @@ public class BaseBundleTest {
         assertEquals(baseBundle.getBoolean(testKey1), testVal1);
         assertEquals(baseBundle.getBoolean(testKey2), testVal2);
     }
+
     @Test
-    public void deepcopyTest(){
+    public void deepcopyTest() {
         BaseBundle b = new BaseBundle();
 
         b.putBoolean("t", true);

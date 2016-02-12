@@ -51,7 +51,7 @@ public class FXGraphApplication1 extends Application {
         for (int i = 0; i < theNodes.size() - 1; i++) {
 
             FXEdgeBuilder theEdgeBuilder = new FXEdgeBuilder(theGraph);
-            theEdgeBuilder.source(theNodes.get(i)).destination(theNodes.get(i+1)).build();
+            theEdgeBuilder.source(theNodes.get(i)).destination(theNodes.get(i + 1)).build();
         }
 
         aStage.setScene(new Scene(theGraph));

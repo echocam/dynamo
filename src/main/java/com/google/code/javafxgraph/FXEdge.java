@@ -72,7 +72,8 @@ public class FXEdge {
 
         // From the middle of the source
         Bounds theSourceBounds = source.wrappedNode.getBoundsInParent();
-        MoveTo theMoveTo = new MoveTo(theSourceBounds.getMinX() + theSourceBounds.getWidth() / 2, theSourceBounds.getMinY() + theSourceBounds.getHeight() / 2);
+        MoveTo theMoveTo = new MoveTo(theSourceBounds.getMinX() + theSourceBounds.getWidth() / 2,
+                theSourceBounds.getMinY() + theSourceBounds.getHeight() / 2);
         thePath.getElements().add(theMoveTo);
 
         wayPointHandles.clear();
@@ -82,13 +83,15 @@ public class FXEdge {
 
             wayPointHandles.put(theWayPoint, compileDisplayShapeFor(theWayPoint, aCurrentZoomLevel));
 
-            LineTo theLineTo = new LineTo(theWayPoint.positionX * aCurrentZoomLevel, theWayPoint.positionY * aCurrentZoomLevel);
+            LineTo theLineTo = new LineTo(theWayPoint.positionX * aCurrentZoomLevel,
+                    theWayPoint.positionY * aCurrentZoomLevel);
             thePath.getElements().add(theLineTo);
         }
 
         // To the middle of the destination
         Bounds theDestinationBounds = destination.wrappedNode.getBoundsInParent();
-        LineTo theLineTo = new LineTo(theDestinationBounds.getMinX() + theDestinationBounds.getWidth() / 2, theDestinationBounds.getMinY() + theDestinationBounds.getHeight() / 2);
+        LineTo theLineTo = new LineTo(theDestinationBounds.getMinX() + theDestinationBounds.getWidth() / 2,
+                theDestinationBounds.getMinY() + theDestinationBounds.getHeight() / 2);
         thePath.getElements().add(theLineTo);
 
         thePath.setStroke(Color.RED);

@@ -46,7 +46,8 @@ public class FXGraphMouseHandler {
                         graph.currentTool.mousePressedOnEdge(aEvent, (FXEdge) theUserData);
                     } else if (theUserData instanceof FXEdgeWayPoint) {
                         graph.currentTool.mousePressedOnEdgeWayPoint(aEvent, (FXEdgeWayPoint) theUserData);
-                    } else graph.currentTool.mousePressed(aEvent);
+                    } else
+                        graph.currentTool.mousePressed(aEvent);
                 } else {
                     graph.currentTool.mousePressed(aEvent);
                 }

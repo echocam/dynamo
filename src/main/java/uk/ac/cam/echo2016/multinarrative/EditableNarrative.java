@@ -16,79 +16,80 @@ import android.os.BaseBundle;
  *
  */
 
-public abstract class EditableNarrative extends MultiNarrative { // TODO Finish Class Documentation + Method Documentation
+public abstract class EditableNarrative extends MultiNarrative { // TODO Finish Class Documentation + Method
+                                                                 // Documentation
     private static final long serialVersionUID = 1;
+
     public void addRoute(Route route) {
         routes.put(route.getId(), route);
     }
-    
+
     public void addNode(StoryNode node) {
         nodes.put(node.getId(), node);
     }
-    
-    public boolean removeRoute(String id) { 
+
+    public boolean removeRoute(String id) {
         Route route = routes.remove(id);
         if (route == null)
             return false;
         // Should not return null else graph is broken
         route.getStart().getExiting().remove(route);
         route.getEnd().getEntering().remove(route);
-        
+
         return true;
     }
-    
+
     public boolean removeNode(String id) {
         StoryNode node = nodes.remove(id);
-        if (node == null) 
+        if (node == null)
             return false;
 
-        for (Route route : new ArrayList<Route> (node.getEntering())) {
+        for (Route route : new ArrayList<Route>(node.getEntering())) {
             removeRoute(route.getId());
         }
-        for (Route route : new ArrayList<Route> (node.getExiting())) {
+        for (Route route : new ArrayList<Route>(node.getExiting())) {
             removeRoute(route.getId());
         }
-//        for (Route route : new ArrayList<Route>(routes.values())) {
-//            if (route.getStart() == node) {
-//                removeRoute(route.getId());
-//            } else if (route.getEnd() == node) {
-//                removeRoute(route.getId());			
-//            }
-//        }
+        // for (Route route : new ArrayList<Route>(routes.values())) {
+        // if (route.getStart() == node) {
+        // removeRoute(route.getId());
+        // } else if (route.getEnd() == node) {
+        // removeRoute(route.getId());
+        // }
+        // }
 
-        return true;		
+        return true;
     }
-    
-    public boolean renameRoute(String id, String newName) { 
+
+    public boolean renameRoute(String id, String newName) {
         Route route = routes.remove(id);
         if (route == null)
             return false;
-        
+
         Route newRoute = new Route(newName, route.getStart(), route.getEnd());
-        
+
         // Update references of nodes at either end
         // Note setup must be called afterwards in case of the ids being the same
         newRoute.getStart().getExiting().remove(route);
         newRoute.getEnd().getEntering().remove(route);
         newRoute.setup();
-        
-        
+
         if (route.getProperties() != null)
             newRoute.setProperties(new BaseBundle(route.getProperties()));
-        
+
         routes.put(newName, newRoute);
         return true;
     }
-    
+
     public boolean renameNode(String id, String newName) {
         StoryNode node = nodes.remove(id);
-        if (node == null) 
+        if (node == null)
             return false;
-        
+
         StoryNode newNode = node.create(newName);
-        if (node.getProperties() != null) 
+        if (node.getProperties() != null)
             newNode.setProperties(new BaseBundle(node.getProperties()));
-        
+
         // Update references to the node
         for (Route route : node.getExiting()) {
             route.setStart(newNode);
@@ -104,7 +105,7 @@ public abstract class EditableNarrative extends MultiNarrative { // TODO Finish 
         for (Route route : node.getEntering()) {
             newNode.getEntering().add(route);
         }
-        
+
         nodes.put(newName, newNode);
         return true;
     }

@@ -148,7 +148,8 @@ public class FXGraphSelectionTool extends FXTool {
         KeyFrame theOneFrame = new KeyFrame(theDuration, new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                interactiveSelectionRectangle.setStrokeDashOffset(interactiveSelectionRectangle.getStrokeDashOffset() + 1);
+                interactiveSelectionRectangle
+                        .setStrokeDashOffset(interactiveSelectionRectangle.getStrokeDashOffset() + 1);
             }
         });
 
@@ -209,7 +210,8 @@ public class FXGraphSelectionTool extends FXTool {
         pressedWaypoint = null;
 
         if (aEvent.isShiftDown()) {
-            aEdge.addWayPoint(new FXEdgeWayPoint(aEdge, aEvent.getSceneX() / zoomHandler.currentZoomLevel, aEvent.getSceneY() / zoomHandler.currentZoomLevel));
+            aEdge.addWayPoint(new FXEdgeWayPoint(aEdge, aEvent.getSceneX() / zoomHandler.currentZoomLevel,
+                    aEvent.getSceneY() / zoomHandler.currentZoomLevel));
         }
         resetSelection();
         updateSelectionInScene();
@@ -249,9 +251,9 @@ public class FXGraphSelectionTool extends FXTool {
                         theNode.translatePosition(movementX, movementY, zoomHandler.currentZoomLevel);
                     }
                 } else {
-                    pressedWaypoint.translatePosition(movementX / zoomHandler.currentZoomLevel, movementY / zoomHandler.currentZoomLevel, zoomHandler.currentZoomLevel);
+                    pressedWaypoint.translatePosition(movementX / zoomHandler.currentZoomLevel,
+                            movementY / zoomHandler.currentZoomLevel, zoomHandler.currentZoomLevel);
                 }
-
 
                 updateSelectionInScene();
             }

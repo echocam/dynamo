@@ -24,118 +24,120 @@ import javafx.scene.control.ButtonType;
  * @author jr650
  */
 public class FXMLGUI extends Application {
-	
-	private Stage theStage;
-    
+
+    private Stage theStage;
+
     public static void main(String[] args) {
         Application.launch(FXMLGUI.class, args);
     }
-    
+
     @Override
-    public void start(Stage stage) throws Exception {        
-        try{
-        	theStage = stage;
-        	
+    public void start(Stage stage) throws Exception {
+        try {
+            theStage = stage;
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml_layout.fxml"));
-            
+
             Parent root = loader.load();
-            
+
             FXMLController controller = loader.getController();
             controller.init(this);
-            
+
             stage.setTitle("Graph Editor");
             stage.setScene(new Scene(root, 900, 600));
             stage.show();
-        }catch(IOException ioe){
-            //Indicates that fxml files aren't set up properly...
-            throw new RuntimeException("FXML files not configured correctly",ioe);
+        } catch (IOException ioe) {
+            // Indicates that fxml files aren't set up properly...
+            throw new RuntimeException("FXML files not configured correctly", ioe);
         }
     }
-    
+
     /**
      * Opens the About dialog.
      */
     @FXML
     public void showAbout() {
-    	try {
-    		FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml_aboutDialog.fxml"));
-    		Pane page = loader.load();
-    		Stage dialogStage = new Stage();
-    		dialogStage.setTitle("About");
-    		Scene scene = new Scene(page);
-    		dialogStage.setScene(scene);
-    		
-    		
-    	    FXMLAboutDialogController controller = loader.getController();
-    	    controller.setDialogStage(dialogStage);
-    		
-    	    dialogStage.setAlwaysOnTop(true);
-    	    dialogStage.initModality(Modality.APPLICATION_MODAL);
-    		dialogStage.showAndWait();
-    	} catch (IOException ioe) {
-    		//Indicates that fxml files aren't set up properly...
-            throw new RuntimeException("FXML files not configured correctly",ioe);
-    	}
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml_aboutDialog.fxml"));
+            Pane page = loader.load();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("About");
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            FXMLAboutDialogController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+
+            dialogStage.setAlwaysOnTop(true);
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.showAndWait();
+        } catch (IOException ioe) {
+            // Indicates that fxml files aren't set up properly...
+            throw new RuntimeException("FXML files not configured correctly", ioe);
+        }
     }
-    
+
     /**
      * Opens the Save As dialog
      */
     @FXML
     public String showSaveAs() {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Save As");
-		File selectedFile = fileChooser.showSaveDialog(theStage);
-		
-		if (selectedFile != null) {
-			return selectedFile.getAbsolutePath();
-		} else return null;
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save As");
+        File selectedFile = fileChooser.showSaveDialog(theStage);
+
+        if (selectedFile != null) {
+            return selectedFile.getAbsolutePath();
+        } else
+            return null;
     }
-    
+
     /**
      * Opens the Open dialog
-     */ 
+     */
     @FXML
     public String showOpen() {
-    	FileChooser fileChooser = new FileChooser();
-    	fileChooser.setTitle("Open");
-    	File selectedFile = fileChooser.showOpenDialog(theStage);
-    	
-    	if (selectedFile != null) {
-    		return selectedFile.getAbsolutePath();
-    	} else return null;
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open");
+        File selectedFile = fileChooser.showOpenDialog(theStage);
+
+        if (selectedFile != null) {
+            return selectedFile.getAbsolutePath();
+        } else
+            return null;
     }
-    
+
     /**
      * Checks if a user wants to save before executing the next action
      */
     @FXML
     public boolean checkIfShouldSave() {
-    	Alert alert = new Alert(AlertType.WARNING);
-    	alert.setTitle("Do you want to save?");
-    	alert.setHeaderText(null);
-    	alert.setContentText("Your work will be lost if you don't save.");
-    	
-    	ButtonType yesButton = new ButtonType("Yes");
-    	ButtonType noButton = new ButtonType("No", ButtonData.CANCEL_CLOSE);
-    	
-    	alert.getButtonTypes().setAll(yesButton, noButton);
-    	
-    	Optional<ButtonType> result = alert.showAndWait();
-    	if (result.get() == yesButton) return true;
-    	else return false;
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Do you want to save?");
+        alert.setHeaderText(null);
+        alert.setContentText("Your work will be lost if you don't save.");
+
+        ButtonType yesButton = new ButtonType("Yes");
+        ButtonType noButton = new ButtonType("No", ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(yesButton, noButton);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == yesButton)
+            return true;
+        else
+            return false;
     }
-    
+
     /**
      * Opens the error dialog when an IO operation fails
      */
     @FXML
     public void showError(String message) {
-    	Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Operation Failed");
-		alert.setHeaderText(null);
-		alert.setContentText(message);
-		alert.showAndWait();
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Operation Failed");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
-
