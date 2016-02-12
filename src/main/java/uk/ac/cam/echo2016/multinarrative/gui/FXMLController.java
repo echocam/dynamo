@@ -246,7 +246,7 @@ public class FXMLController {
     		if (loaded == null) {
     			throw new IOException();
     		}
-    		//buildGraph(loaded);//TODO add back in
+    		buildGraph(loaded);
     	} catch (IOException ioe) {
     		showErrorDialog("Error when trying to open file");
     	}
@@ -539,45 +539,43 @@ public class FXMLController {
 
 	}
 	
-//	public void buildGraph(GUINarrative toBuild) {
-//		operations = new GUIOperations();
-//		
-//		for (Node node : toBuild.getNodes().values()) {
-//			if (node.getProperties() == null) {
-//				showErrorDialog("Node properties null");
-//				return;
-//			}
-//			if (node instanceof SynchronizationNode) {
-//				addSynchNode(node.getId(), node.getProperties().getDouble("GUI.X"), node.getProperties().getDouble("GUI.Y"));
-//			} else {
-//				addChoiceNode(node.getId(), node.getProperties().getDouble("GUI.X"), node.getProperties().getDouble("GUI.Y"));
-//			}
-//		}
-//		
-//		for (Route route : toBuild.getRoutes().values()) {
-//			GraphNode temp;
-//			GraphNode start = new GraphNode();
-//			GraphNode end = new GraphNode();
-//			Iterator<GraphNode> it = graph.getNodes().iterator();
-//			while (it.hasNext()) {
-//				temp = it.next();
-//				if (temp.getName() == route.getStart().getId()) {
-//					Debug.logInfo("Found start node " + temp.getName(), 4, Debug.SYSTEM_GUI); //TODO remove
-//					start = temp;
-//				}
-//			}
-//			Iterator<GraphNode> it2 = graph.getNodes().iterator();
-//			while (it2.hasNext()) {
-//				temp = it2.next();
-//				if (temp.getName() == route.getEnd().getId()) {
-//					Debug.logInfo("Found end node " + temp.getName(), 4, Debug.SYSTEM_GUI); //TODO remove
-//					end = temp;
-//				}
-//			}
-//			addRoute(route.getId(), start, end);
-//		}
-//		
-//	}
+	public void buildGraph(GUINarrative toBuild) {
+		operations = new GUIOperations();
+		
+		for (StoryNode node : toBuild.getNodes().values()) {
+			if (node.getProperties() == null) {
+				showErrorDialog("Node properties null");
+				return;
+			}
+			if (node instanceof SynchronizationNode) {
+				addSynchNode(node.getId(), node.getProperties().getDouble("GUI.X"), node.getProperties().getDouble("GUI.Y"));
+			} else {
+				addChoiceNode(node.getId(), node.getProperties().getDouble("GUI.X"), node.getProperties().getDouble("GUI.Y"));
+			}
+		}
+		
+		for (Route route : toBuild.getRoutes().values()) {
+			GraphNode temp;
+			GraphNode start = new GraphNode();
+			GraphNode end = new GraphNode();
+			Iterator<GraphNode> it = graph.getNodes().iterator();
+			while (it.hasNext()) {
+				temp = it.next();
+				if (temp.getName() == route.getStart().getId()) {
+					start = temp;
+				}
+			}
+			Iterator<GraphNode> it2 = graph.getNodes().iterator();
+			while (it2.hasNext()) {
+				temp = it2.next();
+				if (temp.getName() == route.getEnd().getId()) {
+					end = temp;
+				}
+			}
+			addRoute(route.getId(), start, end);
+		}
+		
+	}
 
 	public void removeNode(String name) { 
 		operations.deleteNode(name);

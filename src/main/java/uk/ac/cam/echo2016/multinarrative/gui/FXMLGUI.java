@@ -122,6 +122,8 @@ public class FXMLGUI extends Application {
     	alert.getButtonTypes().setAll(yesButton, noButton);
     	
     	Optional<ButtonType> result = alert.showAndWait();
+    	if (result.get() == yesButton) return true;
+    	else return false;
     }
     
     /**

@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.canvas.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.scene.layout.*?>
-<?import com.google.com.javafxgraph.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPress" onKeyReleased="#onKeyRelease" prefHeight="400.0" prefWidth="600.0" styleClass="root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uk.ac.cam.echo2016.multinarrative.gui.FXMLController">
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPress" onKeyReleased="#onKeyRelease" prefHeight="400.0" prefWidth="600.0" styleClass="root" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uk.ac.cam.echo2016.multinarrative.gui.FXMLController">
     <stylesheets>
       <URL value="@Style.css" />
     </stylesheets>
@@ -34,7 +47,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem mnemonicParsing="false" text="New" />
+                  <MenuItem mnemonicParsing="false" onAction="#registerNewClicked" text="New" />
                   <MenuItem mnemonicParsing="false" onAction="#registerOpenClicked" text="Open" />
                   <MenuItem mnemonicParsing="false" onAction="#registerSaveClicked" text="Save" />
                   <MenuItem mnemonicParsing="false" onAction="#registerSaveAsClicked" text="Save As..." />
@@ -120,12 +133,12 @@
                                  <content>
                                     <VBox>
                                        <children>
-                                          <RadioButton mnemonicParsing="false" selected="true" text="Synch">
+                                          <RadioButton fx:id="nodeSynch" mnemonicParsing="false" onAction="#setSynch" selected="true" text="Synch">
                                              <toggleGroup>
                                                 <ToggleGroup fx:id="nodeType" />
                                              </toggleGroup>
                                           </RadioButton>
-                                          <RadioButton mnemonicParsing="false" text="Choice" toggleGroup="$nodeType" />
+                                          <RadioButton fx:id="nodeChoice" mnemonicParsing="false" onAction="#setChoice" text="Choice" toggleGroup="$nodeType" />
                                        </children>
                                     </VBox>
                                  </content>

@@ -1,7 +1,6 @@
 package uk.ac.cam.echo2016.multinarrative;
 
 import android.os.BaseBundle;
-import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 
 /**
  * The {@code EditableNarrative} used by the {@code FXMLGUI} editor to store the graph structure. This graph is
@@ -18,6 +17,13 @@ import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 public class GUINarrative extends EditableNarrative { // TODO Finish Documentation
     private static final long serialVersionUID = 1;
 
+    public boolean isUniqueId(String id) {
+        return (!routes.containsKey(id) && !nodes.containsKey(id));
+    }
+    public boolean isChoiceNode(String nodeId) throws GraphElementNotFoundException {
+        StoryNode node = nodes.get(nodeId);
+        return node instanceof ChoiceNode;
+    }
     /**
      * Adds a route with ID {@code id} to the graph, connecting the node with ID {@code startId} to the route with
      * ID {@code endId}.
@@ -30,15 +36,11 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
      */
     public void newRoute(String id, String startId, String endId)
             throws NonUniqueIdException, GraphElementNotFoundException {
-    	//TODO remove debug statement:
-    	for (Node n : nodes.values()) {
-    		Debug.logInfo(n.getId(), 4, Debug.SYSTEM_GUI);
-    	}
         if (isUniqueId(id)) {
-            Node startNode = getNode(startId);
+            StoryNode startNode = getNode(startId);
             if (startNode == null)
                 throw new GraphElementNotFoundException("Node with id: " + startId + " not found");
-            Node endNode = getNode(endId);
+            StoryNode endNode = getNode(endId);
             if (endNode == null)
                 throw new GraphElementNotFoundException("Node with id: " + endId + " not found");
 
@@ -55,10 +57,10 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
     	Route route = routes.get(id);
     	if (route == null) throw new GraphElementNotFoundException("Route with id " + id + " not found");
     	
-    	Node newStart = nodes.get(newStartId);
+    	StoryNode newStart = nodes.get(newStartId);
     	if (newStart == null) throw new GraphElementNotFoundException("Node with id " + id + " not found");
     	
-    	Node oldStart = route.getStart();
+    	StoryNode oldStart = route.getStart();
     	route.setStart(newStart);
     	newStart.getExiting().add(route);
     	oldStart.getExiting().remove(route);
@@ -68,10 +70,10 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
     	Route route = routes.get(id);
     	if (route == null) throw new GraphElementNotFoundException("Route with id " + id + " not found");
     	
-    	Node newEnd = nodes.get(newEndId);
+    	StoryNode newEnd = nodes.get(newEndId);
     	if (newEnd == null) throw new GraphElementNotFoundException("Node with id " + id + " not found");
     	
-    	Node oldEnd = route.getEnd();
+    	StoryNode oldEnd = route.getEnd();
     	route.setEnd(newEnd);
     	newEnd.getEntering().add(route);
     	oldEnd.getEntering().remove(route);
@@ -90,7 +92,29 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
         else
             throw new NonUniqueIdException("Invalid id: " + id + " is not unique.");
     }
+    
+    public void addRouteType(String type) { // TODO add to tests
+        if (!this.getGlobalProperties().getStringArrayList("System.Types").contains(type)) {
+            this.getGlobalProperties().getStringArrayList("System.Types").add(type);
+        }
+    }
+    public boolean removeRouteType(String type) { // TODO add to tests
+        return this.getGlobalProperties().getStringArrayList("System.Types").remove(type);
+    }
 
+    public BaseBundle getProperties(String id) throws GraphElementNotFoundException {
+        Route route = getRoute(id);
+        if (route != null) {
+            return route.getProperties();
+        } else {
+            StoryNode node = getNode(id);
+            if (node != null) {
+                return node.getProperties();
+            }
+        }
+        throw new GraphElementNotFoundException("Error: Element with id: " + id + " not found");
+    }
+    
     /**
      * Takes the route with ID {@code routeId} and splits it in two, where the divisor is a new {@code ChoiceNode} with
      * ID {@code newChoiceId}. Here, the original route is preserved between its start and the new node.
@@ -202,8 +226,8 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
 
         ChoiceNode choice = new ChoiceNode(newChoiceId);
         
-        Node start = route.getStart();
-        Node end = route.getEnd();
+        StoryNode start = route.getStart();
+        StoryNode end = route.getEnd();
         
         // Connect route1
         Route route1 = new Route(newRouteId1, start, choice);
@@ -222,12 +246,8 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
         nodes.put(choice.getId(), choice);
     }
 
-    private boolean isUniqueId(String id) {
-        return (!routes.containsKey(id) && !nodes.containsKey(id));
-    }
-
     public boolean setStartPoint(String id) throws GraphElementNotFoundException {
-        Node node = getNode(id);
+        StoryNode node = getNode(id);
         if (node == null) throw new GraphElementNotFoundException("Error: Node with id: " + id + " not found");
         if (node instanceof SynchronizationNode) {
             start = (SynchronizationNode) node;
@@ -237,25 +257,26 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
         }
     }
     
-    public void addRouteType(String type) { // TODO add to tests
-        if (!this.getGlobalProperties().getStringArrayList("System.Types").contains(type)) {
-            this.getGlobalProperties().getStringArrayList("System.Types").add(type);
-        }
-    }
-    public boolean removeRouteType(String type) { // TODO add to tests
-        return this.getGlobalProperties().getStringArrayList("System.Types").remove(type);
-    }
-
-    public BaseBundle getProperties(String id) throws GraphElementNotFoundException {
-        Route route = getRoute(id);
-        if (route != null) {
-            return route.getProperties();
+    /**
+     * Swaps a Node's type from {@code SynchronizationNode} to {@code ChoiceNode} and vica versa. Note that this may
+     * create a choice node with multiple entering routes.
+     * 
+     * @param nodeId
+     * @return
+     * @throws GraphElementNotFoundException
+     */
+    public void swapSyncAndChoice(String nodeId) throws GraphElementNotFoundException {
+        StoryNode node = nodes.get(nodeId);
+        StoryNode newNode;
+        if (isChoiceNode(nodeId)) {
+            newNode = new SynchronizationNode(nodeId);
         } else {
-            Node node = getNode(id);
-            if (node != null) {
-                return node.getProperties();
-            }
+            newNode = new ChoiceNode(nodeId);
         }
-        throw new GraphElementNotFoundException("Error: Element with id: " + id + " not found");
+        nodes.remove(nodeId);
+        newNode.setEntering(node.getEntering());
+        newNode.setExiting(node.getExiting());
+        newNode.setProperties(node.getProperties());
+        nodes.put(nodeId, newNode);
     }
 }
