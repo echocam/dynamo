@@ -57,12 +57,11 @@ public class SelectionTool implements GraphTool {
     }
 
     public void setSelection(String s) {
-        for (GraphNode node : graph.getNodes()) {
-            if (node.getName().equals(s)) {
-                resetSelection();
-                select(node);
-            }
-        }
+    	GraphNode node = graph.getNodes().get(s);
+    	if(node!=null){
+    		resetSelection();
+            select(node);
+    	}
     }
 
     @Override

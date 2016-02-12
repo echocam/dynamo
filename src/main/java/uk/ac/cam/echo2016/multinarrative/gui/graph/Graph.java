@@ -1,8 +1,8 @@
 package uk.ac.cam.echo2016.multinarrative.gui.graph;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
@@ -18,15 +18,14 @@ import uk.ac.cam.echo2016.multinarrative.gui.operations.GUIOperations;
  *
  */
 public class Graph {
-
     private Pane pane;
     private GUIOperations operations;
 
     private InputMonitor input;
     private GraphTool tool;
 
-    private Set<GraphNode> nodes = new HashSet<>();
-    private Set<GraphEdge> edges = new HashSet<>();
+    private Map<String, GraphNode> nodes = new HashMap<>();
+    private Map<String, GraphEdge> edges = new HashMap<>();
 
     private FXMLController controller;
 
@@ -47,16 +46,16 @@ public class Graph {
         return tool;
     }
 
-    public Set<GraphNode> getNodes() {
+    public Map<String, GraphNode> getNodes() {
         return nodes;
     }
 
-    public Set<GraphEdge> getEdges() {
+    public Map<String, GraphEdge> getEdges() {
         return edges;
     }
 
     public void update(double scale) {
-        for (GraphEdge edge : edges) {
+        for (GraphEdge edge : edges.values()) {
             updateEdge(edge);
         }
     }
@@ -67,7 +66,7 @@ public class Graph {
 
     public void updateNode(GraphNode node) {
         node.update(this);
-        for (GraphEdge edge : edges) {
+        for (GraphEdge edge : edges.values()) {
             if (edge.getFrom() == node || edge.getTo() == node) {
                 updateEdge(edge);
             }
@@ -77,7 +76,7 @@ public class Graph {
     public void addNode(GraphNode node) {
         Node contents = node.getContents();
         pane.getChildren().add(contents);
-        nodes.add(node);
+        nodes.put(node.getName(), node);
         input.registerHandlerFor(contents);
     }
 
@@ -86,7 +85,7 @@ public class Graph {
         pane.getChildren().remove(contents);
         nodes.remove(node);
         controller.removeNode(node.getName());
-        for (GraphEdge edge : new ArrayList<>(edges)) {
+        for (GraphEdge edge : new ArrayList<>(edges.values())) {
             if (edge.getFrom() == node || edge.getTo() == node) {
                 removeEdge(edge);
             }
@@ -103,7 +102,7 @@ public class Graph {
         }
         pane.getChildren().add(i, c);
         edge.update(this);
-        edges.add(edge);
+        edges.put(edge.getName(), edge);
         input.registerHandlerFor(n);
         input.registerHandlerFor(c);
     }
@@ -132,46 +131,31 @@ public class Graph {
     }
 
     public void renameNode(String from, String to) {
-        for (GraphNode node : nodes) {
-            if (node.getName().equals(from)) {
-                node.getNameProperty().set(to);
-                updateNode(node);
-            }
+        GraphNode node = nodes.remove(from);
+        if (node != null) {
+            node.getNameProperty().set(to);
+            nodes.put(to, node);
+            updateNode(node);
         }
     }
 
     public void renameRoute(String from, String to) {
-        for (GraphEdge edge : edges) {
-            if (edge.getName().equals(from)) {
-                edge.getNameProperty().set(to);
-            }
+        GraphEdge edge = edges.remove(from);
+        if (edge != null) {
+            edge.getNameProperty().set(to);
+            edges.put(to, edge);
         }
     }
 
     public void deleteNode(String name) {
-        GraphNode find = null;
-        for (GraphNode node : nodes) {
-            if (node.getName().equals(name)) {
-                find = node;
-                break;
-            }
-        }
-        if (find != null) {
-            removeNode(find);
-        }
+        GraphNode node = nodes.get(name);
+        if (node != null)
+            removeNode(node);
     }
 
     public void deleteRoute(String name) {
-        GraphEdge find = null;
-        for (GraphEdge edge : edges) {
-            if (edge.getName().equals(name)) {
-                find = edge;
-                break;
-            }
-        }
-        if (find != null) {
-            removeEdge(find);
-        }
+        GraphEdge edge = edges.get(name);
+        if (edge != null)
+            removeEdge(edge);
     }
-
 }

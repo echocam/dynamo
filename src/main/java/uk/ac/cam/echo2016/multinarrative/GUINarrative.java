@@ -3,8 +3,9 @@ package uk.ac.cam.echo2016.multinarrative;
 import android.os.BaseBundle;
 
 /**
- * The {@code EditableNarrative} used by the {@code FXMLGUI} editor to store the graph structure. This graph is
- * generated alongside the editor via {@code GUIOperations} and is used to build the template when the design is
+ * The {@code EditableNarrative} used by the {@code FXMLGUI} editor to store the
+ * graph structure. This graph is generated alongside the editor via
+ * {@code GUIOperations} and is used to build the template when the design is
  * exported.
  * 
  * 
@@ -14,7 +15,8 @@ import android.os.BaseBundle;
  * @throws NonUniqueIdException
  * @see MultiNarrative
  */
-public class GUINarrative extends EditableNarrative { // TODO Finish Documentation
+public class GUINarrative extends EditableNarrative { // TODO Finish
+                                                      // Documentation
     private static final long serialVersionUID = 1;
 
     public boolean isUniqueId(String id) {
@@ -27,14 +29,13 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
     }
 
     /**
-     * Adds a route with ID {@code id} to the graph, connecting the node with ID {@code startId} to the route with ID
-     * {@code endId}.
+     * Adds a route with ID {@code id} to the graph, connecting the node with ID
+     * {@code startId} to the route with ID {@code endId}.
      * 
      * @param id
      * @param startId
      * @param endId
-     * @throws NonUniqueIdException
-     * @throws GraphElementNotFoundException
+     * @throws CommandException
      */
     public void newRoute(String id, String startId, String endId)
             throws NonUniqueIdException, GraphElementNotFoundException {
@@ -100,9 +101,11 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
     }
 
     public void addRouteType(String type) { // TODO add to tests
-        if (!this.getGlobalProperties().getStringArrayList("System.Types").contains(type)) {
-            this.getGlobalProperties().getStringArrayList("System.Types").add(type);
+
+        if (!getGlobalProperties().getStringArrayList("System.Types").contains(type)) {
+            getGlobalProperties().getStringArrayList("System.Types").add(type);
         }
+
     }
 
     public boolean removeRouteType(String type) { // TODO add to tests
@@ -123,8 +126,9 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
     }
 
     /**
-     * Takes the route with ID {@code routeId} and splits it in two, where the divisor is a new {@code ChoiceNode} with
-     * ID {@code newChoiceId}. Here, the original route is preserved between its start and the new node.
+     * Takes the route with ID {@code routeId} and splits it in two, where the
+     * divisor is a new {@code ChoiceNode} with ID {@code newChoiceId}. Here,
+     * the original route is preserved between its start and the new node.
      * 
      * <pre>
      * Before:
@@ -182,8 +186,9 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
     }
 
     /**
-     * Takes the route with ID {@code routeId} and splits it in two, where the divisor is a new {@code ChoiceNode} with
-     * ID {@code newChoiceId}. Here, the original route is discarded.
+     * Takes the route with ID {@code routeId} and splits it in two, where the
+     * divisor is a new {@code ChoiceNode} with ID {@code newChoiceId}. Here,
+     * the original route is discarded.
      * 
      * <pre>
      *
@@ -266,8 +271,9 @@ public class GUINarrative extends EditableNarrative { // TODO Finish Documentati
     }
 
     /**
-     * Swaps a Node's type from {@code SynchronizationNode} to {@code ChoiceNode} and vica versa. Note that this may
-     * create a choice node with multiple entering routes.
+     * Swaps a Node's type from {@code SynchronizationNode} to
+     * {@code ChoiceNode} and vica versa. Note that this may create a choice
+     * node with multiple entering routes.
      * 
      * @param nodeId
      * @return

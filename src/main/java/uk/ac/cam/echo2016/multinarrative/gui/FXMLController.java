@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
@@ -88,6 +89,10 @@ public class FXMLController {
     private RadioButton nodeChoice;
     @FXML
     private TitledPane routeEditor;
+    @FXML
+    private ComboBox<String> routeStart;
+    @FXML
+    private ComboBox<String> routeEnd;
 
     private Boolean itemNode = null;
 
@@ -146,6 +151,9 @@ public class FXMLController {
                 });
         nodes.itemsProperty().set(FXCollections.observableArrayList());
         routes.itemsProperty().set(FXCollections.observableArrayList());
+
+        routeStart.itemsProperty().bind(nodes.itemsProperty());
+        routeEnd.itemsProperty().bind(nodes.itemsProperty());
     }
 
     /**
@@ -268,8 +276,9 @@ public class FXMLController {
     }
 
     /**
-     * Code run when "+" button is pressed. "+" button is disabled when the text entry is empty. Adds node to internal
-     * graph and then adds node to GUI graph.
+     * Code run when "+" button is pressed. "+" button is disabled when the text
+     * entry is empty. Adds node to internal graph and then adds node to GUI
+     * graph.
      * 
      * @param event
      */
@@ -287,8 +296,41 @@ public class FXMLController {
         }
     }
 
+    @FXML
+    protected void changeStartAction(ActionEvent event) {
+        if (itemNode != null && !itemNode) {
+            String edge = routes.getSelectionModel().getSelectedItem();
+            String start = routeStart.getValue();
+            GraphEdge gEdge = graph.getEdges().get(edge);
+            try {
+                operations.setStart(edge, start);
+                gEdge.setFrom(graph.getNodes().get(start));
+            } catch (IllegalOperationException e) {
+                setInfo(e.getMessage(), edge, start);
+                routeStart.setValue(gEdge.getFrom().getName());
+            }
+        }
+    }
+
+    @FXML
+    protected void changeEndAction(ActionEvent event) {
+        if (itemNode != null && !itemNode) {
+            String edge = routes.getSelectionModel().getSelectedItem();
+            String end = routeEnd.getValue();
+            GraphEdge gEdge = graph.getEdges().get(edge);
+            try {
+                operations.setEnd(edge, end);
+                gEdge.setTo(graph.getNodes().get(end));
+            } catch (IllegalOperationException e) {
+                setInfo(e.getMessage(), edge, end);
+                routeStart.setValue(gEdge.getFrom().getName());
+            }
+        }
+    }
+
     /**
-     * Registers a key being pressed on the keyboard and responds depending on the button pressed..
+     * Registers a key being pressed on the keyboard and responds depending on
+     * the button pressed..
      * 
      * @param event
      */
@@ -313,7 +355,8 @@ public class FXMLController {
     }
 
     /**
-     * Registers a key being released on the keyboard and responds only if said key is the Shift key.
+     * Registers a key being released on the keyboard and responds only if said
+     * key is the Shift key.
      * 
      * @param event
      */
@@ -364,7 +407,8 @@ public class FXMLController {
     }
 
     /**
-     * Code to add the string to the list of properties on the right side of the screen.
+     * Code to add the string to the list of properties on the right side of the
+     * screen.
      * 
      * @param s
      */
@@ -387,7 +431,8 @@ public class FXMLController {
     }
 
     /**
-     * Code to remove the string from the list of properties on the right side of the screen.
+     * Code to remove the string from the list of properties on the right side
+     * of the screen.
      * 
      * @param s
      */
@@ -406,8 +451,9 @@ public class FXMLController {
     }
 
     /**
-     * Adds the string formed by populating the string {@code template} with the list of strings in {@code values} to
-     * the info bar on the bottom right of the screen.
+     * Adds the string formed by populating the string {@code template} with the
+     * list of strings in {@code values} to the info bar on the bottom right of
+     * the screen.
      * 
      * @param template
      * @param values
@@ -461,7 +507,8 @@ public class FXMLController {
     }
 
     /**
-     * Adds the route Id {@code name} to the list of routes displayed on the left.
+     * Adds the route Id {@code name} to the list of routes displayed on the
+     * left.
      * 
      * @param name
      */
@@ -505,7 +552,11 @@ public class FXMLController {
         GraphNode node = addChoiceNode(name, edge.getControl().getLayoutX(), edge.getControl().getLayoutY());
         if (node != null) {
             GraphNode end = edge.getTo();
-            operations.setEnd(edge.getName(), name);
+            try {
+                operations.setEnd(edge.getName(), name);
+            } catch (IllegalOperationException e) {
+                setInfo(e.getMessage(), edge.getName(), name);
+            }
             edge.setTo(node);
             edge.zeroOffset();
             String s = operations.getUniqueNarrativeName();
@@ -732,12 +783,17 @@ public class FXMLController {
                 setInfo(e.getMessage(), node);
             }
         } else {
+            String edge = routes.getSelectionModel().getSelectedItem();
             itemNode = null;
-            itemName.setText(routes.getSelectionModel().getSelectedItem());
+            itemName.setText(edge);
             itemNode = false;
             itemProperties.getItems().clear();
-            itemProperties.getItems()
-                    .addAll(operations.getRouteProperties(routes.getSelectionModel().getSelectedItem()));
+            itemProperties.getItems().addAll(operations.getRouteProperties(edge));
+            GraphEdge gEdge = graph.getEdges().get(edge);
+            if (gEdge != null) {
+                routeStart.setValue(gEdge.getFrom().getName());
+                routeEnd.setValue(gEdge.getTo().getName());
+            }
         }
     }
 

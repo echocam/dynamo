@@ -6,6 +6,10 @@ package uk.ac.cam.echo2016.multinarrative.gui.operations;
 public class IllegalOperationException extends Exception {
 
     private static final long serialVersionUID = 1L;
+    
+    public IllegalOperationException() {
+        super();
+    }
 
     public IllegalOperationException(String message) {
         super(message);
