@@ -98,6 +98,9 @@ public class FXMLController {
 	private Node propertiesSource = null;
 	private ContextMenu propertiesMenu = new ContextMenu();
 
+	/**
+	 * Initialise the controller. Called from the GUI bootstrap
+	 */
 	public void init() {
 		Debug.logInfo("Init Controller", 4, Debug.SYSTEM_GUI);
 		addProperty.disableProperty().bind(propertyName.textProperty().isEmpty());
@@ -143,16 +146,28 @@ public class FXMLController {
 		routeEnd.itemsProperty().bind(nodes.itemsProperty());
 	}
 
+	/**
+	 * Sets the graph into insert mode
+	 */
 	@FXML
 	protected void insertMode() {
 		graph.setTool(insertTool);
 	}
 
+	/**
+	 * Sets the graph into select mode
+	 */
 	@FXML
 	protected void selectMode() {
 		graph.setTool(selectTool);
 	}
 
+	/**
+	 * FXML hook. Adds a property.
+	 * 
+	 * @param event
+	 *            Triggering event
+	 */
 	@FXML
 	protected void addPropertyButtonAction(ActionEvent event) {
 
@@ -168,12 +183,24 @@ public class FXMLController {
 		}
 	}
 
+	/**
+	 * FXML hook. Deletes the selected item
+	 * 
+	 * @param e
+	 *            Trigger event
+	 */
 	@FXML
 	protected void deleteItemAction(ActionEvent e) {
 		Debug.logInfo("DeleteItemAction", 4, Debug.SYSTEM_GUI);
 		removeSelect();
 	}
 
+	/**
+	 * FXML hook. Sets a node to choice
+	 * 
+	 * @param event
+	 *            Trigger event.
+	 */
 	@FXML
 	protected void setChoice(ActionEvent event) {
 		if (itemNode != null && itemNode) {
@@ -192,6 +219,12 @@ public class FXMLController {
 		}
 	}
 
+	/**
+	 * FXML hook. Sets a node to synch
+	 * 
+	 * @param event
+	 *            Trigger event.
+	 */
 	@FXML
 	protected void setSynch(ActionEvent event) {
 		if (itemNode != null && itemNode) {
@@ -209,6 +242,12 @@ public class FXMLController {
 		}
 	}
 
+	/**
+	 * FXML hook. Sets a routes start
+	 * 
+	 * @param event
+	 *            Trigger event.
+	 */
 	@FXML
 	protected void changeStartAction(ActionEvent event) {
 		if (itemNode != null && !itemNode) {
@@ -224,7 +263,13 @@ public class FXMLController {
 			}
 		}
 	}
-	
+
+	/**
+	 * FXML hook. Sets a routes end
+	 * 
+	 * @param event
+	 *            Trigger event.
+	 */
 	@FXML
 	protected void changeEndAction(ActionEvent event) {
 		if (itemNode != null && !itemNode) {
@@ -241,6 +286,12 @@ public class FXMLController {
 		}
 	}
 
+	/**
+	 * FXML hook. Triggers mode change on shift
+	 * 
+	 * @param event
+	 *            Trigger event.
+	 */
 	@FXML
 	protected void onKeyPress(KeyEvent event) {
 		Debug.logInfo("Key Pressed: " + event, 5, Debug.SYSTEM_GUI);
@@ -256,6 +307,12 @@ public class FXMLController {
 		}
 	}
 
+	/**
+	 * FXML hook. Triggers mode change on shift
+	 * 
+	 * @param event
+	 *            Trigger event.
+	 */
 	@FXML
 	protected void onKeyRelease(KeyEvent event) {
 		Debug.logInfo("Key Released: " + event, 5, Debug.SYSTEM_GUI);
@@ -267,6 +324,12 @@ public class FXMLController {
 		}
 	}
 
+	/**
+	 * Adds a property
+	 * 
+	 * @param s
+	 *            name
+	 */
 	protected void addProperty(String s) {
 		Debug.logInfo("Add property: " + s, 4, Debug.SYSTEM_GUI);
 		try {
@@ -285,6 +348,17 @@ public class FXMLController {
 		}
 	}
 
+	/**
+	 * Removes a property
+	 * 
+	 * @param s
+	 *            name
+	 * @param pane
+	 *            pane to remove
+	 * @param menu
+	 *            the menu item for it
+	 * @return
+	 */
 	protected boolean removeProperty(String s, TitledPane pane, Menu menu) {
 		Debug.logInfo("Remove property: " + s, 4, Debug.SYSTEM_GUI);
 		try {
@@ -299,16 +373,39 @@ public class FXMLController {
 		}
 	}
 
+	/**
+	 * Sets the infobar text
+	 * 
+	 * @param template
+	 *            String template
+	 * @param values
+	 *            Values to interpolate into the text
+	 */
 	public void setInfo(String template, String... values) {
 		String s = Strings.populateString(template, values);
 		Debug.logInfo(s, 3, Debug.SYSTEM_GUI);
 		infoBar.setText(s);
 	}
 
+	/**
+	 * Get the operations
+	 * 
+	 * @return the operations
+	 */
 	public GUIOperations getOperations() {
 		return operations;
 	}
 
+	/**
+	 * Adds a new Synch node
+	 * 
+	 * @param name
+	 *            Node id
+	 * @param x
+	 *            position-x
+	 * @param y
+	 *            position-y
+	 */
 	public void addSynchNode(String name, double x, double y) {
 		Debug.logInfo("Adding Synch " + name, 4, Debug.SYSTEM_GUI);
 		try {
@@ -335,6 +432,17 @@ public class FXMLController {
 
 	}
 
+	/**
+	 * Adds a new Choice node
+	 * 
+	 * @param name
+	 *            node id
+	 * @param x
+	 *            position-coordinate
+	 * @param y
+	 *            position-coordinate
+	 * @return
+	 */
 	public GraphNode addChoiceNode(String name, double x, double y) {
 		Debug.logInfo("Adding Choice " + name, 4, Debug.SYSTEM_GUI);
 		try {
@@ -363,13 +471,21 @@ public class FXMLController {
 		return null;
 	}
 
+	/**
+	 * Adds a choice node, bisecting an edge
+	 * 
+	 * @param name
+	 *            node id
+	 * @param edge
+	 *            edge to bisect
+	 */
 	public void addChoiceNode(String name, GraphEdge edge) {
 		GraphNode node = addChoiceNode(name, edge.getControl().getLayoutX(), edge.getControl().getLayoutY());
 		if (node != null) {
 			GraphNode end = edge.getTo();
-			try{
-			operations.setEnd(edge.getName(), name);
-			}catch(IllegalOperationException e){
+			try {
+				operations.setEnd(edge.getName(), name);
+			} catch (IllegalOperationException e) {
 				setInfo(e.getMessage(), edge.getName(), name);
 			}
 			edge.setTo(node);
@@ -380,6 +496,16 @@ public class FXMLController {
 		}
 	}
 
+	/**
+	 * Adds a new route
+	 * 
+	 * @param name
+	 *            route id
+	 * @param from
+	 *            start node
+	 * @param to
+	 *            end node
+	 */
 	public void addRoute(String name, GraphNode from, GraphNode to) {
 		Debug.logInfo("Adding Route " + name, 4, Debug.SYSTEM_GUI);
 		try {
@@ -412,6 +538,12 @@ public class FXMLController {
 
 	}
 
+	/**
+	 * Removes a node
+	 * 
+	 * @param name
+	 *            node id
+	 */
 	public void removeNode(String name) {
 		operations.deleteNode(name);
 		graph.deleteNode(name);
@@ -421,6 +553,12 @@ public class FXMLController {
 
 	}
 
+	/**
+	 * Removes a route
+	 * 
+	 * @param name
+	 *            route id
+	 */
 	public void removeRoute(String name) {
 		operations.deleteRoute(name);
 		graph.deleteRoute(name);
@@ -428,6 +566,17 @@ public class FXMLController {
 		routes.getItems().remove(name);
 	}
 
+	/**
+	 * Assigns a property to a node
+	 * 
+	 * @param property
+	 *            Property name
+	 * @param type
+	 *            Property type
+	 * @param value
+	 *            Value of property (guiOperations should check type before
+	 *            adding
+	 */
 	public void assignProperty(String property, String type, String value) {
 		Debug.logInfo("Assigning " + property + ":" + type + "=" + value + " to " + propertiesSource, 4,
 				Debug.SYSTEM_GUI);
@@ -452,12 +601,22 @@ public class FXMLController {
 		}
 	}
 
+	/**
+	 * Select a node for editing
+	 * 
+	 * @param name
+	 */
 	public void selectNode(String name) {
 		nodes.getSelectionModel().select(name);
 		itemNode = true;
 		initSelect();
 	}
 
+	/**
+	 * Select a route for editing
+	 * 
+	 * @param name
+	 */
 	public void selectRoute(String name) {
 		routes.getSelectionModel().select(name);
 		itemNode = false;
@@ -465,6 +624,9 @@ public class FXMLController {
 		initSelect();
 	}
 
+	/**
+	 * De-selects selected item
+	 */
 	public void deselect() {
 		nodes.getSelectionModel().clearSelection();
 		routes.getSelectionModel().clearSelection();
@@ -472,6 +634,9 @@ public class FXMLController {
 		initSelect();
 	}
 
+	/**
+	 * Changes the name of the selection
+	 */
 	public void changeSelectName() {
 		Debug.logInfo("Change Selected Item Name", 4, Debug.SYSTEM_GUI);
 
@@ -508,6 +673,9 @@ public class FXMLController {
 		}
 	}
 
+	/**
+	 * Removes selected item
+	 */
 	public void removeSelect() {
 		Debug.logInfo("Remove Selection", 4, Debug.SYSTEM_GUI);
 		if (itemNode != null) {
@@ -524,6 +692,9 @@ public class FXMLController {
 		}
 	}
 
+	/**
+	 * Initialises components with new selection
+	 */
 	public void initSelect() {
 		itemEditor.setExpanded(itemNode != null);
 		itemEditor.setDisable(itemNode == null);
@@ -565,6 +736,11 @@ public class FXMLController {
 		}
 	}
 
+	/**
+	 * Gets the context menu for graph components
+	 * 
+	 * @return the context menu
+	 */
 	public ContextMenu getContextMenuForGraph() {
 		return propertiesMenu;
 	}
