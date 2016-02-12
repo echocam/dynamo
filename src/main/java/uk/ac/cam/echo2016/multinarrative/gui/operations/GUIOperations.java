@@ -25,7 +25,10 @@ import uk.ac.cam.echo2016.multinarrative.GUINarrative;
 import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.StoryNode;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
+import uk.ac.cam.echo2016.multinarrative.Route;
 import uk.ac.cam.echo2016.multinarrative.SynchronizationNode;
+import uk.ac.cam.echo2016.multinarrative.gui.FXMLController;
+import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphNode;
 import uk.ac.cam.echo2016.multinarrative.io.SaveReader;
 import uk.ac.cam.echo2016.multinarrative.io.SaveWriter;
 
@@ -577,6 +580,51 @@ public class GUIOperations {
      */
     public GUINarrative loadInstance(String fileName) throws IOException {
         return SaveReader.loadGUINarrative(fileName);
+    }
+    
+    /** 
+     * Uses the FXMLController provided to rebuild the graph from the filename given.
+     * @throws IOException 
+     * @throws GraphElementNotFoundException 
+     */
+    public void buildGraph(String fileName, FXMLController controller) throws IOException, GraphElementNotFoundException {
+        nodeCounter = 1;
+        narrativeCounter = 1;
+        valueCounter = 1;
+        multinarrative = new GUINarrative();
+        colours = new HashMap<String, Map<String, Color>>();
+        properties = new HashMap<String, BaseBundle>();        
+        
+        GUINarrative loaded = loadInstance(fileName);
+        if (loaded == null) {
+            throw new IOException();
+        }
+        
+        StoryNode node;
+        for (String nodeName : loaded.getNodes().keySet()) {
+            node = loaded.getNode(nodeName);
+            if (node instanceof SynchronizationNode) {
+                controller.addSynchNode(node.getId(), node.getProperties().getDouble("GUI.X"),
+                        node.getProperties().getDouble("GUI.Y"));
+            } else {
+                controller.addChoiceNode(node.getId(), node.getProperties().getDouble("GUI.X"),
+                        node.getProperties().getDouble("GUI.Y"));
+            }
+        }
+        
+        Route route;
+        GraphNode start;
+        GraphNode end;
+        for (String routeName : loaded.getRoutes().keySet()) {
+            route = loaded.getRoute(routeName);
+            start = controller.getGraph().getNodes().get(route.getStart().getId());
+            end = controller.getGraph().getNodes().get(route.getEnd().getId());
+            
+            if (start == null || end == null) {
+                throw new GraphElementNotFoundException("The GraphNode with that name was not found");
+            }
+            controller.addRoute(route.getId(), start, end);
+        }
     }
 
     /**

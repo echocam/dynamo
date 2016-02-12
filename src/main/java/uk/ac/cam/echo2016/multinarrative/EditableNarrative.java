@@ -48,13 +48,6 @@ public abstract class EditableNarrative extends MultiNarrative { // TODO Finish 
         for (Route route : new ArrayList<Route> (node.getExiting())) {
             removeRoute(route.getId());
         }
-//        for (Route route : new ArrayList<Route>(routes.values())) {
-//            if (route.getStart() == node) {
-//                removeRoute(route.getId());
-//            } else if (route.getEnd() == node) {
-//                removeRoute(route.getId());			
-//            }
-//        }
 
         return true;		
     }

@@ -4,8 +4,6 @@ import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_REMOVED;
 
 import java.io.IOException;
-import java.util.Iterator;
-
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -33,10 +31,7 @@ import javafx.scene.shape.CubicCurve;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Text;
-import uk.ac.cam.echo2016.multinarrative.GUINarrative;
-import uk.ac.cam.echo2016.multinarrative.Route;
-import uk.ac.cam.echo2016.multinarrative.StoryNode;
-import uk.ac.cam.echo2016.multinarrative.SynchronizationNode;
+import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphEdge;
@@ -110,6 +105,8 @@ public class FXMLController {
 
     private Node propertiesSource = null;
     private ContextMenu propertiesMenu = new ContextMenu();
+    
+    public Graph getGraph() { return graph; }
 
     /**
      * Initialise the controller. Called from the GUI bootstrap
@@ -117,6 +114,12 @@ public class FXMLController {
     public void init(FXMLGUI main) {
         Debug.logInfo("Init Controller", 4, Debug.SYSTEM_GUI);
         mainApp = main;
+        reInit();
+        
+    }
+    
+    private void reInit() {
+        currentFile = null;
         addProperty.disableProperty().bind(propertyName.textProperty().isEmpty());
         graphArea.minHeightProperty().bind(scroll.heightProperty());
         graphArea.minWidthProperty().bind(scroll.widthProperty());
@@ -176,8 +179,7 @@ public class FXMLController {
             removeNode(n.getName());
         }
 
-        operations = new GUIOperations();
-        graph = new Graph(scroll, graphArea, operations, this);
+        reInit();
     }
 
     /**
@@ -254,11 +256,18 @@ public class FXMLController {
 
         currentFile = returnedFile;
         try {
-            GUINarrative loaded = operations.loadInstance(currentFile);
-            if (loaded == null) {
-                throw new IOException();
+            GraphNode[] setCopy = graph.getNodes().values().toArray(new GraphNode[0]);
+
+            for (GraphNode n : setCopy) {
+                removeNode(n.getName());
             }
-            buildGraph(loaded);
+            
+            reInit();
+            try{
+                operations.buildGraph(currentFile, this);
+            } catch (GraphElementNotFoundException ge) {
+                showErrorDialog(ge.getMessage());
+            }
         } catch (IOException ioe) {
             showErrorDialog("Error when trying to open file");
         }
@@ -669,54 +678,6 @@ public class FXMLController {
 
     }
     
-    public void buildGraph(GUINarrative toBuild) {
-        GraphNode[] setCopy = graph.getNodes().values().toArray(new GraphNode[0]);
-
-        for (GraphNode n : setCopy) {
-            removeNode(n.getName());
-        }
-
-        operations = new GUIOperations();
-        graph = new Graph(scroll, graphArea, operations, this);
-
-        for (StoryNode node : toBuild.getNodes().values()) {
-            if (node.getProperties() == null) {
-                showErrorDialog("Node properties null");
-                return;
-            }
-            if (node instanceof SynchronizationNode) {
-                addSynchNode(node.getId(), node.getProperties().getDouble("GUI.X"),
-                        node.getProperties().getDouble("GUI.Y"));
-            } else {
-                addChoiceNode(node.getId(), node.getProperties().getDouble("GUI.X"),
-                        node.getProperties().getDouble("GUI.Y"));
-            }
-        }
-
-        for (Route route : toBuild.getRoutes().values()) {
-            GraphNode temp;
-            GraphNode start = new GraphNode();
-            GraphNode end = new GraphNode();
-            Iterator<GraphNode> it = graph.getNodes().values().iterator();
-            while (it.hasNext()) {
-                temp = it.next();
-                if (temp.getName() == route.getStart().getId()) {
-                    start = temp;
-                    break;
-                }
-            }
-            Iterator<GraphNode> it2 = graph.getNodes().values().iterator();
-            while (it2.hasNext()) {
-                temp = it2.next();
-                if (temp.getName() == route.getEnd().getId()) {
-                    end = temp;
-                    break;
-                }
-            }
-            addRoute(route.getId(), start, end);
-        }
-
-    }
 
     /**
      * Removes a node

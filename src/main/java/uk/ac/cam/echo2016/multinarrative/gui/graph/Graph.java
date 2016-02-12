@@ -85,7 +85,6 @@ public class Graph {
 		Node contents = node.getContents();
 		pane.getChildren().remove(contents);
 		nodes.remove(node);
-		controller.removeNode(node.getName());
 		for (GraphEdge edge : new ArrayList<>(edges.values())) {
 			if (edge.getFrom() == node || edge.getTo() == node) {
 				removeEdge(edge);
@@ -112,7 +111,6 @@ public class Graph {
 		pane.getChildren().remove(edge.getNode());
 		pane.getChildren().remove(edge.getControl());
 		edges.remove(edge);
-		controller.removeRoute(edge.getName());
 	}
 
 	public InputMonitor getInput() {
