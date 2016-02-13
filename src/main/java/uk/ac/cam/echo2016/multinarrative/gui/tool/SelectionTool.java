@@ -103,6 +103,7 @@ public class SelectionTool implements GraphTool {
                         graph.getOperations().translateNode(node.getName(), movementX, movementY);
                         node.translate(movementX, movementY);
                         graph.updateNode(node);
+                        graph.getController().initSelect();
                     } catch (IllegalOperationException e) {
                         graph.getController().setInfo(e.getMessage(), event.getSceneX()+"", event.getSceneY()+"");
                     }
