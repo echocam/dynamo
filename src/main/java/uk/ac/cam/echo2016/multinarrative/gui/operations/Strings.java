@@ -20,6 +20,7 @@ public class Strings{
     public static final String NODE_ALREADY_AT_POSITION = "Node already exists at given position.";
     public static final String ROUTE_ALREADY_EXISTS = "A route with this name already exists";
     public static final String COULD_NOT_RENAME = "Couldn't rename %1";
+    public static final String CYCLE_EXISTS = "Route cannot be added: Graph will contain cycle";
 
     public static final String ROUTE_PREFIX = "Route-%1";
     public static final String NODE_PREFIX = "Node-%1";
