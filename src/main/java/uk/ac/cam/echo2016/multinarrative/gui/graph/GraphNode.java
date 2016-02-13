@@ -33,6 +33,10 @@ public class GraphNode {
 		this.y.set(y);
 		update(g);
 	}
+	
+	public GraphNode() {
+        // TODO Auto-generated constructor stub
+    }
 
 	public void setPosition(double x, double y) {
 		this.x.set(x);

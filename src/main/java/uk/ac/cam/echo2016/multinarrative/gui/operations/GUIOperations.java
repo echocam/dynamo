@@ -13,6 +13,7 @@ import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ROUTE_ALR
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ROUTE_PREFIX;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.CYCLE_EXISTS;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,14 +26,18 @@ import uk.ac.cam.echo2016.multinarrative.GUINarrative;
 import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.Node;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
+import uk.ac.cam.echo2016.multinarrative.Route;
 import uk.ac.cam.echo2016.multinarrative.SynchronizationNode;
+import uk.ac.cam.echo2016.multinarrative.gui.FXMLController;
+import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphNode;
+import uk.ac.cam.echo2016.multinarrative.io.SaveReader;
+import uk.ac.cam.echo2016.multinarrative.io.SaveWriter;
 
 /**
  * The class that encapsulates all GUI operations.
  * 
- * Every method that mutates or changes the state of the program in some form
- * MUST be implemented using the Command class. This is to allow for the undoing
- * of operations.
+ * Every method that mutates or changes the state of the program in some form MUST be implemented using the Operation
+ * class. This is to allow for the undoing of operations.
  * 
  * @author jr650
  * @author eyx20
@@ -42,9 +47,8 @@ public class GUIOperations {
 
     private GUINarrative multinarrative;
 
-    private HashMap<String, BaseBundle> properties;
-    // private HashMap<String, Coordinate> nodes;
-    private Map<String, Map<String, Color>> colours = new HashMap<String, Map<String, Color>>();
+    private Map<String, BaseBundle> properties;
+    private Map<String, Map<String, Color>> colors = new HashMap<String, Map<String, Color>>();
     private static int nodeCounter = 1;
     private static int narrativeCounter = 1;
     private static int valueCounter = 1;
@@ -55,18 +59,17 @@ public class GUIOperations {
     public GUIOperations() {
         multinarrative = new GUINarrative();
         properties = new HashMap<String, BaseBundle>();
-        // nodes = new HashMap<String, Coordinate>();
     }
 
     /**
      * Adds the required property
      * 
      * @throws IllegalOperationException
-     *             if can't add property, message of exception is displayed to
-     *             the user, using the Strings class for formatting.
+     *             if can't add property, message of exception is displayed to the user, using the Strings class for
+     *             formatting.
      */
     public void addProperty(String s) throws IllegalOperationException {
-        class AddPropertyCommand implements Command {
+        class AddPropertyOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
                 if (s.equals("") || s == null) {
@@ -79,27 +82,26 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
-                // TODO Implement logical undo of the add property command and
-                // test it.
+            public void undo() {
+                // TODO test this.
+                properties.remove(s);
             }
         }
 
-        Command c = new AddPropertyCommand();
+        Operation c = new AddPropertyOperation();
 
-        Command.storeAndExecute(c);
+        Operation.storeAndExecute(c);
     }
 
     /**
-     * TODO Sets property type, which this class should then use to validate
-     * further input.
+     * TODO Sets property type, which this class should then use to validate further input.
      * 
      * @param property
      * @param type
      * @throws IllegalOperationException
      */
     public void setPropertyType(String property, String type) throws IllegalOperationException {
-        class SetPropertyTypeCommand implements Command {
+        class SetPropertyTypeOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
                 // TODO Auto-generated method stub
@@ -107,14 +109,14 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
+            public void undo() {
                 // TODO Implement logical undo of the command and test it.
             }
         }
 
-        Command c = new SetPropertyTypeCommand();
+        Operation c = new SetPropertyTypeOperation();
 
-        Command.storeAndExecute(c);
+        Operation.storeAndExecute(c);
     }
 
     /**
@@ -123,16 +125,15 @@ public class GUIOperations {
      * @param property
      *            - property name to add value to
      * @param type
-     *            - data type of the value, selected from {"String", "Integer",
-     *            "Boolean", "Byte", "Short", "Long", "Float", "Double"}
+     *            - data type of the value, selected from {"String", "Integer", "Boolean", "Byte", "Short", "Long",
+     *            "Float", "Double"}
      * @param value
      *            - value to be added
      * @throws IllegalOperationException
-     *             when value cannot be added to the property. Informative
-     *             message is sent to the user.
+     *             when value cannot be added to the property. Informative message is sent to the user.
      */
     public void addValue(String property, String type, String value) throws IllegalOperationException {
-        class AddValueCommand implements Command {
+        class AddValueOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
                 if (!properties.containsKey(property)) {
@@ -176,15 +177,14 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
-                // TODO Auto-generated method stub
-
+            public void undo() {
+                // TODO Implement the UNDO!
             }
         }
 
-        Command c = new AddValueCommand();
+        Operation c = new AddValueOperation();
 
-        Command.storeAndExecute(c);
+        Operation.storeAndExecute(c);
     }
 
     /**
@@ -213,7 +213,7 @@ public class GUIOperations {
      * @throws NonUniqueIdException
      */
     public void addSynchNode(String name, double x, double y) throws IllegalOperationException {
-        class AddSynchNodeCommand implements Command {
+        class AddSynchNodeOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
                 if (multinarrative.getNode(name) != null) {
@@ -233,21 +233,22 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
-                // TODO Implement logical undo of the command and test it.
+            public void undo() {
+                // TODO Test this!
+                multinarrative.getNodes().remove(name);
             }
         }
 
-        Command c = new AddSynchNodeCommand();
+        Operation c = new AddSynchNodeOperation();
 
-        Command.storeAndExecute(c);
+        Operation.storeAndExecute(c);
     }
 
     /**
      * Adds a choiceNode at the given position, with the given name
      */
     public void addChoiceNode(String name, double x, double y) throws IllegalOperationException {
-        class AddChoiceNodeCommand implements Command {
+        class AddChoiceNodeOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
                 if (multinarrative.getNode(name) != null) {
@@ -267,29 +268,33 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
-                // TODO Implement logical undo of the command and test it.
+            public void undo() {
+                multinarrative.getNodes().remove(name);
+                // TODO test it.
             }
         }
 
-        Command c = new AddChoiceNodeCommand();
+        Operation c = new AddChoiceNodeOperation();
 
-        Command.storeAndExecute(c);
+        Operation.storeAndExecute(c);
     }
 
     /**
      * Repositions a node by the given offset
      */
     public void translateNode(String name, double x, double y) throws IllegalOperationException {
-        class TranslateNodeCommand implements Command {
+        class TranslateNodeOperation implements Operation {
+            private double oldX;
+            private double oldY;
+
             @Override
             public void execute() throws IllegalOperationException {
                 Node theNode = multinarrative.getNode(name);
                 if (theNode == null) {
                     throw new IllegalOperationException("Node does not exist.");
                 }
-                double oldX = theNode.getProperties().getDouble("GUI.X");
-                double oldY = theNode.getProperties().getDouble("GUI.Y");
+                oldX = theNode.getProperties().getDouble("GUI.X");
+                oldY = theNode.getProperties().getDouble("GUI.Y");
                 double transx = oldX + x;
                 double transy = oldY + y;
                 for (String nodename : multinarrative.getNodes().keySet()) {
@@ -303,14 +308,18 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
-                // TODO Implement logical undo of the command and test it.
+            public void undo() {
+                // TODO test it.
+                Node theNode = multinarrative.getNode(name);
+
+                theNode.getProperties().putDouble("GUI.X", oldX);
+                theNode.getProperties().putDouble("GUI.Y", oldY);
             }
         }
 
-        Command c = new TranslateNodeCommand();
+        Operation c = new TranslateNodeOperation();
 
-        Command.storeAndExecute(c);
+        Operation.storeAndExecute(c);
     }
 
     /**
@@ -318,7 +327,7 @@ public class GUIOperations {
      * 
      * @return unique narrative name
      */
-    public String getUniqueNarrativeName() {
+    public String getUniqueRouteName() {
         String newName = Strings.populateString(ROUTE_PREFIX, narrativeCounter);
         if (multinarrative.getNodes().containsKey(newName)) {
             narrativeCounter += 1;
@@ -351,8 +360,7 @@ public class GUIOperations {
     }
 
     /**
-     * Adds a route, throwing exception if it fails, due to names existing or a
-     * cycle being created.
+     * Adds a route, throwing exception if it fails, due to names existing or a cycle being created.
      * 
      * @param name
      *            - unique id of the route
@@ -362,7 +370,7 @@ public class GUIOperations {
      *            - ending node. If node does not exist creates a new node.
      */
     public void addRoute(String name, String start, String end) throws IllegalOperationException {
-        class AddRouteCommand implements Command {
+        class AddRouteOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
                 try {
@@ -380,14 +388,15 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
-                // TODO Implement logical undo of the command and test it.
+            public void undo() {
+                // TODO test it.
+                multinarrative.removeRoute(name);
             }
         }
 
-        Command c = new AddRouteCommand();
+        Operation c = new AddRouteOperation();
 
-        Command.storeAndExecute(c);
+        Operation.storeAndExecute(c);
     }
 
     /**
@@ -414,7 +423,7 @@ public class GUIOperations {
      * @throws IllegalOperationException
      */
     public void renameNode(String from, String to) throws IllegalOperationException {
-        class RenameNodeCommand implements Command {
+        class RenameNodeOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
                 if (!from.equals(to) && multinarrative.isUniqueId(to)) {
@@ -423,14 +432,16 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
-                // TODO Implement logical undo of the command and test it.
+            public void undo() {
+                // TODO test it.
+                if (!to.equals(from))
+                    multinarrative.renameNode(to, from);
             }
         }
 
-        Command c = new RenameNodeCommand();
+        Operation c = new RenameNodeOperation();
 
-        Command.storeAndExecute(c);
+        Operation.storeAndExecute(c);
     }
 
     /**
@@ -440,7 +451,7 @@ public class GUIOperations {
      * @throws IllegalOperationException
      */
     public void renameRoute(String from, String to) throws IllegalOperationException {
-        class RenameRouteCommand implements Command {
+        class RenameRouteOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
                 if (!from.equals(to) && multinarrative.isUniqueId(to))
@@ -448,14 +459,16 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
-                // TODO Implement logical undo of the command and test it.
+            public void undo() {
+                // TODO test it.
+                if (!to.equals(from))
+                    multinarrative.renameRoute(to, from);
             }
         }
 
-        Command c = new RenameRouteCommand();
+        Operation c = new RenameRouteOperation();
 
-        Command.storeAndExecute(c);
+        Operation.storeAndExecute(c);
     }
 
     /**
@@ -464,10 +477,14 @@ public class GUIOperations {
      * @param node
      */
     public void setEnd(String route, String node) throws IllegalOperationException {
-        class SetEndCommand implements Command {
+        class SetEndOperation implements Operation {
+            private Route mRoute = multinarrative.getRoute(route);
+            private Node mOldEnd = mRoute.getEnd();
+            private Node mNewEnd = multinarrative.getNode(node);
+
             @Override
             public void execute() throws IllegalOperationException {
-                multinarrative.getRoute(route).setEnd(multinarrative.getNode(node));
+                mRoute.setEnd(mNewEnd);
                 DFSCycleDetect detect = new DFSCycleDetect(multinarrative.getRoute(route).getStart());
                 if (detect.hasCycle()) {
                     multinarrative.removeRoute(route);
@@ -476,15 +493,16 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
-                // TODO Implement logical undo of the command and test it.
+            public void undo() {
+                // TODO test it.
+                mRoute.setEnd(mOldEnd);
             }
         }
 
-        Command c = new SetEndCommand();
+        Operation c = new SetEndOperation();
 
         try {
-            Command.storeAndExecute(c);
+            Operation.storeAndExecute(c);
         } catch (IllegalOperationException e) {
             throw new RuntimeException(e); // TODO: resolve this
         }
@@ -496,10 +514,14 @@ public class GUIOperations {
      * @param node
      */
     public void setStart(String route, String node) throws IllegalOperationException {
-        class SetStartCommand implements Command {
+        class SetStartOperation implements Operation {
+            private Route mRoute = multinarrative.getRoute(route);
+            private Node mOldStart = mRoute.getStart();
+            private Node mNewStart = multinarrative.getNode(node);
+
             @Override
             public void execute() throws IllegalOperationException {
-                multinarrative.getRoute(route).setStart(multinarrative.getNode(node));
+                mRoute.setStart(mNewStart);
                 DFSCycleDetect detect = new DFSCycleDetect(multinarrative.getNode(node));
                 if (detect.hasCycle()) {
                     multinarrative.removeRoute(route);
@@ -509,14 +531,15 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
-                // TODO Implement logical undo of the command and test it.
+            public void undo() {
+                // TODO test it.
+                mRoute.setStart(mOldStart);
             }
         }
 
-        Command c = new SetStartCommand();
+        Operation c = new SetStartOperation();
 
-        Command.storeAndExecute(c);
+        Operation.storeAndExecute(c);
     }
 
     /**
@@ -525,26 +548,29 @@ public class GUIOperations {
      * @param id
      */
     public void deleteNode(String id) {
-        class DeleteNodeCommand implements Command {
+        class DeleteNodeOperation implements Operation {
+            private Node mNode = multinarrative.getNode(id);
+
             @Override
             public void execute() throws IllegalOperationException {
                 multinarrative.removeNode(id);
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
-                // TODO Implement logical undo of the command and test it.
+            public void undo() {
+                // TODO test it.
+                multinarrative.addNode(mNode);
             }
         }
 
-        Command c = new DeleteNodeCommand();
+        Operation c = new DeleteNodeOperation();
 
         try {
-            Command.storeAndExecute(c);
+            Operation.storeAndExecute(c);
         } catch (IllegalOperationException e) {
             throw new RuntimeException(e); // TODO: resolve this
         }
-    }
+    };
 
     /**
      * deletes a route
@@ -552,24 +578,90 @@ public class GUIOperations {
      * @param id
      */
     public void deleteRoute(String id) {
-        class DeletRouteCommand implements Command {
+        class DeletRouteOperation implements Operation {
+            private Route mRoute = multinarrative.getRoute(id);
+
             @Override
             public void execute() throws IllegalOperationException {
                 multinarrative.removeRoute(id);
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
-                // TODO Implement logical undo of the command and test it.
+            public void undo() {
+                // TODO test it.
+                multinarrative.addRoute(mRoute);
             }
         }
 
-        Command c = new DeletRouteCommand();
+        Operation c = new DeletRouteOperation();
 
         try {
-            Command.storeAndExecute(c);
+            Operation.storeAndExecute(c);
         } catch (IllegalOperationException e) {
             throw new RuntimeException(e); // TODO: resolve this
+        }
+    }
+
+    /**
+     * Saves the GUINarrative object to the supplied filename
+     * 
+     * @throws IOException
+     */
+    public void saveInstance(String fileName) throws IOException {
+        SaveWriter.saveObject(fileName, multinarrative);
+    }
+
+    /**
+     * Loads the GUINarrative object from the supplied filename
+     */
+    public GUINarrative loadInstance(String fileName) throws IOException {
+        return SaveReader.loadGUINarrative(fileName);
+    }
+
+    /**
+     * Uses the FXMLController provided to rebuild the graph from the filename given.
+     * 
+     * @throws IOException
+     * @throws GraphElementNotFoundException
+     */
+    public void buildGraph(String fileName, FXMLController controller)
+            throws IOException, GraphElementNotFoundException {
+        nodeCounter = 1;
+        narrativeCounter = 1;
+        valueCounter = 1;
+        multinarrative = new GUINarrative();
+        colors = new HashMap<String, Map<String, Color>>();
+        properties = new HashMap<String, BaseBundle>();
+
+        GUINarrative loaded = loadInstance(fileName);
+        if (loaded == null) {
+            throw new IOException();
+        }
+
+        Node node;
+        for (String nodeName : loaded.getNodes().keySet()) {
+            node = loaded.getNode(nodeName);
+            if (node instanceof SynchronizationNode) {
+                controller.addSynchNode(node.getId(), node.getProperties().getDouble("GUI.X"),
+                        node.getProperties().getDouble("GUI.Y"));
+            } else {
+                controller.addChoiceNode(node.getId(), node.getProperties().getDouble("GUI.X"),
+                        node.getProperties().getDouble("GUI.Y"));
+            }
+        }
+
+        Route route;
+        GraphNode start;
+        GraphNode end;
+        for (String routeName : loaded.getRoutes().keySet()) {
+            route = loaded.getRoute(routeName);
+            start = controller.getGraph().getNodes().get(route.getStart().getId());
+            end = controller.getGraph().getNodes().get(route.getEnd().getId());
+
+            if (start == null || end == null) {
+                throw new GraphElementNotFoundException("The GraphNode with that name was not found");
+            }
+            controller.addRoute(route.getId(), start, end);
         }
     }
 
@@ -580,7 +672,7 @@ public class GUIOperations {
      * @param value
      */
     public void addPropertyValue(String id, String value) throws IllegalOperationException {
-        class AddPropertyTypeCommand implements Command {
+        class AddPropertyTypeOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
                 // TODO Auto-generated method stub
@@ -588,14 +680,14 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
+            public void undo() {
                 // TODO Implement logical undo of the command and test it.
             }
         }
 
-        Command c = new AddPropertyTypeCommand();
+        Operation c = new AddPropertyTypeOperation();
 
-        Command.storeAndExecute(c);
+        Operation.storeAndExecute(c);
     }
 
     /**
@@ -605,7 +697,7 @@ public class GUIOperations {
      * @param value
      */
     public void removePropertyValue(String id, String value) {
-        class RemovePropertyTypeCommand implements Command {
+        class RemovePropertyTypeOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
                 // TODO Auto-generated method stub
@@ -613,15 +705,15 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
+            public void undo() {
                 // TODO Implement logical undo of the command and test it.
             }
         }
 
-        Command c = new RemovePropertyTypeCommand();
+        Operation c = new RemovePropertyTypeOperation();
 
         try {
-            Command.storeAndExecute(c);
+            Operation.storeAndExecute(c);
         } catch (IllegalOperationException e) {
             throw new RuntimeException(e); // TODO: resolve this
         }
@@ -636,7 +728,7 @@ public class GUIOperations {
      * @throws IllegalOperationException
      */
     public void renamePropertyValue(String id, String value, String newValue) throws IllegalOperationException {
-        class RenamePropertyTypeCommand implements Command {
+        class RenamePropertyTypeOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
                 // TODO Auto-generated method stub
@@ -644,14 +736,14 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
+            public void undo() {
                 // TODO Implement logical undo of the command and test it.
             }
         }
 
-        Command c = new RenamePropertyTypeCommand();
+        Operation c = new RenamePropertyTypeOperation();
 
-        Command.storeAndExecute(c);
+        Operation.storeAndExecute(c);
     }
 
     /**
@@ -674,7 +766,7 @@ public class GUIOperations {
      * @param value
      */
     public void assignPropertyToNode(String node, String property, String type, String value) {
-        class AssignPropertyToNodeCommand implements Command {
+        class AssignPropertyToNodeOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
                 // TODO Auto-generated method stub
@@ -682,15 +774,15 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
+            public void undo() {
                 // TODO Implement logical undo of the command and test it.
             }
         }
 
-        Command c = new AssignPropertyToNodeCommand();
+        Operation c = new AssignPropertyToNodeOperation();
 
         try {
-            Command.storeAndExecute(c);
+            Operation.storeAndExecute(c);
         } catch (IllegalOperationException e) {
             throw new RuntimeException(e); // TODO: resolve this
         }
@@ -705,7 +797,7 @@ public class GUIOperations {
      * @param value
      */
     public void assignPropertyToRoute(String route, String property, String type, String value) {
-        class AssignPropertyToRouteCommand implements Command {
+        class AssignPropertyToRouteOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
                 // TODO Auto-generated method stub
@@ -713,28 +805,27 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
+            public void undo() {
                 // TODO Implement logical undo of the command and test it.
             }
         }
 
-        Command c = new AssignPropertyToRouteCommand();
+        Operation c = new AssignPropertyToRouteOperation();
 
         try {
-            Command.storeAndExecute(c);
+            Operation.storeAndExecute(c);
         } catch (IllegalOperationException e) {
             throw new RuntimeException(e); // TODO: resolve this
         }
     }
 
     /**
-     * TODO Add the property to the String ArrayList global property in
-     * GUINarrative "System.Types"
+     * TODO Add the property to the String ArrayList global property in GUINarrative "System.Types"
      * 
      * @param property
      */
     public void setAsRouteType(String property) {
-        class SetAsRouteTypeCommand implements Command {
+        class SetAsRouteTypeOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
                 // TODO Auto-generated method stub
@@ -742,28 +833,27 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
+            public void undo() {
                 // TODO Implement logical undo of the command and test it.
             }
         }
 
-        Command c = new SetAsRouteTypeCommand();
+        Operation c = new SetAsRouteTypeOperation();
 
         try {
-            Command.storeAndExecute(c);
+            Operation.storeAndExecute(c);
         } catch (IllegalOperationException e) {
             throw new RuntimeException(e); // TODO: resolve this
         }
     }
 
     /**
-     * TODO Remove the property from the String ArrayList global property in
-     * GUINarrative "System.Types"
+     * TODO Remove the property from the String ArrayList global property in GUINarrative "System.Types"
      * 
      * @param property
      */
     public void clearAsRouteType(String property) {
-        class ClearAsRouteTypeCommand implements Command {
+        class ClearAsRouteTypeOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
                 // TODO Auto-generated method stub
@@ -771,68 +861,72 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
+            public void undo() {
                 // TODO Implement logical undo of the command and test it.
             }
         }
 
-        Command c = new ClearAsRouteTypeCommand();
+        Operation c = new ClearAsRouteTypeOperation();
 
         try {
-            Command.storeAndExecute(c);
+            Operation.storeAndExecute(c);
         } catch (IllegalOperationException e) {
             throw new RuntimeException(e); // TODO: resolve this
         }
     }
 
     /**
-     * Sets the correct colour for the given value of the given property TODO
-     * make this use a better data structure
+     * Sets the correct colour for the given value of the given property TODO make this use a better data structure
      * 
      * @param property
      * @param value
      * @param c
      */
     public void setColor(String property, String value, Color c) throws IllegalOperationException {
-        class SetColorCommand implements Command {
+        if (colors.get(property) == null) {
+            colors.put(property, new HashMap<String, Color>());
+        }
+
+        class SetColorOperation implements Operation {
+            private Color mOldColor = colors.get(property).get(value);
+
             @Override
             public void execute() throws IllegalOperationException {
-                if (colours.get(property) == null) {
-                    colours.put(property, new HashMap<String, Color>());
+                if (colors.get(property) == null) {
+                    colors.put(property, new HashMap<String, Color>());
                 }
-                colours.get(property).put(value, c);
+                colors.get(property).put(value, c);
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
-                // TODO Implement logical undo of the command and test it.
+            public void undo() {
+                // TODO test it.
+                colors.get(property).put(value, mOldColor);
             }
         }
 
-        Command command = new SetColorCommand();
+        Operation operation = new SetColorOperation();
 
-        Command.storeAndExecute(command);
+        Operation.storeAndExecute(operation);
     }
 
     /**
-     * Gets the colour associated with this value of this property TODO use a
-     * better data Structure
+     * Gets the colour associated with this value of this property TODO use a better data Structure
      * 
      * @param property
      * @param value
      * @return
      */
     public Color getColor(String property, String value) {
-        if (colours.get(property) == null) {
+        if (colors.get(property) == null) {
             return Color.TRANSPARENT;
         }
-        Color c = colours.get(property).get(value);
+        Color c = colors.get(property).get(value);
         return c == null ? Color.TRANSPARENT : c;
     }
 
     /**
-     * TODO gets a list of all the non transparent colours of properties
-     * applying to a node
+     * TODO gets a list of all the non transparent colors of properties applying to a node
      * 
      * @return
      * @throws GraphElementNotFoundException 
@@ -844,8 +938,7 @@ public class GUIOperations {
     }
 
     /**
-     * TODO gets a list of all the non transparent colours of properties
-     * applying to a route
+     * TODO gets a list of all the non transparent colors of properties applying to a route
      * 
      * @return
      */
@@ -881,7 +974,7 @@ public class GUIOperations {
      *             if node doesn't exist
      */
     public void switchChoiceOrSynch(String node) throws IllegalOperationException {
-        class SwitchChoiceOrSynch implements Command {
+        class SwitchChoiceOrSynch implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
                 try {
@@ -892,25 +985,32 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
-                // TODO Implement logical undo of the command and test it.
+            public void undo() {
+                // TODO test it.
+                try {
+                    multinarrative.swapSyncAndChoice(node);
+                } catch (GraphElementNotFoundException e) {
+                    throw new RuntimeException(e); // This piece of code should never be reached
+                }
             }
         }
 
-        Command c = new SwitchChoiceOrSynch();
+        Operation c = new SwitchChoiceOrSynch();
 
-        Command.storeAndExecute(c);
+        Operation.storeAndExecute(c);
     }
 
     /**
      * Removes the required property
      * 
      * @throws IllegalOperationException
-     *             if can't remove property, message of exception is displayed
-     *             to the user, using the Strings class for formatting.
+     *             if can't remove property, message of exception is displayed to the user, using the Strings class for
+     *             formatting.
      */
     public void removeProperty(String s) throws IllegalOperationException {
-        class RemovePropertyCommand implements Command {
+        class RemovePropertyOperation implements Operation {
+            private BaseBundle mOldProperty = properties.get(s);
+
             @Override
             public void execute() throws IllegalOperationException {
                 if (!properties.containsKey(s)) {
@@ -920,25 +1020,26 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
-                // TODO Implement logical undo of the command and test it.
+            public void undo() {
+                // TODO test it
+                properties.put(s, mOldProperty);
             }
         }
 
-        Command c = new RemovePropertyCommand();
+        Operation c = new RemovePropertyOperation();
 
-        Command.storeAndExecute(c);
+        Operation.storeAndExecute(c);
     }
 
     /**
      * Changes the name of the required property
      * 
      * @throws IllegalOperationException
-     *             if can't rename property, message of exception is displayed
-     *             to the user, using the Strings class for formatting.
+     *             if can't rename property, message of exception is displayed to the user, using the Strings class for
+     *             formatting.
      */
     public void renameProperty(String from, String to) throws IllegalOperationException {
-        class RenamePropertyCommand implements Command {
+        class RenamePropertyOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
                 if (!properties.containsKey(from)) {
@@ -955,13 +1056,25 @@ public class GUIOperations {
             }
 
             @Override
-            public void undo() throws IllegalOperationException {
-                // TODO Implement logical undo of the command and test it.
+            public void undo() {
+                // TODO test it.
+                BaseBundle oldprop = properties.get(to);
+                properties.put(from, oldprop);
+
+                properties.remove(to);
             }
         }
 
-        Command c = new RenamePropertyCommand();
+        Operation c = new RenamePropertyOperation();
 
-        Command.storeAndExecute(c);
+        Operation.storeAndExecute(c);
+    }
+    
+    public void undoLastOperation() {
+        Operation.undoLastOperation();
+    }
+    
+    public void redoLastUndo() {
+        Operation.redoLastUndo();
     }
 }

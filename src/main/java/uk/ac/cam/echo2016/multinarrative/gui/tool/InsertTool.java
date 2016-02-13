@@ -57,7 +57,7 @@ public class InsertTool implements GraphTool {
 	@Override
 	public void mouseReleasedOnNode(MouseEvent event, GraphNode node) {
 		if (start != null) {
-			String name = graph.getOperations().getUniqueNarrativeName();
+			String name = graph.getOperations().getUniqueRouteName();
 			graph.getController().addRoute(name, start, node);
 		}
 	}

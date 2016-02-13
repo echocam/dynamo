@@ -31,6 +31,7 @@ import javafx.scene.shape.CubicCurve;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Text;
+import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphEdge;
@@ -42,7 +43,10 @@ import uk.ac.cam.echo2016.multinarrative.gui.tool.InsertTool;
 import uk.ac.cam.echo2016.multinarrative.gui.tool.SelectionTool;
 
 /**
+ * The class used by SceneBuilder as the source of all objects and methods.
+ * 
  * @author jr650
+ * @author rjm232
  */
 public class FXMLController {
 
@@ -94,15 +98,28 @@ public class FXMLController {
 
     private SelectionTool selectTool;
     private InsertTool insertTool;
+    
+    private String currentFile;
+
+    private FXMLGUI mainApp;
 
     private Node propertiesSource = null;
     private ContextMenu propertiesMenu = new ContextMenu();
+    
+    public Graph getGraph() { return graph; }
 
     /**
      * Initialise the controller. Called from the GUI bootstrap
      */
-    public void init() {
+    public void init(FXMLGUI main) {
         Debug.logInfo("Init Controller", 4, Debug.SYSTEM_GUI);
+        mainApp = main;
+        reInit();
+        
+    }
+    
+    private void reInit() {
+        currentFile = null;
         addProperty.disableProperty().bind(propertyName.textProperty().isEmpty());
         graphArea.minHeightProperty().bind(scroll.heightProperty());
         graphArea.minWidthProperty().bind(scroll.widthProperty());
@@ -144,6 +161,116 @@ public class FXMLController {
 
         routeStart.itemsProperty().bind(nodes.itemsProperty());
         routeEnd.itemsProperty().bind(nodes.itemsProperty());
+    }
+    
+
+    /**
+     * Code run when the "New" menu item is clicked in the File menu.
+     */
+    @FXML
+    protected void registerNewClicked() {
+        if (mainApp.checkIfShouldSave()) {
+            registerSaveClicked();
+        }
+
+        GraphNode[] setCopy = graph.getNodes().values().toArray(new GraphNode[0]);
+
+        for (GraphNode n : setCopy) {
+            removeNode(n.getName());
+        }
+
+        reInit();
+    }
+
+    /**
+     * Code run when the "Close" menu item is clicked in the File menu.
+     */
+    @FXML
+    protected void close() {
+        System.exit(0);
+    }
+
+    /**
+     * Code run when "About" is clicked in Help menu.
+     */
+    @FXML
+    protected void registerAboutClicked() {
+        mainApp.showAbout();
+    }
+
+    /**
+     * Code run when "Save" clicked in File menu
+     */
+    @FXML
+    protected void registerSaveClicked() {
+        showErrorDialog("This is an alert");
+        if (currentFile == null) {
+            registerSaveAsClicked();
+        } else {
+            try {
+                operations.saveInstance(currentFile);
+            } catch (IOException ioe) {
+                showErrorDialog("Error when trying to save file.");
+            }
+        }
+    }
+
+    /**
+     * Code run when "Save as" clicked in the File menu
+     */
+    @FXML
+    protected void registerSaveAsClicked() {
+        String returnedFile = mainApp.showSaveAs();
+        if (returnedFile == null) {
+            return;
+        }
+
+        currentFile = returnedFile;
+        try {
+            operations.saveInstance(currentFile);
+        } catch (IOException ioe) {
+            showErrorDialog("Error when trying to save file.");
+        }
+    }
+
+    /**
+     * Code run when saving fails
+     */
+    @FXML
+    protected void showErrorDialog(String message) {
+        mainApp.showError(message);
+    }
+
+    /**
+     * Code run when "Open" clicked in the File menu
+     */
+    @FXML
+    protected void registerOpenClicked() {
+        if (mainApp.checkIfShouldSave()) {
+            registerSaveClicked();
+        }
+        String returnedFile = mainApp.showOpen();
+        if (returnedFile == null) {
+            return;
+        }
+
+        currentFile = returnedFile;
+        try {
+            GraphNode[] setCopy = graph.getNodes().values().toArray(new GraphNode[0]);
+
+            for (GraphNode n : setCopy) {
+                removeNode(n.getName());
+            }
+            
+            reInit();
+            try{
+                operations.buildGraph(currentFile, this);
+            } catch (GraphElementNotFoundException ge) {
+                showErrorDialog(ge.getMessage());
+            }
+        } catch (IOException ioe) {
+            showErrorDialog("Error when trying to open file");
+        }
     }
 
     /**
@@ -395,6 +522,19 @@ public class FXMLController {
     public GUIOperations getOperations() {
         return operations;
     }
+    
+    /**
+     * Adds the node Id {@code name} to the list of nodes displayed on the left.
+     * 
+     * @param name
+     */
+    public void addNode(String name) {
+        int i = 0;
+        while (i < nodes.getItems().size() && nodes.getItems().get(i).compareTo(name) < 0) {
+            i++;
+        }
+        nodes.getItems().add(i, name);
+    }
 
     /**
      * Adds a new Synch node
@@ -490,7 +630,7 @@ public class FXMLController {
             }
             edge.setTo(node);
             edge.zeroOffset();
-            String s = operations.getUniqueNarrativeName();
+            String s = operations.getUniqueRouteName();
             addRoute(s, node, end);
             graph.updateNode(node);
         }
@@ -537,6 +677,7 @@ public class FXMLController {
         }
 
     }
+    
 
     /**
      * Removes a node
