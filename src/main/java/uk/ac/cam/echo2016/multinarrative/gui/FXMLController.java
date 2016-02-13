@@ -22,6 +22,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -98,15 +99,17 @@ public class FXMLController {
 
     private SelectionTool selectTool;
     private InsertTool insertTool;
-    
+
     private String currentFile;
 
     private FXMLGUI mainApp;
 
     private Node propertiesSource = null;
     private ContextMenu propertiesMenu = new ContextMenu();
-    
-    public Graph getGraph() { return graph; }
+
+    public Graph getGraph() {
+        return graph;
+    }
 
     /**
      * Initialise the controller. Called from the GUI bootstrap
@@ -115,11 +118,16 @@ public class FXMLController {
         Debug.logInfo("Init Controller", 4, Debug.SYSTEM_GUI);
         mainApp = main;
         reInit();
-        
+
     }
-    
+
     private void reInit() {
         currentFile = null;
+        propertyName.addEventFilter(KeyEvent.KEY_TYPED, event -> {
+            if (event.getCode() == KeyCode.EQUALS) {
+                event.consume();
+            }
+        });
         addProperty.disableProperty().bind(propertyName.textProperty().isEmpty());
         graphArea.minHeightProperty().bind(scroll.heightProperty());
         graphArea.minWidthProperty().bind(scroll.widthProperty());
@@ -161,13 +169,14 @@ public class FXMLController {
                         e.printStackTrace();
                     }
                 });
+        itemPropertyDelete.disableProperty()
+                .bind(itemProperties.getSelectionModel().selectedIndexProperty().lessThan(0));
         nodes.itemsProperty().set(FXCollections.observableArrayList());
         routes.itemsProperty().set(FXCollections.observableArrayList());
 
         routeStart.itemsProperty().bind(nodes.itemsProperty());
         routeEnd.itemsProperty().bind(nodes.itemsProperty());
     }
-    
 
     /**
      * Code run when the "New" menu item is clicked in the File menu.
@@ -266,9 +275,9 @@ public class FXMLController {
             for (GraphNode n : setCopy) {
                 removeNode(n.getName());
             }
-            
+
             reInit();
-            try{
+            try {
                 operations.buildGraph(currentFile, this);
             } catch (GraphElementNotFoundException ge) {
                 showErrorDialog(ge.getMessage());
@@ -328,6 +337,16 @@ public class FXMLController {
     }
 
     /**
+     * Deletes a property from an item
+     * 
+     * @param e
+     */
+    @FXML
+    protected void deleteItemProperty(ActionEvent e) {
+        deleteProperty(itemProperties.getSelectionModel().getSelectedItem());
+    }
+
+    /**
      * FXML hook. Sets a node to choice
      * 
      * @param event
@@ -341,7 +360,6 @@ public class FXMLController {
                 if (!operations.isChoiceNode(node)) {
                     operations.switchChoiceOrSynch(node);
                     for (GraphNode n : selectTool.getSelection()) {
-                        System.out.println(n.getContents().getShape());
                         n.getContents().setShape(new Circle(10));
                     }
                 }
@@ -391,7 +409,6 @@ public class FXMLController {
                 gEdge.setFrom(graph.getNodes().get(start));
             } catch (IllegalOperationException e) {
                 setInfo(e.getMessage(), edge, start);
-                System.out.println("Start: "+gEdge.getFrom().getName());
                 routeStart.setValue(gEdge.getFrom().getName());
             }
         }
@@ -414,7 +431,6 @@ public class FXMLController {
                 gEdge.setTo(graph.getNodes().get(end));
             } catch (IllegalOperationException e) {
                 setInfo(e.getMessage(), edge, end);
-                System.out.println("End: "+gEdge.getTo().getName());
                 routeEnd.setValue(gEdge.getTo().getName());
             }
         }
@@ -529,7 +545,7 @@ public class FXMLController {
     public GUIOperations getOperations() {
         return operations;
     }
-    
+
     /**
      * Adds the node Id {@code name} to the list of nodes displayed on the left.
      * 
@@ -687,7 +703,6 @@ public class FXMLController {
         }
 
     }
-    
 
     /**
      * Removes a node
@@ -733,23 +748,54 @@ public class FXMLController {
         Debug.logInfo("Assigning " + property + ":" + type + "=" + value + " to " + propertiesSource, 4,
                 Debug.SYSTEM_GUI);
         if (propertiesSource != null) {
-            Object o = propertiesSource.getUserData();
-            if (o instanceof GraphNode) {
-                GraphNode n = ((GraphNode) o);
-                operations.assignPropertyToNode(n.getName(), property, type, value);
-                graph.updateNode(n);
-                if (itemNode != null && itemNode) {
-                    initSelect();
+            try {
+                Object o = propertiesSource.getUserData();
+                if (o instanceof GraphNode) {
+                    GraphNode n = ((GraphNode) o);
+                    operations.assignPropertyToNode(n.getName(), property, type, value);
+                    graph.updateNode(n);
+                    if (itemNode != null && itemNode) {
+                        initSelect();
+                    }
+                } else if (o instanceof GraphEdge) {
+                    GraphEdge e = ((GraphEdge) o);
+                    operations.assignPropertyToRoute(e.getName(), property, type, value);
+                    graph.updateEdge(e);
+                    if (itemNode != null && !itemNode) {
+                        initSelect();
+                    }
                 }
-            } else if (o instanceof GraphEdge) {
-                GraphEdge e = ((GraphEdge) o);
-                operations.assignPropertyToRoute(e.getName(), property, type, value);
-                graph.updateEdge(e);
-                if (itemNode != null && !itemNode) {
-                    initSelect();
-                }
+                propertiesSource = null;
+            } catch (IllegalOperationException e) {
+                setInfo(e.getMessage(), property, type, value);
             }
-            propertiesSource = null;
+        }
+    }
+
+    /**
+     * Deletes a property value from the selected item
+     * 
+     * @param propertyAndValue
+     */
+    public void deleteProperty(String propertyAndValue) {
+        Debug.logInfo("Deleting " + propertyAndValue+" from selected item", 4, Debug.SYSTEM_GUI);
+        if (itemNode != null) {
+            try {
+                if (itemNode) {
+                    String node = nodes.getSelectionModel().getSelectedItem();
+                    operations.deleteProperty(node, propertyAndValue);
+                    graph.updateNode(graph.getNodes().get(node));
+                    initSelect();
+                } else {
+                    String route = routes.getSelectionModel().getSelectedItem();
+                    operations.deleteProperty(route, propertyAndValue);
+                    graph.updateEdge(graph.getEdges().get(route));
+                    initSelect();
+                }
+                propertiesSource = null;
+            } catch (IllegalOperationException e) {
+                setInfo(e.getMessage(), propertyAndValue);
+            }
         }
     }
 

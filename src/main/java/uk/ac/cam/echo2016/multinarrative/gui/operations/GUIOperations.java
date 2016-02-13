@@ -1,7 +1,10 @@
 package uk.ac.cam.echo2016.multinarrative.gui.operations;
 
-import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ADD_EMPTY_STRING;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.*;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ALREADY_EXISTS;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.CYCLE_EXISTS;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.INVALID_PROPERTY_FORMAT;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ITEM_DOES_NOT_EXIST;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.NODE_ALREADY_AT_POSITION;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.NODE_ALREADY_EXISTS;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.NODE_DOES_NOT_EXIST;
@@ -11,7 +14,7 @@ import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_RENAME_EXISTS;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ROUTE_ALREADY_EXISTS;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ROUTE_PREFIX;
-import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.CYCLE_EXISTS;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.SYSTEM_PROPERTY;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -169,7 +172,7 @@ public class GUIOperations {
                         properties.get(property).putDouble(value, Double.parseDouble(value));
                         break;
                     default:
-                        throw new IllegalOperationException("Type " + type + " connot be resolved.");
+                        throw new IllegalOperationException(INVALID_TYPE);
 
                     }
                 } catch (NumberFormatException e) {
@@ -774,19 +777,57 @@ public class GUIOperations {
     }
 
     /**
-     * TODO assign the given property to the correct node
+     * Assigns the given property to the correct node
      * 
-     * @param node
+     * @param id
      * @param property
      * @param type
      * @param value
+     * @throws IllegalOperationException
      */
-    public void assignPropertyToNode(String node, String property, String type, String value) {
+    public void assignPropertyToNode(String id, String property, String type, String value)
+            throws IllegalOperationException {
         class AssignPropertyToNodeOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
-                // TODO Auto-generated method stub
-
+                Node node = multinarrative.getNode(id);
+                if (node == null) {
+                    throw new IllegalOperationException(NODE_DOES_NOT_EXIST);
+                }
+                node.createProperties();
+                BaseBundle b = node.getProperties();
+                try {
+                    switch (type) {
+                    case "String":
+                        b.putString(property, value);
+                        break;
+                    case "Integer":
+                        b.putInt(property, Integer.parseInt(value));
+                        break;
+                    case "Boolean":
+                        b.putBoolean(property, Boolean.parseBoolean(value));
+                        break;
+                    case "Byte":
+                        b.putByte(property, Byte.parseByte(value));
+                        break;
+                    case "Short":
+                        b.putShort(property, Short.parseShort(value));
+                        break;
+                    case "Long":
+                        b.putLong(property, Long.parseLong(value));
+                        break;
+                    case "Float":
+                        b.putFloat(property, Float.parseFloat(value));
+                        break;
+                    case "Double":
+                        b.putDouble(property, Double.parseDouble(value));
+                        break;
+                    default:
+                        throw new IllegalOperationException(INVALID_TYPE);
+                    }
+                } catch (NumberFormatException nfe) {
+                    throw new IllegalOperationException(INVALID_FORMAT, nfe);
+                }
             }
 
             @Override
@@ -797,27 +838,61 @@ public class GUIOperations {
 
         Operation c = new AssignPropertyToNodeOperation();
 
-        try {
-            Operation.storeAndExecute(c);
-        } catch (IllegalOperationException e) {
-            throw new RuntimeException(e); // TODO: resolve this
-        }
+        Operation.storeAndExecute(c);
+
     }
 
     /**
-     * TODO Assign the given property to the given route
+     * Assigns the given property to the given route
      * 
      * @param route
      * @param property
      * @param type
      * @param value
+     * @throws IllegalOperationException 
      */
-    public void assignPropertyToRoute(String route, String property, String type, String value) {
+    public void assignPropertyToRoute(String id, String property, String type, String value) throws IllegalOperationException {
         class AssignPropertyToRouteOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
-                // TODO Auto-generated method stub
-
+                Route route = multinarrative.getRoute(id);
+                if (route == null) {
+                    throw new IllegalOperationException(NODE_DOES_NOT_EXIST);
+                }
+                route.createProperties();
+                BaseBundle b = route.getProperties();
+                try {
+                    switch (type) {
+                    case "String":
+                        b.putString(property, value);
+                        break;
+                    case "Integer":
+                        b.putInt(property, Integer.parseInt(value));
+                        break;
+                    case "Boolean":
+                        b.putBoolean(property, Boolean.parseBoolean(value));
+                        break;
+                    case "Byte":
+                        b.putByte(property, Byte.parseByte(value));
+                        break;
+                    case "Short":
+                        b.putShort(property, Short.parseShort(value));
+                        break;
+                    case "Long":
+                        b.putLong(property, Long.parseLong(value));
+                        break;
+                    case "Float":
+                        b.putFloat(property, Float.parseFloat(value));
+                        break;
+                    case "Double":
+                        b.putDouble(property, Double.parseDouble(value));
+                        break;
+                    default:
+                        throw new IllegalOperationException(INVALID_TYPE);
+                    }
+                } catch (NumberFormatException nfe) {
+                    throw new IllegalOperationException(INVALID_FORMAT, nfe);
+                }
             }
 
             @Override
@@ -828,11 +903,7 @@ public class GUIOperations {
 
         Operation c = new AssignPropertyToRouteOperation();
 
-        try {
-            Operation.storeAndExecute(c);
-        } catch (IllegalOperationException e) {
-            throw new RuntimeException(e); // TODO: resolve this
-        }
+        Operation.storeAndExecute(c);
     }
 
     /**
@@ -1091,6 +1162,57 @@ public class GUIOperations {
         Operation c = new RenamePropertyOperation();
 
         Operation.storeAndExecute(c);
+    }
+
+    /**
+     * Deletes a property from a node or route.
+     * 
+     * @param id
+     * @param propertyAndValue
+     * @throws IllegalOperationException
+     */
+    public void deleteProperty(String id, String propertyAndValue) throws IllegalOperationException {
+        class DeletePropertyOperation implements Operation {
+            Node node = multinarrative.getNode(id);
+            Route route = multinarrative.getRoute(id);
+            String[] items = propertyAndValue.split("=");
+
+            @Override
+            public void execute() throws IllegalOperationException {
+                if (items.length < 1) {
+                    throw new IllegalOperationException(INVALID_PROPERTY_FORMAT);
+                }
+                String s = items[0];
+                if (s.equals("GUI.X") || s.equals("GUI.Y")) {
+                    throw new IllegalOperationException(SYSTEM_PROPERTY);
+                }
+                if (node != null) {
+                    BaseBundle b = node.getProperties();
+                    if (b != null) {
+                        b.remove(s);
+                    }
+                } else if (route != null) {
+                    BaseBundle b = route.getProperties();
+                    if (b != null) {
+                        b.remove(s);
+                    }
+                } else {
+                    throw new IllegalOperationException(ITEM_DOES_NOT_EXIST);
+                }
+            }
+
+            @Override
+            public void undo() {
+                // TODO Auto-generated method stub
+
+            }
+
+        }
+
+        Operation c = new DeletePropertyOperation();
+
+        Operation.storeAndExecute(c);
+
     }
 
     public void undoLastOperation() {
