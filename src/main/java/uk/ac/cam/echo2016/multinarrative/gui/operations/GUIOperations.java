@@ -36,8 +36,9 @@ import uk.ac.cam.echo2016.multinarrative.io.SaveWriter;
 /**
  * The class that encapsulates all GUI operations.
  * 
- * Every method that mutates or changes the state of the program in some form MUST be implemented using the Operation
- * class. This is to allow for the undoing of operations.
+ * Every method that mutates or changes the state of the program in some form
+ * MUST be implemented using the Operation class. This is to allow for the
+ * undoing of operations.
  * 
  * @author jr650
  * @author eyx20
@@ -65,8 +66,8 @@ public class GUIOperations {
      * Adds the required property
      * 
      * @throws IllegalOperationException
-     *             if can't add property, message of exception is displayed to the user, using the Strings class for
-     *             formatting.
+     *             if can't add property, message of exception is displayed to
+     *             the user, using the Strings class for formatting.
      */
     public void addProperty(String s) throws IllegalOperationException {
         class AddPropertyOperation implements Operation {
@@ -94,7 +95,8 @@ public class GUIOperations {
     }
 
     /**
-     * TODO Sets property type, which this class should then use to validate further input.
+     * TODO Sets property type, which this class should then use to validate
+     * further input.
      * 
      * @param property
      * @param type
@@ -120,17 +122,18 @@ public class GUIOperations {
     }
 
     /**
-     * Adds a value to a given property 
+     * Adds a value to a given property
      * 
      * @param property
      *            - property name to add value to
      * @param type
-     *            - data type of the value, selected from {"String", "Integer", "Boolean", "Byte", "Short", "Long",
-     *            "Float", "Double"}
+     *            - data type of the value, selected from {"String", "Integer",
+     *            "Boolean", "Byte", "Short", "Long", "Float", "Double"}
      * @param value
      *            - value to be added
      * @throws IllegalOperationException
-     *             when value cannot be added to the property. Informative message is sent to the user.
+     *             when value cannot be added to the property. Informative
+     *             message is sent to the user.
      */
     public void addValue(String property, String type, String value) throws IllegalOperationException {
         class AddValueOperation implements Operation {
@@ -167,13 +170,13 @@ public class GUIOperations {
                         break;
                     default:
                         throw new IllegalOperationException("Type " + type + " connot be resolved.");
-    
+
                     }
                 } catch (NumberFormatException e) {
-                    throw new IllegalOperationException("Value " + value + " connot be "
-                            + "resolved to type " + type + ".");
+                    throw new IllegalOperationException(
+                            "Value " + value + " connot be " + "resolved to type " + type + ".");
                 }
-                
+
             }
 
             @Override
@@ -360,7 +363,8 @@ public class GUIOperations {
     }
 
     /**
-     * Adds a route, throwing exception if it fails, due to names existing or a cycle being created.
+     * Adds a route, throwing exception if it fails, due to names existing or a
+     * cycle being created.
      * 
      * @param name
      *            - unique id of the route
@@ -428,7 +432,7 @@ public class GUIOperations {
             public void execute() throws IllegalOperationException {
                 if (!from.equals(to) && multinarrative.isUniqueId(to)) {
                     multinarrative.renameNode(from, to);
-                }            
+                }
             }
 
             @Override
@@ -480,14 +484,21 @@ public class GUIOperations {
         class SetEndOperation implements Operation {
             private Route mRoute = multinarrative.getRoute(route);
             private Node mOldEnd = mRoute.getEnd();
-            private Node mNewEnd = multinarrative.getNode(node);
 
             @Override
             public void execute() throws IllegalOperationException {
-                mRoute.setEnd(mNewEnd);
+                try {
+                    multinarrative.setEnd(route, node);
+                } catch (GraphElementNotFoundException e) {
+                    throw new IllegalOperationException(e);
+                }
                 DFSCycleDetect detect = new DFSCycleDetect(multinarrative.getRoute(route).getStart());
                 if (detect.hasCycle()) {
-                    multinarrative.removeRoute(route);
+                    try {
+                        multinarrative.setEnd(route, mOldEnd.getId());
+                    } catch (GraphElementNotFoundException e) {
+                        throw new IllegalOperationException(e);
+                    }
                     throw new IllegalOperationException(CYCLE_EXISTS);
                 }
             }
@@ -501,11 +512,8 @@ public class GUIOperations {
 
         Operation c = new SetEndOperation();
 
-        try {
-            Operation.storeAndExecute(c);
-        } catch (IllegalOperationException e) {
-            throw new RuntimeException(e); // TODO: resolve this
-        }
+        Operation.storeAndExecute(c);
+
     }
 
     /**
@@ -517,17 +525,24 @@ public class GUIOperations {
         class SetStartOperation implements Operation {
             private Route mRoute = multinarrative.getRoute(route);
             private Node mOldStart = mRoute.getStart();
-            private Node mNewStart = multinarrative.getNode(node);
 
             @Override
             public void execute() throws IllegalOperationException {
-                mRoute.setStart(mNewStart);
-                DFSCycleDetect detect = new DFSCycleDetect(multinarrative.getNode(node));
+                try {
+                    multinarrative.setStart(route, node);
+                } catch (GraphElementNotFoundException e) {
+                    throw new IllegalOperationException(e);
+                }
+                DFSCycleDetect detect = new DFSCycleDetect(multinarrative.getRoute(route).getStart());
                 if (detect.hasCycle()) {
-                    multinarrative.removeRoute(route);
+                    try {
+                        multinarrative.setStart(route, mOldStart.getId());
+                    } catch (GraphElementNotFoundException e) {
+                        throw new IllegalOperationException(e);
+                    }
                     throw new IllegalOperationException(CYCLE_EXISTS);
                 }
-               
+
             }
 
             @Override
@@ -619,7 +634,8 @@ public class GUIOperations {
     }
 
     /**
-     * Uses the FXMLController provided to rebuild the graph from the filename given.
+     * Uses the FXMLController provided to rebuild the graph from the filename
+     * given.
      * 
      * @throws IOException
      * @throws GraphElementNotFoundException
@@ -820,7 +836,8 @@ public class GUIOperations {
     }
 
     /**
-     * TODO Add the property to the String ArrayList global property in GUINarrative "System.Types"
+     * TODO Add the property to the String ArrayList global property in
+     * GUINarrative "System.Types"
      * 
      * @param property
      */
@@ -848,7 +865,8 @@ public class GUIOperations {
     }
 
     /**
-     * TODO Remove the property from the String ArrayList global property in GUINarrative "System.Types"
+     * TODO Remove the property from the String ArrayList global property in
+     * GUINarrative "System.Types"
      * 
      * @param property
      */
@@ -876,7 +894,8 @@ public class GUIOperations {
     }
 
     /**
-     * Sets the correct colour for the given value of the given property TODO make this use a better data structure
+     * Sets the correct colour for the given value of the given property TODO
+     * make this use a better data structure
      * 
      * @param property
      * @param value
@@ -911,7 +930,8 @@ public class GUIOperations {
     }
 
     /**
-     * Gets the colour associated with this value of this property TODO use a better data Structure
+     * Gets the colour associated with this value of this property TODO use a
+     * better data Structure
      * 
      * @param property
      * @param value
@@ -926,10 +946,11 @@ public class GUIOperations {
     }
 
     /**
-     * TODO gets a list of all the non transparent colors of properties applying to a node
+     * TODO gets a list of all the non transparent colors of properties applying
+     * to a node
      * 
      * @return
-     * @throws GraphElementNotFoundException 
+     * @throws GraphElementNotFoundException
      */
     public ArrayList<Color> getNodeColor(String node) throws GraphElementNotFoundException {
         ArrayList<Color> r = new ArrayList<Color>();
@@ -938,7 +959,8 @@ public class GUIOperations {
     }
 
     /**
-     * TODO gets a list of all the non transparent colors of properties applying to a route
+     * TODO gets a list of all the non transparent colors of properties applying
+     * to a route
      * 
      * @return
      */
@@ -990,7 +1012,8 @@ public class GUIOperations {
                 try {
                     multinarrative.swapSyncAndChoice(node);
                 } catch (GraphElementNotFoundException e) {
-                    throw new RuntimeException(e); // This piece of code should never be reached
+                    throw new RuntimeException(e); // This piece of code should
+                                                   // never be reached
                 }
             }
         }
@@ -1004,8 +1027,8 @@ public class GUIOperations {
      * Removes the required property
      * 
      * @throws IllegalOperationException
-     *             if can't remove property, message of exception is displayed to the user, using the Strings class for
-     *             formatting.
+     *             if can't remove property, message of exception is displayed
+     *             to the user, using the Strings class for formatting.
      */
     public void removeProperty(String s) throws IllegalOperationException {
         class RemovePropertyOperation implements Operation {
@@ -1035,8 +1058,8 @@ public class GUIOperations {
      * Changes the name of the required property
      * 
      * @throws IllegalOperationException
-     *             if can't rename property, message of exception is displayed to the user, using the Strings class for
-     *             formatting.
+     *             if can't rename property, message of exception is displayed
+     *             to the user, using the Strings class for formatting.
      */
     public void renameProperty(String from, String to) throws IllegalOperationException {
         class RenamePropertyOperation implements Operation {
@@ -1069,11 +1092,11 @@ public class GUIOperations {
 
         Operation.storeAndExecute(c);
     }
-    
+
     public void undoLastOperation() {
         Operation.undoLastOperation();
     }
-    
+
     public void redoLastUndo() {
         Operation.redoLastUndo();
     }

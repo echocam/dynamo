@@ -391,6 +391,7 @@ public class FXMLController {
                 gEdge.setFrom(graph.getNodes().get(start));
             } catch (IllegalOperationException e) {
                 setInfo(e.getMessage(), edge, start);
+                System.out.println("Start: "+gEdge.getFrom().getName());
                 routeStart.setValue(gEdge.getFrom().getName());
             }
         }
@@ -413,7 +414,8 @@ public class FXMLController {
                 gEdge.setTo(graph.getNodes().get(end));
             } catch (IllegalOperationException e) {
                 setInfo(e.getMessage(), edge, end);
-                routeStart.setValue(gEdge.getFrom().getName());
+                System.out.println("End: "+gEdge.getTo().getName());
+                routeEnd.setValue(gEdge.getTo().getName());
             }
         }
     }
