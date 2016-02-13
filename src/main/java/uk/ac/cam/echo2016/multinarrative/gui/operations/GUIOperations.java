@@ -11,6 +11,7 @@ import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_RENAME_EXISTS;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ROUTE_ALREADY_EXISTS;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ROUTE_PREFIX;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.CYCLE_EXISTS;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -117,8 +118,7 @@ public class GUIOperations {
     }
 
     /**
-     * Adds a value to a given property TODO use type to check the input is
-     * correct and throw exception if not!
+     * Adds a value to a given property 
      * 
      * @param property
      *            - property name to add value to
@@ -138,35 +138,41 @@ public class GUIOperations {
                 if (!properties.containsKey(property)) {
                     throw new IllegalOperationException(PROPERTY_DOES_NOT_EXIST);
                 }
-                switch (type) {
-                case "String":
-                    properties.get(property).putString(value, value);
-                    break;
-                case "Integer":
-                    properties.get(property).putInt(value, Integer.parseInt(value));
-                    break;
-                case "Boolean":
-                    properties.get(property).putBoolean(value, Boolean.parseBoolean(value));
-                    break;
-                case "Byte":
-                    properties.get(property).putByte(value, Byte.parseByte(value));
-                    break;
-                case "Short":
-                    properties.get(property).putShort(value, Short.parseShort(value));
-                    break;
-                case "Long":
-                    properties.get(property).putLong(value, Long.parseLong(value));
-                    break;
-                case "Float":
-                    properties.get(property).putFloat(value, Integer.parseInt(value));
-                    break;
-                case "Double":
-                    properties.get(property).putDouble(value, Double.parseDouble(value));
-                    break;
-                default:
-                    throw new IllegalOperationException("Type " + type + " connot be resolved.");
-
+                try {
+                    switch (type) {
+                    case "String":
+                        properties.get(property).putString(value, value);
+                        break;
+                    case "Integer":
+                        properties.get(property).putInt(value, Integer.parseInt(value));
+                        break;
+                    case "Boolean":
+                        properties.get(property).putBoolean(value, Boolean.parseBoolean(value));
+                        break;
+                    case "Byte":
+                        properties.get(property).putByte(value, Byte.parseByte(value));
+                        break;
+                    case "Short":
+                        properties.get(property).putShort(value, Short.parseShort(value));
+                        break;
+                    case "Long":
+                        properties.get(property).putLong(value, Long.parseLong(value));
+                        break;
+                    case "Float":
+                        properties.get(property).putFloat(value, Float.parseFloat(value));
+                        break;
+                    case "Double":
+                        properties.get(property).putDouble(value, Double.parseDouble(value));
+                        break;
+                    default:
+                        throw new IllegalOperationException("Type " + type + " connot be resolved.");
+    
+                    }
+                } catch (NumberFormatException e) {
+                    throw new IllegalOperationException("Value " + value + " connot be "
+                            + "resolved to type " + type + ".");
                 }
+                
             }
 
             @Override
@@ -206,7 +212,6 @@ public class GUIOperations {
      * 
      * @throws NonUniqueIdException
      */
-    // TODO: remove position checking, it's not needed
     public void addSynchNode(String name, double x, double y) throws IllegalOperationException {
         class AddSynchNodeCommand implements Command {
             @Override
@@ -275,7 +280,6 @@ public class GUIOperations {
     /**
      * Repositions a node by the given offset
      */
-    // TODO: Check if node is out of bounds/illegal coordinate
     public void translateNode(String name, double x, double y) throws IllegalOperationException {
         class TranslateNodeCommand implements Command {
             @Override
@@ -371,7 +375,7 @@ public class GUIOperations {
                 DFSCycleDetect cycleDetect = new DFSCycleDetect(multinarrative.getNode(start));
                 if (cycleDetect.hasCycle()) {
                     multinarrative.removeRoute(name);
-                    throw new IllegalOperationException("Cannot add route: Graph will contain a cycle");
+                    throw new IllegalOperationException(CYCLE_EXISTS);
                 }
             }
 
@@ -404,7 +408,6 @@ public class GUIOperations {
     }
 
     /**
-     * TODO check that to is unique, unless to === from
      * 
      * @param from
      * @param to
@@ -414,8 +417,9 @@ public class GUIOperations {
         class RenameNodeCommand implements Command {
             @Override
             public void execute() throws IllegalOperationException {
-                if (!from.equals(to))
+                if (!from.equals(to) && multinarrative.isUniqueId(to)) {
                     multinarrative.renameNode(from, to);
+                }            
             }
 
             @Override
@@ -430,7 +434,6 @@ public class GUIOperations {
     }
 
     /**
-     * TODO check that to is unique, unless to === from
      * 
      * @param from
      * @param to
@@ -440,7 +443,7 @@ public class GUIOperations {
         class RenameRouteCommand implements Command {
             @Override
             public void execute() throws IllegalOperationException {
-                if (!from.equals(to))
+                if (!from.equals(to) && multinarrative.isUniqueId(to))
                     multinarrative.renameRoute(from, to);
             }
 
@@ -456,7 +459,6 @@ public class GUIOperations {
     }
 
     /**
-     * TODO cycle detection
      * 
      * @param route
      * @param node
@@ -466,6 +468,11 @@ public class GUIOperations {
             @Override
             public void execute() throws IllegalOperationException {
                 multinarrative.getRoute(route).setEnd(multinarrative.getNode(node));
+                DFSCycleDetect detect = new DFSCycleDetect(multinarrative.getRoute(route).getStart());
+                if (detect.hasCycle()) {
+                    multinarrative.removeRoute(route);
+                    throw new IllegalOperationException(CYCLE_EXISTS);
+                }
             }
 
             @Override
@@ -484,7 +491,6 @@ public class GUIOperations {
     }
 
     /**
-     * TODO cycle detection
      * 
      * @param route
      * @param node
@@ -494,6 +500,12 @@ public class GUIOperations {
             @Override
             public void execute() throws IllegalOperationException {
                 multinarrative.getRoute(route).setStart(multinarrative.getNode(node));
+                DFSCycleDetect detect = new DFSCycleDetect(multinarrative.getNode(node));
+                if (detect.hasCycle()) {
+                    multinarrative.removeRoute(route);
+                    throw new IllegalOperationException(CYCLE_EXISTS);
+                }
+               
             }
 
             @Override
@@ -823,9 +835,11 @@ public class GUIOperations {
      * applying to a node
      * 
      * @return
+     * @throws GraphElementNotFoundException 
      */
-    public ArrayList<Color> getNodeColor(String node) {
+    public ArrayList<Color> getNodeColor(String node) throws GraphElementNotFoundException {
         ArrayList<Color> r = new ArrayList<Color>();
+        multinarrative.getProperties(node);
         return r;
     }
 
