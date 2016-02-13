@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.gui.FXUtil;
 
 /**
@@ -23,7 +24,8 @@ public class GraphNode {
 	private DoubleProperty x = new SimpleDoubleProperty();
 	private DoubleProperty y = new SimpleDoubleProperty();
 
-	public GraphNode(Region node, StringProperty name, double x, double y, Graph g) {
+	public GraphNode(Region node, StringProperty name, double x, double y, Graph g) 
+	        throws GraphElementNotFoundException {
 		node.setUserData(this);
 		contents = node;
 		this.name = name;
@@ -76,7 +78,7 @@ public class GraphNode {
 		return name.get();
 	}
 
-	public void update(Graph g) {
+	public void update(Graph g) throws GraphElementNotFoundException {
 		ArrayList<Color> c = g.getOperations().getNodeColor(name.get());
 		if (c.isEmpty()) {
 			contents.setStyle("-fx-background-color: #333333;");

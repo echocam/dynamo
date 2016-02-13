@@ -9,6 +9,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.CubicCurve;
 import javafx.scene.shape.Shape;
+import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.gui.FXMLController;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.GUIOperations;
 
@@ -65,7 +66,7 @@ public class Graph {
 		edge.update(this);
 	}
 
-	public void updateNode(GraphNode node) {
+	public void updateNode(GraphNode node) throws GraphElementNotFoundException {
 		node.update(this);
 		for (GraphEdge edge : edges.values()) {
 			if (edge.getFrom() == node || edge.getTo() == node) {
@@ -129,7 +130,7 @@ public class Graph {
 		return pane;
 	}
 
-	public void renameNode(String from, String to) {
+	public void renameNode(String from, String to) throws GraphElementNotFoundException {
 		GraphNode node = nodes.remove(from);
 		if (node != null){
 			node.getNameProperty().set(to);

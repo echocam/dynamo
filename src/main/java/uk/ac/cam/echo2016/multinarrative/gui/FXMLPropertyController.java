@@ -134,7 +134,12 @@ public class FXMLPropertyController implements Initializable {
 			values.getItems().add(s);
 			MenuItem item = new MenuItem(s);
 			item.setOnAction(trigger -> {
-				controller.assignProperty(propName, typeName, s);				
+				try {
+                    controller.assignProperty(propName, typeName, s);
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }				
 			});
 			menu.getItems().add(item);
 		} catch (IllegalOperationException e) {

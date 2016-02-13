@@ -2,6 +2,7 @@ package uk.ac.cam.echo2016.multinarrative.gui.tool;
 
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphEdge;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphNode;
@@ -29,10 +30,20 @@ public class InsertTool implements GraphTool {
 		if (!dragging) {
 			if (pressed != null) {
 				String name = graph.getOperations().getUniqueNodeName();
-				graph.getController().addChoiceNode(name, pressed);
+				try {
+                    graph.getController().addChoiceNode(name, pressed);
+                } catch (GraphElementNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 			} else if (start == null) {
 				String name = graph.getOperations().getUniqueNodeName();
-				graph.getController().addSynchNode(name, event.getX(), event.getY());
+				try {
+                    graph.getController().addSynchNode(name, event.getX(), event.getY());
+                } catch (GraphElementNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 			}
 		}
 		start = null;

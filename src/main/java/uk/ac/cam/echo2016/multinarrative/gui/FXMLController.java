@@ -154,7 +154,12 @@ public class FXMLController {
 
         itemName.textProperty()
                 .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-                    changeSelectName();
+                    try {
+                        changeSelectName();
+                    } catch (Exception e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 });
         nodes.itemsProperty().set(FXCollections.observableArrayList());
         routes.itemsProperty().set(FXCollections.observableArrayList());
@@ -545,8 +550,9 @@ public class FXMLController {
      *            position-x
      * @param y
      *            position-y
+     * @throws GraphElementNotFoundException 
      */
-    public void addSynchNode(String name, double x, double y) {
+    public void addSynchNode(String name, double x, double y) throws GraphElementNotFoundException {
         Debug.logInfo("Adding Synch " + name, 4, Debug.SYSTEM_GUI);
         try {
             operations.addSynchNode(name, x, y);
@@ -582,8 +588,9 @@ public class FXMLController {
      * @param y
      *            position-coordinate
      * @return
+     * @throws GraphElementNotFoundException 
      */
-    public GraphNode addChoiceNode(String name, double x, double y) {
+    public GraphNode addChoiceNode(String name, double x, double y) throws GraphElementNotFoundException {
         Debug.logInfo("Adding Choice " + name, 4, Debug.SYSTEM_GUI);
         try {
             operations.addChoiceNode(name, x, y);
@@ -618,8 +625,9 @@ public class FXMLController {
      *            node id
      * @param edge
      *            edge to bisect
+     * @throws GraphElementNotFoundException 
      */
-    public void addChoiceNode(String name, GraphEdge edge) {
+    public void addChoiceNode(String name, GraphEdge edge) throws GraphElementNotFoundException {
         GraphNode node = addChoiceNode(name, edge.getControl().getLayoutX(), edge.getControl().getLayoutY());
         if (node != null) {
             GraphNode end = edge.getTo();
@@ -717,8 +725,9 @@ public class FXMLController {
      * @param value
      *            Value of property (guiOperations should check type before
      *            adding
+     * @throws GraphElementNotFoundException 
      */
-    public void assignProperty(String property, String type, String value) {
+    public void assignProperty(String property, String type, String value) throws GraphElementNotFoundException {
         Debug.logInfo("Assigning " + property + ":" + type + "=" + value + " to " + propertiesSource, 4,
                 Debug.SYSTEM_GUI);
         if (propertiesSource != null) {
@@ -777,8 +786,9 @@ public class FXMLController {
 
     /**
      * Changes the name of the selection
+     * @throws GraphElementNotFoundException 
      */
-    public void changeSelectName() {
+    public void changeSelectName() throws GraphElementNotFoundException {
         Debug.logInfo("Change Selected Item Name", 4, Debug.SYSTEM_GUI);
 
         if (itemNode != null) {
