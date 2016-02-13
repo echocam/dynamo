@@ -78,8 +78,15 @@ public class GraphNode {
 		return name.get();
 	}
 
-	public void update(Graph g) throws GraphElementNotFoundException {
-		ArrayList<Color> c = g.getOperations().getNodeColor(name.get());
+
+	public void update(Graph g) {
+	    
+		ArrayList<Color> c;
+        try {
+            c = g.getOperations().getNodeColor(name.get());
+        } catch (GraphElementNotFoundException e) {
+            c = new ArrayList<>();
+        }
 		if (c.isEmpty()) {
 			contents.setStyle("-fx-background-color: #333333;");
 		}else if (c.size() == 1){
