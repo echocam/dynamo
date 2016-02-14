@@ -8,7 +8,10 @@ public class Strings{
     public static final String PROPERTY_ADDED = "Added Property: %1";
     public static final String PROPERTY_REMOVED = "Removed Property: %1";
     public static final String PROPERTY_VALUE = "Value%1";
+    public static final String INVALID_FORMAT = "Format is incorrect";
     
+    public static final String INVALID_PROPERTY_FORMAT = "Property is not formatted correctly";
+    public static final String SYSTEM_PROPERTY = "%1 is a System property";
     public static final String PROPERTY_MISSING = "Property %1 cannot be renamed: Property does not exist.";
     public static final String PROPERTY_RENAME_EXISTS = "Property cannot be renamed to %2: already exists."; 
     public static final String ADD_EMPTY_STRING = "Please type a property name";
@@ -17,9 +20,11 @@ public class Strings{
     public static final String PROPERTY_DOES_NOT_EXIST = "Property %1 does not exist.";
     public static final String NODE_ALREADY_EXISTS = "A node with that name already exists";
     public static final String NODE_DOES_NOT_EXIST = "No node with that name exists";
+    public static final String ITEM_DOES_NOT_EXIST = "No node or route with that name exists";
     public static final String NODE_ALREADY_AT_POSITION = "Node already exists at given position.";
     public static final String ROUTE_ALREADY_EXISTS = "A route with this name already exists";
     public static final String COULD_NOT_RENAME = "Couldn't rename %1";
+    public static final String CYCLE_EXISTS = "Route cannot be added: Graph will contain cycle";
 
     public static final String ROUTE_PREFIX = "Route-%1";
     public static final String NODE_PREFIX = "Node-%1";

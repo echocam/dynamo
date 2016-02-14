@@ -40,7 +40,6 @@ public abstract class MultiNarrative implements Serializable { //TODO Documentat
     public Route getRoute(String id) {
         return routes.get(id);
     }
-    
 
     public BaseBundle getGlobalProperties() {
         return properties;

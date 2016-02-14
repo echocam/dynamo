@@ -263,4 +263,34 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
         newNode.setProperties(node.getProperties());
         nodes.put(nodeId, newNode);
     }
+    
+    public void setEnd(String routeId, String nodeId) throws GraphElementNotFoundException{
+        Route route = routes.get(routeId);
+        if(route==null){
+            throw new GraphElementNotFoundException("Error: Route with id: " + routeId + " not found");
+        }
+        Node newNode = nodes.get(nodeId);
+        if(newNode==null){
+            throw new GraphElementNotFoundException("Error: Node with id: " + nodeId + " not found");
+        }
+        Node oldNode = route.getEnd();
+        oldNode.getEntering().remove(route);
+        route.setEnd(newNode);
+        newNode.getEntering().add(route);
+    }
+    
+    public void setStart(String routeId, String nodeId) throws GraphElementNotFoundException{
+        Route route = routes.get(routeId);
+        if(route==null){
+            throw new GraphElementNotFoundException("Error: Route with id: " + routeId + " not found");
+        }
+        Node newNode = nodes.get(nodeId);
+        if(newNode==null){
+            throw new GraphElementNotFoundException("Error: Node with id: " + nodeId + " not found");
+        }
+        Node oldNode = route.getEnd();
+        oldNode.getExiting().remove(route);
+        route.setStart(newNode);
+        newNode.getExiting().add(route);
+    }
 }
