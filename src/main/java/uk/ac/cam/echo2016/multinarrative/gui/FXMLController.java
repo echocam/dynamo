@@ -187,6 +187,9 @@ public class FXMLController {
      */
     @FXML
     protected void close() {
+        if (mainApp.checkIfShouldSave()) {
+            registerSaveClicked();
+        }
         System.exit(0);
     }
 
