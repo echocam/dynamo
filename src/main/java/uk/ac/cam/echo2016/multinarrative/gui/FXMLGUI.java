@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import uk.ac.cam.echo2016.multinarrative.gui.operations.Strings;
 
 import java.io.File;
 import java.io.IOException;
@@ -75,6 +76,15 @@ public class FXMLGUI extends Application {
             // Indicates that fxml files aren't set up properly...
             throw new RuntimeException("FXML files not configured correctly", ioe);
         }
+    }
+    
+    @FXML
+    public void altShowAbout() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("About");
+        alert.setHeaderText(null);
+        alert.setContentText(Strings.ABOUT_TEXT);
+        alert.showAndWait();
     }
 
     /**

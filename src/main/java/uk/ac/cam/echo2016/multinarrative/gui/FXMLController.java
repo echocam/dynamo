@@ -198,7 +198,18 @@ public class FXMLController {
      */
     @FXML
     protected void registerAboutClicked() {
+        //TODO Change which line is commented to show alternative.
         mainApp.showAbout();
+        //mainApp.altShowAbout();
+    }
+    
+    /**
+     * Code run when "Instructions" is clicked in Help menu.
+     */
+    @FXML
+    protected void registerInstructionsClicked() {
+        //TODO implement
+        //mainApp.showInstructions();
     }
 
     /**
