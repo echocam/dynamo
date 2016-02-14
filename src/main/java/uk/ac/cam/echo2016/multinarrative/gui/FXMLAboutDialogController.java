@@ -21,7 +21,6 @@ public class FXMLAboutDialogController {
      */
     @FXML
     private void initialize() {
-
     }
 
     /**
