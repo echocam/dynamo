@@ -226,7 +226,6 @@ public class FXMLController {
      */
     @FXML
     protected void registerSaveClicked() {
-        showErrorDialog("This is an alert");
         if (currentFile == null) {
             registerSaveAsClicked();
         } else {
