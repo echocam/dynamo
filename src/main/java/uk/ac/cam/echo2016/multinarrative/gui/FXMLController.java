@@ -275,7 +275,6 @@ public class FXMLController {
             return;
         }
 
-        currentFile = returnedFile;
         try {
             GraphNode[] setCopy = graph.getNodes().values().toArray(new GraphNode[0]);
 
@@ -284,6 +283,7 @@ public class FXMLController {
             }
 
             reInit();
+            currentFile = returnedFile;
             try {
                 operations.buildGraph(currentFile, this);
             } catch (GraphElementNotFoundException ge) {
