@@ -195,6 +195,9 @@ public class FXMLController {
      */
     @FXML
     protected void close() {
+        if (mainApp.checkIfShouldSave()) {
+            registerSaveClicked();
+        }
         System.exit(0);
     }
 
@@ -203,7 +206,18 @@ public class FXMLController {
      */
     @FXML
     protected void registerAboutClicked() {
+        //TODO Change which line is commented to show alternative.
         mainApp.showAbout();
+        //mainApp.altShowAbout();
+    }
+    
+    /**
+     * Code run when "Instructions" is clicked in Help menu.
+     */
+    @FXML
+    protected void registerInstructionsClicked() {
+        //TODO implement
+        //mainApp.showInstructions();
     }
 
     /**
@@ -211,7 +225,6 @@ public class FXMLController {
      */
     @FXML
     protected void registerSaveClicked() {
-        showErrorDialog("This is an alert");
         if (currentFile == null) {
             registerSaveAsClicked();
         } else {

@@ -1,5 +1,7 @@
 # Dynamic Narrative
-![alt tag](https://travis-ci.org/EchoCam/DynamicNarrative.svg?branch=master)
+<a href="https://travis-ci.org/EchoCam/DynamicNarrative">
+<img src="https://travis-ci.org/EchoCam/DynamicNarrative.svg?branch=master" title="Master branch unit testing."/>
+</a>
 
 A system architecture and tools that allow developers to track the logic of player decisions and alter the state of the game based on those decisions. 
 
