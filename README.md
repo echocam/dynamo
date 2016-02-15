@@ -1,4 +1,5 @@
-# Dynamic Narrative
+# DyNaMo:
+*Dynamic Narrative Modelling*
 <a href="https://travis-ci.org/EchoCam/DynamicNarrative">
 <img src="https://travis-ci.org/EchoCam/DynamicNarrative.svg?branch=master" title="Master branch unit testing."/>
 </a>
