@@ -1,5 +1,4 @@
-# DyNaMo:
-
+# DyNaMo
 *Dynamic Narrative Modelling*
 
 <a href="https://travis-ci.org/EchoCam/DynamicNarrative">
