@@ -22,7 +22,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -124,7 +123,7 @@ public class FXMLController {
     private void reInit() {
         currentFile = null;
         propertyName.addEventFilter(KeyEvent.KEY_TYPED, event -> {
-            if (event.getCode() == KeyCode.EQUALS) {
+            if(event.getCharacter().equals("=")){
                 event.consume();
             }
         });
@@ -201,6 +200,9 @@ public class FXMLController {
      */
     @FXML
     protected void close() {
+        if (mainApp.checkIfShouldSave()) {
+            registerSaveClicked();
+        }
         System.exit(0);
     }
 
@@ -209,7 +211,18 @@ public class FXMLController {
      */
     @FXML
     protected void registerAboutClicked() {
+        //TODO Change which line is commented to show alternative.
         mainApp.showAbout();
+        //mainApp.altShowAbout();
+    }
+    
+    /**
+     * Code run when "Instructions" is clicked in Help menu.
+     */
+    @FXML
+    protected void registerInstructionsClicked() {
+        //TODO implement
+        //mainApp.showInstructions();
     }
 
     /**
@@ -217,7 +230,6 @@ public class FXMLController {
      */
     @FXML
     protected void registerSaveClicked() {
-        showErrorDialog("This is an alert");
         if (currentFile == null) {
             registerSaveAsClicked();
         } else {
@@ -268,7 +280,6 @@ public class FXMLController {
             return;
         }
 
-        currentFile = returnedFile;
         try {
             GraphNode[] setCopy = graph.getNodes().values().toArray(new GraphNode[0]);
 
@@ -277,6 +288,7 @@ public class FXMLController {
             }
 
             reInit();
+            currentFile = returnedFile;
             try {
                 operations.buildGraph(currentFile, this);
             } catch (GraphElementNotFoundException ge) {

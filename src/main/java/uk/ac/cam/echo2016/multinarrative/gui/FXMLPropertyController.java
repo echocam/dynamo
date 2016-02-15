@@ -17,7 +17,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.TextFieldListCell;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -100,8 +99,8 @@ public class FXMLPropertyController implements Initializable {
                         controller.getOperations().clearAsRouteType(propName);
                     }
                 });
-        name.addEventFilter(KeyEvent.KEY_TYPED, event -> {
-            if(event.getCode()==KeyCode.EQUALS){
+        name.addEventFilter(KeyEvent.KEY_TYPED, (KeyEvent event) -> {
+            if(event.getCharacter().equals("=")){
                 event.consume();
             }
         });
