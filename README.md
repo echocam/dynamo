@@ -44,10 +44,10 @@ Windows is similar to Linux, but without the "./".
 
 Specifying JDK path
 -------------------
-If you wish to specify the jdk path for gradle, add the following to the gradle.properties file in the home directory.
+If you wish to specify the jdk path for gradle, add the following to a gradle.properties file in the home directory.
 
 ```
-org.gradle.java.home=/home/tom/Desktop/jdk1.8.0_72
+org.gradle.java.home=/path/to/jdk1.8.0_72
 ```
 
 Logging
