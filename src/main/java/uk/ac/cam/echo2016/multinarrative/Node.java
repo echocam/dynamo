@@ -1,8 +1,12 @@
 package uk.ac.cam.echo2016.multinarrative;
 
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.INVALID_TYPE;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import uk.ac.cam.echo2016.multinarrative.gui.operations.IllegalOperationException;
 import android.os.BaseBundle;
 
 /**
@@ -25,9 +29,6 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
         this.id = id;
         this.exitRoutes = new ArrayList<Route>();
         this.entryRoutes = new ArrayList<Route>();
-        //TODO: (Please check) I added this bc getProperties was returning null
-        //please fix if this is not createProperties' intended use
-        //this.createProperties();
     }
 
     @Override
@@ -41,6 +42,8 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
             throw new RuntimeException(e);
         }
     }
+    
+    
 
     /**
      * Method is implemented in derived classes ChoiceNode and SyncNode, to allow this class to make new objects of

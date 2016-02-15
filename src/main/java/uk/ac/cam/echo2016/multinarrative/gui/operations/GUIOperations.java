@@ -15,6 +15,7 @@ import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ROUTE_ALREADY_EXISTS;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ROUTE_PREFIX;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.SYSTEM_PROPERTY;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.PropertyTypes.TYPES;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -98,8 +99,6 @@ public class GUIOperations {
     }
 
     /**
-     * TODO Sets property type, which this class should then use to validate
-     * further input.
      * 
      * @param property
      * @param type
@@ -109,8 +108,11 @@ public class GUIOperations {
         class SetPropertyTypeOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
-                // TODO Auto-generated method stub
-
+                if (!TYPES.contains(type)) {
+                    throw new IllegalOperationException(INVALID_TYPE);
+                }
+                multinarrative.setPropertyType(property, type);
+                
             }
 
             @Override
@@ -138,12 +140,18 @@ public class GUIOperations {
      *             when value cannot be added to the property. Informative
      *             message is sent to the user.
      */
-    public void addValue(String property, String type, String value) throws IllegalOperationException {
+    public void addValue(String property, String type, String value) 
+            throws IllegalOperationException {
         class AddValueOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
+                //BaseBundle properties = multinarrative.getProperties(property);
+                String proptype = multinarrative.getPropertyTypes().get(property);
                 if (!properties.containsKey(property)) {
                     throw new IllegalOperationException(PROPERTY_DOES_NOT_EXIST);
+                }
+                if (!type.equals(proptype)) {
+                    throw new IllegalOperationException("Value does not match property type.");
                 }
                 try {
                     switch (type) {
@@ -191,6 +199,29 @@ public class GUIOperations {
         Operation c = new AddValueOperation();
 
         Operation.storeAndExecute(c);
+    }
+    
+    private boolean isCorrectType(String type, String value) {
+            switch (type) {
+            case "String":
+                return String.class.isInstance(value);
+            case "Integer":
+                return Integer.class.isInstance(value);
+            case "Boolean":
+                return Boolean.class.isInstance(value);
+            case "Byte":
+                return Byte.class.isInstance(value);
+            case "Short":
+                return Short.class.isInstance(value);
+            case "Long":
+                return Long.class.isInstance(value);
+            case "Float":
+                return Float.class.isInstance(value);
+            case "Double":
+                return Double.class.isInstance(value);
+            default:
+                return false;
+            }
     }
 
     /**
@@ -260,12 +291,6 @@ public class GUIOperations {
                 if (multinarrative.getNode(name) != null) {
                     throw new IllegalOperationException(NODE_ALREADY_EXISTS);
                 }
-                for (String nodename : multinarrative.getNodes().keySet()) {
-                    if (multinarrative.getNode(nodename).getProperties().getDouble("GUI.X") == x
-                            && multinarrative.getNode(nodename).getProperties().getDouble("GUI.Y") == y) {
-                        throw new IllegalOperationException(NODE_ALREADY_AT_POSITION);
-                    }
-                }
                 ChoiceNode newNode = new ChoiceNode(name);
                 newNode.createProperties();
                 newNode.getProperties().putDouble("GUI.X", x);
@@ -303,12 +328,6 @@ public class GUIOperations {
                 oldY = theNode.getProperties().getDouble("GUI.Y");
                 double transx = oldX + x;
                 double transy = oldY + y;
-                for (String nodename : multinarrative.getNodes().keySet()) {
-                    if (multinarrative.getNode(nodename).getProperties().getDouble("GUI.X") == transx
-                            && multinarrative.getNode(nodename).getProperties().getDouble("GUI.Y") == transy) {
-                        throw new IllegalOperationException("Node already exists at given position.");
-                    }
-                }
                 theNode.getProperties().putDouble("GUI.X", transx);
                 theNode.getProperties().putDouble("GUI.Y", transy);
             }
@@ -413,14 +432,23 @@ public class GUIOperations {
      * @return List of properties in the form "name=value"
      */
     public List<String> getNodeProperties(String node) {
-        BaseBundle props = multinarrative.getNode(node).getProperties();
-        ArrayList<String> r = new ArrayList<String>();
-        if (props != null) {
-            for (String name : props.keySet()) {
-                r.add(name + "=" + props.get(name).toString());
+        
+        BaseBundle props;
+        try {
+            props = multinarrative.getProperties(node);
+            ArrayList<String> r = new ArrayList<String>();
+            if (props != null) {
+                for (String name : props.keySet()) {
+                    r.add(name + "=" + props.get(name).toString());
+                }
             }
+            return r;
+        } catch (GraphElementNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            throw new RuntimeException("");
         }
-        return r;
+        
     }
 
     /**
@@ -683,9 +711,42 @@ public class GUIOperations {
             controller.addRoute(route.getId(), start, end);
         }
     }
+    
+    private void addValue(BaseBundle prop, String type, String value) 
+            throws IllegalOperationException {
+        switch (type) {
+        case "String":
+            prop.putString(value, value);
+            break;
+        case "Integer":
+            prop.putInt(value, Integer.parseInt(value));
+            break;
+        case "Boolean":
+            prop.putBoolean(value, Boolean.parseBoolean(value));
+            break;
+        case "Byte":
+            prop.putByte(value, Byte.parseByte(value));
+            break;
+        case "Short":
+            prop.putShort(value, Short.parseShort(value));
+            break;
+        case "Long":
+            prop.putLong(value, Long.parseLong(value));
+            break;
+        case "Float":
+            prop.putFloat(value, Float.parseFloat(value));
+            break;
+        case "Double":
+            prop.putDouble(value, Double.parseDouble(value));
+            break;
+        default:
+            throw new IllegalOperationException(INVALID_TYPE);
+
+        }
+    }
 
     /**
-     * TODO add value, ensuring it is unique
+     * add value, ensuring it is unique
      * 
      * @param id
      * @param value
@@ -694,7 +755,19 @@ public class GUIOperations {
         class AddPropertyTypeOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
-                // TODO Auto-generated method stub
+                String type = multinarrative.getPropertyTypes().get(id);
+                System.out.println(type);
+                if (type == null || !isCorrectType(type, value)) {
+                    throw new IllegalOperationException("Property value does not match type");
+                }
+                BaseBundle prop = properties.get(id);
+                if (prop == null) {
+                    throw new IllegalOperationException("Property does not exist.");
+                }
+                if (prop.containsKey(value)) {
+                    throw new IllegalOperationException("Value already exists.");
+                }
+                addValue(prop, type, value);
 
             }
 
@@ -710,7 +783,6 @@ public class GUIOperations {
     }
 
     /**
-     * TODO remove value
      * 
      * @param id
      * @param value
@@ -719,7 +791,7 @@ public class GUIOperations {
         class RemovePropertyTypeOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
-                // TODO Auto-generated method stub
+                properties.get(id).remove(value);
 
             }
 
@@ -739,7 +811,7 @@ public class GUIOperations {
     }
 
     /**
-     * TODO rename value, checking it is unique (unless value === newValue)
+     * rename value, checking it is unique (unless value === newValue)
      * 
      * @param id
      * @param value
@@ -750,7 +822,13 @@ public class GUIOperations {
         class RenamePropertyTypeOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
-                // TODO Auto-generated method stub
+                BaseBundle prop = properties.get(id);
+                String type = multinarrative.getPropertyTypes().get(id);  
+                if (!value.equals(newValue) && !prop.containsKey(newValue)) {
+                    //Object obj = prop.get(value);
+                    addValue(prop, type, newValue);
+                    prop.remove(value);
+                }
 
             }
 
@@ -773,7 +851,19 @@ public class GUIOperations {
      * @return
      */
     public String getDefaultValue(String id, String type) {
-        return Strings.populateString(Strings.PROPERTY_VALUE, "" + valueCounter++);
+        if (!TYPES.contains(type)) {
+            try {
+                throw new IllegalOperationException(INVALID_TYPE);
+            } catch (IllegalOperationException e) {
+                e.printStackTrace();
+            }
+        }
+        if (type.equals("String")) {
+            return Strings.populateString(Strings.PROPERTY_VALUE_STRING, "" + valueCounter++);
+        } else {
+            return Strings.populateString(Strings.PROPERTY_VALUE_NUM, "" + valueCounter++);
+        }
+        
     }
 
     /**
@@ -907,7 +997,7 @@ public class GUIOperations {
     }
 
     /**
-     * TODO Add the property to the String ArrayList global property in
+     * Add the property to the String ArrayList global property in
      * GUINarrative "System.Types"
      * 
      * @param property
@@ -916,7 +1006,9 @@ public class GUIOperations {
         class SetAsRouteTypeOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
-                // TODO Auto-generated method stub
+                //TODO Test this
+                multinarrative.getGlobalProperties().
+                getStringArrayList("System.Types").add(property);
 
             }
 
@@ -936,7 +1028,7 @@ public class GUIOperations {
     }
 
     /**
-     * TODO Remove the property from the String ArrayList global property in
+     * Remove the property from the String ArrayList global property in
      * GUINarrative "System.Types"
      * 
      * @param property
@@ -945,7 +1037,9 @@ public class GUIOperations {
         class ClearAsRouteTypeOperation implements Operation {
             @Override
             public void execute() throws IllegalOperationException {
-                // TODO Auto-generated method stub
+                //TODO Test this
+                multinarrative.getGlobalProperties().
+                getStringArrayList("System.Types").remove(property);
 
             }
 
@@ -1025,7 +1119,8 @@ public class GUIOperations {
      */
     public ArrayList<Color> getNodeColor(String node) throws GraphElementNotFoundException {
         ArrayList<Color> r = new ArrayList<Color>();
-        multinarrative.getProperties(node);
+        BaseBundle prop = multinarrative.getProperties(node);
+        
         return r;
     }
 

@@ -7,7 +7,8 @@ public class Strings{
     
     public static final String PROPERTY_ADDED = "Added Property: %1";
     public static final String PROPERTY_REMOVED = "Removed Property: %1";
-    public static final String PROPERTY_VALUE = "Value%1";
+    public static final String PROPERTY_VALUE_STRING = "Value%1";
+    public static final String PROPERTY_VALUE_NUM = "%1";
     public static final String INVALID_FORMAT = "Format is incorrect";
     
     public static final String INVALID_PROPERTY_FORMAT = "Property is not formatted correctly";

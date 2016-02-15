@@ -795,6 +795,9 @@ public class FXMLController {
                 propertiesSource = null;
             } catch (IllegalOperationException e) {
                 setInfo(e.getMessage(), propertyAndValue);
+            } catch (GraphElementNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
         }
     }
