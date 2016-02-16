@@ -6,6 +6,9 @@ import java.util.HashMap;
 import android.os.BaseBundle;
 
 /**
+ *
+ * MODIFYING THIS CLASS WILL BREAK ALL TEMPLATE SAVE FILES.
+ * DO NOT DO SO UNLESS ABSOLUTELY NECESSARY
  * 
  * The template of the story from which the copy of the game required for each
  * play through is derived.
