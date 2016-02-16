@@ -10,7 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.CubicCurve;
 import javafx.scene.shape.Shape;
 import uk.ac.cam.echo2016.multinarrative.gui.FXMLController;
-import uk.ac.cam.echo2016.multinarrative.gui.operations.GUIOperations;
+import uk.ac.cam.echo2016.multinarrative.gui.operations.NarrativeOperations;
 
 /**
  * 
@@ -20,7 +20,7 @@ import uk.ac.cam.echo2016.multinarrative.gui.operations.GUIOperations;
 public class Graph {
 
 	private Pane pane;
-	private GUIOperations operations;
+	private NarrativeOperations operations;
 
 	private InputMonitor input;
 	private GraphTool tool;
@@ -30,7 +30,7 @@ public class Graph {
 
 	private FXMLController controller;
 
-	public Graph(ScrollPane pane, Pane p, GUIOperations operations, FXMLController c) {
+	public Graph(ScrollPane pane, Pane p, NarrativeOperations operations, FXMLController c) {
 		this.pane = p;
 		this.operations = operations;
 		controller = c;
@@ -121,7 +121,7 @@ public class Graph {
 		return controller;
 	}
 
-	public GUIOperations getOperations() {
+	public NarrativeOperations getOperations() {
 		return operations;
 	}
 

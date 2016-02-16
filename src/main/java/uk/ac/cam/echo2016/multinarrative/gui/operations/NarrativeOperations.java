@@ -47,7 +47,7 @@ import uk.ac.cam.echo2016.multinarrative.io.SaveWriter;
  * @author eyx20
  * @author rjm232
  */
-public class GUIOperations {
+public class NarrativeOperations {
 
     private GUINarrative multinarrative;
 
@@ -60,7 +60,7 @@ public class GUIOperations {
     /**
      * Constructor. Creates a new GUIOperations.
      */
-    public GUIOperations() {
+    public NarrativeOperations() {
         multinarrative = new GUINarrative();
         properties = new HashMap<String, BaseBundle>();
     }

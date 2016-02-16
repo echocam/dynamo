@@ -36,7 +36,7 @@ import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphEdge;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphNode;
-import uk.ac.cam.echo2016.multinarrative.gui.operations.GUIOperations;
+import uk.ac.cam.echo2016.multinarrative.gui.operations.NarrativeOperations;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.IllegalOperationException;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.Strings;
 import uk.ac.cam.echo2016.multinarrative.gui.tool.InsertTool;
@@ -92,7 +92,7 @@ public class FXMLController {
 
     private Boolean itemNode = null;
 
-    private GUIOperations operations = new GUIOperations();
+    private NarrativeOperations operations = new NarrativeOperations();
 
     private Graph graph;
 
@@ -549,7 +549,7 @@ public class FXMLController {
      * 
      * @return the operations
      */
-    public GUIOperations getOperations() {
+    public NarrativeOperations getOperations() {
         return operations;
     }
 
