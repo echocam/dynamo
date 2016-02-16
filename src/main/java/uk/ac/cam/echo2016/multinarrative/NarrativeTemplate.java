@@ -29,6 +29,15 @@ import android.os.BaseBundle;
 public class NarrativeTemplate extends MultiNarrative {
     private static final long serialVersionUID = 1;
 
+    public NarrativeTemplate(){
+    }
+
+    public NarrativeTemplate(HashMap<String, Route> routes, HashMap<String, Node> nodes, SynchronizationNode start, BaseBundle properties){
+        this.routes = routes;
+        this.nodes = nodes;
+        this.start = start;
+        this.properties = properties;
+    }
     // TODO Documentation
     /**
      *
