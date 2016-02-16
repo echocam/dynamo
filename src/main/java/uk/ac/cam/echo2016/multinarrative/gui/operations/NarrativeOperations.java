@@ -335,11 +335,11 @@ public class NarrativeOperations {
      */
     public String getUniqueRouteName() {
         String newName = Strings.populateString(ROUTE_PREFIX, narrativeCounter);
-        if (multinarrative.getNodes().containsKey(newName)) {
+        if (!multinarrative.getRoutes().containsKey(newName)) {
             narrativeCounter += 1;
             return newName;
         } else {
-            while (multinarrative.getNodes().containsKey(newName)) {
+            while (multinarrative.getRoutes().containsKey(newName)) {
                 narrativeCounter += 1;
                 newName = Strings.populateString(ROUTE_PREFIX, narrativeCounter);
             }
