@@ -83,7 +83,7 @@ public class FXMLPropertyController implements Initializable {
                 menu.getItems().get(event.getIndex()).setText(newValue);
                 event.consume();
             } catch (Exception e) {
-                controller.setInfo(e.getMessage(), oldValue, newValue);
+                controller.setInfo(e.getMessage());
             }
         });
 
@@ -121,7 +121,7 @@ public class FXMLPropertyController implements Initializable {
                 controller.getOperations()
                         .doOp(controller.getOperations().generator().renameProperty(propName, newName, this));
             } catch (IllegalOperationException ioe) {
-                controller.setInfo(ioe.getMessage(), propName, newName);
+                controller.setInfo(ioe.getMessage());
                 name.setText(propName);
             }
         }

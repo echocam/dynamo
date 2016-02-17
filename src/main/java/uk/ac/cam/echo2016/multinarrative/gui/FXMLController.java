@@ -26,7 +26,6 @@ import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphEdge;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphNode;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.IllegalOperationException;
-import uk.ac.cam.echo2016.multinarrative.gui.tool.SelectionTool;
 
 /**
  * The class used by SceneBuilder as the source of all objects and methods.
@@ -82,7 +81,7 @@ public class FXMLController {
 
     private Graph graph;
 
-    private SelectionTool tool;
+    private EditingTool tool;
 
     private String currentFile;
 
@@ -147,7 +146,7 @@ public class FXMLController {
         currentFile = filename;
 
         graph = new Graph(scroll, graphArea, getOperations(), this);
-        tool = new SelectionTool(graph);
+        tool = new EditingTool(graph);
         graph.setTool(tool);
         itemEditor.setDisable(true);
         nodeEditor.setDisable(true);
@@ -277,7 +276,7 @@ public class FXMLController {
         try {
             operations.doOp(operations.generator().addProperty(name));
         } catch (IllegalOperationException ioe) {
-            setInfo(ioe.getMessage(), name);
+            setInfo(ioe.getMessage());
         }
     }
 
@@ -296,14 +295,14 @@ public class FXMLController {
                 try {
                     operations.doOp(operations.generator().removeNode(name));
                 } catch (IllegalOperationException e1) {
-                    setInfo(e1.getMessage(), name);
+                    setInfo(e1.getMessage());
                 }
             } else {
                 String name = routes.getSelectionModel().getSelectedItem();
                 try {
                     operations.doOp(operations.generator().removeRoute(name));
                 } catch (IllegalOperationException e1) {
-                    setInfo(e1.getMessage(), name);
+                    setInfo(e1.getMessage());
                 }
             }
         }
@@ -349,7 +348,7 @@ public class FXMLController {
                     operations.doOp(operations.generator().swapChoiceOrSynch(node));
                 }
             } catch (IllegalOperationException e) {
-                setInfo(e.getMessage(), node);
+                setInfo(e.getMessage());
             }
         }
     }
@@ -369,7 +368,7 @@ public class FXMLController {
                     operations.doOp(operations.generator().swapChoiceOrSynch(node));
                 }
             } catch (IllegalOperationException e) {
-                setInfo(e.getMessage(), node);
+                setInfo(e.getMessage());
             }
         }
     }
@@ -389,7 +388,7 @@ public class FXMLController {
                 operations.doOp(operations.generator().setStart(edge, start));
 
             } catch (IllegalOperationException e) {
-                setInfo(e.getMessage(), edge, start);
+                setInfo(e.getMessage());
                 GraphEdge gEdge = graph.getEdges().get(edge);
                 routeStart.setValue(gEdge.getFrom().getName());
             }
@@ -410,7 +409,7 @@ public class FXMLController {
             try {
                 operations.doOp(operations.generator().setEnd(edge, end));
             } catch (IllegalOperationException e) {
-                setInfo(e.getMessage(), edge, end);
+                setInfo(e.getMessage());
                 GraphEdge gEdge = graph.getEdges().get(edge);
                 routeEnd.setValue(gEdge.getTo().getName());
             }
@@ -457,10 +456,9 @@ public class FXMLController {
      * @param values
      *            Values to interpolate into the text
      */
-    public void setInfo(String template, String... values) {
-        String s = Strings.populateString(template, values);
-        Debug.logInfo(s, 3, Debug.SYSTEM_GUI);
-        infoBar.setText(s);
+    public void setInfo(String info) {
+        Debug.logInfo(info, 3, Debug.SYSTEM_GUI);
+        infoBar.setText(info);
     }
 
     /**
@@ -588,7 +586,7 @@ public class FXMLController {
                     nodeSynch.fire();
                 }
             } catch (IllegalOperationException e) {
-                setInfo(e.getMessage(), node);
+                setInfo(e.getMessage());
             }
         } else {
             String edge = routes.getSelectionModel().getSelectedItem();
@@ -637,7 +635,7 @@ public class FXMLController {
                 }
                 propertiesSource = null;
             } catch (IllegalOperationException e) {
-                setInfo(e.getMessage(), property, type, value);
+                setInfo(e.getMessage());
             }
         }
     }
@@ -659,7 +657,7 @@ public class FXMLController {
                     operations.doOp(operations.generator().renameRoute(prevName, newName));
                 }
             } catch (IllegalOperationException ioe) {
-                setInfo(ioe.getMessage(), prevName, newName);
+                setInfo(ioe.getMessage());
             }
         }
     }

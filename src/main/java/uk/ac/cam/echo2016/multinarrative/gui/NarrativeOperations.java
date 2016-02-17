@@ -1,19 +1,12 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
 
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ADD_EMPTY_STRING;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ALREADY_EXISTS;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.CANNOT_FORMAT;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.CYCLE_EXISTS;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.INVALID_FORMAT;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.INVALID_TYPE;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ITEM_ALREADY_EXISTS;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ITEM_DOES_NOT_EXIST;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_ALREADY_AT_POSITION;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_ALREADY_EXISTS;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_DOES_NOT_EXIST;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_PREFIX;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_DOES_NOT_EXIST;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_MISSING;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_RENAME_EXISTS;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ROUTE_ALREADY_EXISTS;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ROUTE_PREFIX;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.SYSTEM_PROPERTY;
 
@@ -76,7 +69,7 @@ public class NarrativeOperations {
             throw new IllegalOperationException(ADD_EMPTY_STRING);
         }
         if (properties.containsKey(s)) {
-            throw new IllegalOperationException(ALREADY_EXISTS);
+            throw new IllegalOperationException(ITEM_ALREADY_EXISTS, s);
         }
         properties.put(s, b);
 
@@ -103,7 +96,7 @@ public class NarrativeOperations {
      */
     public String getPropertyType(String property) throws IllegalOperationException {
         if (!properties.containsKey(property)) {
-            throw new IllegalOperationException(PROPERTY_DOES_NOT_EXIST);
+            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST);
         }
         if (properties.get(property).isEmpty()) {
             return "String";
@@ -147,7 +140,7 @@ public class NarrativeOperations {
      */
     public void addValue(String property, String type, String value) throws IllegalOperationException {
         if (!properties.containsKey(property)) {
-            throw new IllegalOperationException(PROPERTY_DOES_NOT_EXIST);
+            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, property);
         }
         try {
             switch (type) {
@@ -180,7 +173,7 @@ public class NarrativeOperations {
 
             }
         } catch (NumberFormatException e) {
-            throw new IllegalOperationException("Value " + value + " connot be " + "resolved to type " + type + ".");
+            throw new IllegalOperationException(e, CANNOT_FORMAT, value, type);
         }
 
     }
@@ -194,7 +187,7 @@ public class NarrativeOperations {
      */
     public void removeValue(String id, String type, String value) throws IllegalOperationException {
         if (!properties.containsKey(id)) {
-            throw new IllegalOperationException(PROPERTY_DOES_NOT_EXIST);
+            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, id);
         }
         properties.get(id).remove(value);
     }
@@ -238,13 +231,7 @@ public class NarrativeOperations {
     public void addSynchNode(String name, double x, double y) throws IllegalOperationException {
 
         if (multinarrative.getNode(name) != null) {
-            throw new IllegalOperationException(NODE_ALREADY_EXISTS);
-        }
-        for (String nodename : multinarrative.getNodes().keySet()) {
-            if (multinarrative.getNode(nodename).getProperties().getDouble("GUI.X") == x
-                    && multinarrative.getNode(nodename).getProperties().getDouble("GUI.Y") == y) {
-                throw new IllegalOperationException(NODE_ALREADY_AT_POSITION);
-            }
+            throw new IllegalOperationException(ITEM_ALREADY_EXISTS, name);
         }
         SynchronizationNode newNode = new SynchronizationNode(name);
         newNode.createProperties();
@@ -260,13 +247,7 @@ public class NarrativeOperations {
     public void addChoiceNode(String name, double x, double y) throws IllegalOperationException {
 
         if (multinarrative.getNode(name) != null) {
-            throw new IllegalOperationException(NODE_ALREADY_EXISTS);
-        }
-        for (String nodename : multinarrative.getNodes().keySet()) {
-            if (multinarrative.getNode(nodename).getProperties().getDouble("GUI.X") == x
-                    && multinarrative.getNode(nodename).getProperties().getDouble("GUI.Y") == y) {
-                throw new IllegalOperationException(NODE_ALREADY_AT_POSITION);
-            }
+            throw new IllegalOperationException(ITEM_ALREADY_EXISTS, name);
         }
         ChoiceNode newNode = new ChoiceNode(name);
         newNode.createProperties();
@@ -280,21 +261,12 @@ public class NarrativeOperations {
      * Repositions a node by the given offset
      */
     public void translateNode(String name, double x, double y) throws IllegalOperationException {
-
         Node theNode = multinarrative.getNode(name);
         if (theNode == null) {
-            throw new IllegalOperationException("Node does not exist.");
+            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, name);
         }
         double transx = x + theNode.getProperties().getDouble("GUI.X");
-        ;
         double transy = y + theNode.getProperties().getDouble("GUI.Y");
-        ;
-        for (String nodename : multinarrative.getNodes().keySet()) {
-            if (multinarrative.getNode(nodename).getProperties().getDouble("GUI.X") == transx
-                    && multinarrative.getNode(nodename).getProperties().getDouble("GUI.Y") == transy) {
-                throw new IllegalOperationException("Node already exists at given position.");
-            }
-        }
         theNode.getProperties().putDouble("GUI.X", transx);
         theNode.getProperties().putDouble("GUI.Y", transy);
     }
@@ -351,9 +323,12 @@ public class NarrativeOperations {
         try {
             multinarrative.newRoute(name, start, end);
         } catch (NonUniqueIdException e) {
-            throw new IllegalOperationException(ROUTE_ALREADY_EXISTS);
+            throw new IllegalOperationException(ITEM_ALREADY_EXISTS, name);
         } catch (GraphElementNotFoundException e) {
-            throw new IllegalOperationException(NODE_DOES_NOT_EXIST);
+            if (e.getItem().equals(start))
+                throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, start);
+            else
+                throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, end);
         }
         DFSCycleDetect cycleDetect = new DFSCycleDetect(multinarrative.getNode(start));
         if (cycleDetect.hasCycle()) {
@@ -418,14 +393,14 @@ public class NarrativeOperations {
         try {
             multinarrative.setEnd(route, node);
         } catch (GraphElementNotFoundException e) {
-            throw new IllegalOperationException(e);
+            throw new IllegalOperationException(e, ITEM_DOES_NOT_EXIST, e.getItem());
         }
         DFSCycleDetect detect = new DFSCycleDetect(multinarrative.getRoute(route).getStart());
         if (detect.hasCycle()) {
             try {
                 multinarrative.setEnd(route, mOldEnd.getId());
             } catch (GraphElementNotFoundException e) {
-                throw new IllegalOperationException(e);
+                throw new IllegalOperationException(e, ITEM_DOES_NOT_EXIST, e.getItem());
             }
             throw new IllegalOperationException(CYCLE_EXISTS);
         }
@@ -445,14 +420,14 @@ public class NarrativeOperations {
         try {
             multinarrative.setStart(route, node);
         } catch (GraphElementNotFoundException e) {
-            throw new IllegalOperationException(e);
+            throw new IllegalOperationException(e, ITEM_DOES_NOT_EXIST, e.getItem());
         }
         DFSCycleDetect detect = new DFSCycleDetect(multinarrative.getRoute(route).getStart());
         if (detect.hasCycle()) {
             try {
                 multinarrative.setStart(route, mOldStart.getId());
             } catch (GraphElementNotFoundException e) {
-                throw new IllegalOperationException(e);
+                throw new IllegalOperationException(e, ITEM_DOES_NOT_EXIST, e.getItem());
             }
             throw new IllegalOperationException(CYCLE_EXISTS);
         }
@@ -491,7 +466,7 @@ public class NarrativeOperations {
 
         Node node = multinarrative.getNode(id);
         if (node == null) {
-            throw new IllegalOperationException(NODE_DOES_NOT_EXIST);
+            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST);
         }
         if (value == null) {
             if (node.getProperties() != null) {
@@ -530,7 +505,7 @@ public class NarrativeOperations {
                     throw new IllegalOperationException(INVALID_TYPE);
                 }
             } catch (NumberFormatException nfe) {
-                throw new IllegalOperationException(INVALID_FORMAT, nfe);
+                throw new IllegalOperationException(nfe, CANNOT_FORMAT, value, type);
             }
         }
 
@@ -550,7 +525,7 @@ public class NarrativeOperations {
 
         Route route = multinarrative.getRoute(id);
         if (route == null) {
-            throw new IllegalOperationException(NODE_DOES_NOT_EXIST);
+            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, id);
         }
         if (value == null) {
             if (route.getProperties() != null) {
@@ -589,7 +564,7 @@ public class NarrativeOperations {
                     throw new IllegalOperationException(INVALID_TYPE);
                 }
             } catch (NumberFormatException nfe) {
-                throw new IllegalOperationException(INVALID_FORMAT, nfe);
+                throw new IllegalOperationException(nfe, CANNOT_FORMAT, value, type);
             }
         }
 
@@ -683,7 +658,7 @@ public class NarrativeOperations {
         try {
             return multinarrative.isChoiceNode(node);
         } catch (GraphElementNotFoundException e) {
-            throw new IllegalOperationException(NODE_DOES_NOT_EXIST, e);
+            throw new IllegalOperationException(e, ITEM_DOES_NOT_EXIST, e.getItem());
         }
     }
 
@@ -701,7 +676,7 @@ public class NarrativeOperations {
         try {
             multinarrative.swapSyncAndChoice(node);
         } catch (GraphElementNotFoundException e) {
-            throw new IllegalOperationException(NODE_DOES_NOT_EXIST, e);
+            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, e.getItem());
         }
     }
 
@@ -714,7 +689,7 @@ public class NarrativeOperations {
      */
     public void removeProperty(String s) throws IllegalOperationException {
         if (!properties.containsKey(s)) {
-            throw new IllegalOperationException(PROPERTY_DOES_NOT_EXIST);
+            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, s);
         }
         properties.remove(s);
 
@@ -731,7 +706,7 @@ public class NarrativeOperations {
      */
     public BaseBundle getPropertyBundle(String s) throws IllegalOperationException {
         if (!properties.containsKey(s)) {
-            throw new IllegalOperationException(PROPERTY_DOES_NOT_EXIST);
+            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, s);
         }
         return properties.get(s);
     }
@@ -746,10 +721,10 @@ public class NarrativeOperations {
     public void renameProperty(String from, String to) throws IllegalOperationException {
 
         if (!properties.containsKey(from)) {
-            throw new IllegalOperationException(PROPERTY_MISSING);
+            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, from);
         }
         if (properties.containsKey(to)) {
-            throw new IllegalOperationException(PROPERTY_RENAME_EXISTS);
+            throw new IllegalOperationException(ITEM_ALREADY_EXISTS, to);
         }
 
         BaseBundle oldprop = properties.get(from);
@@ -769,24 +744,24 @@ public class NarrativeOperations {
         Node node = multinarrative.getNode(id);
         Route route = multinarrative.getRoute(id);
         if (property.equals("GUI.X") || property.equals("GUI.Y")) {
-            throw new IllegalOperationException(SYSTEM_PROPERTY);
+            throw new IllegalOperationException(SYSTEM_PROPERTY, id);
         }
         if (node != null) {
             BaseBundle b = node.getProperties();
             if (b != null) {
                 b.remove(property);
             } else {
-                throw new IllegalOperationException(PROPERTY_DOES_NOT_EXIST);
+                throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, property);
             }
         } else if (route != null) {
             BaseBundle b = route.getProperties();
             if (b != null) {
                 b.remove(property);
             } else {
-                throw new IllegalOperationException(PROPERTY_DOES_NOT_EXIST);
+                throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, property);
             }
         } else {
-            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST);
+            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, id);
         }
 
     }

@@ -317,7 +317,7 @@ public class OperationsManager {
                 public RemoveNodeOperation(String name) throws IllegalOperationException {
                     this.node = controller.getGraph().getNodes().get(name);
                     if (node == null) {
-                        throw new IllegalOperationException(Strings.NODE_DOES_NOT_EXIST);
+                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, name);
                     }
                     isChoice = narrativeOperations.isChoiceNode(node.getName());
                 }
@@ -348,7 +348,7 @@ public class OperationsManager {
                 routes.addAll(narrativeOperations.getNarrative().getNode(name).getEntering());
                 routes.addAll(narrativeOperations.getNarrative().getNode(name).getExiting());
             } catch (NullPointerException npe) {
-                throw new IllegalOperationException(Strings.NODE_DOES_NOT_EXIST);
+                throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, name);
             }
             for (Route r : routes) {
                 items.add(removeRoute(r.getId()));
@@ -365,11 +365,11 @@ public class OperationsManager {
                 public AddRouteOperation(String name, String start, String end) throws IllegalOperationException {
                     GraphNode from = controller.getGraph().getNodes().get(start);
                     if (from == null) {
-                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST);
+                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, start);
                     }
                     GraphNode to = controller.getGraph().getNodes().get(end);
                     if (to == null) {
-                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST);
+                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, end);
                     }
                     edge = controllerOperations.createRoute(name, from, to);
                 }
@@ -398,7 +398,7 @@ public class OperationsManager {
                 public RemoveRouteOperation(String s) throws IllegalOperationException {
                     edge = controller.getGraph().getEdges().get(s);
                     if (edge == null)
-                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST);
+                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, s);
                 }
 
                 @Override
@@ -423,7 +423,7 @@ public class OperationsManager {
                 public SwapChoiceOrSynchOperation(String name) throws IllegalOperationException {
                     node = controller.getGraph().getNodes().get(name);
                     if (node == null)
-                        throw new IllegalOperationException(Strings.NODE_DOES_NOT_EXIST);
+                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, name);
                 }
 
                 @Override
@@ -449,7 +449,7 @@ public class OperationsManager {
                 public TranslateNodeOperation(String s, double x, double y) throws IllegalOperationException {
                     node = controller.getGraph().getNodes().get(s);
                     if (node == null) {
-                        throw new IllegalOperationException(Strings.NODE_DOES_NOT_EXIST);
+                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, s);
                     }
                     this.x = x;
                     this.y = y;
@@ -481,12 +481,12 @@ public class OperationsManager {
                 public SetStartOperation(String name, String start) throws IllegalOperationException {
                     edge = controller.getGraph().getEdges().get(name);
                     if (edge == null) {
-                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST);
+                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, name);
                     }
                     oldStart = edge.getFrom();
                     newStart = controller.getGraph().getNodes().get(start);
                     if (newStart == null) {
-                        throw new IllegalOperationException(Strings.NODE_DOES_NOT_EXIST);
+                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, start);
                     }
                 }
 
@@ -514,12 +514,12 @@ public class OperationsManager {
                 public SetEndOperation(String name, String end) throws IllegalOperationException {
                     edge = controller.getGraph().getEdges().get(name);
                     if (edge == null) {
-                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST);
+                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, name);
                     }
                     oldEnd = edge.getFrom();
                     newEnd = controller.getGraph().getNodes().get(end);
                     if (newEnd == null) {
-                        throw new IllegalOperationException(Strings.NODE_DOES_NOT_EXIST);
+                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, end);
                     }
                 }
 

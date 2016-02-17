@@ -65,7 +65,7 @@ public class ControllerOperations {
 
         controller.getContextMenuForGraph().getItems().add(prop.getMenu());
         controller.getProperties().getPanes().add(prop.getRoot());
-        controller.setInfo(PROPERTY_ADDED, prop.getName());
+        controller.setInfo(Strings.populateString(PROPERTY_ADDED, prop.getName()));
     }
 
     /**
@@ -83,7 +83,7 @@ public class ControllerOperations {
         Debug.logInfo("Remove property: " + prop.getName(), 4, Debug.SYSTEM_GUI);
         controller.getProperties().getPanes().remove(prop.getRoot());
         controller.getContextMenuForGraph().getItems().remove(prop.getMenu());
-        controller.setInfo(PROPERTY_REMOVED, prop.getName());
+        controller.setInfo(Strings.populateString(PROPERTY_REMOVED, prop.getName()));
 
     }
 
@@ -211,7 +211,7 @@ public class ControllerOperations {
         } else if (edge != null) {
             controller.getGraph().updateEdge(edge);
         } else {
-            throw new IllegalOperationException(Strings.NODE_DOES_NOT_EXIST);
+            throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST,id);
         }
     }
 

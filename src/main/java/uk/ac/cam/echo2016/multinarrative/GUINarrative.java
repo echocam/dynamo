@@ -45,10 +45,10 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
         if (isUniqueId(id)) {
             Node startNode = getNode(startId);
             if (startNode == null)
-                throw new GraphElementNotFoundException("Node with id: " + startId + " not found");
+                throw new GraphElementNotFoundException(startId);
             Node endNode = getNode(endId);
             if (endNode == null)
-                throw new GraphElementNotFoundException("Node with id: " + endId + " not found");
+                throw new GraphElementNotFoundException(endId);
 
             Route route = new Route(id, startNode, endNode);
             // Updates references of graph and nodes
@@ -95,7 +95,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
                 return node.getProperties();
             }
         }
-        throw new GraphElementNotFoundException("Error: Element with id: " + id + " not found");
+        throw new GraphElementNotFoundException(id);
     }
 
     /**
@@ -142,7 +142,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
         }
         Route route1 = getRoute(routeId);
         if (route1 == null)
-            throw new GraphElementNotFoundException("Error: Route with id: " + routeId + " not found");
+            throw new GraphElementNotFoundException(routeId);
 
         ChoiceNode choice = new ChoiceNode(newChoiceId);
         // Connect route2 start and end
@@ -207,7 +207,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
 
         Route route = getRoute(routeId);
         if (route == null)
-            throw new GraphElementNotFoundException("Error: Route with id: " + routeId + " not found");
+            throw new GraphElementNotFoundException(routeId);
 
         ChoiceNode choice = new ChoiceNode(newChoiceId);
 
@@ -234,7 +234,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
     public boolean setStartPoint(String id) throws GraphElementNotFoundException {
         Node node = getNode(id);
         if (node == null)
-            throw new GraphElementNotFoundException("Error: Node with id: " + id + " not found");
+            throw new GraphElementNotFoundException(id);
         if (node instanceof SynchronizationNode) {
             start = (SynchronizationNode) node;
             return true;
@@ -270,11 +270,11 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
     public void setEnd(String routeId, String nodeId) throws GraphElementNotFoundException{
         Route route = routes.get(routeId);
         if(route==null){
-            throw new GraphElementNotFoundException("Error: Route with id: " + routeId + " not found");
+            throw new GraphElementNotFoundException(routeId);
         }
         Node newNode = nodes.get(nodeId);
         if(newNode==null){
-            throw new GraphElementNotFoundException("Error: Node with id: " + nodeId + " not found");
+            throw new GraphElementNotFoundException(nodeId);
         }
         Node oldNode = route.getEnd();
         oldNode.getEntering().remove(route);
@@ -285,11 +285,11 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
     public void setStart(String routeId, String nodeId) throws GraphElementNotFoundException{
         Route route = routes.get(routeId);
         if(route==null){
-            throw new GraphElementNotFoundException("Error: Route with id: " + routeId + " not found");
+            throw new GraphElementNotFoundException(routeId);
         }
         Node newNode = nodes.get(nodeId);
         if(newNode==null){
-            throw new GraphElementNotFoundException("Error: Node with id: " + nodeId + " not found");
+            throw new GraphElementNotFoundException(nodeId);
         }
         Node oldNode = route.getEnd();
         oldNode.getExiting().remove(route);

@@ -1,4 +1,4 @@
-package uk.ac.cam.echo2016.multinarrative.gui.tool;
+package uk.ac.cam.echo2016.multinarrative.gui;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +12,7 @@ import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphNode;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphTool;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.IllegalOperationException;
 
-public class SelectionTool implements GraphTool {
+public class EditingTool implements GraphTool {
 
     public static final PseudoClass SELECTED = PseudoClass.getPseudoClass("selected");
 
@@ -29,7 +29,7 @@ public class SelectionTool implements GraphTool {
 
     private Set<GraphNode> selection = new HashSet<GraphNode>();
 
-    public SelectionTool(Graph graph) {
+    public EditingTool(Graph graph) {
         this.graph = graph;
     }
 
@@ -122,7 +122,7 @@ public class SelectionTool implements GraphTool {
                                 graph.getOperations().generator().translateNode(node.getName(), movementX, movementY));
                         graph.getController().initSelect();
                     } catch (IllegalOperationException e) {
-                        graph.getController().setInfo(e.getMessage(), event.getSceneX() + "", event.getSceneY() + "");
+                        graph.getController().setInfo(e.getMessage());
                     }
                 }
             }
