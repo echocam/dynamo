@@ -13,6 +13,7 @@ import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphNode;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.CompositeOperation;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.IllegalOperationException;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.Operation;
+import uk.ac.cam.echo2016.multinarrative.gui.operations.OperationGenerator;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.UndoableOperationSequence;
 import uk.ac.cam.echo2016.multinarrative.io.SaveReader;
 import uk.ac.cam.echo2016.multinarrative.io.SaveWriter;
@@ -218,9 +219,9 @@ public class OperationsManager {
 
         public Operation renameValue(String prop, String type, String value, String newValue,
                 FXMLPropertyController propCont) {
-            ArrayList<Operation> r = new ArrayList<>();
-            r.add(removeValue(prop, type, value, propCont));
-            r.add(addValue(prop, type, newValue, propCont.getIndexOf(value), propCont));
+            ArrayList<OperationGenerator> r = new ArrayList<>();
+            r.add(() -> removeValue(prop, type, value, propCont));
+            r.add(() -> addValue(prop, type, newValue, propCont.getIndexOf(value), propCont));
             return new CompositeOperation(r);
         }
 
@@ -301,10 +302,10 @@ public class OperationsManager {
 
         public Operation addChoiceNode(String s, GraphEdge split) throws IllegalOperationException {
             String route2 = narrativeOperations.getUniqueRouteName();
-            ArrayList<Operation> r = new ArrayList<>();
-            r.add(addChoiceNodeSolo(s, split.getControl().getLayoutX(), split.getControl().getLayoutY()));
-            r.add(addRoute(route2, s, split.getTo().getName()));
-            r.add(setEnd(split.getName(), s));
+            ArrayList<OperationGenerator> r = new ArrayList<>();
+            r.add(() -> addChoiceNodeSolo(s, split.getControl().getLayoutX(), split.getControl().getLayoutY()));
+            r.add(() -> addRoute(route2, s, split.getTo().getName()));
+            r.add(() -> setEnd(split.getName(), s));
             return new CompositeOperation(r);
         }
 
@@ -342,7 +343,7 @@ public class OperationsManager {
         }
 
         public Operation removeNode(String name) throws IllegalOperationException {
-            ArrayList<Operation> items = new ArrayList<>();
+            ArrayList<OperationGenerator> items = new ArrayList<>();
             ArrayList<Route> routes = new ArrayList<>();
             try {
                 routes.addAll(narrativeOperations.getNarrative().getNode(name).getEntering());
@@ -351,9 +352,9 @@ public class OperationsManager {
                 throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, name);
             }
             for (Route r : routes) {
-                items.add(removeRoute(r.getId()));
+                items.add(() -> removeRoute(r.getId()));
             }
-            items.add(removeNodeSolo(name));
+            items.add(() -> removeNodeSolo(name));
             return new CompositeOperation(items);
         }
 
