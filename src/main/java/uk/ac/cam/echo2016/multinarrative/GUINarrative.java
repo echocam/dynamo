@@ -2,6 +2,9 @@ package uk.ac.cam.echo2016.multinarrative;
 
 import android.os.BaseBundle;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * The {@code EditableNarrative} used by the {@code FXMLGUI} editor to store the
  * graph structure. This graph is generated alongside the editor via
@@ -292,5 +295,45 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
         oldNode.getExiting().remove(route);
         route.setStart(newNode);
         newNode.getExiting().add(route);
+    }
+
+    public NarrativeTemplate generateTemplate() throws NonUniqueStartException{
+        HashMap<String, Node> r_nodes = new HashMap<>();
+        HashMap<String, Route> r_routes = new HashMap<>();
+
+        for (Node node : nodes.values()) {
+            Node r_node = node.clone();
+            r_node.createProperties();
+            r_node.getProperties().remove("GUI.X");
+            r_node.getProperties().remove("GUI>Y");
+            r_node.setExiting(new ArrayList<Route>());
+            r_node.setEntering(new ArrayList<Route>());
+            r_nodes.put(node.getId(), r_node);
+        }
+
+        for (Route route : routes.values()) {
+            Route r_route = route.clone();
+            // Find Start and end in r_nodes
+
+            r_route.setStart(r_nodes.get(route.getStart().getId()));
+            r_route.setEnd(r_nodes.get(route.getEnd().getId()));
+            r_route.getStart().getExiting().add(r_route);
+            r_route.getEnd().getEntering().add(r_route);
+
+            r_routes.put(route.getId(), r_route);
+        }
+
+        SynchronizationNode start = null;
+        for(Node node : r_nodes.values()){
+            if(node.getEntering().size()==0){
+                if(start==null){
+                    start = (SynchronizationNode) node;
+                }else{
+                    throw new NonUniqueStartException();
+                }
+            }
+        }
+        NarrativeTemplate template = new NarrativeTemplate(r_routes, r_nodes, start, BaseBundle.deepcopy(this.properties));
+        return template;
     }
 }

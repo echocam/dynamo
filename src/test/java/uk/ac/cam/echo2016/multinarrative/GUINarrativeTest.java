@@ -283,5 +283,12 @@ public class GUINarrativeTest { // TODO add actual GUINarrative tests
     public void insertChoiceOnRoute2WrongLinkTest() throws NonUniqueIdException, GraphElementNotFoundException {
     	gNarr.insertChoiceOnRoute("wrongLink", "newChoice", "newLink1", "newLink2");
     }
-    	
+
+    @Test
+    public void generateTemplateTest() throws Exception{
+        NarrativeTemplate template = gNarr.generateTemplate();
+        assertEquals("Check template has correct number of nodes", 5, template.getNodes().size());
+        assertEquals("Check template has correct number of edges", 5, template.getRoutes().size());
+        assertEquals("Check template has correct start", "start", ((Node)MultiNarrative.class.getDeclaredField("start").get(template)).getId());
+    }
 }
