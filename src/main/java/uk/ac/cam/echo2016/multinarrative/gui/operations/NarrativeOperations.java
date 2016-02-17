@@ -48,7 +48,7 @@ import uk.ac.cam.echo2016.multinarrative.io.SaveWriter;
  * @author eyx20
  * @author rjm232
  */
-public class GUIOperations {
+public class NarrativeOperations {
 
     private GUINarrative multinarrative;
 
@@ -61,7 +61,7 @@ public class GUIOperations {
     /**
      * Constructor. Creates a new GUIOperations.
      */
-    public GUIOperations() {
+    public NarrativeOperations() {
         multinarrative = new GUINarrative();
         properties = new HashMap<String, BaseBundle>();
     }
@@ -354,11 +354,11 @@ public class GUIOperations {
      */
     public String getUniqueRouteName() {
         String newName = Strings.populateString(ROUTE_PREFIX, narrativeCounter);
-        if (multinarrative.getNodes().containsKey(newName)) {
+        if (!multinarrative.getRoutes().containsKey(newName)) {
             narrativeCounter += 1;
             return newName;
         } else {
-            while (multinarrative.getNodes().containsKey(newName)) {
+            while (multinarrative.getRoutes().containsKey(newName)) {
                 narrativeCounter += 1;
                 newName = Strings.populateString(ROUTE_PREFIX, narrativeCounter);
             }

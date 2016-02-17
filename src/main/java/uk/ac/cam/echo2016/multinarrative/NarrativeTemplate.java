@@ -6,6 +6,9 @@ import java.util.HashMap;
 import android.os.BaseBundle;
 
 /**
+ *
+ * MODIFYING THIS CLASS WILL BREAK ALL TEMPLATE SAVE FILES.
+ * DO NOT DO SO UNLESS ABSOLUTELY NECESSARY
  * 
  * The template of the story from which the copy of the game required for each
  * play through is derived.
@@ -29,6 +32,15 @@ import android.os.BaseBundle;
 public class NarrativeTemplate extends MultiNarrative {
     private static final long serialVersionUID = 1;
 
+    public NarrativeTemplate(){
+    }
+
+    public NarrativeTemplate(HashMap<String, Route> routes, HashMap<String, Node> nodes, SynchronizationNode start, BaseBundle properties){
+        this.routes = routes;
+        this.nodes = nodes;
+        this.start = start;
+        this.properties = properties;
+    }
     // TODO Documentation
     /**
      *
