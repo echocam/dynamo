@@ -83,6 +83,7 @@ public class FXMLPropertyController implements Initializable {
                 menu.getItems().get(event.getIndex()).setText(newValue);
                 event.consume();
             } catch (Exception e) {
+                e.printStackTrace();
                 controller.setInfo(e.getMessage());
             }
         });

@@ -219,9 +219,10 @@ public class OperationsManager {
 
         public Operation renameValue(String prop, String type, String value, String newValue,
                 FXMLPropertyController propCont) {
+            int i = propCont.getIndexOf(value);
             ArrayList<OperationGenerator> r = new ArrayList<>();
             r.add(() -> removeValue(prop, type, value, propCont));
-            r.add(() -> addValue(prop, type, newValue, propCont.getIndexOf(value), propCont));
+            r.add(() -> addValue(prop, type, newValue, i, propCont));
             return new CompositeOperation(r);
         }
 

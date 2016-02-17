@@ -126,10 +126,6 @@ public class FXMLController {
                         initSelect();
                     }
                 });
-        itemProperties.getSelectionModel().selectedItemProperty()
-                .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-                    itemPropertyDelete.setDisable(newValue == null);
-                });
         itemName.textProperty()
                 .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
                     changeSelectName();
@@ -329,6 +325,7 @@ public class FXMLController {
                 }
             } catch (IllegalOperationException ioe) {
                 setInfo(ioe.getMessage());
+                ioe.printStackTrace();
             }
         }
     }

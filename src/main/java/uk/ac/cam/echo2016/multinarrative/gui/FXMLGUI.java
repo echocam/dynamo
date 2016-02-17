@@ -1,24 +1,21 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
 
-import javafx.application.Application;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
-import javafx.stage.FileChooser;
-
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * @author jr650
@@ -55,7 +52,6 @@ public class FXMLGUI extends Application {
     /**
      * Opens the About dialog.
      */
-    @FXML
     public void showAbout() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml_aboutDialog.fxml"));
@@ -77,7 +73,6 @@ public class FXMLGUI extends Application {
         }
     }
     
-    @FXML
     public void altShowAbout() {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("About");
@@ -89,7 +84,6 @@ public class FXMLGUI extends Application {
     /**
      * Opens the Save As dialog
      */
-    @FXML
     public String showSaveAs() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save As");
@@ -104,7 +98,6 @@ public class FXMLGUI extends Application {
     /**
      * Opens the Open dialog
      */
-    @FXML
     public String showOpen() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open");
@@ -119,7 +112,6 @@ public class FXMLGUI extends Application {
     /**
      * Checks if a user wants to save before executing the next action
      */
-    @FXML
     public boolean checkIfShouldSave() {
         Alert alert = new Alert(AlertType.WARNING);
         alert.setTitle("Do you want to save?");
@@ -130,7 +122,9 @@ public class FXMLGUI extends Application {
         ButtonType noButton = new ButtonType("No", ButtonData.CANCEL_CLOSE);
 
         alert.getButtonTypes().setAll(yesButton, noButton);
-
+        String css = getClass().getResource("Style.css").toExternalForm();
+        alert.getDialogPane().getStylesheets().add(css);
+        
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == yesButton)
             return true;
@@ -141,7 +135,6 @@ public class FXMLGUI extends Application {
     /**
      * Opens the error dialog when an IO operation fails
      */
-    @FXML
     public void showError(String message) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Operation Failed");

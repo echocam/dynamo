@@ -95,8 +95,11 @@ public class NarrativeOperations {
      * @throws IllegalOperationException
      */
     public String getPropertyType(String property) throws IllegalOperationException {
+        if(property.equals("GUI.X") || property.equals("GUI.Y")){
+            return "Double";
+        }
         if (!properties.containsKey(property)) {
-            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST);
+            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST,property);
         }
         if (properties.get(property).isEmpty()) {
             return "String";
@@ -466,7 +469,7 @@ public class NarrativeOperations {
 
         Node node = multinarrative.getNode(id);
         if (node == null) {
-            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST);
+            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST,id);
         }
         if (value == null) {
             if (node.getProperties() != null) {
@@ -744,7 +747,7 @@ public class NarrativeOperations {
         Node node = multinarrative.getNode(id);
         Route route = multinarrative.getRoute(id);
         if (property.equals("GUI.X") || property.equals("GUI.Y")) {
-            throw new IllegalOperationException(SYSTEM_PROPERTY, id);
+            throw new IllegalOperationException(SYSTEM_PROPERTY, property);
         }
         if (node != null) {
             BaseBundle b = node.getProperties();

@@ -25,6 +25,9 @@ public class EditingTool implements GraphTool {
     private double mouseX;
     private double mouseY;
 
+    private double distX;
+    private double distY;
+
     private Graph graph;
 
     private Set<GraphNode> selection = new HashSet<GraphNode>();
@@ -92,6 +95,17 @@ public class EditingTool implements GraphTool {
                 resetSelection();
                 graph.getController().deselect();
             }
+        } else {
+            for (GraphNode node : selection) {
+                try {
+                    node.translate(-distX, -distY);
+                    graph.getOperations()
+                            .doOp(graph.getOperations().generator().translateNode(node.getName(), distX, distY));
+                    graph.getController().initSelect();
+                } catch (IllegalOperationException e) {
+                    graph.getController().setInfo(e.getMessage());
+                }
+            }
         }
 
         dragging = false;
@@ -100,6 +114,8 @@ public class EditingTool implements GraphTool {
         press = null;
         mouseX = Double.NaN;
         mouseY = Double.NaN;
+        distX = 0;
+        distY = 0;
     }
 
     @Override
@@ -110,20 +126,17 @@ public class EditingTool implements GraphTool {
         }
         if (!dragging) {
             dragging = true;
-        } else if(!event.isShiftDown()) {
+        } else if (!event.isShiftDown()) {
             double movementX = mouseX == mouseX ? event.getSceneX() - mouseX : 0.0;
             double movementY = mouseY == mouseY ? event.getSceneY() - mouseY : 0.0;
+            distX += movementX;
+            distY += movementY;
             if (press != null) {
                 press.translate(movementX, movementY);
             } else if (!selection.isEmpty()) {
                 for (GraphNode node : selection) {
-                    try {
-                        graph.getOperations().doOp(
-                                graph.getOperations().generator().translateNode(node.getName(), movementX, movementY));
-                        graph.getController().initSelect();
-                    } catch (IllegalOperationException e) {
-                        graph.getController().setInfo(e.getMessage());
-                    }
+                    node.translate(movementX, movementY);
+                    graph.getController().initSelect();
                 }
             }
         }
@@ -172,7 +185,7 @@ public class EditingTool implements GraphTool {
     @Override
     public void dragStart(MouseEvent event) {
         dragging = true;
-        if(event.isShiftDown()){
+        if (event.isShiftDown()) {
             if (event.getSource() instanceof Node) {
                 ((Node) event.getSource()).startFullDrag();
             }
