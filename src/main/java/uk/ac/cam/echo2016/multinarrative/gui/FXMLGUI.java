@@ -140,6 +140,8 @@ public class FXMLGUI extends Application {
         alert.setTitle("Operation Failed");
         alert.setHeaderText(null);
         alert.setContentText(message);
+        String css = getClass().getResource("Style.css").toExternalForm();
+        alert.getDialogPane().getStylesheets().add(css);
         alert.showAndWait();
     }
 }
