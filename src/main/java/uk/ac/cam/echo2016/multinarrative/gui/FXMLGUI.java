@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import uk.ac.cam.echo2016.multinarrative.gui.operations.Strings;
 
 import java.io.File;
 import java.io.IOException;

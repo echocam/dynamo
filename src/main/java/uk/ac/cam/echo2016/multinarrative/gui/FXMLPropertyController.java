@@ -69,7 +69,7 @@ public class FXMLPropertyController implements Initializable {
                     remove.setDisable(newValue == null);
                     recolour.setDisable(newValue == null);
                     if (newValue != null) {
-                        Color c = controller.getOperations().getColor(propName, newValue);
+                        Color c = controller.getOperations().narrativeOperations().getColor(propName, newValue);
                         recolour.valueProperty().set(c);
                     }
                 });
@@ -77,7 +77,8 @@ public class FXMLPropertyController implements Initializable {
             String oldValue = values.getItems().get(event.getIndex());
             String newValue = event.getNewValue();
             try {
-                controller.getOperations().renamePropertyValue(propName, oldValue, newValue);
+                controller.getOperations().doOp(controller.getOperations().generator().renameValue(propName, typeName,
+                        oldValue, newValue, this));
                 values.getItems().set(event.getIndex(), newValue);
                 menu.getItems().get(event.getIndex()).setText(newValue);
                 event.consume();
@@ -92,14 +93,15 @@ public class FXMLPropertyController implements Initializable {
                 });
         routeType.selectedProperty()
                 .addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-                    if (routeType.isSelected()) {
-                        controller.getOperations().setAsRouteType(propName);
-                    } else {
-                        controller.getOperations().clearAsRouteType(propName);
+                    try {
+                        controller.getOperations().doOp(
+                                controller.getOperations().generator().setRouteType(propName, newValue, routeType));
+                    } catch (IllegalOperationException ioe) {
+                        controller.setInfo(ioe.getMessage());
                     }
                 });
         name.addEventFilter(KeyEvent.KEY_TYPED, (KeyEvent event) -> {
-            if(event.getCharacter().equals("=")){
+            if (event.getCharacter().equals("=")) {
                 event.consume();
             }
         });
@@ -116,10 +118,8 @@ public class FXMLPropertyController implements Initializable {
         String newName = name.getText();
         if (!newName.equals(propName)) {
             try {
-                controller.getOperations().renameProperty(propName, newName);
-                menu.setText(newName);
-                propName = name.getText();
-
+                controller.getOperations()
+                        .doOp(controller.getOperations().generator().renameProperty(propName, newName, this));
             } catch (IllegalOperationException ioe) {
                 controller.setInfo(ioe.getMessage(), propName, newName);
                 name.setText(propName);
@@ -127,51 +127,88 @@ public class FXMLPropertyController implements Initializable {
         }
     }
 
+    public void setName(String newName) {
+        propName = newName;
+        menu.setText(newName);
+        name.setText(newName);
+    }
+
     @FXML
     protected void deleteButtonAction(ActionEvent event) {
-        controller.removeProperty(propName, root, menu);
+        try {
+            controller.getOperations().doOp(controller.getOperations().generator().removeProperty(this));
+        } catch (IllegalOperationException ioe) {
+            controller.setInfo(ioe.getMessage());
+        }
+    }
+
+    public void addValue(String s, int index) {
+        values.getItems().add(index, s);
+        MenuItem item = new MenuItem(s);
+        item.setOnAction(trigger -> {
+            controller.assignProperty(propName, typeName, item.getText());
+        });
+        menu.getItems().add(index, item);
+    }
+
+    public void removeValue(String s) {
+        int index = values.getItems().indexOf(s);
+        values.getItems().remove(s);
+        menu.getItems().remove(index);
     }
 
     @FXML
     protected void addValueAction(ActionEvent event) {
-        String s = controller.getOperations().getDefaultValue(propName, typeName);
+        String s = controller.getOperations().narrativeOperations().getDefaultValue(propName, typeName);
         try {
-            controller.getOperations().addPropertyValue(propName, s);
-            values.getItems().add(s);
-            MenuItem item = new MenuItem(s);
-            item.setOnAction(trigger -> {
-                controller.assignProperty(propName, typeName, item.getText());
-            });
-            menu.getItems().add(item);
+            controller.getOperations().doOp(controller.getOperations().generator().addValue(propName, typeName, s,
+                    values.getItems().size(), this));
+
         } catch (IllegalOperationException e) {
-            controller.setInfo(e.getMessage(), s);
+            controller.setInfo(e.getMessage());
         }
     }
 
     @FXML
     protected void removeValueAction(ActionEvent event) {
         String selected = values.getSelectionModel().getSelectedItem();
-        controller.getOperations().removePropertyValue(propName, selected);
-        values.getItems().remove(selected);
-        MenuItem remove = null;
-        for (MenuItem item : menu.getItems()) {
-            if (item.getText().equals(selected))
-                remove = item;
+        try {
+            controller.getOperations()
+                    .doOp(controller.getOperations().generator().removeValue(propName, typeName, selected, this));
+        } catch (IllegalOperationException ioe) {
+            controller.setInfo(ioe.getMessage());
         }
-        if (remove != null) {
-            menu.getItems().remove(remove);
-        }
+    }
 
+    public int getIndexOf(String s) {
+        return values.getItems().indexOf(s);
     }
 
     @FXML
     protected void changeTypeAction(ActionEvent event) {
         try {
-            controller.getOperations().setPropertyType(propName, type.getValue());
+            controller.getOperations()
+                    .doOp(controller.getOperations().generator().setPropertyType(propName, typeName, type));
             typeName = type.getValue();
         } catch (IllegalOperationException e) {
             type.setValue(typeName);
         }
     }
 
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public TitledPane getRoot() {
+        return root;
+    }
+
+    /**
+     * Gets the current property name
+     * 
+     * @return
+     */
+    public String getName() {
+        return propName;
+    }
 }
