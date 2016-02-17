@@ -78,6 +78,8 @@ public class FXMLGUI extends Application {
         alert.setTitle("About");
         alert.setHeaderText(null);
         alert.setContentText(Strings.ABOUT_TEXT);
+        String css = getClass().getResource("Style.css").toExternalForm();
+        alert.getDialogPane().getStylesheets().add(css);
         alert.showAndWait();
     }
 
