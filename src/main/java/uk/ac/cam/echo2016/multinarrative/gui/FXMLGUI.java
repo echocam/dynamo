@@ -12,9 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
-import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -49,32 +47,11 @@ public class FXMLGUI extends Application {
             throw new RuntimeException("FXML files not configured correctly", ioe);
         }
     }
-
+    
     /**
      * Opens the About dialog.
      */
-    public void showAbout() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml_aboutDialog.fxml"));
-            Pane page = loader.load();
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("About");
-            Scene scene = new Scene(page);
-            dialogStage.setScene(scene);
-
-            FXMLAboutDialogController controller = loader.getController();
-            controller.setDialogStage(dialogStage);
-
-            dialogStage.setAlwaysOnTop(true);
-            dialogStage.initModality(Modality.APPLICATION_MODAL);
-            dialogStage.showAndWait();
-        } catch (IOException ioe) {
-            // Indicates that fxml files aren't set up properly...
-            throw new RuntimeException("FXML files not configured correctly", ioe);
-        }
-    }
-    
-    public void altShowAbout() {
+    public void showAboutDialog() {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("About");
         alert.setHeaderText(null);
