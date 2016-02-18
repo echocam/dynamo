@@ -244,6 +244,7 @@ public class FXMLController {
             registerSaveClicked();
         }
         String returnedFile = mainApp.showOpen();
+        Debug.logInfo(returnedFile, 1, Debug.SYSTEM_GUI);
         if (returnedFile == null) {
             return;
         }
@@ -253,6 +254,7 @@ public class FXMLController {
         try {
             operations.loadNarrative(returnedFile);
         } catch (IOException ioe) {
+            //TODO add test
             showErrorDialog("Error when trying to open file");
         }
     }
