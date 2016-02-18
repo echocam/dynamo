@@ -8,6 +8,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import uk.ac.cam.echo2016.multinarrative.GUINarrative;
 import uk.ac.cam.echo2016.multinarrative.Route;
+import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphEdge;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphNode;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.CompositeOperation;
@@ -34,11 +35,33 @@ public class OperationsManager {
     }
 
     public void doOp(Operation o) throws IllegalOperationException {
-        sequence.storeAndExecute(o);
+        Debug.logInfo("Doing " + o.getClass().getSimpleName(), 3, Debug.SYSTEM_GUI);
+        try {
+            sequence.storeAndExecute(o);
+        } catch (IllegalOperationException ioe) {
+            Debug.logError(ioe, 3, Debug.SYSTEM_GUI);
+            throw ioe;
+        }
     }
 
     public void undo() throws IllegalOperationException {
-        sequence.undoLastOperation();
+        Debug.logInfo("Undoing", 3, Debug.SYSTEM_GUI);
+        try {
+            sequence.undoLastOperation();
+        } catch (IllegalOperationException ioe) {
+            Debug.logError(ioe, 3, Debug.SYSTEM_GUI);
+            throw ioe;
+        }
+    }
+
+    public void redo() throws IllegalOperationException {
+        Debug.logInfo("Redoing", 3, Debug.SYSTEM_GUI);
+        try {
+            sequence.redoLastUndo();
+        } catch (IllegalOperationException ioe) {
+            Debug.logError(ioe, 3, Debug.SYSTEM_GUI);
+            throw ioe;
+        }
     }
 
     public void loadNarrative(String filename) throws IOException {
