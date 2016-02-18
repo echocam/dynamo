@@ -13,6 +13,7 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.CubicCurve;
 import javafx.scene.shape.Shape;
 import uk.ac.cam.echo2016.multinarrative.gui.FXUtil;
+import uk.ac.cam.echo2016.multinarrative.gui.operations.IllegalOperationException;
 
 public class GraphEdge {
 
@@ -93,25 +94,33 @@ public class GraphEdge {
 		double endX = to.getX() + to.getContents().getWidth() / 2;
 		double endY = to.getY() + to.getContents().getHeight() / 2;
 
-		ArrayList<Color> c = g.getOperations().narrativeOperations().getRouteColor(name.get());
-		if (c.isEmpty()) {
-			c.add(Color.rgb(51, 51, 51));
-		}
-		Stop[] stops = new Stop[c.size()];
-		if(c.size()==1){
-			stops[0] = new Stop(0.0, c.get(0));
-		}else{
-		for (int i = 0; i < c.size(); i++) {
-			stops[i] = new Stop(i * 1.0 / (c.size()-1), c.get(i));
-			System.out.println(stops[i]);
-		}
-		}
+		ArrayList<Color> c;
+		try {
+		    c = g.getOperations().narrativeOperations().getRouteColor(name.get());
 
-		display.setStroke(new LinearGradient(startX, startY, endX, endY, false, CycleMethod.NO_CYCLE, stops));
+		    if (c.isEmpty()) {
+		        c.add(Color.rgb(51, 51, 51));
+		    }
+		    Stop[] stops = new Stop[c.size()];
+		    if(c.size()==1){
+		        stops[0] = new Stop(0.0, c.get(0));
+		    }else{
+		        for (int i = 0; i < c.size(); i++) {
+		            stops[i] = new Stop(i * 1.0 / (c.size()-1), c.get(i));
+		            System.out.println(stops[i]);
+		        }
+
+		    }
+
+		    display.setStroke(new LinearGradient(startX, startY, endX, endY, false, CycleMethod.NO_CYCLE, stops));
+		} catch (IllegalOperationException e) {
+		    // TODO Auto-generated catch block
+		    e.printStackTrace();
+		}
 	}
 
 	public GraphNode getFrom() {
-		return from;
+	    return from;
 	}
 
 	public GraphNode getTo() {

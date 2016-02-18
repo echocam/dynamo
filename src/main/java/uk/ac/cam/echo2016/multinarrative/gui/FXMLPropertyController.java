@@ -70,8 +70,14 @@ public class FXMLPropertyController implements Initializable {
                     remove.setDisable(newValue == null);
                     recolour.setDisable(newValue == null);
                     if (newValue != null) {
-                        Color c = controller.getOperations().narrativeOperations().getColor(propName, newValue);
-                        recolour.valueProperty().set(c);
+                        Color c;
+                        try {
+                            c = controller.getOperations().narrativeOperations().getColor(propName, newValue);
+                            recolour.valueProperty().set(c);
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     }
                 });
         values.setOnEditCommit(event -> {

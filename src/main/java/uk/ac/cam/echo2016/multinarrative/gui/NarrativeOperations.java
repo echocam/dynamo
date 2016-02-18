@@ -4,11 +4,15 @@ package uk.ac.cam.echo2016.multinarrative.gui;
 import static uk.ac.cam.echo2016.multinarrative.gui.PropertyTypes.TYPES;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.CANNOT_FORMAT;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.CYCLE_EXISTS;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.GUI_X;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.GUI_Y;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.INVALID_TYPE;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ITEM_ALREADY_EXISTS;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ITEM_DOES_NOT_EXIST;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_PREFIX;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_VALUE;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ROUTE_PREFIX;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.*;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.SYSTEM_PROPERTY;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,7 +47,6 @@ public class NarrativeOperations {
     private GUINarrative multinarrative;
 
     private Map<String, BaseBundle> properties;
-    private Map<String, Map<String, Color>> colors = new HashMap<String, Map<String, Color>>();
     private static int nodeCounter = 1;
     private static int narrativeCounter = 1;
     private static int valueCounter = 1;
@@ -148,10 +151,19 @@ public class NarrativeOperations {
         }
     }
     
+    /**
+     * sets property bundle (used by undo())
+     * @param propname
+     * @param prop
+     */
+    public void setPropertyBundle(String propname, BaseBundle prop) {
+        properties.put(propname, prop);
+    }
+    
     
 
     /**
-     * TODO Gets property type.
+     * Gets property type.
      * 
      * @param property
      * @param type
@@ -658,7 +670,7 @@ public class NarrativeOperations {
     }
 
     /**
-     * TODO Add the property to the String ArrayList global property in
+     * Add the property to the String ArrayList global property in
      * GUINarrative "System.Types"
      * 
      * @param property
@@ -668,7 +680,7 @@ public class NarrativeOperations {
     }
 
     /**
-     * TODO Remove the property from the String ArrayList global property in
+     * Remove the property from the String ArrayList global property in
      * GUINarrative "System.Types"
      * 
      * @param property
@@ -679,38 +691,42 @@ public class NarrativeOperations {
     }
 
     /**
-     * Sets the correct colour for the given value of the given property TODO
-     * make this use a better data structure
+     * Sets the correct colour for the given value of the given property
      * 
      * @param property
      * @param value
      * @param c
      */
     public void setColor(String property, String value, Color c) throws IllegalOperationException {
-        if (colors.get(property) == null) {
-            colors.put(property, new HashMap<String, Color>());
+        if (properties.get(property) != null) {
+            properties.get(property).putString(value, FXUtil.colorToHex(c));
         }
 
     }
 
     /**
-     * Gets the colour associated with this value of this property TODO use a
-     * better data Structure
+     * Gets the colour associated with this value of this property
      * 
      * @param property
      * @param value
      * @return
+     * @throws IllegalOperationException 
      */
-    public Color getColor(String property, String value) {
-        if (colors.get(property) == null) {
+    public Color getColor(String property, String value) throws IllegalOperationException {
+        if (properties.get(property) == null) {
             return Color.TRANSPARENT;
         }
-        Color c = colors.get(property).get(value);
+        Color c = null;
+        try {
+            c = Color.web((String) properties.get(property).get(value));
+        } catch (IllegalArgumentException e) {
+            throw new IllegalOperationException("Value " + value + " is not a color");
+        }
         return c == null ? Color.TRANSPARENT : c;
     }
 
     /**
-     * TODO gets a list of all the non transparent colors of properties applying
+     * gets a list of all the non transparent colors of properties applying
      * to a node
      * 
      * @return
@@ -718,19 +734,51 @@ public class NarrativeOperations {
      */
     public ArrayList<Color> getNodeColor(String node) throws GraphElementNotFoundException {
         ArrayList<Color> r = new ArrayList<Color>();
-        multinarrative.getProperties(node);
+        BaseBundle props = multinarrative.getProperties(node);
+        for (String valname : props.keySet()) {
+            try {
+                if (props.get(valname).toString().startsWith("#")) {
+                    Color c = Color.web(props.get(valname).toString());
+                    if (!c.equals(Color.TRANSPARENT)) {
+                        r.add(c);
+                    }
+                }
+            } catch (IllegalArgumentException e) {
+            }
+        }
         return r;
     }
 
     /**
-     * TODO gets a list of all the non transparent colors of properties applying
+     * gets a list of all the non transparent colors of properties applying
      * to a route
      * 
      * @return
+     * @throws IllegalOperationException 
      */
-    public ArrayList<Color> getRouteColor(String route) {
+    public ArrayList<Color> getRouteColor(String route) throws IllegalOperationException {
         ArrayList<Color> r = new ArrayList<Color>();
-        return r;
+        try {
+            BaseBundle props = multinarrative.getProperties(route);
+            //returns empty list if null, should we createProperties here?
+            if (props != null) {
+                for (String valname : props.keySet()) {
+                    try {
+                        if (props.get(valname).toString().startsWith("#")) {
+                            Color c = Color.web(props.get(valname).toString());
+                            if (!c.equals(Color.TRANSPARENT)) {
+                                r.add(c);
+                            }
+                        }
+                    } catch (IllegalArgumentException e) {
+                    }
+                }
+            }
+            return r;
+        } catch (GraphElementNotFoundException e1) {
+            e1.printStackTrace();
+            throw new IllegalOperationException("Route not found");
+        }
     }
 
     /**
@@ -858,7 +906,6 @@ public class NarrativeOperations {
         nodeCounter = 1;
         narrativeCounter = 1;
         valueCounter = 1;
-        colors = new HashMap<String, Map<String, Color>>();
         properties = new HashMap<String, BaseBundle>();
         multinarrative = narrative;
     }
