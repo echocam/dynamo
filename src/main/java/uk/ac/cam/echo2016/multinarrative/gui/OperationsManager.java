@@ -504,6 +504,12 @@ public class OperationsManager {
                 GraphNode newStart;
 
                 public SetStartOperation(String name, String start) throws IllegalOperationException {
+                    if (name == null) {
+                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, "null");
+                    }
+                    if (start == null) {
+                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, "null");
+                    }
                     edge = controller.getGraph().getEdges().get(name);
                     if (edge == null) {
                         throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, name);
