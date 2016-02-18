@@ -2,6 +2,7 @@ package uk.ac.cam.echo2016.multinarrative.gui;
 
 
 import static uk.ac.cam.echo2016.multinarrative.gui.PropertyTypes.TYPES;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ADD_EMPTY_STRING;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.CANNOT_FORMAT;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.CYCLE_EXISTS;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.GUI_X;
@@ -10,7 +11,7 @@ import static uk.ac.cam.echo2016.multinarrative.gui.Strings.INVALID_TYPE;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ITEM_ALREADY_EXISTS;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ITEM_DOES_NOT_EXIST;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_PREFIX;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_VALUE;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_VALUE_STRING;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ROUTE_PREFIX;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.SYSTEM_PROPERTY;
 
@@ -88,7 +89,7 @@ public class NarrativeOperations {
     public void addProperty(String s, BaseBundle b) throws IllegalOperationException {
 
         if (s.equals("") || s == null) {
-            throw new IllegalOperationException(Strings.ADD_EMPTY_STRING);
+            throw new IllegalOperationException(ADD_EMPTY_STRING);
         }
         if (properties.containsKey(s)) {
             throw new IllegalOperationException(ITEM_ALREADY_EXISTS,s);
@@ -270,7 +271,7 @@ public class NarrativeOperations {
             }
         }
         if (type.equals("String")) {
-            return Strings.populateString(PROPERTY_VALUE, "" + valueCounter++);
+            return Strings.populateString(PROPERTY_VALUE_STRING, "" + valueCounter++);
         } else {
             return "" + valueCounter++;
         }
