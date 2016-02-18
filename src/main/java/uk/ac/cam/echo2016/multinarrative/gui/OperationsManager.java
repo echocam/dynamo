@@ -69,6 +69,9 @@ public class OperationsManager {
         if (loaded == null) {
             throw new IOException();
         }
+        narrativeOperations.loadNarrative(loaded);
+        controllerOperations.clearGraph();
+        controllerOperations.buildGraph(loaded);
     }
 
     public void saveNarrative(String filename) throws IOException {
