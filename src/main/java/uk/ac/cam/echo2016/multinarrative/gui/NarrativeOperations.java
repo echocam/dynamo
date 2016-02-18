@@ -2,7 +2,6 @@ package uk.ac.cam.echo2016.multinarrative.gui;
 
 
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.*;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ADD_EMPTY_STRING;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.CANNOT_FORMAT;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.CYCLE_EXISTS;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.INVALID_TYPE;
@@ -12,7 +11,6 @@ import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_PREFIX;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ROUTE_PREFIX;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.SYSTEM_PROPERTY;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.PropertyTypes.TYPES;
-import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ADD_EMPTY_STRING;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ALREADY_EXISTS;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.INVALID_TYPE;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_DOES_NOT_EXIST;
@@ -33,7 +31,6 @@ import uk.ac.cam.echo2016.multinarrative.Route;
 import uk.ac.cam.echo2016.multinarrative.SynchronizationNode;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.DFSCycleDetect;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.IllegalOperationException;
-import uk.ac.cam.echo2016.multinarrative.gui.operations.Operation;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.Strings;
 
 /**
