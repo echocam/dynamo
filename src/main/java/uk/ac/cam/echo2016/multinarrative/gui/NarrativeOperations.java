@@ -1,14 +1,18 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
 
 
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.*;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ADD_EMPTY_STRING;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.CANNOT_FORMAT;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.CYCLE_EXISTS;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.INVALID_TYPE;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ITEM_ALREADY_EXISTS;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ITEM_DOES_NOT_EXIST;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_PREFIX;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ROUTE_PREFIX;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.SYSTEM_PROPERTY;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.PropertyTypes.TYPES;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ADD_EMPTY_STRING;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ALREADY_EXISTS;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.INVALID_TYPE;
 import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_DOES_NOT_EXIST;
@@ -29,6 +33,7 @@ import uk.ac.cam.echo2016.multinarrative.Route;
 import uk.ac.cam.echo2016.multinarrative.SynchronizationNode;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.DFSCycleDetect;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.IllegalOperationException;
+import uk.ac.cam.echo2016.multinarrative.gui.operations.Operation;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.Strings;
 
 /**
@@ -755,26 +760,28 @@ public class NarrativeOperations {
      */
     public ArrayList<Color> getRouteColor(String route) throws IllegalOperationException {
         ArrayList<Color> r = new ArrayList<Color>();
-        BaseBundle props = null;
         try {
-            props = multinarrative.getProperties(route);
+            BaseBundle props = multinarrative.getProperties(route);
+            //returns empty list if null, should we createProperties here?
+            if (props != null) {
+                for (String valname : props.keySet()) {
+                    try {
+                        if (props.get(valname).toString().startsWith("#")) {
+                            Color c = Color.web(props.get(valname).toString());
+                            if (!c.equals(Color.TRANSPARENT)) {
+                                r.add(c);
+                            }
+                        }
+                    } catch (IllegalArgumentException e) {
+                    }
+                }
+            }
+            return r;
         } catch (GraphElementNotFoundException e1) {
             e1.printStackTrace();
             throw new IllegalOperationException("Route not found");
         }
-            for (String valname : props.keySet()) {
-                try {
-                    if (props.get(valname).toString().startsWith("#")) {
-                        Color c = Color.web(props.get(valname).toString());
-                        if (!c.equals(Color.TRANSPARENT)) {
-                            r.add(c);
-                        }
-                    }
-                } catch (IllegalArgumentException e) {
-                }
-            }
-            return r;
-        }
+    }
 
     /**
      * Gives whether the give id is a choice node
@@ -907,10 +914,6 @@ public class NarrativeOperations {
 
     public GUINarrative getNarrative() {
         return multinarrative;
-    }
-    
-    public void newNarrative() {
-        multinarrative = new GUINarrative();
     }
 
 }
