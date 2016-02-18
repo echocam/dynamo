@@ -115,7 +115,15 @@ public class NarrativeOperations {
                     throw new IllegalOperationException(INVALID_TYPE);
                 }
                 multinarrative.setPropertyType(property, type);
-                
+                BaseBundle prop = properties.get(property);
+                BaseBundle propcopy = new BaseBundle(properties.get(property));
+                for (String val : propcopy.keySet() ) {
+                    Object value = propcopy.get(val);
+                    if (!isCorrectType(type, value)) {
+                        prop.remove(val);
+                        System.out.println("Deleted value: " + val);
+                    }
+                }
             }
 
             @Override
@@ -204,7 +212,7 @@ public class NarrativeOperations {
         Operation.storeAndExecute(c);
     }
     
-    private boolean isCorrectType(String type, String value) {
+    private boolean isCorrectType(String type, Object value) {
             switch (type) {
             case "String":
                 return String.class.isInstance(value);
