@@ -24,6 +24,9 @@ public class Strings {
     public static final String CANNOT_UNDO = "Nothing to undo";
     public static final String CANNOT_REDO = "Nothing to redo";
 
+    public static final String GUI_X = "GUI.X";
+    public static final String GUI_Y = "GUI.Y";
+    
     public static final String ABOUT_TEXT = "Graphical User Interface for DyNaMo (Dynamic Narrative Modelling)\n\nDemonstration version.";
 
     private Strings() {

@@ -85,7 +85,7 @@ public class OperationsManager {
     public ControllerOperations controllerOperations() {
         return controllerOperations;
     }
-    
+
     public void newFile() {
         narrativeOperations.newNarrative();
         controllerOperations.clearGraph();
@@ -409,7 +409,8 @@ public class OperationsManager {
 
                 @Override
                 public void execute() throws IllegalOperationException {
-                    narrativeOperations.addRoute(edge.getName(), edge.getFrom().getName(), edge.getTo().getName());
+                    narrativeOperations.addRoute(edge.getName(), edge.getFrom().getName(), edge.getTo().getName(),
+                            edge.getXOff(), edge.getYOff());
                     controllerOperations.addRoute(edge);
                 }
 
@@ -442,7 +443,8 @@ public class OperationsManager {
 
                 @Override
                 public void undo() throws IllegalOperationException {
-                    narrativeOperations.addRoute(edge.getName(), edge.getFrom().getName(), edge.getTo().getName());
+                    narrativeOperations.addRoute(edge.getName(), edge.getFrom().getName(), edge.getTo().getName(),
+                            edge.getXOff(), edge.getYOff());
                     controllerOperations.addRoute(edge);
                 }
             }
@@ -503,6 +505,37 @@ public class OperationsManager {
                 }
             }
             return new TranslateNodeOperation(s, x, y);
+        }
+        
+        public Operation translateRoute(String s, double x, double y) throws IllegalOperationException {
+            class TranslateRouteOperation implements Operation {
+                GraphEdge route;
+                double x, y;
+
+                public TranslateRouteOperation(String s, double x, double y) throws IllegalOperationException {
+                    route = controller.getGraph().getEdges().get(s);
+                    if (route == null) {
+                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, s);
+                    }
+                    this.x = x;
+                    this.y = y;
+                }
+
+                @Override
+                public void execute() throws IllegalOperationException {
+                    narrativeOperations.translateRoute(route.getName(), x, y);
+                    route.translate(x, y);
+                    controller.getGraph().updateEdge(route);
+                }
+
+                @Override
+                public void undo() throws IllegalOperationException {
+                    narrativeOperations.translateRoute(route.getName(), -x, -y);
+                    route.translate(-x, -y);
+                    controller.getGraph().updateEdge(route);
+                }
+            }
+            return new TranslateRouteOperation(s, x, y);
         }
 
         public Operation setStart(String name, String start) throws IllegalOperationException {

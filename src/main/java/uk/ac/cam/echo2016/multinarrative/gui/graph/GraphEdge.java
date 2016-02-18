@@ -145,5 +145,12 @@ public class GraphEdge {
 	public String getName() {
 		return name.get();
 	}
+	
+	public double getXOff(){
+	    return xOffset.get();
+	}
 
+	public double getYOff(){
+            return yOffset.get();
+        }
 }

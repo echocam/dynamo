@@ -1,4 +1,4 @@
-package uk.ac.cam.echo2016.multinarrative.gui.operations;
+package uk.ac.cam.echo2016.multinarrative.gui;
 
 import java.util.Arrays;
 import java.util.HashSet;

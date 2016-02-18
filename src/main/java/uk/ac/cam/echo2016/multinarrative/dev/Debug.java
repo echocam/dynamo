@@ -168,14 +168,14 @@ public class Debug {
      *            bitwise or them together. eg. TYPE_PUDDING | TYPE FAIRY.
      */
     public static void logInfo(String s, int level, int system) {
-        logInfo(s, 4, level, system);
+        logInfo(s, 3, level, system);
     }
     
     public static void logInfo(String s, int calls, int level, int system) {
         Debug d = Debug.getInstance();
         int[] logSystems = d.consoleLogLevels; // get config info
         if ((logSystems[level - 1] & system) != 0) {
-            StackTraceElement stackTrace = Thread.currentThread().getStackTrace()[2];
+            StackTraceElement stackTrace = Thread.currentThread().getStackTrace()[calls];
             int lineNumber = stackTrace.getLineNumber();
             String fileName = stackTrace.getFileName();
             String debugString = lineNumber + " " + fileName + ": " + s;

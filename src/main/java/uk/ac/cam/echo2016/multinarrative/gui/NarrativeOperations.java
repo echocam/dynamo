@@ -1,17 +1,14 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
 
 
+import static uk.ac.cam.echo2016.multinarrative.gui.PropertyTypes.TYPES;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.CANNOT_FORMAT;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.CYCLE_EXISTS;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ITEM_ALREADY_EXISTS;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ITEM_DOES_NOT_EXIST;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_PREFIX;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ROUTE_PREFIX;
-import static uk.ac.cam.echo2016.multinarrative.gui.Strings.SYSTEM_PROPERTY;
-import static uk.ac.cam.echo2016.multinarrative.gui.operations.PropertyTypes.TYPES;
-import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ALREADY_EXISTS;
-import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.INVALID_TYPE;
-import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_DOES_NOT_EXIST;
+import static uk.ac.cam.echo2016.multinarrative.gui.Strings.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +26,6 @@ import uk.ac.cam.echo2016.multinarrative.Route;
 import uk.ac.cam.echo2016.multinarrative.SynchronizationNode;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.DFSCycleDetect;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.IllegalOperationException;
-import uk.ac.cam.echo2016.multinarrative.gui.operations.Strings;
 
 /**
  * The class that encapsulates all GUI operations.
@@ -92,7 +88,7 @@ public class NarrativeOperations {
             throw new IllegalOperationException(Strings.ADD_EMPTY_STRING);
         }
         if (properties.containsKey(s)) {
-            throw new IllegalOperationException(ALREADY_EXISTS);
+            throw new IllegalOperationException(ITEM_ALREADY_EXISTS,s);
         }
         properties.put(s, new BaseBundle());
         //sets default property type to String. Can change
@@ -162,7 +158,7 @@ public class NarrativeOperations {
      * @throws IllegalOperationException
      */
     public String getPropertyType(String property) throws IllegalOperationException {
-        if(property.equals("GUI.X") || property.equals("GUI.Y")){
+        if(property.equals(GUI_X) || property.equals(GUI_Y)){
             return "Double";
         }
         if (!properties.containsKey(property)) {
@@ -172,27 +168,6 @@ public class NarrativeOperations {
             return "String";
         }
         return multinarrative.getPropertyTypes().get(property);
-//        Object o = properties.get(property).valueSet().iterator().next();
-//        if (o instanceof String) {
-//            return "String";
-//        } else if (o instanceof Integer) {
-//            return "Integer";
-//        } else if (o instanceof Boolean) {
-//            return "Boolean";
-//        } else if (o instanceof Byte) {
-//            return "Byte";
-//        } else if (o instanceof Short) {
-//            return "Short";
-//        } else if (o instanceof Long) {
-//            return "Long";
-//        } else if (o instanceof Float) {
-//            return "Float";
-//        } else if (o instanceof Double) {
-//            return "Double";
-//        } else {
-//            throw new IllegalOperationException(INVALID_TYPE);
-//        }
-
     }
 
     /**
@@ -212,7 +187,7 @@ public class NarrativeOperations {
     public void addValue(String property, String type, String value) throws IllegalOperationException {
         String proptype = multinarrative.getPropertyTypes().get(property);
         if (!properties.containsKey(property)) {
-            throw new IllegalOperationException(PROPERTY_DOES_NOT_EXIST);
+            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST,property);
         }
         if (!type.equals(proptype)) {
             throw new IllegalOperationException("Value does not match property type.");
@@ -283,9 +258,9 @@ public class NarrativeOperations {
             }
         }
         if (type.equals("String")) {
-            return Strings.populateString(Strings.PROPERTY_VALUE_STRING, "" + valueCounter++);
+            return Strings.populateString(PROPERTY_VALUE, "" + valueCounter++);
         } else {
-            return Strings.populateString(Strings.PROPERTY_VALUE_NUM, "" + valueCounter++);
+            return "" + valueCounter++;
         }
     }
 
@@ -321,8 +296,8 @@ public class NarrativeOperations {
         }
         SynchronizationNode newNode = new SynchronizationNode(name);
         newNode.createProperties();
-        newNode.getProperties().putDouble("GUI.X", x);
-        newNode.getProperties().putDouble("GUI.Y", y);
+        newNode.getProperties().putDouble(GUI_X, x);
+        newNode.getProperties().putDouble(GUI_Y, y);
         multinarrative.getNodes().put(name, newNode);
 
     }
@@ -337,10 +312,10 @@ public class NarrativeOperations {
         }
         ChoiceNode newNode = new ChoiceNode(name);
         newNode.createProperties();
-        newNode.getProperties().putDouble("GUI.X", x);
-        newNode.getProperties().putDouble("GUI.Y", y);
-        multinarrative.setPropertyType("GUI.X", "Double");
-        multinarrative.setPropertyType("GUI.Y", "Double");
+        newNode.getProperties().putDouble(GUI_X, x);
+        newNode.getProperties().putDouble(GUI_Y, y);
+        multinarrative.setPropertyType(GUI_X, "Double");
+        multinarrative.setPropertyType(GUI_Y, "Double");
         multinarrative.getNodes().put(name, newNode);
 
     }
@@ -353,10 +328,30 @@ public class NarrativeOperations {
         if (theNode == null) {
             throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, name);
         }
-        double transx = x + theNode.getProperties().getDouble("GUI.X");
-        double transy = y + theNode.getProperties().getDouble("GUI.Y");
-        theNode.getProperties().putDouble("GUI.X", transx);
-        theNode.getProperties().putDouble("GUI.Y", transy);
+        if(theNode.getProperties()==null){
+            theNode.createProperties();
+        }
+        double transx = x + theNode.getProperties().getDouble(GUI_X,0);
+        double transy = y + theNode.getProperties().getDouble(GUI_Y,0);
+        theNode.getProperties().putDouble(GUI_X, transx);
+        theNode.getProperties().putDouble(GUI_Y, transy);
+    }
+    
+    /**
+     * Repositions a node by the given offset
+     */
+    public void translateRoute(String name, double x, double y) throws IllegalOperationException {
+        Route theRoute = multinarrative.getRoute(name);
+        if (theRoute == null) {
+            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, name);
+        }
+        if(theRoute.getProperties()==null){
+            theRoute.createProperties();
+        }
+        double transx = x + theRoute.getProperties().getDouble(GUI_X,0);
+        double transy = y + theRoute.getProperties().getDouble(GUI_Y,0);
+        theRoute.getProperties().putDouble(GUI_X, transx);
+        theRoute.getProperties().putDouble(GUI_Y, transy);
     }
 
     /**
@@ -407,9 +402,13 @@ public class NarrativeOperations {
      * @param end
      *            - ending node. If node does not exist creates a new node.
      */
-    public void addRoute(String name, String start, String end) throws IllegalOperationException {
+    public void addRoute(String name, String start, String end, double xOff, double yOff) throws IllegalOperationException {
         try {
             multinarrative.newRoute(name, start, end);
+            multinarrative.getRoute(name).createProperties();
+            BaseBundle b = multinarrative.getProperties(name);
+            b.putDouble(GUI_X, xOff);
+            b.putDouble(GUI_Y, yOff);
         } catch (NonUniqueIdException e) {
             throw new IllegalOperationException(ITEM_ALREADY_EXISTS, name);
         } catch (GraphElementNotFoundException e) {
@@ -832,7 +831,7 @@ public class NarrativeOperations {
     public void deleteProperty(String id, String property) throws IllegalOperationException {
         Node node = multinarrative.getNode(id);
         Route route = multinarrative.getRoute(id);
-        if (property.equals("GUI.X") || property.equals("GUI.Y")) {
+        if (property.equals(GUI_X) || property.equals(GUI_Y)) {
             throw new IllegalOperationException(SYSTEM_PROPERTY, property);
         }
         if (node != null) {

@@ -96,14 +96,25 @@ public class EditingTool implements GraphTool {
                 graph.getController().deselect();
             }
         } else {
-            for (GraphNode node : selection) {
-                try {
-                    node.translate(-distX, -distY);
+            if (press != null) {
+                try{
+                    press.translate(-distX, -distY);
                     graph.getOperations()
-                            .doOp(graph.getOperations().generator().translateNode(node.getName(), distX, distY));
-                    graph.getController().initSelect();
-                } catch (IllegalOperationException e) {
-                    graph.getController().setInfo(e.getMessage());
+                    .doOp(graph.getOperations().generator().translateRoute(press.getName(), distX, distY));
+            graph.getController().initSelect();
+                }catch(IllegalOperationException ioe){
+                    graph.getController().setInfo(ioe.getMessage());
+                }
+            } else {
+                for (GraphNode node : selection) {
+                    try {
+                        node.translate(-distX, -distY);
+                        graph.getOperations()
+                                .doOp(graph.getOperations().generator().translateNode(node.getName(), distX, distY));
+                        graph.getController().initSelect();
+                    } catch (IllegalOperationException e) {
+                        graph.getController().setInfo(e.getMessage());
+                    }
                 }
             }
         }
@@ -135,12 +146,7 @@ public class EditingTool implements GraphTool {
                 press.translate(movementX, movementY);
             } else if (!selection.isEmpty()) {
                 for (GraphNode node : selection) {
-                    try {
-                        node.translate(-movementY, -movementY);
-                        graph.getOperations().doOp(graph.getOperations().generator().translateNode(node.getName(), movementX, movementY));
-                    } catch (IllegalOperationException e) {
-                        graph.getController().setInfo(e.getMessage());
-                    } 
+                    node.translate(movementY, movementY);
                 }
             }
         }

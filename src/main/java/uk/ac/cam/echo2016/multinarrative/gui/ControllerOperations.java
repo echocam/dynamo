@@ -284,7 +284,6 @@ public class ControllerOperations {
             Route route = narrative.getRoute(routeName);
             GraphNode start = controller.getGraph().getNodes().get(route.getStart().getId());
             GraphNode end = controller.getGraph().getNodes().get(route.getEnd().getId());
-
             if (start == null) {
                 Debug.logError("Did not find node: " + route.getStart().getId(), 2, Debug.SYSTEM_IO);
             }
@@ -293,6 +292,9 @@ public class ControllerOperations {
             }
             if (start != null && end != null) {
                 GraphEdge graphRoute = createRoute(routeName, start, end);
+                double xOff = route.getProperties() == null ? 0.0 : route.getProperties().getDouble("GUI.X", 0.0);
+                double yOff = route.getProperties() == null ? 0.0 : route.getProperties().getDouble("GUI.Y", 0.0);
+                graphRoute.translate(xOff, yOff);
                 addRoute(graphRoute);
             }
 
