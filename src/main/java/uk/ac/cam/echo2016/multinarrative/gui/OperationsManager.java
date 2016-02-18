@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import android.os.BaseBundle;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.paint.Color;
 import uk.ac.cam.echo2016.multinarrative.GUINarrative;
 import uk.ac.cam.echo2016.multinarrative.Route;
 import uk.ac.cam.echo2016.multinarrative.dev.Debug;
@@ -177,7 +178,7 @@ public class OperationsManager {
                 @Override
                 public void execute() throws IllegalOperationException {
                     narrativeOperations.setPropertyType(prop, type);
-                    
+
                     typeSelect.setDisable(true);
                     typeSelect.setValue(type);
                     typeSelect.setDisable(false);
@@ -212,9 +213,15 @@ public class OperationsManager {
             return new RenamePropertyAction();
         }
 
-        public Operation removeValue(String prop, String type, String value, FXMLPropertyController propCont) {
+        public Operation removeValue(String prop, String type, String value, FXMLPropertyController propCont)
+                throws IllegalOperationException {
             class RemovePropertyAction implements Operation {
                 int i = propCont.getIndexOf(value);
+                Color c;
+
+                public RemovePropertyAction() throws IllegalOperationException {
+                    c = narrativeOperations.getColor(prop, value);
+                }
 
                 @Override
                 public void execute() throws IllegalOperationException {
@@ -225,6 +232,7 @@ public class OperationsManager {
                 @Override
                 public void undo() throws IllegalOperationException {
                     narrativeOperations.addValue(prop, type, value);
+                    narrativeOperations.setColor(prop, value, c);
                     propCont.addValue(value, i);
                 }
             }
@@ -249,12 +257,40 @@ public class OperationsManager {
         }
 
         public Operation renameValue(String prop, String type, String value, String newValue,
-                FXMLPropertyController propCont) {
+                FXMLPropertyController propCont) throws IllegalOperationException {
             int i = propCont.getIndexOf(value);
             ArrayList<OperationGenerator> r = new ArrayList<>();
+            Color c = narrativeOperations.getColor(prop, value);
             r.add(() -> removeValue(prop, type, value, propCont));
             r.add(() -> addValue(prop, type, newValue, i, propCont));
+            r.add(() -> setColor(prop, newValue, c, propCont));
             return new CompositeOperation(r);
+        }
+
+        public Operation setColor(String prop, String value, Color col, FXMLPropertyController propCont)
+                throws IllegalOperationException {
+            class SetColorOperation implements Operation {
+                Color old;
+
+                public SetColorOperation(String prop, String value, Color col) throws IllegalOperationException {
+                    old = narrativeOperations.getColor(prop, value);
+                }
+
+                @Override
+                public void execute() throws IllegalOperationException {
+                    narrativeOperations.setColor(prop, value, col);
+                    propCont.recolour(value, col);
+                    controller.getGraph().update();
+                }
+
+                @Override
+                public void undo() throws IllegalOperationException {
+                    narrativeOperations.setColor(prop, value, old);
+                    propCont.recolour(value, old);
+                    controller.getGraph().update();
+                }
+            }
+            return new SetColorOperation(prop, value, col);
         }
 
         public Operation setRouteType(String prop, boolean value, CheckBox check) {
@@ -319,7 +355,7 @@ public class OperationsManager {
 
                 @Override
                 public void execute() throws IllegalOperationException {
-                    narrativeOperations.addSynchNode(node.getName(), node.getX(), node.getY());
+                    narrativeOperations.addChoiceNode(node.getName(), node.getX(), node.getY());
                     controllerOperations.addNode(node);
                 }
 
@@ -335,9 +371,12 @@ public class OperationsManager {
         public Operation addChoiceNode(String s, GraphEdge split) throws IllegalOperationException {
             String route2 = narrativeOperations.getUniqueRouteName();
             ArrayList<OperationGenerator> r = new ArrayList<>();
+            double x = split.getXOff();
+            double y = split.getYOff();
             r.add(() -> addChoiceNodeSolo(s, split.getControl().getLayoutX(), split.getControl().getLayoutY()));
             r.add(() -> addRoute(route2, s, split.getTo().getName()));
             r.add(() -> setEnd(split.getName(), s));
+            r.add(() -> translateRoute(split.getName(), -x, -y));
             return new CompositeOperation(r);
         }
 
@@ -726,6 +765,7 @@ public class OperationsManager {
                 public void execute() throws IllegalOperationException {
                     narrativeOperations.deleteProperty(node, prop);
                     controllerOperations.updateItem(node);
+                    controller.initSelect();
                 }
 
                 @Override
@@ -746,6 +786,7 @@ public class OperationsManager {
                 public void execute() throws IllegalOperationException {
                     narrativeOperations.deleteProperty(route, prop);
                     controllerOperations.updateItem(route);
+                    controller.initSelect();
                 }
 
                 @Override

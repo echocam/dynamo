@@ -55,9 +55,12 @@ public class Graph {
         return edges;
     }
 
-    public void update(double scale) {
+    public void update() {
         for (GraphEdge edge : edges.values()) {
             updateEdge(edge);
+        }
+        for (GraphNode node : nodes.values()) {
+            updateNode(node);
         }
     }
 
@@ -67,11 +70,6 @@ public class Graph {
 
     public void updateNode(GraphNode node) {
         node.update(this);
-        for (GraphEdge edge : edges.values()) {
-            if (edge.getFrom() == node || edge.getTo() == node) {
-                updateEdge(edge);
-            }
-        }
     }
 
     public void addNode(GraphNode node) {

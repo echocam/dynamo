@@ -6,6 +6,7 @@ import uk.ac.cam.echo2016.multinarrative.io.SaveWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The {@code EditableNarrative} used by the {@code FXMLGUI} editor to store the
@@ -23,6 +24,8 @@ import java.util.HashMap;
 public class GUINarrative extends EditableNarrative { // TODO Finish
                                                       // Documentation
     private static final long serialVersionUID = 1;
+    private Map<String, BaseBundle> propertyMapping = new HashMap<String, BaseBundle>();
+    protected HashMap<String, String> typemap = new HashMap<String, String>();
 
     public boolean isUniqueId(String id) {
         return (!routes.containsKey(id) && !nodes.containsKey(id));
@@ -31,6 +34,10 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
     public boolean isChoiceNode(String nodeId) throws GraphElementNotFoundException {
         Node node = nodes.get(nodeId);
         return node instanceof ChoiceNode;
+    }
+
+    public void setPropertyType(String property, String type) {
+        typemap.put(property, type);
     }
 
     /**
@@ -268,14 +275,14 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
         newNode.setProperties(node.getProperties());
         nodes.put(nodeId, newNode);
     }
-    
-    public void setEnd(String routeId, String nodeId) throws GraphElementNotFoundException{
+
+    public void setEnd(String routeId, String nodeId) throws GraphElementNotFoundException {
         Route route = routes.get(routeId);
-        if(route==null){
+        if (route == null) {
             throw new GraphElementNotFoundException(routeId);
         }
         Node newNode = nodes.get(nodeId);
-        if(newNode==null){
+        if (newNode == null) {
             throw new GraphElementNotFoundException(nodeId);
         }
         Node oldNode = route.getEnd();
@@ -283,14 +290,14 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
         route.setEnd(newNode);
         newNode.getEntering().add(route);
     }
-    
-    public void setStart(String routeId, String nodeId) throws GraphElementNotFoundException{
+
+    public void setStart(String routeId, String nodeId) throws GraphElementNotFoundException {
         Route route = routes.get(routeId);
-        if(route==null){
+        if (route == null) {
             throw new GraphElementNotFoundException(routeId);
         }
         Node newNode = nodes.get(nodeId);
-        if(newNode==null){
+        if (newNode == null) {
             throw new GraphElementNotFoundException(nodeId);
         }
         Node oldNode = route.getEnd();
@@ -299,7 +306,7 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
         newNode.getExiting().add(route);
     }
 
-    public NarrativeTemplate generateTemplate() throws NonUniqueStartException{
+    public NarrativeTemplate generateTemplate() throws NonUniqueStartException {
         HashMap<String, Node> r_nodes = new HashMap<>();
         HashMap<String, Route> r_routes = new HashMap<>();
 
@@ -326,20 +333,38 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
         }
 
         SynchronizationNode start = null;
-        for(Node node : r_nodes.values()){
-            if(node.getEntering().size()==0){
-                if(start==null){
+        for (Node node : r_nodes.values()) {
+            if (node.getEntering().size() == 0) {
+                if (start == null) {
                     start = (SynchronizationNode) node;
-                }else{
+                } else {
                     throw new NonUniqueStartException();
                 }
             }
         }
-        NarrativeTemplate template = new NarrativeTemplate(r_routes, r_nodes, start, BaseBundle.deepcopy(this.properties));
+        NarrativeTemplate template = new NarrativeTemplate(r_routes, r_nodes, start,
+                BaseBundle.deepcopy(this.properties));
         return template;
     }
 
-    public void saveTemplate(String filename) throws NonUniqueStartException, IOException{
+    public void saveTemplate(String filename) throws NonUniqueStartException, IOException {
         SaveWriter.saveObject(filename, generateTemplate());
+    }
+
+    public Map<String, BaseBundle> getPropertyMapping() {
+        return propertyMapping;
+    }
+
+    public void createMapping() {
+        if (propertyMapping == null) {
+            propertyMapping = new HashMap<String, BaseBundle>();
+        }
+        if (typemap == null) {
+            typemap = new HashMap<String, String>();
+        }
+    }
+
+    public Map<String, String> getPropertyTypes() {
+        return typemap;
     }
 }

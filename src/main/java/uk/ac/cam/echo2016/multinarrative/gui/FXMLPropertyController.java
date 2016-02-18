@@ -27,7 +27,6 @@ import uk.ac.cam.echo2016.multinarrative.gui.operations.IllegalOperationExceptio
  */
 public class FXMLPropertyController implements Initializable {
 
-
     private String propName;
 
     private String typeName = "String";
@@ -63,7 +62,16 @@ public class FXMLPropertyController implements Initializable {
         recolour.setDisable(true);
         recolour.valueProperty()
                 .addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) -> {
-
+                    try {
+                        Color c = controller.getOperations().narrativeOperations().getColor(propName,
+                                values.getSelectionModel().getSelectedItem());
+                        if (!c.equals(newValue)) {
+                            controller.getOperations().doOp(controller.getOperations().generator().setColor(propName,
+                                    values.getSelectionModel().getSelectedItem(), newValue, this));
+                        }
+                    } catch (Exception e) {
+                        controller.setInfo(e.getMessage());
+                    }
                 });
         values.getSelectionModel().selectedItemProperty()
                 .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
@@ -75,8 +83,7 @@ public class FXMLPropertyController implements Initializable {
                             c = controller.getOperations().narrativeOperations().getColor(propName, newValue);
                             recolour.valueProperty().set(c);
                         } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                            controller.setInfo(e.getMessage());
                         }
                     }
                 });
@@ -200,10 +207,11 @@ public class FXMLPropertyController implements Initializable {
     @FXML
     protected void changeTypeAction(ActionEvent event) {
         try {
-            typeName = type.getValue();
-            controller.getOperations()
-                    .doOp(controller.getOperations().generator().setPropertyType(propName, typeName, type));
-            System.out.println("Property changed to: " + typeName);
+            type.getValue();
+            if (!controller.getOperations().narrativeOperations().getPropertyType(propName).equals(type.getValue())) {
+                controller.getOperations()
+                        .doOp(controller.getOperations().generator().setPropertyType(propName, type.getValue(), type));
+            }
         } catch (IllegalOperationException e) {
             type.setValue(typeName);
         }
@@ -224,5 +232,19 @@ public class FXMLPropertyController implements Initializable {
      */
     public String getName() {
         return propName;
+    }
+
+    public void recolour(String value, Color c) {
+        if (values.getSelectionModel().getSelectedItem().equals(value)) {
+            recolour.setValue(c);
+        }
+    }
+
+    public void setType(String s) {
+        type.setValue(s);
+    }
+
+    public ListView<String> getValues() {
+        return values;
     }
 }

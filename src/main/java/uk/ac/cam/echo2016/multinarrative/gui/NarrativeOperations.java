@@ -1,6 +1,5 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
 
-
 import static uk.ac.cam.echo2016.multinarrative.gui.PropertyTypes.TYPES;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ADD_EMPTY_STRING;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.CANNOT_FORMAT;
@@ -16,9 +15,7 @@ import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ROUTE_PREFIX;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.SYSTEM_PROPERTY;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.os.BaseBundle;
 import javafx.scene.paint.Color;
@@ -29,6 +26,7 @@ import uk.ac.cam.echo2016.multinarrative.Node;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueIdException;
 import uk.ac.cam.echo2016.multinarrative.Route;
 import uk.ac.cam.echo2016.multinarrative.SynchronizationNode;
+import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.DFSCycleDetect;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.IllegalOperationException;
 
@@ -47,7 +45,6 @@ public class NarrativeOperations {
 
     private GUINarrative multinarrative;
 
-    private Map<String, BaseBundle> properties;
     private static int nodeCounter = 1;
     private static int narrativeCounter = 1;
     private static int valueCounter = 1;
@@ -57,28 +54,25 @@ public class NarrativeOperations {
      */
     public NarrativeOperations() {
         multinarrative = new GUINarrative();
-        properties = new HashMap<String, BaseBundle>();
     }
 
-    
-    
     public void addPropertyValue(String id, String value) throws IllegalOperationException {
-                String type = multinarrative.getPropertyTypes().get(id);
-                System.out.println(type);
-                if (type == null || !isCorrectType(type, value)) {
-                    throw new IllegalOperationException("Property value does not match type");
-                }
-                BaseBundle prop = properties.get(id);
-                if (prop == null) {
-                    throw new IllegalOperationException("Property does not exist.");
-                }
-                if (prop.containsKey(value)) {
-                    throw new IllegalOperationException("Value already exists.");
-                }
-                addValue(id, type, value);
-        
+        String type = multinarrative.getPropertyTypes().get(id);
+        System.out.println(type);
+        if (type == null || !isCorrectType(type, value)) {
+            throw new IllegalOperationException("Property value does not match type");
+        }
+        BaseBundle prop = multinarrative.getPropertyMapping().get(id);
+        if (prop == null) {
+            throw new IllegalOperationException("Property does not exist.");
+        }
+        if (prop.containsKey(value)) {
+            throw new IllegalOperationException("Value already exists.");
+        }
+        addValue(id, type, value);
+
     }
-    
+
     /**
      * Adds the required property
      * 
@@ -91,16 +85,16 @@ public class NarrativeOperations {
         if (s.equals("") || s == null) {
             throw new IllegalOperationException(ADD_EMPTY_STRING);
         }
-        if (properties.containsKey(s)) {
-            throw new IllegalOperationException(ITEM_ALREADY_EXISTS,s);
+        if (multinarrative.getPropertyMapping().containsKey(s)) {
+            throw new IllegalOperationException(ITEM_ALREADY_EXISTS, s);
         }
-        properties.put(s, new BaseBundle());
-        //sets default property type to String. Can change
-        //with setPropertyType
+        multinarrative.getPropertyMapping().put(s, new BaseBundle());
+        // sets default property type to String. Can change
+        // with setPropertyType
         multinarrative.setPropertyType(s, "String");
 
     }
-    
+
     private boolean isCorrectType(String type, Object value) {
         try {
             switch (type) {
@@ -129,8 +123,8 @@ public class NarrativeOperations {
     }
 
     /**
-     * Sets property type, which this class should then use to validate
-     * further input.
+     * Sets property type, which this class should then use to validate further
+     * input.
      * 
      * @param property
      * @param type
@@ -141,9 +135,9 @@ public class NarrativeOperations {
             throw new IllegalOperationException(INVALID_TYPE);
         }
         multinarrative.setPropertyType(property, type);
-        BaseBundle prop = properties.get(property);
-        BaseBundle propcopy = new BaseBundle(properties.get(property));
-        for (String val : propcopy.keySet() ) {
+        BaseBundle prop = multinarrative.getPropertyMapping().get(property);
+        BaseBundle propcopy = new BaseBundle(multinarrative.getPropertyMapping().get(property));
+        for (String val : propcopy.keySet()) {
             Object value = propcopy.get(val);
             if (!isCorrectType(type, value)) {
                 prop.remove(val);
@@ -151,17 +145,16 @@ public class NarrativeOperations {
             }
         }
     }
-    
+
     /**
      * sets property bundle (used by undo())
+     * 
      * @param propname
      * @param prop
      */
     public void setPropertyBundle(String propname, BaseBundle prop) {
-        properties.put(propname, prop);
+        multinarrative.getPropertyMapping().put(propname, prop);
     }
-    
-    
 
     /**
      * Gets property type.
@@ -171,13 +164,13 @@ public class NarrativeOperations {
      * @throws IllegalOperationException
      */
     public String getPropertyType(String property) throws IllegalOperationException {
-        if(property.equals(GUI_X) || property.equals(GUI_Y)){
+        if (property.equals(GUI_X) || property.equals(GUI_Y)) {
             return "Double";
         }
-        if (!properties.containsKey(property)) {
-            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST,property);
+        if (!multinarrative.getPropertyMapping().containsKey(property)) {
+            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, property);
         }
-        if (properties.get(property).isEmpty()) {
+        if (multinarrative.getPropertyMapping().get(property).isEmpty()) {
             return "String";
         }
         return multinarrative.getPropertyTypes().get(property);
@@ -199,8 +192,8 @@ public class NarrativeOperations {
      */
     public void addValue(String property, String type, String value) throws IllegalOperationException {
         String proptype = multinarrative.getPropertyTypes().get(property);
-        if (!properties.containsKey(property)) {
-            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST,property);
+        if (!multinarrative.getPropertyMapping().containsKey(property)) {
+            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, property);
         }
         if (!type.equals(proptype)) {
             throw new IllegalOperationException("Value does not match property type.");
@@ -208,28 +201,28 @@ public class NarrativeOperations {
         try {
             switch (type) {
             case "String":
-                properties.get(property).putString(value, value);
+                multinarrative.getPropertyMapping().get(property).putString(value, value);
                 break;
             case "Integer":
-                properties.get(property).putInt(value, Integer.parseInt(value));
+                multinarrative.getPropertyMapping().get(property).putInt(value, Integer.parseInt(value));
                 break;
             case "Boolean":
-                properties.get(property).putBoolean(value, Boolean.parseBoolean(value));
+                multinarrative.getPropertyMapping().get(property).putBoolean(value, Boolean.parseBoolean(value));
                 break;
             case "Byte":
-                properties.get(property).putByte(value, Byte.parseByte(value));
+                multinarrative.getPropertyMapping().get(property).putByte(value, Byte.parseByte(value));
                 break;
             case "Short":
-                properties.get(property).putShort(value, Short.parseShort(value));
+                multinarrative.getPropertyMapping().get(property).putShort(value, Short.parseShort(value));
                 break;
             case "Long":
-                properties.get(property).putLong(value, Long.parseLong(value));
+                multinarrative.getPropertyMapping().get(property).putLong(value, Long.parseLong(value));
                 break;
             case "Float":
-                properties.get(property).putFloat(value, Float.parseFloat(value));
+                multinarrative.getPropertyMapping().get(property).putFloat(value, Float.parseFloat(value));
                 break;
             case "Double":
-                properties.get(property).putDouble(value, Double.parseDouble(value));
+                multinarrative.getPropertyMapping().get(property).putDouble(value, Double.parseDouble(value));
                 break;
             default:
                 throw new IllegalOperationException(INVALID_TYPE);
@@ -249,10 +242,11 @@ public class NarrativeOperations {
      * @throws IllegalOperationException
      */
     public void removeValue(String id, String type, String value) throws IllegalOperationException {
-        if (!properties.containsKey(id)) {
+        if (!multinarrative.getPropertyMapping().containsKey(id)) {
             throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, id);
         }
-        properties.get(id).remove(value);
+        multinarrative.getGlobalProperties().remove(id+"="+value);
+        multinarrative.getPropertyMapping().get(id).remove(value);
     }
 
     /**
@@ -341,15 +335,15 @@ public class NarrativeOperations {
         if (theNode == null) {
             throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, name);
         }
-        if(theNode.getProperties()==null){
+        if (theNode.getProperties() == null) {
             theNode.createProperties();
         }
-        double transx = x + theNode.getProperties().getDouble(GUI_X,0);
-        double transy = y + theNode.getProperties().getDouble(GUI_Y,0);
+        double transx = x + theNode.getProperties().getDouble(GUI_X, 0);
+        double transy = y + theNode.getProperties().getDouble(GUI_Y, 0);
         theNode.getProperties().putDouble(GUI_X, transx);
         theNode.getProperties().putDouble(GUI_Y, transy);
     }
-    
+
     /**
      * Repositions a node by the given offset
      */
@@ -358,11 +352,11 @@ public class NarrativeOperations {
         if (theRoute == null) {
             throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, name);
         }
-        if(theRoute.getProperties()==null){
+        if (theRoute.getProperties() == null) {
             theRoute.createProperties();
         }
-        double transx = x + theRoute.getProperties().getDouble(GUI_X,0);
-        double transy = y + theRoute.getProperties().getDouble(GUI_Y,0);
+        double transx = x + theRoute.getProperties().getDouble(GUI_X, 0);
+        double transy = y + theRoute.getProperties().getDouble(GUI_Y, 0);
         theRoute.getProperties().putDouble(GUI_X, transx);
         theRoute.getProperties().putDouble(GUI_Y, transy);
     }
@@ -415,7 +409,8 @@ public class NarrativeOperations {
      * @param end
      *            - ending node. If node does not exist creates a new node.
      */
-    public void addRoute(String name, String start, String end, double xOff, double yOff) throws IllegalOperationException {
+    public void addRoute(String name, String start, String end, double xOff, double yOff)
+            throws IllegalOperationException {
         try {
             multinarrative.newRoute(name, start, end);
             multinarrative.getRoute(name).createProperties();
@@ -566,7 +561,7 @@ public class NarrativeOperations {
 
         Node node = multinarrative.getNode(id);
         if (node == null) {
-            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST,id);
+            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, id);
         }
         if (value == null) {
             if (node.getProperties() != null) {
@@ -671,8 +666,8 @@ public class NarrativeOperations {
     }
 
     /**
-     * Add the property to the String ArrayList global property in
-     * GUINarrative "System.Types"
+     * Add the property to the String ArrayList global property in GUINarrative
+     * "System.Types"
      * 
      * @param property
      */
@@ -699,10 +694,8 @@ public class NarrativeOperations {
      * @param c
      */
     public void setColor(String property, String value, Color c) throws IllegalOperationException {
-        if (properties.get(property) != null) {
-            properties.get(property).putString(value, FXUtil.colorToHex(c));
-        }
-
+        multinarrative.getGlobalProperties().putDoubleArray(property + "=" + value,
+                new double[] { c.getRed(), c.getGreen(), c.getBlue(), c.getOpacity() });
     }
 
     /**
@@ -711,24 +704,27 @@ public class NarrativeOperations {
      * @param property
      * @param value
      * @return
-     * @throws IllegalOperationException 
+     * @throws IllegalOperationException
      */
     public Color getColor(String property, String value) throws IllegalOperationException {
-        if (properties.get(property) == null) {
+        if (multinarrative.getPropertyMapping().get(property) == null) {
             return Color.TRANSPARENT;
         }
         Color c = null;
         try {
-            c = Color.web((String) properties.get(property).get(value));
-        } catch (IllegalArgumentException e) {
+            double[] rgba = multinarrative.getGlobalProperties().getDoubleArray(property + "=" + value);
+            if (rgba != null) {
+                c = new Color(rgba[0], rgba[1], rgba[2], rgba[3]);
+            }
+        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
             throw new IllegalOperationException("Value " + value + " is not a color");
         }
         return c == null ? Color.TRANSPARENT : c;
     }
 
     /**
-     * gets a list of all the non transparent colors of properties applying
-     * to a node
+     * gets a list of all the non transparent colors of properties applying to a
+     * node
      * 
      * @return
      * @throws GraphElementNotFoundException
@@ -736,42 +732,42 @@ public class NarrativeOperations {
     public ArrayList<Color> getNodeColor(String node) throws GraphElementNotFoundException {
         ArrayList<Color> r = new ArrayList<Color>();
         BaseBundle props = multinarrative.getProperties(node);
-        for (String valname : props.keySet()) {
+        for (String prop : props.keySet()) {
             try {
-                if (props.get(valname).toString().startsWith("#")) {
-                    Color c = Color.web(props.get(valname).toString());
-                    if (!c.equals(Color.TRANSPARENT)) {
-                        r.add(c);
-                    }
+                Color c = getColor(prop, props.get(prop).toString());
+                if(c.getOpacity()>0){
+                    r.add(c);
                 }
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalOperationException e) {
+                Debug.logError(e, 5, Debug.SYSTEM_GUI);
+                //Skip Round
             }
         }
         return r;
     }
 
     /**
-     * gets a list of all the non transparent colors of properties applying
-     * to a route
+     * gets a list of all the non transparent colors of properties applying to a
+     * route
      * 
      * @return
-     * @throws IllegalOperationException 
+     * @throws IllegalOperationException
      */
     public ArrayList<Color> getRouteColor(String route) throws IllegalOperationException {
         ArrayList<Color> r = new ArrayList<Color>();
         try {
             BaseBundle props = multinarrative.getProperties(route);
-            //returns empty list if null, should we createProperties here?
+            // returns empty list if null, should we createProperties here?
             if (props != null) {
-                for (String valname : props.keySet()) {
+                for (String prop : props.keySet()) {
                     try {
-                        if (props.get(valname).toString().startsWith("#")) {
-                            Color c = Color.web(props.get(valname).toString());
-                            if (!c.equals(Color.TRANSPARENT)) {
-                                r.add(c);
-                            }
+                        Color c = getColor(prop, props.get(prop).toString());
+                        if(c.getOpacity()>0){
+                            r.add(c);
                         }
-                    } catch (IllegalArgumentException e) {
+                    } catch (IllegalOperationException e) {
+                        Debug.logError(e, 5, Debug.SYSTEM_GUI);
+                        //Skip Round
                     }
                 }
             }
@@ -825,10 +821,10 @@ public class NarrativeOperations {
      *             to the user, using the Strings class for formatting.
      */
     public void removeProperty(String s) throws IllegalOperationException {
-        if (!properties.containsKey(s)) {
+        if (!multinarrative.getPropertyMapping().containsKey(s)) {
             throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, s);
         }
-        properties.remove(s);
+        multinarrative.getPropertyMapping().remove(s);
 
     }
 
@@ -842,10 +838,10 @@ public class NarrativeOperations {
      *             if property doesn't exist
      */
     public BaseBundle getPropertyBundle(String s) throws IllegalOperationException {
-        if (!properties.containsKey(s)) {
+        if (!multinarrative.getPropertyMapping().containsKey(s)) {
             throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, s);
         }
-        return properties.get(s);
+        return multinarrative.getPropertyMapping().get(s);
     }
 
     /**
@@ -857,17 +853,17 @@ public class NarrativeOperations {
      */
     public void renameProperty(String from, String to) throws IllegalOperationException {
 
-        if (!properties.containsKey(from)) {
+        if (!multinarrative.getPropertyMapping().containsKey(from)) {
             throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, from);
         }
-        if (properties.containsKey(to)) {
+        if (multinarrative.getPropertyMapping().containsKey(to)) {
             throw new IllegalOperationException(ITEM_ALREADY_EXISTS, to);
         }
 
-        BaseBundle oldprop = properties.get(from);
-        properties.put(to, oldprop);
+        BaseBundle oldprop = multinarrative.getPropertyMapping().get(from);
+        multinarrative.getPropertyMapping().put(to, oldprop);
 
-        properties.remove(from);
+        multinarrative.getPropertyMapping().remove(from);
     }
 
     /**
@@ -907,14 +903,14 @@ public class NarrativeOperations {
         nodeCounter = 1;
         narrativeCounter = 1;
         valueCounter = 1;
-        properties = new HashMap<String, BaseBundle>();
         multinarrative = narrative;
+        narrative.createMapping();
     }
 
     public GUINarrative getNarrative() {
         return multinarrative;
     }
-    
+
     public void newNarrative() {
         multinarrative = new GUINarrative();
     }

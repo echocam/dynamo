@@ -5,6 +5,7 @@ import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_REMOVED;
 
 import java.io.IOException;
 
+import android.os.BaseBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -298,6 +299,15 @@ public class ControllerOperations {
                 addRoute(graphRoute);
             }
 
+        }
+        
+        for(String s : narrative.getPropertyMapping().keySet()){
+            FXMLPropertyController propCont = createProperty(s);
+            String type = narrative.getPropertyTypes().get(s);
+            propCont.setType(type==null?"String":type);
+            BaseBundle b = narrative.getPropertyMapping().get(s);
+            propCont.getValues().getItems().addAll(b.keySet());
+            addProperty(propCont);
         }
     }
 }
