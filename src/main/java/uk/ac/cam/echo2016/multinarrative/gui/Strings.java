@@ -20,6 +20,9 @@ public class Strings {
 
     public static final String ROUTE_PREFIX = "Route-%1";
     public static final String NODE_PREFIX = "Node-%1";
+    
+    public static final String CANNOT_UNDO = "Nothing to undo";
+    public static final String CANNOT_REDO = "Nothing to redo";
 
     public static final String ABOUT_TEXT = "Graphical User Interface for DyNaMo (Dynamic Narrative Modelling)\n\nDemonstration version.";
 
