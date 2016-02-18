@@ -62,7 +62,7 @@ public class OperationsManager {
         }
     }
 
-    public void loadNarrative(String filename) throws IOException {
+    public void loadNarrative(String filename) throws IOException, IllegalOperationException {
         GUINarrative loaded = SaveReader.loadGUINarrative(filename);
         if (loaded == null) {
             throw new IOException();
@@ -320,12 +320,12 @@ public class OperationsManager {
             return new SetRouteTypeOperation();
         }
 
-        public Operation addSynchNode(String s, Double x, Double y) {
+        public Operation addSynchNode(String s, Double x, Double y) throws IllegalOperationException {
             class AddSynchNodeOperation implements Operation {
 
                 GraphNode node;
 
-                public AddSynchNodeOperation(String name, Double x, Double y) {
+                public AddSynchNodeOperation(String name, Double x, Double y) throws IllegalOperationException {
                     node = controllerOperations.createSynchNode(name, x, y, controller.getGraph());
                 }
 
@@ -344,12 +344,12 @@ public class OperationsManager {
             return new AddSynchNodeOperation(s, x, y);
         }
 
-        public Operation addChoiceNodeSolo(String s, Double x, Double y) {
+        public Operation addChoiceNodeSolo(String s, Double x, Double y) throws IllegalOperationException {
             class AddChoiceNodeOperation implements Operation {
 
                 GraphNode node;
 
-                public AddChoiceNodeOperation(String name, Double x, Double y) {
+                public AddChoiceNodeOperation(String name, Double x, Double y) throws IllegalOperationException {
                     node = controllerOperations.createChoiceNode(name, x, y, controller.getGraph());
                 }
 

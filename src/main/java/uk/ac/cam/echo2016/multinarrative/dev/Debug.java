@@ -102,16 +102,12 @@ public class Debug {
                 consoleLogLevels[logLevel - 1] = consoleLogLevels[logLevel] | consoleLogLevels[logLevel - 1];
             }
 
-        } catch (IOException | ClassCastException | IllegalStateException e) { // config.json
-                                                                               // doesn't
-                                                                               // exist,
-                                                                               // so
-                                                                               // log
-                                                                               // everything
-            consoleLogLevels[0] = SYSTEM_ALL; // TODO(tr395): log everything
-            consoleLogLevels[1] = SYSTEM_ALL; // TODO(tr395): log everything
-            consoleLogLevels[2] = SYSTEM_ALL; // TODO(tr395): log everything
-            consoleLogLevels[3] = SYSTEM_ALL; // TODO(tr395): log everything
+        } catch (IOException | ClassCastException | IllegalStateException e) { 
+            // config.json doesn't exist, so log everything
+            consoleLogLevels[0] = SYSTEM_ALL; 
+            consoleLogLevels[1] = SYSTEM_ALL; 
+            consoleLogLevels[2] = SYSTEM_ALL; 
+            consoleLogLevels[3] = SYSTEM_ALL; 
             consoleLogLevels[4] = SYSTEM_NONE;
         }
     }

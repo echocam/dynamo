@@ -93,8 +93,9 @@ public class ControllerOperations {
      * 
      * @param name
      * @return Created object
+     * @throws IllegalOperationException 
      */
-    public GraphNode createSynchNode(String name, Double x, Double y, Graph graph) {
+    public GraphNode createSynchNode(String name, Double x, Double y, Graph graph) throws IllegalOperationException {
         Debug.logInfo("Creating Synch " + name, 4, Debug.SYSTEM_GUI);
         try {
             Button b = FXMLLoader.load(getClass().getResource("synch_button.fxml"));
@@ -109,13 +110,11 @@ public class ControllerOperations {
             // Error with fxml files
             throw new RuntimeException("FXML files not configured correctly", ioe);
         } catch (GraphElementNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return null;
+            throw new IllegalOperationException(e,Strings.ITEM_DOES_NOT_EXIST, name);
         }
     }
 
-    public GraphNode createChoiceNode(String name, Double x, Double y, Graph graph) {
+    public GraphNode createChoiceNode(String name, Double x, Double y, Graph graph) throws IllegalOperationException {
         Debug.logInfo("Creating Choice " + name, 4, Debug.SYSTEM_GUI);
         try {
             Button b = FXMLLoader.load(getClass().getResource("choice_button.fxml"));
@@ -131,9 +130,7 @@ public class ControllerOperations {
             // Error with fxml files
             throw new RuntimeException("FXML files not configured correctly", ioe);
         } catch (GraphElementNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return null;
+            throw new IllegalOperationException(e, Strings.ITEM_DOES_NOT_EXIST, name);
         }
     }
 
@@ -260,11 +257,12 @@ public class ControllerOperations {
     
     /**
      * Uses the narrative provided to rebuild the display graph.
+     * @throws IllegalOperationException 
      * 
      * @throws IOException
      * @throws GraphElementNotFoundException
      */
-    public void buildGraph(GUINarrative narrative) {
+    public void buildGraph(GUINarrative narrative) throws IllegalOperationException {
         for (String nodeName : narrative.getNodes().keySet()) {
             Node node = narrative.getNode(nodeName);
 

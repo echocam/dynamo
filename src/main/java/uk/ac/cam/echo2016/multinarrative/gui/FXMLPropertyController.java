@@ -164,8 +164,7 @@ public class FXMLPropertyController implements Initializable {
             try {
                 controller.assignProperty(propName, typeName, item.getText());
             } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                controller.setInfo(e.getMessage());
             }
         });
         menu.getItems().add(index, item);

@@ -258,7 +258,7 @@ public class FXMLController {
 
         try {
             operations.loadNarrative(returnedFile);
-        } catch (IOException ioe) {
+        } catch (IOException | IllegalOperationException ioe) {
             showErrorDialog("Error when trying to open file");
         }
     }

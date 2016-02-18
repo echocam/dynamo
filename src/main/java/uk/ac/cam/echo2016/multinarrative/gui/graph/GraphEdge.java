@@ -114,8 +114,7 @@ public class GraphEdge {
 
 		    display.setStroke(new LinearGradient(startX, startY, endX, endY, false, CycleMethod.NO_CYCLE, stops));
 		} catch (IllegalOperationException e) {
-		    // TODO Auto-generated catch block
-		    e.printStackTrace();
+		    g.getController().setInfo(e.getMessage());
 		}
 	}
 
