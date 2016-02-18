@@ -107,6 +107,10 @@ public class ControllerOperations {
         } catch (IOException ioe) {
             // Error with fxml files
             throw new RuntimeException("FXML files not configured correctly", ioe);
+        } catch (GraphElementNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -125,6 +129,10 @@ public class ControllerOperations {
         } catch (IOException ioe) {
             // Error with fxml files
             throw new RuntimeException("FXML files not configured correctly", ioe);
+        } catch (GraphElementNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
         }
     }
 

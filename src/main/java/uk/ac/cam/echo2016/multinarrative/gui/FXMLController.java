@@ -21,6 +21,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import uk.ac.cam.echo2016.multinarrative.GUINarrative;
+import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphEdge;
@@ -128,7 +129,12 @@ public class FXMLController {
                 });
         itemName.textProperty()
                 .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-                    changeSelectName();
+                    try {
+                        changeSelectName();
+                    } catch (Exception e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 });
         itemPropertyDelete.disableProperty()
                 .bind(itemProperties.getSelectionModel().selectedIndexProperty().lessThan(0));
@@ -647,8 +653,9 @@ public class FXMLController {
      * @param value
      *            Value of property (guiOperations should check type before
      *            adding
+     * @throws GraphElementNotFoundException 
      */
-    public void assignProperty(String property, String type, String value) {
+    public void assignProperty(String property, String type, String value) throws GraphElementNotFoundException {
         Debug.logInfo("Assigning " + property + ":" + type + "=" + value + " to " + propertiesSource, 4,
                 Debug.SYSTEM_GUI);
         if (propertiesSource != null) {
@@ -676,8 +683,9 @@ public class FXMLController {
 
     /**
      * Changes the name of the selection
+     * @throws GraphElementNotFoundException 
      */
-    public void changeSelectName() {
+    public void changeSelectName() throws GraphElementNotFoundException {
         Debug.logInfo("Change Selected Item Name", 4, Debug.SYSTEM_GUI);
 
         if (itemNode != null) {

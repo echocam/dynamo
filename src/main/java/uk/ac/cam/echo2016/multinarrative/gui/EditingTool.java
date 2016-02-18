@@ -6,6 +6,7 @@ import java.util.Set;
 import javafx.css.PseudoClass;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.Graph;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphEdge;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphNode;
@@ -135,8 +136,17 @@ public class EditingTool implements GraphTool {
                 press.translate(movementX, movementY);
             } else if (!selection.isEmpty()) {
                 for (GraphNode node : selection) {
-                    node.translate(movementX, movementY);
-                    graph.getController().initSelect();
+                    try {
+                        graph.getOperations().translateNode(node.getName(), movementX, movementY);
+                        node.translate(movementX, movementY);
+                        graph.updateNode(node);
+                        graph.getController().initSelect();
+                    } catch (IllegalOperationException e) {
+                        graph.getController().setInfo(e.getMessage(), event.getSceneX()+"", event.getSceneY()+"");
+                    } catch (GraphElementNotFoundException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
             }
         }

@@ -22,6 +22,10 @@ public abstract class EditableNarrative extends MultiNarrative { // TODO Finish 
         routes.put(route.getId(), route);
     }
     
+    public void setPropertyType(String property, String type) {
+        typemap.put(property, type);
+    }
+    
     public void addNode(Node node) {
         nodes.put(node.getId(), node);
     }

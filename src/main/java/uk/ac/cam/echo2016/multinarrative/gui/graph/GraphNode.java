@@ -24,7 +24,8 @@ public class GraphNode {
 	private DoubleProperty x = new SimpleDoubleProperty();
 	private DoubleProperty y = new SimpleDoubleProperty();
 
-	public GraphNode(Region node, StringProperty name, double x, double y, Graph g) {
+	public GraphNode(Region node, StringProperty name, double x, double y, Graph g) 
+	        throws GraphElementNotFoundException {
 		node.setUserData(this);
 		contents = node;
 		this.name = name;
@@ -76,6 +77,7 @@ public class GraphNode {
 	public String getName() {
 		return name.get();
 	}
+
 
 	public void update(Graph g) {
 	    
