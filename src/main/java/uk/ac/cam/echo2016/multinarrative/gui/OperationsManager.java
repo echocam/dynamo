@@ -45,7 +45,6 @@ public class OperationsManager {
     }
 
     public void undo() throws IllegalOperationException {
-        Debug.logInfo("Undoing", 3, Debug.SYSTEM_GUI);
         try {
             sequence.undoLastOperation();
         } catch (IllegalOperationException ioe) {
@@ -55,7 +54,6 @@ public class OperationsManager {
     }
 
     public void redo() throws IllegalOperationException {
-        Debug.logInfo("Redoing", 3, Debug.SYSTEM_GUI);
         try {
             sequence.redoLastUndo();
         } catch (IllegalOperationException ioe) {

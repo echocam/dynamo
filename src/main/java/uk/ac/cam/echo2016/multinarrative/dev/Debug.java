@@ -168,7 +168,7 @@ public class Debug {
      *            bitwise or them together. eg. TYPE_PUDDING | TYPE FAIRY.
      */
     public static void logInfo(String s, int level, int system) {
-        logInfo(s, 3, level, system);
+        logInfo(s, 4, level, system);
     }
     
     public static void logInfo(String s, int calls, int level, int system) {
@@ -243,7 +243,7 @@ public class Debug {
         logInfo(e.getClass().getName() + ": " + e.getMessage(), 3, logLevel, type| SYSTEM_ERROR);
         StackTraceElement[] stack = e.getStackTrace();
         for (int i = 0; i < stack.length; i++) {
-            logError(" > " + stack[i], logLevel, type| SYSTEM_ERROR);
+            logInfo(" > " + stack[i], 3, logLevel, type| SYSTEM_ERROR);
         }
         if (e.getCause() != null) {
             logInfo("Caused by: ", 3, logLevel, type| SYSTEM_ERROR);

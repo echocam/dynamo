@@ -263,6 +263,7 @@ public class FXMLController {
     @FXML
     protected void registerUndoClicked() {
         Debug.logInfo("Doing undo", 3, Debug.SYSTEM_GUI);
+        deselect();
         try {
             operations.undo();
         } catch (IllegalOperationException e) {
@@ -277,6 +278,7 @@ public class FXMLController {
     @FXML
     protected void registerRedoClicked() {
         Debug.logInfo("Doing redo", 3, Debug.SYSTEM_GUI);
+        deselect();
         try {
             operations.redo();
         } catch (IllegalOperationException e) {
@@ -434,7 +436,11 @@ public class FXMLController {
             } catch (IllegalOperationException e) {
                 setInfo(e.getMessage());
                 GraphEdge gEdge = graph.getEdges().get(edge);
-                routeEnd.setValue(gEdge.getTo().getName());
+                if (gEdge != null) {
+                    routeEnd.setValue(gEdge.getTo().getName());
+                } else {
+                    Debug.logError("Could not find: " + edge, 3, Debug.SYSTEM_GUI);
+                }
             }
         }
     }
@@ -580,6 +586,7 @@ public class FXMLController {
      * De-selects selected item
      */
     public void deselect() {
+        tool.resetSelection();
         nodes.getSelectionModel().clearSelection();
         routes.getSelectionModel().clearSelection();
         itemNode = null;
