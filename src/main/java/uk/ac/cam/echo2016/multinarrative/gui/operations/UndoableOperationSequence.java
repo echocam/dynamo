@@ -3,6 +3,8 @@ package uk.ac.cam.echo2016.multinarrative.gui.operations;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import uk.ac.cam.echo2016.multinarrative.gui.Strings;
+
 public class UndoableOperationSequence {
 
     public static final int UNDO_LIMIT = 64;
@@ -54,8 +56,12 @@ public class UndoableOperationSequence {
      */
     public void undoLastOperation() throws IllegalOperationException {
         isUndoing=true;
-        Operation c = undoHistory.removeFirst();
+        if(undoHistory.isEmpty()){
+            throw new IllegalOperationException(Strings.CANNOT_UNDO);
+        }
+        Operation c = undoHistory.peekFirst();
         c.undo();
+        undoHistory.removeFirst();
         if (redoHistory.size() >= redoLimit)
             redoHistory.removeLast();
         redoHistory.addFirst(c);
@@ -70,11 +76,19 @@ public class UndoableOperationSequence {
      */
     public void redoLastUndo() throws IllegalOperationException {
         isUndoing=true;
+        if(redoHistory.isEmpty()){
+            throw new IllegalOperationException(Strings.CANNOT_REDO);
+        }
         Operation c = redoHistory.peekFirst();
         c.execute();
         redoHistory.removeFirst();
         undoHistory.addFirst(c);
         isUndoing=false;
+    }
+    
+    public void clearHistory(){
+        undoHistory.clear();
+        redoHistory.clear();
     }
 
 }
