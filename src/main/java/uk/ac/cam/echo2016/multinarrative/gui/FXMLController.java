@@ -427,6 +427,16 @@ public class FXMLController {
         case BACK_SPACE:
             removeSelect();
             break;
+        case Z:
+            if (event.isShiftDown()) {
+                Debug.logInfo("Doing undo", 3, Debug.SYSTEM_GUI);
+                try {
+                    operations.undo();
+                } catch (IllegalOperationException e) {
+                    setInfo(e.getMessage());
+                }
+            }
+            break;
         default:
         }
     }
