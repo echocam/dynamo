@@ -254,7 +254,7 @@ public class FXMLController {
         try {
             operations.loadNarrative(returnedFile);
         } catch (IOException ioe) {
-            //TODO add test
+            Debug.logError("There was an exception", 1, Debug.SYSTEM_ERROR);
             showErrorDialog("Error when trying to open file");
         }
     }
