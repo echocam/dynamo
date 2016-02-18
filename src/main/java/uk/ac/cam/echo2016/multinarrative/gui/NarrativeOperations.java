@@ -1,5 +1,7 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
 
+
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.*;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ADD_EMPTY_STRING;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.CANNOT_FORMAT;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.CYCLE_EXISTS;
@@ -9,6 +11,11 @@ import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ITEM_DOES_NOT_EXIST;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.NODE_PREFIX;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.ROUTE_PREFIX;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.SYSTEM_PROPERTY;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.PropertyTypes.TYPES;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ADD_EMPTY_STRING;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.ALREADY_EXISTS;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.INVALID_TYPE;
+import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.PROPERTY_DOES_NOT_EXIST;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +33,8 @@ import uk.ac.cam.echo2016.multinarrative.Route;
 import uk.ac.cam.echo2016.multinarrative.SynchronizationNode;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.DFSCycleDetect;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.IllegalOperationException;
+import uk.ac.cam.echo2016.multinarrative.gui.operations.Operation;
+import uk.ac.cam.echo2016.multinarrative.gui.operations.Strings;
 
 /**
  * The class that encapsulates all GUI operations.
@@ -56,6 +65,25 @@ public class NarrativeOperations {
         properties = new HashMap<String, BaseBundle>();
     }
 
+    
+    
+    public void addPropertyValue(String id, String value) throws IllegalOperationException {
+                String type = multinarrative.getPropertyTypes().get(id);
+                System.out.println(type);
+                if (type == null || !isCorrectType(type, value)) {
+                    throw new IllegalOperationException("Property value does not match type");
+                }
+                BaseBundle prop = properties.get(id);
+                if (prop == null) {
+                    throw new IllegalOperationException("Property does not exist.");
+                }
+                if (prop.containsKey(value)) {
+                    throw new IllegalOperationException("Value already exists.");
+                }
+                addValue(id, type, value);
+        
+    }
+    
     /**
      * Adds the required property
      * 
@@ -66,17 +94,47 @@ public class NarrativeOperations {
     public void addProperty(String s, BaseBundle b) throws IllegalOperationException {
 
         if (s.equals("") || s == null) {
-            throw new IllegalOperationException(ADD_EMPTY_STRING);
+            throw new IllegalOperationException(Strings.ADD_EMPTY_STRING);
         }
         if (properties.containsKey(s)) {
-            throw new IllegalOperationException(ITEM_ALREADY_EXISTS, s);
+            throw new IllegalOperationException(ALREADY_EXISTS);
         }
-        properties.put(s, b);
+        properties.put(s, new BaseBundle());
+        //sets default property type to String. Can change
+        //with setPropertyType
+        multinarrative.setPropertyType(s, "String");
 
+    }
+    
+    private boolean isCorrectType(String type, Object value) {
+        try {
+            switch (type) {
+            case "String":
+                return String.class.isInstance(value);
+            case "Integer":
+                return Integer.class.isInstance(Integer.parseInt((String) value));
+            case "Boolean":
+                return Boolean.class.isInstance(Boolean.parseBoolean((String) value));
+            case "Byte":
+                return Byte.class.isInstance(Byte.parseByte((String) value));
+            case "Short":
+                return Short.class.isInstance(Short.parseShort((String) value));
+            case "Long":
+                return Long.class.isInstance(Long.parseLong((String) value));
+            case "Float":
+                return Float.class.isInstance(Float.parseFloat((String) value));
+            case "Double":
+                return Double.class.isInstance(Double.parseDouble((String) value));
+            default:
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     /**
-     * TODO Sets property type, which this class should then use to validate
+     * Sets property type, which this class should then use to validate
      * further input.
      * 
      * @param property
@@ -84,8 +142,22 @@ public class NarrativeOperations {
      * @throws IllegalOperationException
      */
     public void setPropertyType(String property, String type) throws IllegalOperationException {
-
+        if (!TYPES.contains(type)) {
+            throw new IllegalOperationException(INVALID_TYPE);
+        }
+        multinarrative.setPropertyType(property, type);
+        BaseBundle prop = properties.get(property);
+        BaseBundle propcopy = new BaseBundle(properties.get(property));
+        for (String val : propcopy.keySet() ) {
+            Object value = propcopy.get(val);
+            if (!isCorrectType(type, value)) {
+                prop.remove(val);
+                System.out.println("Deleted value: " + val);
+            }
+        }
     }
+    
+    
 
     /**
      * TODO Gets property type.
@@ -104,26 +176,27 @@ public class NarrativeOperations {
         if (properties.get(property).isEmpty()) {
             return "String";
         }
-        Object o = properties.get(property).valueSet().iterator().next();
-        if (o instanceof String) {
-            return "String";
-        } else if (o instanceof Integer) {
-            return "Integer";
-        } else if (o instanceof Boolean) {
-            return "Boolean";
-        } else if (o instanceof Byte) {
-            return "Byte";
-        } else if (o instanceof Short) {
-            return "Short";
-        } else if (o instanceof Long) {
-            return "Long";
-        } else if (o instanceof Float) {
-            return "Float";
-        } else if (o instanceof Double) {
-            return "Double";
-        } else {
-            throw new IllegalOperationException(INVALID_TYPE);
-        }
+        return multinarrative.getPropertyTypes().get(property);
+//        Object o = properties.get(property).valueSet().iterator().next();
+//        if (o instanceof String) {
+//            return "String";
+//        } else if (o instanceof Integer) {
+//            return "Integer";
+//        } else if (o instanceof Boolean) {
+//            return "Boolean";
+//        } else if (o instanceof Byte) {
+//            return "Byte";
+//        } else if (o instanceof Short) {
+//            return "Short";
+//        } else if (o instanceof Long) {
+//            return "Long";
+//        } else if (o instanceof Float) {
+//            return "Float";
+//        } else if (o instanceof Double) {
+//            return "Double";
+//        } else {
+//            throw new IllegalOperationException(INVALID_TYPE);
+//        }
 
     }
 
@@ -142,8 +215,12 @@ public class NarrativeOperations {
      *             message is sent to the user.
      */
     public void addValue(String property, String type, String value) throws IllegalOperationException {
+        String proptype = multinarrative.getPropertyTypes().get(property);
         if (!properties.containsKey(property)) {
-            throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, property);
+            throw new IllegalOperationException(PROPERTY_DOES_NOT_EXIST);
+        }
+        if (!type.equals(proptype)) {
+            throw new IllegalOperationException("Value does not match property type.");
         }
         try {
             switch (type) {
@@ -196,14 +273,25 @@ public class NarrativeOperations {
     }
 
     /**
-     * TODO get default value for correct type
+     * get default value for correct type
      * 
      * @param id
      * @param type
      * @return
      */
     public String getDefaultValue(String id, String type) {
-        return Strings.populateString(Strings.PROPERTY_VALUE, "" + valueCounter++);
+        if (!TYPES.contains(type)) {
+            try {
+                throw new IllegalOperationException(INVALID_TYPE);
+            } catch (IllegalOperationException e) {
+                e.printStackTrace();
+            }
+        }
+        if (type.equals("String")) {
+            return Strings.populateString(Strings.PROPERTY_VALUE_STRING, "" + valueCounter++);
+        } else {
+            return Strings.populateString(Strings.PROPERTY_VALUE_NUM, "" + valueCounter++);
+        }
     }
 
     /**
@@ -256,6 +344,8 @@ public class NarrativeOperations {
         newNode.createProperties();
         newNode.getProperties().putDouble("GUI.X", x);
         newNode.getProperties().putDouble("GUI.Y", y);
+        multinarrative.setPropertyType("GUI.X", "Double");
+        multinarrative.setPropertyType("GUI.Y", "Double");
         multinarrative.getNodes().put(name, newNode);
 
     }
@@ -580,7 +670,7 @@ public class NarrativeOperations {
      * @param property
      */
     public void setAsRouteType(String property) {
-
+        multinarrative.getGlobalProperties().getStringArrayList("System.Types").add(property);
     }
 
     /**
@@ -590,6 +680,7 @@ public class NarrativeOperations {
      * @param property
      */
     public void clearAsRouteType(String property) {
+        multinarrative.getGlobalProperties().getStringArrayList("System.Types").remove(property);
 
     }
 

@@ -148,7 +148,12 @@ public class FXMLPropertyController implements Initializable {
         values.getItems().add(index, s);
         MenuItem item = new MenuItem(s);
         item.setOnAction(trigger -> {
-            controller.assignProperty(propName, typeName, item.getText());
+            try {
+                controller.assignProperty(propName, typeName, item.getText());
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         });
         menu.getItems().add(index, item);
     }
@@ -189,9 +194,10 @@ public class FXMLPropertyController implements Initializable {
     @FXML
     protected void changeTypeAction(ActionEvent event) {
         try {
+            typeName = type.getValue();
             controller.getOperations()
                     .doOp(controller.getOperations().generator().setPropertyType(propName, typeName, type));
-            typeName = type.getValue();
+            System.out.println("Property changed to: " + typeName);
         } catch (IllegalOperationException e) {
             type.setValue(typeName);
         }
