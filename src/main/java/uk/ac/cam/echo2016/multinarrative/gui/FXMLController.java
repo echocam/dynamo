@@ -127,15 +127,14 @@ public class FXMLController {
                         initSelect();
                     }
                 });
-        itemName.textProperty()
+        /*itemName.textProperty()
                 .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
                     try {
                         changeSelectName();
                     } catch (Exception e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-                });
+                });*/
         itemPropertyDelete.disableProperty()
                 .bind(itemProperties.getSelectionModel().selectedIndexProperty().lessThan(0));
         routeStart.itemsProperty().bind(nodes.itemsProperty());
@@ -153,7 +152,6 @@ public class FXMLController {
         itemEditor.setDisable(true);
         nodeEditor.setDisable(true);
         routeEditor.setDisable(true);
-        
 
         nodes.itemsProperty().set(FXCollections.observableArrayList());
         routes.itemsProperty().set(FXCollections.observableArrayList());
@@ -270,7 +268,6 @@ public class FXMLController {
      */
     @FXML
     protected void registerUndoClicked() {
-        Debug.logInfo("Doing undo", 3, Debug.SYSTEM_GUI);
         deselect();
         try {
             operations.undo();
@@ -312,6 +309,15 @@ public class FXMLController {
         }
     }
 
+    /**
+     * FXML hook. Changes a name
+     * @param event
+     */
+    @FXML
+    protected void setNameEntered(ActionEvent event) {
+        changeSelectName();
+    }
+    
     /**
      * FXML hook. Deletes the selected item
      * 
@@ -417,13 +423,19 @@ public class FXMLController {
         if (itemNode != null && !itemNode) {
             String edge = routes.getSelectionModel().getSelectedItem();
             String start = routeStart.getValue();
-            try {
-                operations.doOp(operations.generator().setStart(edge, start));
+            GraphEdge gEdge = graph.getEdges().get(edge);
+            if (gEdge == null || !gEdge.getFrom().getName().equals(start)) {
+                try {
+                    operations.doOp(operations.generator().setStart(edge, start));
 
-            } catch (IllegalOperationException e) {
-                setInfo(e.getMessage());
-                GraphEdge gEdge = graph.getEdges().get(edge);
-                routeStart.setValue(gEdge.getFrom().getName());
+                } catch (IllegalOperationException e) {
+                    setInfo(e.getMessage());
+                    if (gEdge != null) {
+                        routeEnd.setValue(gEdge.getFrom().getName());
+                    } else {
+                        Debug.logError("Could not find: " + edge, 3, Debug.SYSTEM_GUI);
+                    }
+                }
             }
         }
     }
@@ -439,15 +451,17 @@ public class FXMLController {
         if (itemNode != null && !itemNode) {
             String edge = routes.getSelectionModel().getSelectedItem();
             String end = routeEnd.getValue();
-            try {
-                operations.doOp(operations.generator().setEnd(edge, end));
-            } catch (IllegalOperationException e) {
-                setInfo(e.getMessage());
-                GraphEdge gEdge = graph.getEdges().get(edge);
-                if (gEdge != null) {
-                    routeEnd.setValue(gEdge.getTo().getName());
-                } else {
-                    Debug.logError("Could not find: " + edge, 3, Debug.SYSTEM_GUI);
+            GraphEdge gEdge = graph.getEdges().get(edge);
+            if (gEdge == null || !gEdge.getTo().getName().equals(end)) {
+                try {
+                    operations.doOp(operations.generator().setEnd(edge, end));
+                } catch (IllegalOperationException e) {
+                    setInfo(e.getMessage());
+                    if (gEdge != null) {
+                        routeEnd.setValue(gEdge.getTo().getName());
+                    } else {
+                        Debug.logError("Could not find: " + edge, 3, Debug.SYSTEM_GUI);
+                    }
                 }
             }
         }
@@ -655,7 +669,7 @@ public class FXMLController {
      * @param value
      *            Value of property (guiOperations should check type before
      *            adding
-     * @throws GraphElementNotFoundException 
+     * @throws GraphElementNotFoundException
      */
     public void assignProperty(String property, String type, String value) throws GraphElementNotFoundException {
         Debug.logInfo("Assigning " + property + ":" + type + "=" + value + " to " + propertiesSource, 4,
@@ -685,23 +699,24 @@ public class FXMLController {
 
     /**
      * Changes the name of the selection
-     * @throws GraphElementNotFoundException 
+     * 
+     * @throws GraphElementNotFoundException
      */
-    public void changeSelectName() throws GraphElementNotFoundException {
-        Debug.logInfo("Change Selected Item Name", 4, Debug.SYSTEM_GUI);
-
+    public void changeSelectName() {
         if (itemNode != null) {
             String prevName = itemNode ? nodes.getSelectionModel().getSelectedItem()
                     : routes.getSelectionModel().getSelectedItem();
             String newName = itemName.getText();
-            try {
-                if (itemNode) {
-                    operations.doOp(operations.generator().renameNode(prevName, newName));
-                } else {
-                    operations.doOp(operations.generator().renameRoute(prevName, newName));
+            if (!newName.equals(prevName)) {
+                try {
+                    if (itemNode) {
+                        operations.doOp(operations.generator().renameNode(prevName, newName));
+                    } else {
+                        operations.doOp(operations.generator().renameRoute(prevName, newName));
+                    }
+                } catch (IllegalOperationException ioe) {
+                    setInfo(ioe.getMessage());
                 }
-            } catch (IllegalOperationException ioe) {
-                setInfo(ioe.getMessage());
             }
         }
     }

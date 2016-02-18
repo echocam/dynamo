@@ -35,7 +35,6 @@ public class OperationsManager {
     }
 
     public void doOp(Operation o) throws IllegalOperationException {
-        Debug.logInfo("Doing " + o.getClass().getSimpleName(), 3, Debug.SYSTEM_GUI);
         try {
             sequence.storeAndExecute(o);
         } catch (IllegalOperationException ioe) {
@@ -506,7 +505,7 @@ public class OperationsManager {
             }
             return new TranslateNodeOperation(s, x, y);
         }
-        
+
         public Operation translateRoute(String s, double x, double y) throws IllegalOperationException {
             class TranslateRouteOperation implements Operation {
                 GraphEdge route;

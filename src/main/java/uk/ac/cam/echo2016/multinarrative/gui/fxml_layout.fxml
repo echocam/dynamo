@@ -131,7 +131,7 @@
                      <content>
                         <BorderPane prefWidth="100.0">
                            <top>
-                              <TextField fx:id="itemName" promptText="Name" BorderPane.alignment="CENTER" />
+                              <TextField fx:id="itemName" onAction="#setNameEntered" promptText="Name" BorderPane.alignment="CENTER" />
                            </top>
                            <center>
                               <ListView fx:id="itemProperties" BorderPane.alignment="CENTER">

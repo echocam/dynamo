@@ -95,7 +95,7 @@ public class EditingTool implements GraphTool {
                 resetSelection();
                 graph.getController().deselect();
             }
-        } else {
+        } else if(distX!=0.0 || distY!=0.0){
             if (press != null) {
                 try{
                     press.translate(-distX, -distY);
@@ -146,7 +146,7 @@ public class EditingTool implements GraphTool {
                 press.translate(movementX, movementY);
             } else if (!selection.isEmpty()) {
                 for (GraphNode node : selection) {
-                    node.translate(movementY, movementY);
+                    node.translate(movementX, movementY);
                 }
             }
         }

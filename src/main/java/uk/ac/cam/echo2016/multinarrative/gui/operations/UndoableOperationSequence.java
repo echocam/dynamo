@@ -45,6 +45,9 @@ public class UndoableOperationSequence {
     public void storeAndExecute(Operation c) throws IllegalOperationException {
         if (isUndoing)
             return;
+        StackTraceElement stackTrace = Thread.currentThread().getStackTrace()[3];
+        Debug.logInfo("Doing " + c.getClass().getSimpleName() + " at request of " + stackTrace.getFileName() + ":"
+                + stackTrace.getLineNumber(), 3, Debug.SYSTEM_GUI);
         c.execute();
         if (undoHistory.size() >= undoLimit)
             undoHistory.removeLast();
