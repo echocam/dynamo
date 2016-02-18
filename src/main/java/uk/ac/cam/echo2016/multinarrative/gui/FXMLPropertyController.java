@@ -63,6 +63,18 @@ public class FXMLPropertyController implements Initializable {
         recolour.setDisable(true);
         recolour.valueProperty()
                 .addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) -> {
+                        
+                        String oldval = FXUtil.colorToHex(oldValue);
+                        String newval = FXUtil.colorToHex(newValue);
+                        System.out.println("Set new color: " + newval);
+                        String value = values.getSelectionModel().getSelectedItem().toString();
+                        try {
+                            controller.getOperations().narrativeOperations().setColor(propName, value, newValue);
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        
 
                 });
         values.getSelectionModel().selectedItemProperty()

@@ -695,9 +695,11 @@ public class NarrativeOperations {
      * @param c
      */
     public void setColor(String property, String value, Color c) throws IllegalOperationException {
-        if (properties.get(property) != null) {
-            properties.get(property).putString(value, FXUtil.colorToHex(c));
+        if (properties.get(property) == null) {
+            properties.put(property, new BaseBundle());
         }
+            System.out.println("Added Color: " + FXUtil.colorToHex(c));
+            properties.get(property).putString(value, FXUtil.colorToHex(c));
 
     }
 
@@ -717,7 +719,8 @@ public class NarrativeOperations {
         try {
             c = Color.web((String) properties.get(property).get(value));
         } catch (IllegalArgumentException e) {
-            throw new IllegalOperationException("Value " + value + " is not a color");
+            return Color.TRANSPARENT;
+            //throw new IllegalOperationException("Value " + value + " is not a color");
         }
         return c == null ? Color.TRANSPARENT : c;
     }
