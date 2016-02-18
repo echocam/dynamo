@@ -1,7 +1,9 @@
 package uk.ac.cam.echo2016.multinarrative;
 
 import android.os.BaseBundle;
+import uk.ac.cam.echo2016.multinarrative.io.SaveWriter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -335,5 +337,9 @@ public class GUINarrative extends EditableNarrative { // TODO Finish
         }
         NarrativeTemplate template = new NarrativeTemplate(r_routes, r_nodes, start, BaseBundle.deepcopy(this.properties));
         return template;
+    }
+
+    public void saveTemplate(String filename) throws NonUniqueStartException, IOException{
+        SaveWriter.saveObject(filename, generateTemplate());
     }
 }
