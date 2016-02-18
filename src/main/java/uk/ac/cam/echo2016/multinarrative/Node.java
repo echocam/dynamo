@@ -1,12 +1,8 @@
 package uk.ac.cam.echo2016.multinarrative;
 
-import static uk.ac.cam.echo2016.multinarrative.gui.operations.Strings.INVALID_TYPE;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import uk.ac.cam.echo2016.multinarrative.gui.operations.IllegalOperationException;
 import android.os.BaseBundle;
 
 /**

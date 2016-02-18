@@ -67,6 +67,10 @@ public class OperationsManager {
         if (loaded == null) {
             throw new IOException();
         }
+        narrativeOperations.loadNarrative(loaded);
+        controllerOperations.clearGraph();
+        controllerOperations.buildGraph(loaded);
+        sequence.clearHistory();
     }
 
     public void saveNarrative(String filename) throws IOException {
@@ -80,6 +84,12 @@ public class OperationsManager {
 
     public ControllerOperations controllerOperations() {
         return controllerOperations;
+    }
+    
+    public void newFile() {
+        narrativeOperations.newNarrative();
+        controllerOperations.clearGraph();
+        sequence.clearHistory();
     }
 
     public Generator generator() {
