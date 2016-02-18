@@ -84,6 +84,9 @@ public class NarrativeOperations {
                     throw new IllegalOperationException(ALREADY_EXISTS);
                 }
                 properties.put(s, new BaseBundle());
+                //sets default property type to String. Can change
+                //with setPropertyType
+                multinarrative.setPropertyType(s, "String");
             }
 
             @Override
