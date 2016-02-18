@@ -181,9 +181,7 @@ public class FXMLController {
      */
     @FXML
     protected void registerAboutClicked() {
-        // TODO Change which line is commented to show alternative.
-        mainApp.showAbout();
-        // mainApp.altShowAbout();
+        mainApp.showAboutDialog();
     }
 
     /**
