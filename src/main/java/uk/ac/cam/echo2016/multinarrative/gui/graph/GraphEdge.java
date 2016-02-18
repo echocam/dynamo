@@ -93,7 +93,7 @@ public class GraphEdge {
 		double endX = to.getX() + to.getContents().getWidth() / 2;
 		double endY = to.getY() + to.getContents().getHeight() / 2;
 
-		ArrayList<Color> c = g.getOperations().getRouteColor(name.get());
+		ArrayList<Color> c = g.getOperations().narrativeOperations().getRouteColor(name.get());
 		if (c.isEmpty()) {
 			c.add(Color.rgb(51, 51, 51));
 		}

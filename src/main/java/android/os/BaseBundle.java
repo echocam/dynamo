@@ -18,10 +18,16 @@
 
 package android.os;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -160,6 +166,16 @@ public class BaseBundle implements Serializable {
     public Set<String> keySet() {
         
         return mMap.keySet();
+    }
+    
+    /**
+     * Returns a Set containing the Objects used as values in this Bundle.
+     *
+     * @return a Set of String keys
+     */
+    public Set<Object> valueSet() {
+        
+        return new HashSet<Object>(mMap.values());
     }
 
     /**

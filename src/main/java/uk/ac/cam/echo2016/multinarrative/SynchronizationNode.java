@@ -45,7 +45,7 @@ public class SynchronizationNode extends Node { // TODO Documentation
 
     public GameChoice onEntry(Route completed, NarrativeInstance instance) throws GraphElementNotFoundException {
         if (!getEntering().contains(completed)) {
-        	throw new GraphElementNotFoundException("Completed route not in this nodes entering list");
+        	throw new GraphElementNotFoundException(completed.getId());
         } 
         
         GameChoice gameChoice;
