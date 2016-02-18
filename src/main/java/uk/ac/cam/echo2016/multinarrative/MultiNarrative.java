@@ -19,6 +19,7 @@ public abstract class MultiNarrative implements Serializable { //TODO Documentat
     protected HashMap<String, Node> nodes = new HashMap<String, Node>();
     protected SynchronizationNode start;
     protected BaseBundle properties = new BaseBundle();
+    protected HashMap<String, String> typemap = new HashMap<String, String>();
 
     public MultiNarrative() {
         properties.putStringArrayList("System.Types", new ArrayList<String>());
@@ -35,6 +36,10 @@ public abstract class MultiNarrative implements Serializable { //TODO Documentat
     
     public HashMap<String, Route> getRoutes() {
     	return routes;
+    }
+    
+    public HashMap<String, String> getPropertyTypes() {
+        return typemap;
     }
 
     public Route getRoute(String id) {

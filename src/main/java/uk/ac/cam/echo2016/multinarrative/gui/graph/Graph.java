@@ -9,6 +9,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.CubicCurve;
 import javafx.scene.shape.Shape;
+import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.gui.FXMLController;
 import uk.ac.cam.echo2016.multinarrative.gui.OperationsManager;
 
