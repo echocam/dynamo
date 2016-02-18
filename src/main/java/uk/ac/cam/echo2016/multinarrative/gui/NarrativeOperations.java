@@ -160,7 +160,7 @@ public class NarrativeOperations {
     
 
     /**
-     * TODO Gets property type.
+     * Gets property type.
      * 
      * @param property
      * @param type
@@ -664,7 +664,7 @@ public class NarrativeOperations {
     }
 
     /**
-     * TODO Add the property to the String ArrayList global property in
+     * Add the property to the String ArrayList global property in
      * GUINarrative "System.Types"
      * 
      * @param property
@@ -674,7 +674,7 @@ public class NarrativeOperations {
     }
 
     /**
-     * TODO Remove the property from the String ArrayList global property in
+     * Remove the property from the String ArrayList global property in
      * GUINarrative "System.Types"
      * 
      * @param property

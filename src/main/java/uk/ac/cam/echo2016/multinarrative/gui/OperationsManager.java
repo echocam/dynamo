@@ -168,6 +168,7 @@ public class OperationsManager {
                 @Override
                 public void execute() throws IllegalOperationException {
                     narrativeOperations.setPropertyType(prop, type);
+                    
                     typeSelect.setDisable(true);
                     typeSelect.setValue(type);
                     typeSelect.setDisable(false);
@@ -628,8 +629,8 @@ public class OperationsManager {
                 String old = null;
 
                 public AssignPropertyToNodeOperation() {
-                    if (narrativeOperations.getNarrative().getRouteProperties(node) != null) {
-                        old = narrativeOperations.getNarrative().getRouteProperties(node).get(prop).toString();
+                    if (narrativeOperations.getNarrative().getNodeProperties(node).get(prop) != null) {
+                        old = narrativeOperations.getNarrative().getNodeProperties(node).get(prop).toString();
                     }
                 }
 
@@ -654,7 +655,7 @@ public class OperationsManager {
                 String old = null;
 
                 public AssignPropertyToRouteOperation() {
-                    if (narrativeOperations.getNarrative().getRouteProperties(route) != null) {
+                    if (narrativeOperations.getNarrative().getRouteProperties(route).get(prop) != null) {
                         old = narrativeOperations.getNarrative().getRouteProperties(route).get(prop).toString();
                     }
                 }
