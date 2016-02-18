@@ -263,6 +263,34 @@ public class FXMLController {
     }
 
     /**
+     * FXML hook. Code run when "Undo" clicked
+     */
+    @FXML
+    protected void registerUndoClicked() {
+        Debug.logInfo("Doing undo", 3, Debug.SYSTEM_GUI);
+        try {
+            operations.undo();
+        } catch (IllegalOperationException e) {
+            setInfo(e.getMessage());
+        }
+
+    }
+
+    /**
+     * FXML hook. Code run when "Undo" clicked
+     */
+    @FXML
+    protected void registerRedoClicked() {
+        Debug.logInfo("Doing redo", 3, Debug.SYSTEM_GUI);
+        try {
+            operations.redo();
+        } catch (IllegalOperationException e) {
+            setInfo(e.getMessage());
+        }
+
+    }
+
+    /**
      * FXML hook. Adds a property.
      * 
      * @param event
@@ -425,20 +453,12 @@ public class FXMLController {
     @FXML
     protected void onKeyPress(KeyEvent event) {
         Debug.logInfo("Key Pressed: " + event, 5, Debug.SYSTEM_GUI);
+        if (event.isConsumed())
+            return;
         switch (event.getCode()) {
         case DELETE:
         case BACK_SPACE:
             removeSelect();
-            break;
-        case Z:
-            if (event.isShiftDown()) {
-                Debug.logInfo("Doing undo", 3, Debug.SYSTEM_GUI);
-                try {
-                    operations.undo();
-                } catch (IllegalOperationException e) {
-                    setInfo(e.getMessage());
-                }
-            }
             break;
         default:
         }
@@ -453,6 +473,8 @@ public class FXMLController {
     @FXML
     protected void onKeyRelease(KeyEvent event) {
         Debug.logInfo("Key Released: " + event, 5, Debug.SYSTEM_GUI);
+        if (event.isConsumed())
+            return;
         switch (event.getCode()) {
         default:
         }
