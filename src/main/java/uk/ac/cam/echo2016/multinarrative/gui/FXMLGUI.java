@@ -43,6 +43,7 @@ public class FXMLGUI extends Application {
 
             FXMLController controller = loader.getController();
             controller.init(this);
+            //controller.init(this, stage);
 
             stage.setTitle("Graph Editor");
             stage.setScene(new Scene(root, 900, 600));

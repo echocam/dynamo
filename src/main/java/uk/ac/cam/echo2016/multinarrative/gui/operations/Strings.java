@@ -30,7 +30,7 @@ public class Strings{
     public static final String NODE_PREFIX = "Node-%1";
     public static final String SYNCH_NODE_PREFIX = "SynchNode-";
     
-    public static final String ABOUT_TEXT = "Graphical User Interface for <insert name of tool here>\n\nDemonstration version.";
+    public static final String ABOUT_TEXT = "Graphical User Interface for DyNaMo (Dynamic Narrative Modeller)\n\nDemonstration version.";
 
     private Strings(){}
 
