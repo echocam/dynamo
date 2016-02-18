@@ -70,7 +70,7 @@ public class OperationsManager {
         narrativeOperations.loadNarrative(loaded);
         controllerOperations.clearGraph();
         controllerOperations.buildGraph(loaded);
-        //TODO remove command history
+        sequence.clearHistory();
     }
 
     public void saveNarrative(String filename) throws IOException {
@@ -89,7 +89,7 @@ public class OperationsManager {
     public void newFile() {
         narrativeOperations.newNarrative();
         controllerOperations.clearGraph();
-        //TODO remove command history.
+        sequence.clearHistory();
     }
 
     public Generator generator() {
