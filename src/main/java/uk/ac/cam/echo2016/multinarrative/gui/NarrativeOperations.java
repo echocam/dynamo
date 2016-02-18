@@ -781,5 +781,9 @@ public class NarrativeOperations {
     public GUINarrative getNarrative() {
         return multinarrative;
     }
+    
+    public void newNarrative() {
+        multinarrative = new GUINarrative();
+    }
 
 }

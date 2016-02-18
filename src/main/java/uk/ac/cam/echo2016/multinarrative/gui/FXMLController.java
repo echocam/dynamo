@@ -147,6 +147,7 @@ public class FXMLController {
         itemEditor.setDisable(true);
         nodeEditor.setDisable(true);
         routeEditor.setDisable(true);
+        
 
         nodes.itemsProperty().set(FXCollections.observableArrayList());
         routes.itemsProperty().set(FXCollections.observableArrayList());
@@ -162,6 +163,7 @@ public class FXMLController {
         }
 
         reInit(null, null);
+        operations.newFile();
     }
 
     /**
