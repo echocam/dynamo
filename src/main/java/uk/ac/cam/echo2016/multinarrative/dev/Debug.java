@@ -168,6 +168,10 @@ public class Debug {
      *            bitwise or them together. eg. TYPE_PUDDING | TYPE FAIRY.
      */
     public static void logInfo(String s, int level, int system) {
+        logInfo(s, 4, level, system);
+    }
+    
+    public static void logInfo(String s, int calls, int level, int system) {
         Debug d = Debug.getInstance();
         int[] logSystems = d.consoleLogLevels; // get config info
         if ((logSystems[level - 1] & system) != 0) {
@@ -175,10 +179,16 @@ public class Debug {
             int lineNumber = stackTrace.getLineNumber();
             String fileName = stackTrace.getFileName();
             String debugString = lineNumber + " " + fileName + ": " + s;
-            System.out.println(debugString);
+            if ((system & SYSTEM_ERROR) != 0) {
+                System.err.println(debugString);
+            } else {
+                System.out.println(debugString);
+            }
         }
 
     }
+    
+    
 
     /**
      * Prints out the provided string as an errory provided the current
@@ -230,14 +240,14 @@ public class Debug {
     }
 
     public static void logError(Throwable e, int logLevel, int type) {
-        logError(e.getClass().getName() + ": " + e.getMessage(), logLevel, type);
+        logInfo(e.getClass().getName() + ": " + e.getMessage(), 3, logLevel, type| SYSTEM_ERROR);
         StackTraceElement[] stack = e.getStackTrace();
         for (int i = 0; i < stack.length; i++) {
-            logError(" > " + stack[i], logLevel, type);
+            logInfo(" > " + stack[i], 3, logLevel, type| SYSTEM_ERROR);
         }
-        if(e.getCause()!=null){
-            logError("Caused by: ", logLevel, type);
-            logError(e.getCause(),logLevel,type);
+        if (e.getCause() != null) {
+            logInfo("Caused by: ", 3, logLevel, type| SYSTEM_ERROR);
+            logError(e.getCause(), logLevel, type| SYSTEM_ERROR);
         }
     }
 }

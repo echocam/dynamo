@@ -45,7 +45,6 @@ public class OperationsManager {
     }
 
     public void undo() throws IllegalOperationException {
-        Debug.logInfo("Undoing", 3, Debug.SYSTEM_GUI);
         try {
             sequence.undoLastOperation();
         } catch (IllegalOperationException ioe) {
@@ -55,7 +54,6 @@ public class OperationsManager {
     }
 
     public void redo() throws IllegalOperationException {
-        Debug.logInfo("Redoing", 3, Debug.SYSTEM_GUI);
         try {
             sequence.redoLastUndo();
         } catch (IllegalOperationException ioe) {
@@ -514,6 +512,12 @@ public class OperationsManager {
                 GraphNode newStart;
 
                 public SetStartOperation(String name, String start) throws IllegalOperationException {
+                    if (name == null) {
+                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, "null");
+                    }
+                    if (start == null) {
+                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, "null");
+                    }
                     edge = controller.getGraph().getEdges().get(name);
                     if (edge == null) {
                         throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, name);
@@ -547,11 +551,17 @@ public class OperationsManager {
                 GraphNode newEnd;
 
                 public SetEndOperation(String name, String end) throws IllegalOperationException {
+                    if (name == null) {
+                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, "null");
+                    }
+                    if (end == null) {
+                        throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, "null");
+                    }
                     edge = controller.getGraph().getEdges().get(name);
                     if (edge == null) {
                         throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, name);
                     }
-                    oldEnd = edge.getFrom();
+                    oldEnd = edge.getTo();
                     newEnd = controller.getGraph().getNodes().get(end);
                     if (newEnd == null) {
                         throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, end);

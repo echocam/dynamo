@@ -3,6 +3,9 @@ package uk.ac.cam.echo2016.multinarrative.gui.operations;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import uk.ac.cam.echo2016.multinarrative.dev.Debug;
+import uk.ac.cam.echo2016.multinarrative.gui.Strings;
+
 public class UndoableOperationSequence {
 
     public static final int UNDO_LIMIT = 64;
@@ -53,13 +56,18 @@ public class UndoableOperationSequence {
      * Undo the last command.
      */
     public void undoLastOperation() throws IllegalOperationException {
-        isUndoing=true;
-        Operation c = undoHistory.removeFirst();
+        isUndoing = true;
+        if (undoHistory.isEmpty()) {
+            throw new IllegalOperationException(Strings.CANNOT_UNDO);
+        }
+        Operation c = undoHistory.peekFirst();
+        Debug.logInfo("Undoing: " + c.getClass().getSimpleName(), 3, Debug.SYSTEM_GUI);
         c.undo();
+        undoHistory.removeFirst();
         if (redoHistory.size() >= redoLimit)
             redoHistory.removeLast();
         redoHistory.addFirst(c);
-        isUndoing=false;
+        isUndoing = false;
     }
 
     /**
@@ -69,12 +77,21 @@ public class UndoableOperationSequence {
      * @throws IllegalOperationException
      */
     public void redoLastUndo() throws IllegalOperationException {
-        isUndoing=true;
+        isUndoing = true;
+        if (redoHistory.isEmpty()) {
+            throw new IllegalOperationException(Strings.CANNOT_REDO);
+        }
         Operation c = redoHistory.peekFirst();
+        Debug.logInfo("Redoing: " + c.getClass().getSimpleName(), 3, Debug.SYSTEM_GUI);
         c.execute();
         redoHistory.removeFirst();
         undoHistory.addFirst(c);
-        isUndoing=false;
+        isUndoing = false;
+    }
+
+    public void clearHistory() {
+        undoHistory.clear();
+        redoHistory.clear();
     }
 
 }
