@@ -31,7 +31,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     
     public BaseBundle startRoute(String id) throws GraphElementNotFoundException {
         Route route = getRoute(id);
-        if (route == null) throw new GraphElementNotFoundException("Error: Route with id: " + id + " not found");
+        if (route == null) throw new GraphElementNotFoundException(id);
         Node startNode = route.getStart();
         if (startNode instanceof ChoiceNode) {
         	activeNodes.remove(startNode);
@@ -50,7 +50,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
 
     public GameChoice endRoute(String id) throws GraphElementNotFoundException {
         Route route = getRoute(id);
-        if (route == null) throw new GraphElementNotFoundException("Error: Route with id: " + id + " not found");
+        if (route == null) throw new GraphElementNotFoundException(id);
         Node endNode = route.getEnd();
         if (endNode instanceof ChoiceNode || ((SynchronizationNode)endNode).isCompleted()) {
         	setActive(endNode);

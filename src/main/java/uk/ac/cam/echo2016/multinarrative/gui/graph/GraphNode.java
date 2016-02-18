@@ -83,7 +83,7 @@ public class GraphNode {
 	    
 		ArrayList<Color> c;
         try {
-            c = g.getOperations().getNodeColor(name.get());
+            c = g.getOperations().narrativeOperations().getNodeColor(name.get());
         } catch (GraphElementNotFoundException e) {
             c = new ArrayList<>();
         }
