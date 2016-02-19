@@ -127,12 +127,6 @@ public class FXMLController {
                         initSelect();
                     }
                 });
-        /*
-         * itemName.textProperty() .addListener((ObservableValue<? extends
-         * String> observable, String oldValue, String newValue) -> { try {
-         * changeSelectName(); } catch (Exception e) { e.printStackTrace(); }
-         * });
-         */
         itemPropertyDelete.disableProperty()
                 .bind(itemProperties.getSelectionModel().selectedIndexProperty().lessThan(0));
         routeStart.itemsProperty().bind(nodes.itemsProperty());

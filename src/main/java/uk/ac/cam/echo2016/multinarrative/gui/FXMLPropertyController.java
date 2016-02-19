@@ -178,8 +178,8 @@ public class FXMLPropertyController implements Initializable {
 
     @FXML
     protected void addValueAction(ActionEvent event) {
-        String s = controller.getOperations().narrativeOperations().getDefaultValue(propName, typeName);
         try {
+            String s = controller.getOperations().narrativeOperations().getDefaultValue(propName, typeName);
             controller.getOperations().doOp(controller.getOperations().generator().addValue(propName, typeName, s,
                     values.getItems().size(), this));
 

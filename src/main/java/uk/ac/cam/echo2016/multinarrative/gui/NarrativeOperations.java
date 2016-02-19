@@ -253,14 +253,11 @@ public class NarrativeOperations {
      * @param id
      * @param type
      * @return
+     * @throws IllegalOperationException 
      */
-    public String getDefaultValue(String id, String type) {
+    public String getDefaultValue(String id, String type) throws IllegalOperationException {
         if (!TYPES.contains(type)) {
-            try {
                 throw new IllegalOperationException(INVALID_TYPE);
-            } catch (IllegalOperationException e) {
-                e.printStackTrace();
-            }
         }
         if (type.equals("String")) {
             return Strings.populateString(PROPERTY_VALUE_STRING, "" + valueCounter++);
@@ -771,7 +768,6 @@ public class NarrativeOperations {
             }
             return r;
         } catch (GraphElementNotFoundException e1) {
-            e1.printStackTrace();
             throw new IllegalOperationException("Route not found");
         }
     }
