@@ -39,7 +39,7 @@ public class OperationsManager {
         try {
             sequence.storeAndExecute(o);
         } catch (IllegalOperationException ioe) {
-            Debug.logError(ioe, 3, Debug.SYSTEM_GUI);
+            Debug.logError(ioe, 5, Debug.SYSTEM_GUI);
             throw ioe;
         }
     }
@@ -48,7 +48,7 @@ public class OperationsManager {
         try {
             sequence.undoLastOperation();
         } catch (IllegalOperationException ioe) {
-            Debug.logError(ioe, 3, Debug.SYSTEM_GUI);
+            Debug.logError(ioe, 5, Debug.SYSTEM_GUI);
             throw ioe;
         }
     }
@@ -57,7 +57,7 @@ public class OperationsManager {
         try {
             sequence.redoLastUndo();
         } catch (IllegalOperationException ioe) {
-            Debug.logError(ioe, 3, Debug.SYSTEM_GUI);
+            Debug.logError(ioe, 5, Debug.SYSTEM_GUI);
             throw ioe;
         }
     }
