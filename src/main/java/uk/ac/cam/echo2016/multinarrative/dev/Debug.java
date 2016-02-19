@@ -42,16 +42,14 @@ public class Debug {
     // on initialisation, this array is set up so that the lower indexes in the
     // array
     // are configured to log everything from the higher indexes
-    private final int[] consoleLogLevels;
+    private static final int[] consoleLogLevels;
 
     private static Debug instance = null;
 
-    /**
-     * Create a new instance of the Debug class, mainly loads in configuration
-     * data from the config.json file.
-     * 
+    /*
+     * loads in configuration data from the config.json file.
      */
-    private Debug() {
+    static {
         // initialise the configuration an array, each integer representing
         // which systems should be logged at each level.
         consoleLogLevels = new int[5];
@@ -83,7 +81,7 @@ public class Debug {
                         try {
                             // get the binary representation of the system and
                             // OR it so it is configured to be logged.
-                            int newSys = Debug.class.getField("SYSTEM_" + systemName.toUpperCase()).getInt(this);
+                            int newSys = Debug.class.getField("SYSTEM_" + systemName.toUpperCase()).getInt(null);
                             systemsLogged = systemsLogged | newSys;
                         } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException
                                 | SecurityException e) {
@@ -102,13 +100,14 @@ public class Debug {
                 consoleLogLevels[logLevel - 1] = consoleLogLevels[logLevel] | consoleLogLevels[logLevel - 1];
             }
 
-        } catch (IOException | ClassCastException | IllegalStateException e) { 
+        } catch (IOException | ClassCastException | IllegalStateException e) {
             // config.json doesn't exist, so log everything
-            consoleLogLevels[0] = SYSTEM_ALL; 
-            consoleLogLevels[1] = SYSTEM_ALL; 
-            consoleLogLevels[2] = SYSTEM_ALL; 
-            consoleLogLevels[3] = SYSTEM_ALL; 
+            consoleLogLevels[0] = SYSTEM_ALL;
+            consoleLogLevels[1] = SYSTEM_ALL;
+            consoleLogLevels[2] = SYSTEM_ALL;
+            consoleLogLevels[3] = SYSTEM_ALL;
             consoleLogLevels[4] = SYSTEM_NONE;
+            System.err.println("Could not find config.json. Using default levels");
         }
     }
 
@@ -166,10 +165,9 @@ public class Debug {
     public static void logInfo(String s, int level, int system) {
         logInfo(s, 3, level, system);
     }
-    
+
     public static void logInfo(String s, int calls, int level, int system) {
-        Debug d = Debug.getInstance();
-        int[] logSystems = d.consoleLogLevels; // get config info
+        int[] logSystems = consoleLogLevels; // get config info
         if ((logSystems[level - 1] & system) != 0) {
             StackTraceElement stackTrace = Thread.currentThread().getStackTrace()[calls];
             int lineNumber = stackTrace.getLineNumber();
@@ -183,8 +181,6 @@ public class Debug {
         }
 
     }
-    
-    
 
     /**
      * Prints out the provided string as an errory provided the current
@@ -236,14 +232,14 @@ public class Debug {
     }
 
     public static void logError(Throwable e, int logLevel, int type) {
-        logInfo(e.getClass().getName() + ": " + e.getMessage(), 3, logLevel, type| SYSTEM_ERROR);
+        logInfo(e.getClass().getName() + ": " + e.getMessage(), 3, logLevel, type | SYSTEM_ERROR);
         StackTraceElement[] stack = e.getStackTrace();
         for (int i = 0; i < stack.length; i++) {
-            logInfo(" > " + stack[i], 3, logLevel, type| SYSTEM_ERROR);
+            logInfo(" > " + stack[i], 3, logLevel, type | SYSTEM_ERROR);
         }
         if (e.getCause() != null) {
-            logInfo("Caused by: ", 3, logLevel, type| SYSTEM_ERROR);
-            logError(e.getCause(), logLevel, type| SYSTEM_ERROR);
+            logInfo("Caused by: ", 3, logLevel, type | SYSTEM_ERROR);
+            logError(e.getCause(), logLevel, type | SYSTEM_ERROR);
         }
     }
 }
