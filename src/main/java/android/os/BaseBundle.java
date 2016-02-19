@@ -40,7 +40,6 @@ import java.util.Set;
  */
 public class BaseBundle implements Serializable {
     private static final long serialVersionUID = 1;
-    static final boolean DEBUG = false;
 
     static final int BUNDLE_MAGIC = 0x4C444E42; // 'B' 'N' 'D' 'L'
 
@@ -518,9 +517,6 @@ public class BaseBundle implements Serializable {
      * @return a boolean value
      */
     public boolean getBoolean(String key) {
-
-        if (DEBUG)
-            System.out.println("Getting boolean in " + Integer.toHexString(System.identityHashCode(this)));
         return getBoolean(key, false);
     }
 

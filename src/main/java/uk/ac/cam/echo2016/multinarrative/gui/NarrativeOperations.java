@@ -58,7 +58,6 @@ public class NarrativeOperations {
 
     public void addPropertyValue(String id, String value) throws IllegalOperationException {
         String type = multinarrative.getPropertyTypes().get(id);
-        System.out.println(type);
         if (type == null || !isCorrectType(type, value)) {
             throw new IllegalOperationException("Property value does not match type");
         }
@@ -141,7 +140,6 @@ public class NarrativeOperations {
             Object value = propcopy.get(val);
             if (!isCorrectType(type, value)) {
                 prop.remove(val);
-                System.out.println("Deleted value: " + val);
             }
         }
     }
@@ -192,7 +190,6 @@ public class NarrativeOperations {
      */
     public void addValue(String property, String type, String value) throws IllegalOperationException {
         String proptype = multinarrative.getPropertyTypes().get(property);
-        System.out.println(proptype);
         if (!multinarrative.getPropertyMapping().containsKey(property)) {
             throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, property);
         }

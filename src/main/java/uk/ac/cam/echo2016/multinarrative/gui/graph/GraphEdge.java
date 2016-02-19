@@ -107,7 +107,6 @@ public class GraphEdge {
             } else {
                 for (int i = 0; i < c.size(); i++) {
                     stops[i] = new Stop(i * 1.0 / (c.size() - 1), c.get(i));
-                    System.out.println(stops[i]);
                 }
 
             }

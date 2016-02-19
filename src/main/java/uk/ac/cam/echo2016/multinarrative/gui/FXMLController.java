@@ -366,7 +366,6 @@ public class FXMLController {
                 }
             } catch (IllegalOperationException ioe) {
                 setInfo(ioe.getMessage());
-                ioe.printStackTrace();
             }
         }
     }
