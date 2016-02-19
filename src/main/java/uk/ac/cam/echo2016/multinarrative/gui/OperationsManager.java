@@ -67,9 +67,11 @@ public class OperationsManager {
         if (loaded == null) {
             throw new IOException();
         }
-        narrativeOperations.loadNarrative(loaded);
         controllerOperations.clearGraph();
+        
+        narrativeOperations.loadNarrative(loaded);
         controllerOperations.buildGraph(loaded);
+        
         sequence.clearHistory();
     }
 

@@ -4,6 +4,7 @@ import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_ADDED;
 import static uk.ac.cam.echo2016.multinarrative.gui.Strings.PROPERTY_REMOVED;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import android.os.BaseBundle;
 import javafx.beans.property.SimpleStringProperty;
@@ -28,6 +29,8 @@ import uk.ac.cam.echo2016.multinarrative.gui.operations.IllegalOperationExceptio
 public class ControllerOperations {
 
     private FXMLController controller;
+    
+    private ArrayList<FXMLPropertyController> props;
 
     public ControllerOperations(FXMLController controller) {
         this.controller = controller;
@@ -67,6 +70,7 @@ public class ControllerOperations {
         controller.getContextMenuForGraph().getItems().add(prop.getMenu());
         controller.getProperties().getPanes().add(prop.getRoot());
         controller.setInfo(Strings.populateString(PROPERTY_ADDED, prop.getName()));
+        props.add(prop);
     }
 
     /**
@@ -85,7 +89,7 @@ public class ControllerOperations {
         controller.getProperties().getPanes().remove(prop.getRoot());
         controller.getContextMenuForGraph().getItems().remove(prop.getMenu());
         controller.setInfo(Strings.populateString(PROPERTY_REMOVED, prop.getName()));
-
+        props.remove(prop);
     }
 
     /**
@@ -237,6 +241,9 @@ public class ControllerOperations {
 
     public void clearGraph() {
         controller.clear();
+        for(FXMLPropertyController prop: props){
+            removeProperty(prop);
+        }
     }
 
     public void swapChoiceOrSynch(GraphNode node) {
