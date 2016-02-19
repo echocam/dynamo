@@ -246,7 +246,7 @@ public class NarrativeOperations {
         if (!multinarrative.getPropertyMapping().containsKey(id)) {
             throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, id);
         }
-        multinarrative.getGlobalProperties().remove(id+"="+value);
+        multinarrative.getGlobalProperties().remove(id + "=" + value);
         multinarrative.getPropertyMapping().get(id).remove(value);
     }
 
@@ -736,12 +736,12 @@ public class NarrativeOperations {
         for (String prop : props.keySet()) {
             try {
                 Color c = getColor(prop, props.get(prop).toString());
-                if(c.getOpacity()>0){
+                if (c.getOpacity() > 0) {
                     r.add(c);
                 }
             } catch (IllegalOperationException e) {
                 Debug.logError(e, 5, Debug.SYSTEM_GUI);
-                //Skip Round
+                // Skip Round
             }
         }
         return r;
@@ -763,12 +763,12 @@ public class NarrativeOperations {
                 for (String prop : props.keySet()) {
                     try {
                         Color c = getColor(prop, props.get(prop).toString());
-                        if(c.getOpacity()>0){
+                        if (c.getOpacity() > 0) {
                             r.add(c);
                         }
                     } catch (IllegalOperationException e) {
                         Debug.logError(e, 5, Debug.SYSTEM_GUI);
-                        //Skip Round
+                        // Skip Round
                     }
                 }
             }

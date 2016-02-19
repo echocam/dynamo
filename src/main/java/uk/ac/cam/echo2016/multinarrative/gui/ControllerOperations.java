@@ -93,7 +93,7 @@ public class ControllerOperations {
      * 
      * @param name
      * @return Created object
-     * @throws IllegalOperationException 
+     * @throws IllegalOperationException
      */
     public GraphNode createSynchNode(String name, Double x, Double y, Graph graph) throws IllegalOperationException {
         Debug.logInfo("Creating Synch " + name, 4, Debug.SYSTEM_GUI);
@@ -110,7 +110,7 @@ public class ControllerOperations {
             // Error with fxml files
             throw new RuntimeException("FXML files not configured correctly", ioe);
         } catch (GraphElementNotFoundException e) {
-            throw new IllegalOperationException(e,Strings.ITEM_DOES_NOT_EXIST, name);
+            throw new IllegalOperationException(e, Strings.ITEM_DOES_NOT_EXIST, name);
         }
     }
 
@@ -217,7 +217,7 @@ public class ControllerOperations {
         } else if (edge != null) {
             controller.getGraph().updateEdge(edge);
         } else {
-            throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST,id);
+            throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, id);
         }
     }
 
@@ -235,29 +235,30 @@ public class ControllerOperations {
         controller.selectRoute(newName);
     }
 
-    public void clearGraph(){
+    public void clearGraph() {
         controller.clear();
     }
-    
-    public void swapChoiceOrSynch(GraphNode node){
-        if(node.getContents().getShape()==null){
+
+    public void swapChoiceOrSynch(GraphNode node) {
+        if (node.getContents().getShape() == null) {
             node.getContents().setShape(new Circle(10));
-        }else{
+        } else {
             node.getContents().setShape(null);
         }
     }
-    
-    public void setStart(GraphEdge edge, GraphNode node){
+
+    public void setStart(GraphEdge edge, GraphNode node) {
         edge.setFrom(node);
     }
-    
-    public void setEnd(GraphEdge edge, GraphNode node){
+
+    public void setEnd(GraphEdge edge, GraphNode node) {
         edge.setTo(node);
     }
-    
+
     /**
      * Uses the narrative provided to rebuild the display graph.
-     * @throws IllegalOperationException 
+     * 
+     * @throws IllegalOperationException
      * 
      * @throws IOException
      * @throws GraphElementNotFoundException
@@ -298,11 +299,11 @@ public class ControllerOperations {
             }
 
         }
-        
-        for(String s : narrative.getPropertyMapping().keySet()){
+
+        for (String s : narrative.getPropertyMapping().keySet()) {
             FXMLPropertyController propCont = createProperty(s);
             String type = narrative.getPropertyTypes().get(s);
-            propCont.setType(type==null?"String":type);
+            propCont.setType(type == null ? "String" : type);
             BaseBundle b = narrative.getPropertyMapping().get(s);
             propCont.getValues().getItems().addAll(b.keySet());
             addProperty(propCont);

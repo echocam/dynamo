@@ -37,7 +37,7 @@ public class FXMLGUI extends Application {
 
             FXMLController controller = loader.getController();
             controller.init(this);
-            //controller.init(this, stage);
+            // controller.init(this, stage);
 
             stage.setTitle("Graph Editor");
             stage.setScene(new Scene(root, 900, 600));
@@ -47,7 +47,7 @@ public class FXMLGUI extends Application {
             throw new RuntimeException("FXML files not configured correctly", ioe);
         }
     }
-    
+
     /**
      * Opens the About dialog.
      */
@@ -104,7 +104,7 @@ public class FXMLGUI extends Application {
         alert.getButtonTypes().setAll(yesButton, noButton);
         String css = getClass().getResource("Style.css").toExternalForm();
         alert.getDialogPane().getStylesheets().add(css);
-        
+
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == yesButton)
             return true;

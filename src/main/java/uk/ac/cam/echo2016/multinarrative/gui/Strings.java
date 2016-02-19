@@ -20,16 +20,16 @@ public class Strings {
     public static final String COULD_NOT_RENAME = "Couldn't rename %1";
     public static final String CYCLE_EXISTS = "Operation would cause a cycle";
     public static final String CANNOT_FORMAT = "%1 is not a %2";
-    
+
     public static final String ROUTE_PREFIX = "Route-%1";
     public static final String NODE_PREFIX = "Node-%1";
-    
+
     public static final String CANNOT_UNDO = "Nothing to undo";
     public static final String CANNOT_REDO = "Nothing to redo";
 
     public static final String GUI_X = "GUI.X";
     public static final String GUI_Y = "GUI.Y";
-    
+
     public static final String ABOUT_TEXT = "Graphical User Interface for DyNaMo (Dynamic Narrative Modelling)\n\nDemonstration version.";
 
     private Strings() {

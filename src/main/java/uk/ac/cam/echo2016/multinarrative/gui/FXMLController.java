@@ -127,14 +127,12 @@ public class FXMLController {
                         initSelect();
                     }
                 });
-        /*itemName.textProperty()
-                .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-                    try {
-                        changeSelectName();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });*/
+        /*
+         * itemName.textProperty() .addListener((ObservableValue<? extends
+         * String> observable, String oldValue, String newValue) -> { try {
+         * changeSelectName(); } catch (Exception e) { e.printStackTrace(); }
+         * });
+         */
         itemPropertyDelete.disableProperty()
                 .bind(itemProperties.getSelectionModel().selectedIndexProperty().lessThan(0));
         routeStart.itemsProperty().bind(nodes.itemsProperty());
@@ -311,13 +309,14 @@ public class FXMLController {
 
     /**
      * FXML hook. Changes a name
+     * 
      * @param event
      */
     @FXML
     protected void setNameEntered(ActionEvent event) {
         changeSelectName();
     }
-    
+
     /**
      * FXML hook. Deletes the selected item
      * 

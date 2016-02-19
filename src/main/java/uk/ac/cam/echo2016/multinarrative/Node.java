@@ -6,15 +6,17 @@ import java.util.ArrayList;
 import android.os.BaseBundle;
 
 /**
- * Represents a {@code Node} on the {@code MultiNarrative} graph structure. Each node has an {@code ArrayList} of
- * {@code Narrative} references leaving the {@code Node}.
+ * Represents a {@code Node} on the {@code MultiNarrative} graph structure. Each
+ * node has an {@code ArrayList} of {@code Narrative} references leaving the
+ * {@code Node}.
  * 
  * @author tr393
  * @author rjm232
  * @version 1.0
  *
  */
-public abstract class Node implements Serializable, Cloneable { // TODO Documentation
+public abstract class Node implements Serializable, Cloneable { // TODO
+                                                                // Documentation
     private static final long serialVersionUID = 1;
     private final String id;
     private BaseBundle properties;
@@ -38,12 +40,11 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
             throw new RuntimeException(e);
         }
     }
-    
-    
 
     /**
-     * Method is implemented in derived classes ChoiceNode and SyncNode, to allow this class to make new objects of
-     * those derived types in the copyToGraph method.
+     * Method is implemented in derived classes ChoiceNode and SyncNode, to
+     * allow this class to make new objects of those derived types in the
+     * copyToGraph method.
      * 
      * @param id
      * @return
@@ -62,9 +63,9 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
         if (properties == null)
             properties = new BaseBundle(4);
     }
-    
+
     public void assignProperties(BaseBundle props) {
-            properties = props;
+        properties = props;
     }
 
     public BaseBundle getProperties() {
@@ -90,5 +91,5 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
     public void setExiting(ArrayList<Route> exitRoutes) {
         this.exitRoutes = exitRoutes;
     }
-    
+
 }

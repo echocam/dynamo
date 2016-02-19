@@ -95,14 +95,14 @@ public class EditingTool implements GraphTool {
                 resetSelection();
                 graph.getController().deselect();
             }
-        } else if(distX!=0.0 || distY!=0.0){
+        } else if (distX != 0.0 || distY != 0.0) {
             if (press != null) {
-                try{
+                try {
                     press.translate(-distX, -distY);
                     graph.getOperations()
-                    .doOp(graph.getOperations().generator().translateRoute(press.getName(), distX, distY));
-            graph.getController().initSelect();
-                }catch(IllegalOperationException ioe){
+                            .doOp(graph.getOperations().generator().translateRoute(press.getName(), distX, distY));
+                    graph.getController().initSelect();
+                } catch (IllegalOperationException ioe) {
                     graph.getController().setInfo(ioe.getMessage());
                 }
             } else {
