@@ -234,7 +234,8 @@ public class FXMLPropertyController implements Initializable {
     }
 
     public void recolour(String value, Color c) {
-        if (values.getSelectionModel().getSelectedItem().equals(value)) {
+        if (values.getSelectionModel().getSelectedIndex() > -1
+                && values.getSelectionModel().getSelectedItem().equals(value)) {
             recolour.setValue(c);
         }
     }

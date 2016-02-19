@@ -88,7 +88,7 @@ public class NarrativeOperations {
         if (multinarrative.getPropertyMapping().containsKey(s)) {
             throw new IllegalOperationException(ITEM_ALREADY_EXISTS, s);
         }
-        multinarrative.getPropertyMapping().put(s, new BaseBundle());
+        multinarrative.getPropertyMapping().put(s, b);
         // sets default property type to String. Can change
         // with setPropertyType
         multinarrative.setPropertyType(s, "String");
@@ -192,6 +192,7 @@ public class NarrativeOperations {
      */
     public void addValue(String property, String type, String value) throws IllegalOperationException {
         String proptype = multinarrative.getPropertyTypes().get(property);
+        System.out.println(proptype);
         if (!multinarrative.getPropertyMapping().containsKey(property)) {
             throw new IllegalOperationException(ITEM_DOES_NOT_EXIST, property);
         }

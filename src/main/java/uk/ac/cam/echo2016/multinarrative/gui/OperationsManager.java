@@ -383,13 +383,19 @@ public class OperationsManager {
         public Operation removeNodeSolo(String name) throws IllegalOperationException {
             class RemoveNodeOperation implements Operation {
 
-                private GraphNode node;
-                private boolean isChoice;
+                GraphNode node;
+                boolean isChoice;
+                BaseBundle props;
 
                 public RemoveNodeOperation(String name) throws IllegalOperationException {
                     this.node = controller.getGraph().getNodes().get(name);
                     if (node == null) {
                         throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, name);
+                    }
+                    try {
+                        props = narrativeOperations.getNarrative().getNodeProperties(name);
+                    } catch (NullPointerException npe) {
+                        throw new IllegalOperationException(npe, Strings.ITEM_DOES_NOT_EXIST, name);
                     }
                     isChoice = narrativeOperations.isChoiceNode(node.getName());
                 }
@@ -406,6 +412,9 @@ public class OperationsManager {
                         narrativeOperations.addChoiceNode(node.getName(), node.getX(), node.getY());
                     else
                         narrativeOperations.addSynchNode(node.getName(), node.getX(), node.getY());
+                    if (props != null) {
+                        narrativeOperations.getNarrative().getNode(node.getName()).assignProperties(props);
+                    }
                     controllerOperations.addNode(node);
                 }
 
@@ -467,11 +476,17 @@ public class OperationsManager {
             class RemoveRouteOperation implements Operation {
 
                 GraphEdge edge;
+                BaseBundle props;
 
                 public RemoveRouteOperation(String s) throws IllegalOperationException {
                     edge = controller.getGraph().getEdges().get(s);
                     if (edge == null)
                         throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, s);
+                    try {
+                        props = narrativeOperations.getNarrative().getRouteProperties(s);
+                    } catch (NullPointerException npe) {
+                        throw new IllegalOperationException(npe, Strings.ITEM_DOES_NOT_EXIST, s);
+                    }
                 }
 
                 @Override
@@ -484,7 +499,11 @@ public class OperationsManager {
                 public void undo() throws IllegalOperationException {
                     narrativeOperations.addRoute(edge.getName(), edge.getFrom().getName(), edge.getTo().getName(),
                             edge.getXOff(), edge.getYOff());
+                    if (props != null) {
+                        narrativeOperations.getNarrative().getRoute(edge.getName()).assignProperties(props);
+                    }
                     controllerOperations.addRoute(edge);
+                    controller.getGraph().updateEdge(edge);
                 }
             }
             return new RemoveRouteOperation(s);

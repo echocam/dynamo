@@ -69,6 +69,10 @@ public class Route implements Serializable, Cloneable { // TODO Documentation
         if (properties == null)
             properties = new BaseBundle(4);
     }
+    
+    public void assignProperties(BaseBundle props) {
+            properties = props;
+    }
 
     public BaseBundle getProperties() {
         return properties;

@@ -62,6 +62,10 @@ public abstract class Node implements Serializable, Cloneable { // TODO Document
         if (properties == null)
             properties = new BaseBundle(4);
     }
+    
+    public void assignProperties(BaseBundle props) {
+            properties = props;
+    }
 
     public BaseBundle getProperties() {
         return properties;
