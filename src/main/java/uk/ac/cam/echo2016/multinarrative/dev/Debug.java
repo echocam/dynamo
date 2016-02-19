@@ -109,7 +109,6 @@ public class Debug {
             consoleLogLevels[2] = SYSTEM_ALL; 
             consoleLogLevels[3] = SYSTEM_ALL; 
             consoleLogLevels[4] = SYSTEM_NONE;
-            logError("Cannot find config file. Using default levels.", 1, SYSTEM_IO);
         }
     }
 
