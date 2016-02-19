@@ -30,7 +30,7 @@ public class ControllerOperations {
 
     private FXMLController controller;
     
-    private ArrayList<FXMLPropertyController> props;
+    private ArrayList<FXMLPropertyController> props = new ArrayList<>();
 
     public ControllerOperations(FXMLController controller) {
         this.controller = controller;
