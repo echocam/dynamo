@@ -21,7 +21,8 @@ public class Strings {
     public static final String CYCLE_EXISTS = "Operation would cause a cycle";
     public static final String CANNOT_FORMAT = "%1 is not a %2";
     public static final String NON_UNIQUE_START = "Could not find a unique start point";
-
+    public static final String CANNOT_EDIT_BOOLEAN = "Boolean types cannot be edited";
+    
     public static final String ROUTE_PREFIX = "Route-%1";
     public static final String NODE_PREFIX = "Node-%1";
 
@@ -31,6 +32,15 @@ public class Strings {
     public static final String GUI_X = "GUI.X";
     public static final String GUI_Y = "GUI.Y";
 
+    public static final String TYPE_STRING = "String";
+    public static final String TYPE_INTEGER = "Integer";
+    public static final String TYPE_BOOLEAN = "Boolean";
+    public static final String TYPE_BYTE ="Byte";
+    public static final String TYPE_SHORT ="Short";
+    public static final String TYPE_LONG ="Long";
+    public static final String TYPE_FLOAT ="Float";
+    public static final String TYPE_DOUBLE ="Double";
+    
     public static final String ABOUT_TEXT = "Graphical User Interface for DyNaMo (Dynamic Narrative Modelling)\n\nDemonstration version.";
 
     private Strings() {

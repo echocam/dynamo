@@ -2,6 +2,8 @@ package uk.ac.cam.echo2016.multinarrative.gui.operations;
 
 import java.util.ArrayList;
 
+import uk.ac.cam.echo2016.multinarrative.dev.Debug;
+
 public class CompositeOperation implements Operation {
 
     private ArrayList<OperationGenerator> gens;
@@ -18,10 +20,12 @@ public class CompositeOperation implements Operation {
             for (OperationGenerator gen : gens) {
                 Operation op = gen.generate();
                 items.add(op);
+                Debug.logInfo("Doing " + op.getClass().getSimpleName(), 3, Debug.SYSTEM_GUI);
                 op.execute();
             }
         } else {
             for (Operation op : items) {
+                Debug.logInfo("Doing " + op.getClass().getSimpleName(), 3, Debug.SYSTEM_GUI);
                 op.execute();
             }
         }
@@ -30,6 +34,7 @@ public class CompositeOperation implements Operation {
     @Override
     public void undo() throws IllegalOperationException {
         for (int i = items.size() - 1; i >= 0; i--) {
+            Debug.logInfo("Undoing " + items.get(i).getClass().getSimpleName(), 3, Debug.SYSTEM_GUI);
             items.get(i).undo();
         }
     }

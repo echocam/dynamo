@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import android.os.BaseBundle;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.paint.Color;
 import uk.ac.cam.echo2016.multinarrative.GUINarrative;
 import uk.ac.cam.echo2016.multinarrative.NonUniqueStartException;
@@ -69,10 +68,10 @@ public class OperationsManager {
             throw new IOException();
         }
         controllerOperations.clearGraph();
-        
+
         narrativeOperations.loadNarrative(loaded);
         controllerOperations.buildGraph(loaded);
-        
+
         sequence.clearHistory();
     }
 
@@ -80,7 +79,7 @@ public class OperationsManager {
         GUINarrative narrative = narrativeOperations.getNarrative();
         SaveWriter.saveObject(filename, narrative);
     }
-    
+
     public void exportNarrative(String filename) throws IOException, IllegalOperationException {
         try {
             narrativeOperations.getNarrative().saveTemplate(filename);
@@ -177,34 +176,54 @@ public class OperationsManager {
             return new RemovePropertyOperation(prop);
         }
 
-        public Operation setPropertyType(String prop, String type, ComboBox<String> typeSelect)
+        public Operation setPropertyTypeSolo(String prop, String oldType, String type, FXMLPropertyController propCont)
                 throws IllegalOperationException {
             class SetPropertyTypeOperation implements Operation {
-                String oldType;
 
                 public SetPropertyTypeOperation() throws IllegalOperationException {
-                    oldType = narrativeOperations.getPropertyType(prop);
                 }
 
                 @Override
                 public void execute() throws IllegalOperationException {
                     narrativeOperations.setPropertyType(prop, type);
 
-                    typeSelect.setDisable(true);
-                    typeSelect.setValue(type);
-                    typeSelect.setDisable(false);
+                    propCont.setType(type);
                 }
 
                 @Override
                 public void undo() throws IllegalOperationException {
                     narrativeOperations.setPropertyType(prop, oldType);
-                    typeSelect.setDisable(true);
-                    typeSelect.setValue(oldType);
-                    typeSelect.setDisable(false);
+
+                    propCont.setType(oldType);
                 }
 
             }
             return new SetPropertyTypeOperation();
+        }
+
+        public Operation setPropertyType(String prop, String type, FXMLPropertyController propCont)
+                throws IllegalOperationException {
+            ArrayList<OperationGenerator> r = new ArrayList<>();
+            BaseBundle b = narrativeOperations.getNarrative().getPropertyMapping().get(prop);
+            String oldType = narrativeOperations.getPropertyType(prop);
+            if (b == null) {
+                throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, prop);
+            }
+            for (String s : b.keySet()) {
+                if (!narrativeOperations.isCorrectForType(type, s)) {
+                    r.add(() -> removeValue(prop, oldType, s, propCont));
+                }
+            }
+            r.add(() -> setPropertyTypeSolo(prop, oldType, type, propCont));
+            if (type.equals(Strings.TYPE_BOOLEAN)) {
+                if (!b.containsKey("true")) {
+                    r.add(() -> addValue(prop, type, "true", 0, propCont));
+                }
+                if (!b.containsKey("false")) {
+                    r.add(() -> addValue(prop, type, "false", 1, propCont));
+                }
+            }
+            return new CompositeOperation(r);
         }
 
         public Operation renameProperty(String prop, String newName, FXMLPropertyController propCont) {
@@ -272,6 +291,16 @@ public class OperationsManager {
             int i = propCont.getIndexOf(value);
             ArrayList<OperationGenerator> r = new ArrayList<>();
             Color c = narrativeOperations.getColor(prop, value);
+            if (!narrativeOperations.isCorrectForType(type, value)) {
+                throw new IllegalOperationException(Strings.CANNOT_FORMAT, value);
+            }
+            BaseBundle b = narrativeOperations.getPropertyBundle(prop);
+            if (b == null) {
+                throw new IllegalOperationException(Strings.ITEM_DOES_NOT_EXIST, prop);
+            }
+            if (b.containsKey(newValue)) {
+                throw new IllegalOperationException(Strings.ITEM_ALREADY_EXISTS, newValue);
+            }
             r.add(() -> removeValue(prop, type, value, propCont));
             r.add(() -> addValue(prop, type, newValue, i, propCont));
             r.add(() -> setColor(prop, newValue, c, propCont));

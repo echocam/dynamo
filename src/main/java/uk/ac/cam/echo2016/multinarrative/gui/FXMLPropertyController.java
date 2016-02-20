@@ -1,9 +1,12 @@
 package uk.ac.cam.echo2016.multinarrative.gui;
 
 import java.net.URL;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -52,14 +55,18 @@ public class FXMLPropertyController implements Initializable {
 
     private Menu menu;
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        type.itemsProperty().set(FXCollections.observableArrayList((HashSet<String>)(NarrativeOperations.TYPES.clone())));
         values.setCellFactory(TextFieldListCell.forListView());
 
-        remove.setDisable(true);
+        BooleanBinding b = values.getSelectionModel().selectedIndexProperty().lessThan(0);
+        
+        remove.disableProperty().bind(b.or(type.valueProperty().isEqualTo(Strings.TYPE_BOOLEAN)));
+        recolour.disableProperty().bind(b);
 
         recolour.getStyleClass().add("button");
-        recolour.setDisable(true);
         recolour.valueProperty()
                 .addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) -> {
                     try {
@@ -75,8 +82,6 @@ public class FXMLPropertyController implements Initializable {
                 });
         values.getSelectionModel().selectedItemProperty()
                 .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-                    remove.setDisable(newValue == null);
-                    recolour.setDisable(newValue == null);
                     if (newValue != null) {
                         Color c;
                         try {
@@ -206,12 +211,13 @@ public class FXMLPropertyController implements Initializable {
     @FXML
     protected void changeTypeAction(ActionEvent event) {
         try {
-            type.getValue();
             if (!controller.getOperations().narrativeOperations().getPropertyType(propName).equals(type.getValue())) {
                 controller.getOperations()
-                        .doOp(controller.getOperations().generator().setPropertyType(propName, type.getValue(), type));
+                        .doOp(controller.getOperations().generator().setPropertyType(propName, type.getValue(), this));
             }
+            typeName=type.getValue();
         } catch (IllegalOperationException e) {
+            controller.setInfo(e.getMessage());
             type.setValue(typeName);
         }
     }
