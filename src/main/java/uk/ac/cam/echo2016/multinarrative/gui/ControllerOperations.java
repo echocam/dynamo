@@ -241,7 +241,8 @@ public class ControllerOperations {
 
     public void clearGraph() {
         controller.clear();
-        for(FXMLPropertyController prop: props){
+        FXMLPropertyController[] copy = props.toArray(new FXMLPropertyController[0]);
+        for(FXMLPropertyController prop: copy){
             removeProperty(prop);
         }
     }
