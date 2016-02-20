@@ -45,6 +45,8 @@ public class FXMLPropertyController implements Initializable {
     @FXML
     private BorderPane propertyPane;
     @FXML
+    private Button add;
+    @FXML
     private Button remove;
     @FXML
     private ColorPicker recolour;
@@ -61,10 +63,11 @@ public class FXMLPropertyController implements Initializable {
         type.itemsProperty().set(FXCollections.observableArrayList((HashSet<String>)(NarrativeOperations.TYPES.clone())));
         values.setCellFactory(TextFieldListCell.forListView());
 
-        BooleanBinding b = values.getSelectionModel().selectedIndexProperty().lessThan(0);
-        
-        remove.disableProperty().bind(b.or(type.valueProperty().isEqualTo(Strings.TYPE_BOOLEAN)));
-        recolour.disableProperty().bind(b);
+        BooleanBinding noSelect = values.getSelectionModel().selectedIndexProperty().lessThan(0);
+        BooleanBinding typeBoolean = type.valueProperty().isEqualTo(Strings.TYPE_BOOLEAN);
+        remove.disableProperty().bind(noSelect.or(typeBoolean));
+        recolour.disableProperty().bind(noSelect);
+        add.disableProperty().bind(typeBoolean);
 
         recolour.getStyleClass().add("button");
         recolour.valueProperty()
