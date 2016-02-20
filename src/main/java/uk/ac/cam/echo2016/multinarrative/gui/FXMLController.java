@@ -224,6 +224,24 @@ public class FXMLController {
             showErrorDialog("Error when trying to save file.");
         }
     }
+    
+    /**
+    * FXML hook. Code run when "Save as" clicked in the File menu
+    */
+   @FXML
+   protected void registerExportClicked() {
+       String returnedFile = mainApp.showExport();
+       if (returnedFile == null) {
+           return;
+       }
+       try {
+           operations.exportNarrative(returnedFile);
+       } catch (IOException ioe) {
+           showErrorDialog("Error when trying to save file.");
+       } catch (IllegalOperationException e) {
+           showErrorDialog(e.getMessage());
+    }
+   }
 
     /**
      * FXML hook. Code run when saving fails

@@ -8,6 +8,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.paint.Color;
 import uk.ac.cam.echo2016.multinarrative.GUINarrative;
+import uk.ac.cam.echo2016.multinarrative.NonUniqueStartException;
 import uk.ac.cam.echo2016.multinarrative.Route;
 import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 import uk.ac.cam.echo2016.multinarrative.gui.graph.GraphEdge;
@@ -78,6 +79,14 @@ public class OperationsManager {
     public void saveNarrative(String filename) throws IOException {
         GUINarrative narrative = narrativeOperations.getNarrative();
         SaveWriter.saveObject(filename, narrative);
+    }
+    
+    public void exportNarrative(String filename) throws IOException, IllegalOperationException {
+        try {
+            narrativeOperations.getNarrative().saveTemplate(filename);
+        } catch (NonUniqueStartException e) {
+            throw new IllegalOperationException(Strings.NON_UNIQUE_START);
+        }
     }
 
     public NarrativeOperations narrativeOperations() {

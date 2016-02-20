@@ -74,6 +74,20 @@ public class FXMLGUI extends Application {
         } else
             return null;
     }
+    
+    /**
+     * Opens the Save As dialog
+     */
+    public String showExport() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Export");
+        File selectedFile = fileChooser.showSaveDialog(theStage);
+        
+        if (selectedFile != null) {
+            return selectedFile.getAbsolutePath();
+        } else
+            return null;
+    }
 
     /**
      * Opens the Open dialog

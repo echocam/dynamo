@@ -20,6 +20,7 @@ public class Strings {
     public static final String COULD_NOT_RENAME = "Couldn't rename %1";
     public static final String CYCLE_EXISTS = "Operation would cause a cycle";
     public static final String CANNOT_FORMAT = "%1 is not a %2";
+    public static final String NON_UNIQUE_START = "Could not find a unique start point";
 
     public static final String ROUTE_PREFIX = "Route-%1";
     public static final String NODE_PREFIX = "Node-%1";
