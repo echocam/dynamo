@@ -69,6 +69,7 @@ public class ControllerOperations {
 
         controller.getContextMenuForGraph().getItems().add(prop.getMenu());
         controller.getProperties().getPanes().add(prop.getRoot());
+        controller.getProperties().setExpandedPane(prop.getRoot());
         controller.setInfo(Strings.populateString(PROPERTY_ADDED, prop.getName()));
         props.add(prop);
     }
