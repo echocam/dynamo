@@ -154,8 +154,12 @@ public class FXMLController {
      */
     @FXML
     protected void registerNewClicked() {
-        if (mainApp.checkIfShouldSave()) {
-            registerSaveClicked();
+        try {
+            if (mainApp.checkIfShouldSave()) {
+                registerSaveClicked();
+            }
+        } catch (UserErrorException uee) {
+            return;
         }
 
         reInit(null, null);
@@ -168,8 +172,12 @@ public class FXMLController {
      */
     @FXML
     protected void close() {
-        if (mainApp.checkIfShouldSave()) {
-            registerSaveClicked();
+        try {
+            if (mainApp.checkIfShouldSave()) {
+                registerSaveClicked();
+            }
+        } catch (UserErrorException uee) {
+            return;
         }
         System.exit(0);
     }
@@ -256,8 +264,12 @@ public class FXMLController {
      */
     @FXML
     protected void registerOpenClicked() {
-        if (mainApp.checkIfShouldSave()) {
-            registerSaveClicked();
+        try {
+            if (mainApp.checkIfShouldSave()) {
+                registerSaveClicked();
+            }
+        } catch (UserErrorException uee) {
+            return;
         }
         String returnedFile = mainApp.showOpen();
         if (returnedFile == null) {
