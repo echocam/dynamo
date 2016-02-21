@@ -39,7 +39,7 @@ public class FXMLGUI extends Application {
             controller.init(this);
             // controller.init(this, stage);
 
-            stage.setTitle("Graph Editor");
+            stage.setTitle("DyNaMo");
             stage.setScene(new Scene(root, 900, 600));
             stage.show();
         } catch (IOException ioe) {
