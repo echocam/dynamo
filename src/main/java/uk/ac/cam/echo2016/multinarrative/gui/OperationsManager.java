@@ -27,6 +27,8 @@ public class OperationsManager {
     private NarrativeOperations narrativeOperations;
     private UndoableOperationSequence sequence;
     private Generator generator = new Generator();
+    
+    public boolean dirtyFlag = false;
 
     public OperationsManager(FXMLController controller) {
         this.controller = controller;
@@ -38,6 +40,7 @@ public class OperationsManager {
     public void doOp(Operation o) throws IllegalOperationException {
         try {
             sequence.storeAndExecute(o);
+            dirtyFlag = true;
         } catch (IllegalOperationException ioe) {
             Debug.logError(ioe, 5, Debug.SYSTEM_GUI);
             throw ioe;
@@ -73,11 +76,13 @@ public class OperationsManager {
         controllerOperations.buildGraph(loaded);
 
         sequence.clearHistory();
+        dirtyFlag = false;
     }
 
     public void saveNarrative(String filename) throws IOException {
         GUINarrative narrative = narrativeOperations.getNarrative();
         SaveWriter.saveObject(filename, narrative);
+        dirtyFlag = false;
     }
 
     public void exportNarrative(String filename) throws IOException, IllegalOperationException {
@@ -100,6 +105,7 @@ public class OperationsManager {
         narrativeOperations.newNarrative();
         controllerOperations.clearGraph();
         sequence.clearHistory();
+        dirtyFlag = false;
     }
 
     public Generator generator() {
