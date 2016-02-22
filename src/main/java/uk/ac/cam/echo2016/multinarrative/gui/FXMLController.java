@@ -155,9 +155,9 @@ public class FXMLController {
     @FXML
     protected void registerNewClicked() {
         try {
-            if (mainApp.checkIfShouldSave()) {
-                registerSaveClicked();
-            }
+            if (operations.dirtyFlag)
+                if (mainApp.checkIfShouldSave()) 
+                    registerSaveClicked();
         } catch (UserErrorException uee) {
             return;
         }
@@ -173,9 +173,9 @@ public class FXMLController {
     @FXML
     protected void close() {
         try {
-            if (mainApp.checkIfShouldSave()) {
-                registerSaveClicked();
-            }
+            if (operations.dirtyFlag)
+                if (mainApp.checkIfShouldSave()) 
+                    registerSaveClicked();
         } catch (UserErrorException uee) {
             return;
         }
@@ -265,9 +265,9 @@ public class FXMLController {
     @FXML
     protected void registerOpenClicked() {
         try {
-            if (mainApp.checkIfShouldSave()) {
-                registerSaveClicked();
-            }
+            if (operations.dirtyFlag)
+                if (mainApp.checkIfShouldSave()) 
+                    registerSaveClicked();
         } catch (UserErrorException uee) {
             return;
         }
