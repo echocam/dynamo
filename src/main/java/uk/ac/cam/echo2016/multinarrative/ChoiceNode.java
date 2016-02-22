@@ -38,5 +38,4 @@ public class ChoiceNode extends Node { // TODO Documentation
 
         return gameChoice;
     }
-
 }
