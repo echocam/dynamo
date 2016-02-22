@@ -314,7 +314,10 @@ public class ControllerOperations {
             String type = narrative.getPropertyTypes().get(s);
             propCont.setType(type == null ? "String" : type);
             BaseBundle b = narrative.getPropertyMapping().get(s);
-            propCont.getValues().getItems().addAll(b.keySet());
+            int i = 0;
+            for(String item: b.keySet()){
+                propCont.addValue(item, i++);
+            }
             addProperty(propCont);
         }
     }
