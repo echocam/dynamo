@@ -9,8 +9,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 /**
- * This is a class that provides several useful methods that can help in
- * debugging.
+ * This is a class that provides several useful methods that can help in debugging.
  * 
  * @author tr395
  *
@@ -44,8 +43,9 @@ public class Debug {
     // are configured to log everything from the higher indexes
     private static final int[] consoleLogLevels;
 
-    private Debug() {}
-    
+    private Debug() {
+    }
+
     /*
      * loads in configuration data from the config.json file.
      */
@@ -112,48 +112,38 @@ public class Debug {
     }
 
     /**
-     * Prints out the provided string provided the current PRIORITY_LEVEL for
-     * the type provided is at least as great as the priority level provided and
-     * the type is one of the types configured to be printed. TODO(tr395): will
-     * also similarly log to a file.
+     * Prints out the provided string provided the current PRIORITY_LEVEL for the type provided is at least as great as
+     * the priority level provided and the type is one of the types configured to be printed. TODO(tr395): will also
+     * similarly log to a file.
      *
-     * usage: printError("Fairies initialised and eating ice-cream.", 2,
-     * TYPE_PUDDING | TYPE_FAIRY)
+     * usage: printError("Fairies initialised and eating ice-cream.", 2, TYPE_PUDDING | TYPE_FAIRY)
      *
-     * Should be used for printing useful debugging information, for printing
-     * errors refer to the printError method.
+     * Should be used for printing useful debugging information, for printing errors refer to the printError method.
      * 
      * @param s
      *            The String you wish to print
      * @param priorityLevel
-     *            The int describing priority of what is being printed (valued
-     *            1-5), the lower the number the higher the priority. Only
-     *            strings which are less than or equal to the current priority
-     *            level set will be printed
+     *            The int describing priority of what is being printed (valued 1-5), the lower the number the higher the
+     *            priority. Only strings which are less than or equal to the current priority level set will be printed
      *            <p>
-     *            A guidline of what each priority should mean is given below,
-     *            however it is up to the programmer to abide by this.
+     *            A guidline of what each priority should mean is given below, however it is up to the programmer to
+     *            abide by this.
      *            <ul>
-     *            <li>1: Really important debug info, will only be printed in
-     *            for major, important events at an average rate at about 1/2
-     *            times per hour or on program startup/shutdown.
-     *            <li>2: Slightly less important debug info, maybe printed a bit
-     *            more often than 1 or even less often, but used for less
-     *            critical steps in the program.
-     *            <li>3: Important information normally critical for debugging,
-     *            but not useful assuming program i running normally.
-     *            <li>4: Useful information for debugging, that you really don't
-     *            want to see during the normal running of a program.
-     *            <li>5: Really fine-grained debugging info, useful only for
-     *            tracking down especially difficult bugs.
+     *            <li>1: Really important debug info, will only be printed in for major, important events at an average
+     *            rate at about 1/2 times per hour or on program startup/shutdown.
+     *            <li>2: Slightly less important debug info, maybe printed a bit more often than 1 or even less often,
+     *            but used for less critical steps in the program.
+     *            <li>3: Important information normally critical for debugging, but not useful assuming program i
+     *            running normally.
+     *            <li>4: Useful information for debugging, that you really don't want to see during the normal running
+     *            of a program.
+     *            <li>5: Really fine-grained debugging info, useful only for tracking down especially difficult bugs.
      *            </ul>
      * @param type
-     *            The integer describing the type of debug info being printed
-     *            (eg, related to gui, an error (special case), backend, saving,
-     *            audio). Look at all private static final int's that are
-     *            prefixed with 'TYPE_' for types available. If a particular
-     *            piece of information belongs to multiple types, you can
-     *            bitwise or them together. eg. TYPE_PUDDING | TYPE FAIRY.
+     *            The integer describing the type of debug info being printed (eg, related to gui, an error (special
+     *            case), backend, saving, audio). Look at all private static final int's that are prefixed with 'TYPE_'
+     *            for types available. If a particular piece of information belongs to multiple types, you can bitwise
+     *            or them together. eg. TYPE_PUDDING | TYPE FAIRY.
      */
     public static void logInfo(String s, int level, int system) {
         logInfo(s, 3, level, system);
@@ -161,64 +151,56 @@ public class Debug {
 
     public static void logInfo(String s, int calls, int level, int system) {
         int[] logSystems = consoleLogLevels; // get config info
-        if ((logSystems[level - 1] & system) != 0) {
+        if ((logSystems[level - 1] & system) != 0) { // check to see if configured to log this system at this level
+
+            // get various info about the current thread, that can be noted in the log
             StackTraceElement stackTrace = Thread.currentThread().getStackTrace()[calls];
-            int lineNumber = stackTrace.getLineNumber();
-            String fileName = stackTrace.getFileName();
+            int lineNumber = stackTrace.getLineNumber(); // get line number of current piece of code
+            String fileName = stackTrace.getFileName(); // get the file name of the current piece of code
+
+            // add all the info to the debug string
             String debugString = lineNumber + " " + fileName + ": " + s;
+
+            // print out to the error stream if it's an error being logged!
             if ((system & SYSTEM_ERROR) != 0) {
                 System.err.println(debugString);
             } else {
                 System.out.println(debugString);
             }
         }
-
     }
 
     /**
-     * Prints out the provided string as an errory provided the current
-     * PRIORITY_LEVEL for errors is at least as great as the priority level
-     * provided and the type is one of the types configured to be printed.
-     * TODO(tr395): will also similarly log to a file.
+     * Prints out the provided string as an errory provided the current PRIORITY_LEVEL for errors is at least as great
+     * as the priority level provided and the type is one of the types configured to be printed. TODO(tr395): will also
+     * similarly log to a file.
      *
-     * usage: printError("The trifle has just exploded fairies!", 1,
-     * TYPE_PUDDING | TYPE_FAIRY)
+     * usage: printError("The trifle has just exploded fairies!", 1, TYPE_PUDDING | TYPE_FAIRY)
      *
-     * Should be used for printing useful debugging information, for printing
-     * errors refer to the printError method.
+     * Should be used for printing useful debugging information, for printing errors refer to the printError method.
      * 
      * @param s
      *            The String you wish to print
      * @param priorityLevel
-     *            The int describing priority of what is being printed (valued
-     *            1-9), the lower the number the higher the priority. Only
-     *            strings which are less than or equal to the current priority
-     *            level set will be printed
+     *            The int describing priority of what is being printed (valued 1-9), the lower the number the higher the
+     *            priority. Only strings which are less than or equal to the current priority level set will be printed
      *            <p>
-     *            A guidline of what each priority should mean is given below,
-     *            however it is up to the programmer to abide by this.
+     *            A guidline of what each priority should mean is given below, however it is up to the programmer to
+     *            abide by this.
      *            <ul>
-     *            <li>1: Critical error, the program has had to abort as a
-     *            result of it!
-     *            <li>2: Really bad error, the program can continue and/or
-     *            recover from issue, but there is a glaring inconsistency that
-     *            should be fixed and program should be stopped as soon as
-     *            possible.
-     *            <li>3: Bad error, program can continue but problem should
-     *            really be investigated as soon as possible.
-     *            <li>4: Not a major concern, but still an error that shouldn't
-     *            be happening. Can be ignored
-     *            <li>5: Really small error that someone should get to
-     *            eventually, but shouldn't be clogging up terminal unless
-     *            programmer is out to actively fix bugs.
+     *            <li>1: Critical error, the program has had to abort as a result of it!
+     *            <li>2: Really bad error, the program can continue and/or recover from issue, but there is a glaring
+     *            inconsistency that should be fixed and program should be stopped as soon as possible.
+     *            <li>3: Bad error, program can continue but problem should really be investigated as soon as possible.
+     *            <li>4: Not a major concern, but still an error that shouldn't be happening. Can be ignored
+     *            <li>5: Really small error that someone should get to eventually, but shouldn't be clogging up terminal
+     *            unless programmer is out to actively fix bugs.
      *            </ul>
      * @param type
-     *            The integer describing the type of debug info being printed
-     *            (eg, related to gui, an error (special case), backend, saving,
-     *            audio) Look at all private static final int's that are
-     *            prefixed with 'TYPE_' for types available. If a particular
-     *            piece of information belongs to multiple types, you can
-     *            bitwise or them together. eg. TYPE_PUDDING | TYPE FAIRY.
+     *            The integer describing the type of debug info being printed (eg, related to gui, an error (special
+     *            case), backend, saving, audio) Look at all private static final int's that are prefixed with 'TYPE_'
+     *            for types available. If a particular piece of information belongs to multiple types, you can bitwise
+     *            or them together. eg. TYPE_PUDDING | TYPE FAIRY.
      */
     public static void logError(String s, int logLevel, int type) {
         logInfo(s, logLevel, type | SYSTEM_ERROR);
