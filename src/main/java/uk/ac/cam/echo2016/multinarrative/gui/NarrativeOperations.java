@@ -917,4 +917,12 @@ public class NarrativeOperations {
         multinarrative = new GUINarrative();
     }
 
+    public boolean isRouteType(String propName) {
+        BaseBundle b = multinarrative.getGlobalProperties();
+        if(b==null)
+        return false;
+        ArrayList<String> types = b.getStringArrayList("System.Types");
+        return types.contains(propName);
+    }
+
 }

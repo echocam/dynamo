@@ -60,7 +60,8 @@ public class FXMLPropertyController implements Initializable {
     @SuppressWarnings("unchecked")
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        type.itemsProperty().set(FXCollections.observableArrayList((HashSet<String>)(NarrativeOperations.TYPES.clone())));
+        type.itemsProperty()
+                .set(FXCollections.observableArrayList((HashSet<String>) (NarrativeOperations.TYPES.clone())));
         values.setCellFactory(TextFieldListCell.forListView());
 
         BooleanBinding noSelect = values.getSelectionModel().selectedIndexProperty().lessThan(0);
@@ -117,8 +118,10 @@ public class FXMLPropertyController implements Initializable {
         routeType.selectedProperty()
                 .addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
                     try {
-                        controller.getOperations().doOp(
-                                controller.getOperations().generator().setRouteType(propName, newValue, routeType));
+                        if (controller.getOperations().narrativeOperations().isRouteType(propName) != newValue) {
+                            controller.getOperations().doOp(
+                                    controller.getOperations().generator().setRouteType(propName, newValue, routeType));
+                        }
                     } catch (IllegalOperationException ioe) {
                         controller.setInfo(ioe.getMessage());
                     }
@@ -218,7 +221,7 @@ public class FXMLPropertyController implements Initializable {
                 controller.getOperations()
                         .doOp(controller.getOperations().generator().setPropertyType(propName, type.getValue(), this));
             }
-            typeName=type.getValue();
+            typeName = type.getValue();
         } catch (IllegalOperationException e) {
             controller.setInfo(e.getMessage());
             type.setValue(typeName);
@@ -255,5 +258,9 @@ public class FXMLPropertyController implements Initializable {
 
     public ListView<String> getValues() {
         return values;
+    }
+
+    public void setAsRouteType(boolean b) {
+        routeType.setSelected(b);
     }
 }

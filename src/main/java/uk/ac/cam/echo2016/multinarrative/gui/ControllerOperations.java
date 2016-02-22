@@ -314,6 +314,10 @@ public class ControllerOperations {
             String type = narrative.getPropertyTypes().get(s);
             propCont.setType(type == null ? "String" : type);
             BaseBundle b = narrative.getPropertyMapping().get(s);
+            ArrayList<String> types = narrative.getGlobalProperties().getStringArrayList("System.Types"); 
+            if(types!=null && types.contains(s)){
+                propCont.setAsRouteType(true);
+            }
             int i = 0;
             for(String item: b.keySet()){
                 propCont.addValue(item, i++);
