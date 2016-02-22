@@ -284,6 +284,14 @@ public class FXMLController {
             showErrorDialog("Error when trying to open file");
         }
     }
+    
+    /**
+     * FXML hook. Code run when "Delete" clicked
+     */
+    @FXML
+    protected void registerDeleteClicked() {
+        removeSelect();
+    }
 
     /**
      * FXML hook. Code run when "Undo" clicked
