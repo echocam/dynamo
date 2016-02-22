@@ -39,7 +39,7 @@ public class FXMLGUI extends Application {
             controller.init(this);
             // controller.init(this, stage);
 
-            stage.setTitle("Graph Editor");
+            stage.setTitle("DyNaMo");
             stage.setScene(new Scene(root, 900, 600));
             stage.show();
         } catch (IOException ioe) {
@@ -105,25 +105,29 @@ public class FXMLGUI extends Application {
 
     /**
      * Checks if a user wants to save before executing the next action
+     * @throws UserErrorException 
      */
-    public boolean checkIfShouldSave() {
+    public boolean checkIfShouldSave() throws UserErrorException {
         Alert alert = new Alert(AlertType.WARNING);
         alert.setTitle("Do you want to save?");
         alert.setHeaderText(null);
         alert.setContentText("Your work will be lost if you don't save.");
 
         ButtonType yesButton = new ButtonType("Yes");
-        ButtonType noButton = new ButtonType("No", ButtonData.CANCEL_CLOSE);
+        ButtonType noButton = new ButtonType("No");
+        ButtonType cancelButton = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 
-        alert.getButtonTypes().setAll(yesButton, noButton);
+        alert.getButtonTypes().setAll(yesButton, noButton, cancelButton);
         String css = getClass().getResource("Style.css").toExternalForm();
         alert.getDialogPane().getStylesheets().add(css);
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == yesButton)
             return true;
-        else
+        else if (result.get() == noButton)
             return false;
+        else
+            throw new UserErrorException();
     }
 
     /**

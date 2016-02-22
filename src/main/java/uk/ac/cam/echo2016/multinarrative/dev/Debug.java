@@ -44,8 +44,8 @@ public class Debug {
     // are configured to log everything from the higher indexes
     private static final int[] consoleLogLevels;
 
-    private static Debug instance = null;
-
+    private Debug() {}
+    
     /*
      * loads in configuration data from the config.json file.
      */
@@ -109,13 +109,6 @@ public class Debug {
             consoleLogLevels[4] = SYSTEM_NONE;
             System.err.println("Could not find config.json. Using default levels");
         }
-    }
-
-    public static Debug getInstance() {
-        if (instance == null) {
-            instance = new Debug();
-        }
-        return instance;
     }
 
     /**
