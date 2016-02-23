@@ -64,7 +64,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
                 endNode.getId() + ".isCompleted = "
                         + (endNode instanceof ChoiceNode || ((SynchronizationNode) endNode).isCompleted()),
                 4, Debug.SYSTEM_GRAPH);
-        if (endNode instanceof ChoiceNode || ((SynchronizationNode) endNode).isCompleted()) {
+        if (endNode.isCompleted()) {
             setActive(endNode);
         }
         return endNode.onEntry(route, this);
@@ -111,31 +111,31 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         // If there are now no routes entering the node, kill it
         if (nEnd.getEntering().size() == 0) {
             kill(nEnd);
-        } else if (route.getProperties() != null) {
-            // // Kills all methods leaving the end node if they have the same
-            // type and no entering routes also
-            // // have that property TODO specify in documentation
-            for (String key : route.getProperties().keySet()) {
-                if (this.getGlobalProperties().getStringArrayList("System.Types").contains(key)) { // TODO
-                                                                                                   // error
-                                                                                                   // if
-                                                                                                   // no
-                                                                                                   // global
-                                                                                                   // "Types"
-                                                                                                   // property
-                    Object type = route.getProperties().get(key);
+        } else {
+            if (nEnd.isCompleted()){
+                setActive(nEnd);
+            }
+            if (route.getProperties() != null) {
+                // Kills all methods leaving the end node if they have the same
+                // type and no entering routes also
+                // have that property TODO specify in documentation
+                for (String key : route.getProperties().keySet()) {
+                    if (this.getGlobalProperties().getStringArrayList("System.Types").contains(key)) {
+                        // TODO error if no global "Types" property
+                        Object type = route.getProperties().get(key);
 
-                    boolean similarRouteExists = false;
-                    for (Route entry : nEnd.getEntering()) {
-                        if (entry.getProperties().containsKey(key) && entry.getProperties().get(key).equals(type)) {
-                            similarRouteExists = true;
+                        boolean similarRouteExists = false;
+                        for (Route entry : nEnd.getEntering()) {
+                            if (entry.getProperties().containsKey(key) && entry.getProperties().get(key).equals(type)) {
+                                similarRouteExists = true;
+                            }
                         }
-                    }
-                    if (!similarRouteExists) {
-                        for (Route option : new ArrayList<Route>(nEnd.getExiting())) {
-                            if (option.getProperties().containsKey(key)
-                                    && option.getProperties().get(key).equals(type)) {
-                                kill(option);
+                        if (!similarRouteExists) {
+                            for (Route option : new ArrayList<Route>(nEnd.getExiting())) {
+                                if (option.getProperties().containsKey(key)
+                                        && option.getProperties().get(key).equals(type)) {
+                                    kill(option);
+                                }
                             }
                         }
                     }
@@ -184,16 +184,26 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         return r_routes;
     }
 
+    public ArrayList<Node> getEventfulNodes() {
+        ArrayList<Node> r_nodes = new ArrayList<Node>();
+        for (Node n : activeNodes) {
+            if (n.isCompleted() && (n.getProperties() == null || !n.getProperties().getBoolean("System.isCompleted"))) {
+                r_nodes.add(n);
+            }
+        }
+        return r_nodes;
+    }
+
     public void setActive(Node node) {
-        if (!activeNodes.contains(node)){
+        if (!activeNodes.contains(node)) {
             activeNodes.add(node);
-            for(Route r:node.getExiting()){
-                if(r.getProperties()!=null && r.getProperties().getBoolean("System.Auto", false)){
+            for (Route r : node.getExiting()) {
+                if (r.getProperties() != null && r.getProperties().getBoolean("System.Auto", false)) {
                     try {
                         startRoute(r.getId());
                         endRoute(r.getId());
                     } catch (GraphElementNotFoundException e) {
-                        //SHOULD BE IMPOSIBLE!!
+                        // SHOULD BE IMPOSIBLE!!
                         throw new RuntimeException(e);
                     }
                 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import android.os.BaseBundle;
+import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 
 /**
  * Represents a {@code Node} on the {@code MultiNarrative} graph structure. Each
@@ -95,6 +96,17 @@ public abstract class Node implements Serializable, Cloneable { // TODO
     @Override
     public String toString() {
         return id;
+    }
+
+    public boolean isCompleted() {
+        for (Route route : getEntering()) {
+            if (!route.getProperties().containsKey("System.isCompleted")) {
+                Debug.logInfo(route.getId() + " is not completed", 4, Debug.SYSTEM_GRAPH);
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }

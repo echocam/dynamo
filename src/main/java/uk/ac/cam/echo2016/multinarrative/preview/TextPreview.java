@@ -12,6 +12,7 @@ import uk.ac.cam.echo2016.multinarrative.GraphElementNotFoundException;
 import uk.ac.cam.echo2016.multinarrative.InvalidGraphException;
 import uk.ac.cam.echo2016.multinarrative.NarrativeInstance;
 import uk.ac.cam.echo2016.multinarrative.NarrativeTemplate;
+import uk.ac.cam.echo2016.multinarrative.Node;
 import uk.ac.cam.echo2016.multinarrative.Route;
 import uk.ac.cam.echo2016.multinarrative.io.SaveReader;
 import uk.ac.cam.echo2016.multinarrative.preview.preprocessor.FileProcessor;
@@ -47,7 +48,10 @@ public class TextPreview {
                 choice = doRoute(s, output, input);
 
                 if (choice.hasEvent()) {
-                    outputFile(choice.getEventIdentifier(), output, input, "Completed");
+                    for(Node n: choice.getEvents()){
+                        outputFile(n.getId(), output, input, "Completed");
+                    }
+                    choice.completeEvents();
                 }
                 items = choice.getOptions();
                 if (items.size() > 0) {

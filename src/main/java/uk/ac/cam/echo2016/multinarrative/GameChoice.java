@@ -23,23 +23,21 @@ public class GameChoice {
     public static final int ACTION_CONTINUE = 2;
 
     protected ArrayList<Route> options;
-    protected boolean eventTrigger;
-    protected String eventIdentifier;
+    protected ArrayList<Node> events;
     protected int action;
 
-    public GameChoice(boolean isTriggered, String nodeId, int actionName, ArrayList<Route> choices) {
-        eventTrigger = isTriggered;
-        eventIdentifier = nodeId;
+    public GameChoice(int actionName, ArrayList<Route> choices, ArrayList<Node> triggers) {
         action = actionName;
         options = choices;
+        events = triggers;
     }
 
     public boolean hasEvent() {
-        return eventTrigger;
+        return ! events.isEmpty();
     }
 
-    public String getEventIdentifier() {
-        return eventIdentifier;
+    public ArrayList<Node> getEvents() {
+        return events;
     }
 
     public int getAction() {
@@ -48,5 +46,12 @@ public class GameChoice {
 
     public ArrayList<Route> getOptions() {
         return options;
+    }
+
+    public void completeEvents() {
+        for(Node n:events){
+            n.createProperties();
+            n.getProperties().putBoolean("System.isCompleted", true);
+        }
     }
 }

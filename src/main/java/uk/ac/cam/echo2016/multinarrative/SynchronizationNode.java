@@ -1,7 +1,6 @@
 package uk.ac.cam.echo2016.multinarrative;
 
 import android.os.BaseBundle;
-import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 
 /**
  * Represents a synchronization node, where multiple characters are allowed to
@@ -38,17 +37,6 @@ public class SynchronizationNode extends Node { // TODO Documentation
         return option.getProperties();
     }
 
-    public boolean isCompleted() {
-        for (Route route : getEntering()) {
-            if (!route.getProperties().containsKey("System.isCompleted")) {
-                Debug.logInfo(route.getId()+" is not completed", 4, Debug.SYSTEM_GRAPH);
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     public GameChoice onEntry(Route completed, NarrativeInstance instance) throws GraphElementNotFoundException {
         if (!getEntering().contains(completed)) {
             throw new GraphElementNotFoundException(completed.getId());
@@ -56,11 +44,10 @@ public class SynchronizationNode extends Node { // TODO Documentation
 
         GameChoice gameChoice;
         if (getEntering().size() == 1 && getExiting().size() == 1) {
-            gameChoice = new GameChoice(true, getId(), GameChoice.ACTION_CONTINUE, getExiting());
-        } else if (isCompleted()) {
-            gameChoice = new GameChoice(true, getId(), GameChoice.ACTION_CHOOSE_ROUTE, instance.getPlayableRoutes());
+            gameChoice = new GameChoice(GameChoice.ACTION_CONTINUE, getExiting(), instance.getEventfulNodes());
         } else {
-            gameChoice = new GameChoice(false, null, GameChoice.ACTION_CHOOSE_ROUTE, instance.getPlayableRoutes());
+            gameChoice = new GameChoice(GameChoice.ACTION_CHOOSE_ROUTE, instance.getPlayableRoutes(),
+                    instance.getEventfulNodes());
         }
 
         return gameChoice;
