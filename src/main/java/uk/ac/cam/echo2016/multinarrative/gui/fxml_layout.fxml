@@ -91,7 +91,6 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="Instructions" />
                   <MenuItem mnemonicParsing="false" onAction="#registerAboutClicked" text="About" />
             </items>
           </Menu>
