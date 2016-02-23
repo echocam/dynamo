@@ -191,15 +191,6 @@ public class FXMLController {
     }
 
     /**
-     * FXML hook. Code run when "Instructions" is clicked in Help menu.
-     */
-    @FXML
-    protected void registerInstructionsClicked() {
-        // TODO implement
-        // mainApp.showInstructions();
-    }
-
-    /**
      * FXML hook. Code run when "Save" clicked in File menu
      */
     @FXML
