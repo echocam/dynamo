@@ -33,7 +33,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     }
 
     public BaseBundle startRoute(String id) throws GraphElementNotFoundException {
-        Debug.logInfo("Starting " + id, 4, Debug.SYSTEM_GRAPH);
+        //Debug.logInfo("Starting " + id, 4, Debug.SYSTEM_GRAPH); //TODO remove;
         Route route = getRoute(id);
         if (route == null)
             throw new GraphElementNotFoundException(id);
@@ -54,16 +54,16 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     }
 
     public GameChoice endRoute(String id) throws GraphElementNotFoundException {
-        Debug.logInfo("Ending " + id, 4, Debug.SYSTEM_GRAPH);
+        //Debug.logInfo("Ending " + id, 4, Debug.SYSTEM_GRAPH);//TODO remove
         Route route = getRoute(id);
         if (route == null)
             throw new GraphElementNotFoundException(id);
         route.getProperties().putBoolean("System.isCompleted", true);
         Node endNode = route.getEnd();
-        Debug.logInfo(
+        /*Debug.logInfo(
                 endNode.getId() + ".isCompleted = "
                         + (endNode instanceof ChoiceNode || ((SynchronizationNode) endNode).isCompleted()),
-                4, Debug.SYSTEM_GRAPH);
+                4, Debug.SYSTEM_GRAPH);*///TODO remove
         if (endNode instanceof ChoiceNode || ((SynchronizationNode) endNode).isCompleted()) {
             setActive(endNode);
         }
@@ -115,14 +115,9 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
             // // Kills all methods leaving the end node if they have the same
             // type and no entering routes also
             // // have that property TODO specify in documentation
+            boolean optionHasKey; //TODO remove
             for (String key : route.getProperties().keySet()) {
-                if (this.getGlobalProperties().getStringArrayList("System.Types").contains(key)) { // TODO
-                                                                                                   // error
-                                                                                                   // if
-                                                                                                   // no
-                                                                                                   // global
-                                                                                                   // "Types"
-                                                                                                   // property
+                if (this.getGlobalProperties().getStringArrayList("System.Types").contains(key)) { // TODO error if no global "Types" property
                     Object type = route.getProperties().get(key);
 
                     boolean similarRouteExists = false;
@@ -133,15 +128,37 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
                     }
                     if (!similarRouteExists) {
                         for (Route option : new ArrayList<Route>(nEnd.getExiting())) {
-                            if (option.getProperties().containsKey(key)
-                                    && option.getProperties().get(key).equals(type)) {
-                                kill(option);
+                            Debug.logInfo("To be deleted: key " + key + ", type " + type, 4, Debug.SYSTEM_GRAPH); //TODO remove
+                            optionHasKey = option.getProperties().containsKey(key);
+                            if (optionHasKey) { //TODO remove
+                                Debug.logInfo("Route: " + option.getId() + ", key: " + optionHasKey + ", type: \"" + option.getProperties().get(key)+"\"", 4, Debug.SYSTEM_GRAPH);
+                            } else {
+                                Debug.logInfo("Route: " + option.getId() + ", key: " + optionHasKey + ".", 4, Debug.SYSTEM_GRAPH);
+                            }
+                            if (option.getProperties().containsKey(key)) {
+                                Debug.logInfo("Has key", 4, Debug.SYSTEM_GRAPH);//TODO remove
+                                if (option.getProperties().get(key).equals(type)) {
+                                    Debug.logInfo("Has type", 1, Debug.SYSTEM_GRAPH);//TODO remove
+                                    kill(option);
+                                }
                             }
                         }
                     }
                 }
             }
         }
+        /*// If all the remaining entering routes are completed, set the end node to be active.
+        boolean isCompleted = true;
+        for (Route r : nEnd.getEntering()) {
+            if (!r.getProperties().containsKey("System.isCompleted")) {
+                isCompleted = false;
+                break;
+            }
+        }
+        if (isCompleted) {
+            setActive(nEnd);
+        }*/
+        
         // Remove the route from the exiting routes of the node it comes from
         Node nStart = route.getStart();
         nStart.getExiting().remove(route); // Should return true, otherwise
