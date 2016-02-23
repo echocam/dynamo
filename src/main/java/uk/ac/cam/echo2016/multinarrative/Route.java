@@ -82,4 +82,9 @@ public class Route implements Serializable, Cloneable { // TODO Documentation
     public void setProperties(BaseBundle b) {
         properties = b;
     }
+    
+    @Override
+    public String toString() {
+        return id;
+    }
 }

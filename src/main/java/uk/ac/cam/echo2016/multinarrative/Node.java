@@ -92,4 +92,9 @@ public abstract class Node implements Serializable, Cloneable { // TODO
         this.exitRoutes = exitRoutes;
     }
 
+    @Override
+    public String toString() {
+        return id;
+    }
+
 }

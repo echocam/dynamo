@@ -1,6 +1,7 @@
 package uk.ac.cam.echo2016.multinarrative;
 
 import android.os.BaseBundle;
+import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 
 /**
  * Represents a synchronization node, where multiple characters are allowed to
@@ -40,6 +41,7 @@ public class SynchronizationNode extends Node { // TODO Documentation
     public boolean isCompleted() {
         for (Route route : getEntering()) {
             if (!route.getProperties().containsKey("System.isCompleted")) {
+                Debug.logInfo(route.getId()+" is not completed", 4, Debug.SYSTEM_GRAPH);
                 return false;
             }
         }

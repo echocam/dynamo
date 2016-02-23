@@ -53,4 +53,8 @@ public abstract class MultiNarrative implements Serializable { // TODO
     public BaseBundle getNodeProperties(String id) {
         return getNode(id).getProperties();
     }
+    
+    public Node getStart(){
+        return start;
+    }
 }

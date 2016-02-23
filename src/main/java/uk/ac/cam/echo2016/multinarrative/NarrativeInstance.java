@@ -33,13 +33,14 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     }
 
     public BaseBundle startRoute(String id) throws GraphElementNotFoundException {
+        Debug.logInfo("Starting " + id, 4, Debug.SYSTEM_GRAPH);
         Route route = getRoute(id);
         if (route == null)
             throw new GraphElementNotFoundException(id);
         Node startNode = route.getStart();
         if (startNode instanceof ChoiceNode) {
             activeNodes.remove(startNode);
-            for (Route deadRoute : startNode.getExiting()) {
+            for (Route deadRoute : new ArrayList<>(startNode.getExiting())) {
                 if (deadRoute != route) {
                     kill(deadRoute);
                 }
@@ -53,14 +54,19 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     }
 
     public GameChoice endRoute(String id) throws GraphElementNotFoundException {
+        Debug.logInfo("Ending " + id, 4, Debug.SYSTEM_GRAPH);
         Route route = getRoute(id);
         if (route == null)
             throw new GraphElementNotFoundException(id);
+        route.getProperties().putBoolean("System.isCompleted", true);
         Node endNode = route.getEnd();
+        Debug.logInfo(
+                endNode.getId() + ".isCompleted = "
+                        + (endNode instanceof ChoiceNode || ((SynchronizationNode) endNode).isCompleted()),
+                4, Debug.SYSTEM_GRAPH);
         if (endNode instanceof ChoiceNode || ((SynchronizationNode) endNode).isCompleted()) {
             setActive(endNode);
         }
-        route.getProperties().putBoolean("System.isCompleted", true);
         return endNode.onEntry(route, this);
     }
 
@@ -98,9 +104,8 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     public boolean kill(Route route) {
         if (route == null)
             return false;
+        Debug.logInfo("Killing Route " + route.getId(), 4, Debug.SYSTEM_GRAPH);
         Node nEnd = route.getEnd();
-
-        Debug.logInfo("Killing " + route.getId(), 4, Debug.SYSTEM_ALL);
 
         nEnd.getEntering().remove(route);
         // If there are now no routes entering the node, kill it
@@ -154,6 +159,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     public boolean kill(Node node) {
         if (node == null)
             return false;
+        Debug.logInfo("Killing Node " + node.getId(), 4, Debug.SYSTEM_GRAPH);
         for (Route route : new ArrayList<Route>(node.getExiting())) {
             kill(route); // Copy of ArrayList used to allow deletion of nodes
                          // within the function
@@ -179,7 +185,19 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
     }
 
     public void setActive(Node node) {
-        if (!activeNodes.contains(node))
+        if (!activeNodes.contains(node)){
             activeNodes.add(node);
+            for(Route r:node.getExiting()){
+                if(r.getProperties()!=null && r.getProperties().getBoolean("System.Auto", false)){
+                    try {
+                        startRoute(r.getId());
+                        endRoute(r.getId());
+                    } catch (GraphElementNotFoundException e) {
+                        //SHOULD BE IMPOSIBLE!!
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
     }
 }

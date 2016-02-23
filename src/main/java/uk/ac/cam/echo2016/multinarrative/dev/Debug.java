@@ -33,6 +33,7 @@ public class Debug {
     // The types of configurable things
     public static final int SYSTEM_GUI = 0b10000000000000000000000000000000;
     public static final int SYSTEM_IO = 0b01000000000000000000000000000000;
+    public static final int SYSTEM_GRAPH = 0b00100000000000000000000000000000;
 
     // Different console log-levels, each index into the array represents a
     // log-level.
