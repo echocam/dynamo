@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import uk.ac.cam.echo2016.multinarrative.NarrativeInstance;
+import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 
 public class FileProcessor {
 
@@ -25,14 +26,17 @@ public class FileProcessor {
     public void process(File f, PrintStream output, InputStream input) {
         try {
             BufferedReader r = new BufferedReader(new FileReader(f));
+            Debug.logInfo("Found File "+f, 4, Debug.SYSTEM_PREVIEW);
             String s;
             ArrayList<Function<String, String>> applies = new ArrayList<Function<String, String>>();
             try {
                 while ((s = r.readLine()) != null) {
+                    Debug.logInfo("Read: "+s,5,Debug.SYSTEM_PREVIEW);
                     if (s.startsWith("%")) {// Comment
                     } else if (s.startsWith("#")) {// Command
                         for (Function<String, String> func : applies) {
                             s = func.apply(s);
+                            Debug.logInfo("> "+s,5,Debug.SYSTEM_PREVIEW);
                             if (s == null) {
                                 break;
                             }
@@ -56,6 +60,7 @@ public class FileProcessor {
                     } else {
                         for (Function<String, String> func : applies) {
                             s = func.apply(s);
+                            Debug.logInfo("> "+s,5,Debug.SYSTEM_PREVIEW);
                             if (s == null) {
                                 break;
                             }
@@ -66,7 +71,7 @@ public class FileProcessor {
                     }
                 }
             } catch (IOException e) {
-                System.err.println("Error reading file");
+                Debug.logError("Error Reading File "+f, 5, Debug.SYSTEM_PREVIEW);
             } finally {
                 if (r != null) {
                     try {
@@ -77,7 +82,7 @@ public class FileProcessor {
                 }
             }
         } catch (FileNotFoundException e) {
-            System.err.println("File not found");
+            Debug.logError("File not found "+f, 5, Debug.SYSTEM_PREVIEW);
         }
     }
 
@@ -86,7 +91,7 @@ public class FileProcessor {
         Map<String, Function<String[], Function<String, String>>> r = new HashMap<String, Function<String[], Function<String, String>>>();
         r.put("ifx", s -> {
             if (s.length < 2) {
-                System.err.println("Invalid ifx command");
+                Debug.logError("Invalid ifx directive", 2, Debug.SYSTEM_PREVIEW);
                 return null;
             } else {
                 String str = "";
@@ -94,20 +99,23 @@ public class FileProcessor {
                     str += s[i];
                 }
                 boolean b = inst.getNode(str) != null || inst.getRoute(str) != null;
-                return b ? new IfProcessor() : Function.identity();
+                Debug.logInfo("ifx "+str+", "+b,4,Debug.SYSTEM_PREVIEW);
+                return new IfProcessor(b);
             }
         });
         r.put("ifnx", s -> {
             if (s.length < 2) {
-                System.err.println("Invalid ifx command");
+                Debug.logError("Invalid ifnx directive", 2, Debug.SYSTEM_PREVIEW);
                 return null;
             } else {
                 String str = "";
                 for (int i = 1; i < s.length; i++) {
                     str += s[i];
                 }
+                
                 boolean b = inst.getNode(str) != null || inst.getRoute(str) != null;
-                return b ? Function.identity() : new IfProcessor();
+                Debug.logInfo("ifnx "+str+", "+!b,4,Debug.SYSTEM_PREVIEW);
+                return new IfProcessor(!b);
             }
         });
         r.put("endif", s -> null);

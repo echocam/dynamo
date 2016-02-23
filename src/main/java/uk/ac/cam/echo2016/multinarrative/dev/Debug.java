@@ -26,14 +26,15 @@ public class Debug {
     public static final String ANSI_WHITE = "\u001B[37m";
 
     public static final int SYSTEM_NONE = 0b00000000000000000000000000000000;
-    public static final int SYSTEM_ALL = 0b11111111111111111111111111111111;
+    public static final int SYSTEM_ALL = 0b11111111111111111111111111111110;
 
     public static final int SYSTEM_ERROR = 0b00000000000000000000000000000001;
 
     // The types of configurable things
-    public static final int SYSTEM_GUI = 0b10000000000000000000000000000000;
-    public static final int SYSTEM_IO = 0b01000000000000000000000000000000;
-    public static final int SYSTEM_GRAPH = 0b00100000000000000000000000000000;
+    public static final int SYSTEM_GUI =       0b10000000000000000000000000000000;
+    public static final int SYSTEM_IO =        0b01000000000000000000000000000000;
+    public static final int SYSTEM_GRAPH =     0b00100000000000000000000000000000;
+    public static final int SYSTEM_PREVIEW =   0b00010000000000000000000000000000;
 
     // Different console log-levels, each index into the array represents a
     // log-level.
