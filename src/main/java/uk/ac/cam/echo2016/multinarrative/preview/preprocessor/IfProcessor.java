@@ -6,7 +6,7 @@ import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 
 public class IfProcessor implements Function<String, String> {
 
-    private boolean end = false;
+    private int end = 1;
     private boolean ifTrue;
 
     public IfProcessor(boolean b) {
@@ -15,15 +15,19 @@ public class IfProcessor implements Function<String, String> {
 
     @Override
     public String apply(String t) {
-        if (end) {
+        if (end==0) {
             return t;
         } else if (t.startsWith("#endif")) {
-            Debug.logInfo("ENDIF",5,Debug.SYSTEM_PREVIEW);
-            end = true;
+            Debug.logInfo("ENDIF", 5, Debug.SYSTEM_PREVIEW);
+            end--;
             return null;
-        } else if (ifTrue || t.startsWith("#")) {
+        } else if (ifTrue) {
             return t;
         } else {
+            if (t.startsWith("#if")) {
+                Debug.logInfo("IF", 5, Debug.SYSTEM_PREVIEW);
+                end++;
+            }
             return null;
         }
     }

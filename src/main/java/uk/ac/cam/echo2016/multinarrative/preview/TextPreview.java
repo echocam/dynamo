@@ -30,7 +30,7 @@ public class TextPreview {
             throw new IOException("Could not find unique template file (.dnm)");
         }
         NarrativeTemplate t = SaveReader.loadNarrativeTemplate(children[0].getPath());
-        if(t == null){
+        if (t == null) {
             throw new IOException("Could not load graph from file");
         }
         inst = t.generateInstance();
@@ -47,7 +47,7 @@ public class TextPreview {
                 choice = doRoute(s, output, input);
 
                 if (choice.hasEvent()) {
-                    outputFile(choice.getEventIdentifier(), output, input);
+                    outputFile(choice.getEventIdentifier(), output, input, "Completed");
                 }
                 items = choice.getOptions();
                 if (items.size() > 0) {
@@ -75,7 +75,7 @@ public class TextPreview {
             e.printStackTrace();
             System.exit(1);
         }
-        outputFile(name, output, input);
+        outputFile(name, output, input, "Playing");
         try {
             GameChoice choice = inst.endRoute(name);
             return choice;
@@ -110,14 +110,14 @@ public class TextPreview {
         return r;
     }
 
-    public void outputFile(String route, PrintStream output, InputStream input) {
+    public void outputFile(String route, PrintStream output, InputStream input, String prefix) {
         File[] c = directory.listFiles((File dir, String name) -> {
             return name.equals(route + ".txt");
         });
         if (c.length > 0) {
             proc.process(c[0], output, input);
         } else {
-            output.println("Completed " + route);
+            output.println(prefix + " " + route);
         }
     }
 
