@@ -1,10 +1,9 @@
 package uk.ac.cam.echo2016.multinarrative.preview;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -15,8 +14,112 @@ import uk.ac.cam.echo2016.multinarrative.NarrativeInstance;
 import uk.ac.cam.echo2016.multinarrative.NarrativeTemplate;
 import uk.ac.cam.echo2016.multinarrative.Route;
 import uk.ac.cam.echo2016.multinarrative.io.SaveReader;
+import uk.ac.cam.echo2016.multinarrative.preview.preprocessor.FileProcessor;
 
 public class TextPreview {
+
+    private File directory;
+    private NarrativeInstance inst;
+    private FileProcessor proc;
+
+    public TextPreview(File f) throws IOException, InvalidGraphException {
+        File[] children = f.listFiles((File dir, String name) -> {
+            return name.endsWith(".dnm");
+        });
+        if (children.length != 1) {
+            throw new IOException("Could not find unique template file (.dnm)");
+        }
+        NarrativeTemplate t = SaveReader.loadNarrativeTemplate(children[0].getPath());
+        if(t == null){
+            throw new IOException("Could not load graph from file");
+        }
+        inst = t.generateInstance();
+        directory = f;
+        proc = new FileProcessor(FileProcessor.getDefaultProcessor(inst));
+    }
+
+    public void preview(PrintStream output, InputStream input) {
+        ArrayList<Route> items = inst.getPlayableRoutes();
+        while (!items.isEmpty()) {
+            GameChoice choice;
+            String s = choose(items, output, input);
+            do {
+                choice = doRoute(s, output, input);
+
+                if (choice.hasEvent()) {
+                    outputFile(choice.getEventIdentifier(), output, input);
+                }
+                items = choice.getOptions();
+                if (items.size() > 0) {
+                    switch (choice.getAction()) {
+                    case GameChoice.ACTION_CHOOSE_ROUTE:
+                        output.println("Choose another narrative to play!");
+                        break;
+                    case GameChoice.ACTION_MAJOR_DECISION:
+                        output.println("You must make a decision!");
+                        break;
+                    case GameChoice.ACTION_CONTINUE:
+                        s = items.get(0).getId();
+                        break;
+                    }
+                }
+            } while (choice.getAction() == GameChoice.ACTION_CONTINUE);
+        }
+    }
+
+    public GameChoice doRoute(String name, PrintStream output, InputStream input) {
+        try {
+            inst.startRoute(name);
+        } catch (GraphElementNotFoundException e) {
+            System.err.println("IMPOSSIBLE_ERROR");
+            e.printStackTrace();
+            System.exit(1);
+        }
+        outputFile(name, output, input);
+        try {
+            GameChoice choice = inst.endRoute(name);
+            return choice;
+
+        } catch (GraphElementNotFoundException e) {
+            System.err.println("IMPOSSIBLE_ERROR");
+            e.printStackTrace();
+            System.exit(1);
+        }
+        return null;
+    }
+
+    public static String choose(ArrayList<Route> items, PrintStream output, InputStream input) {
+        if (items.size() == 0) {
+            return null;
+        }
+        @SuppressWarnings("resource")
+        Scanner sc = new Scanner(input);
+        // Don't close! since this closes input
+        String r = null;
+        do {
+            output.println("Choose one of:");
+            output.println(items);
+            String choice = sc.nextLine();
+            for (Route route : items) {
+                if (route.getId().equals(choice)) {
+                    r = route.getId();
+                    break;
+                }
+            }
+        } while (r == null);
+        return r;
+    }
+
+    public void outputFile(String route, PrintStream output, InputStream input) {
+        File[] c = directory.listFiles((File dir, String name) -> {
+            return name.equals(route + ".txt");
+        });
+        if (c.length > 0) {
+            proc.process(c[0], output, input);
+        } else {
+            output.println("Completed " + route);
+        }
+    }
 
     public static void main(String[] args) throws IOException, InvalidGraphException {
         if (args.length != 1) {
@@ -30,123 +133,7 @@ public class TextPreview {
         }
         System.out.println("Loading from: " + f.getPath());
 
-        File[] children = f.listFiles();
-        File template = null;
-        for (int i = 0; i < children.length; i++) {
-            if (children[i].getName().endsWith(".dnm")) {
-                template = children[i];
-                break;
-            }
-        }
-        if (template == null) {
-            System.out.println("Could not find template file.");
-            return;
-        }
-        NarrativeTemplate t = SaveReader.loadNarrativeTemplate(template.getPath());
-        preview(f, t.generateInstance());
+        TextPreview preview = new TextPreview(f);
+        preview.preview(System.out, System.in);
     }
-
-    public static void preview(File file, NarrativeInstance inst) {
-        ArrayList<Route> items = inst.getPlayableRoutes();
-        while (!items.isEmpty()) {
-            GameChoice choice;
-            String s = choose(items);
-            do {
-                choice = doRoute(file, inst, s);
-
-                if (choice.hasEvent()) {
-                    outputFile(file, choice.getEventIdentifier());
-                }
-                items = choice.getOptions();
-                if (items.size() > 0) {
-                    switch (choice.getAction()) {
-                    case GameChoice.ACTION_CHOOSE_ROUTE:
-                        System.out.println("Choose another narrative to play!");
-                        break;
-                    case GameChoice.ACTION_MAJOR_DECISION:
-                        System.out.println("You must make a decision!");
-                        break;
-                    case GameChoice.ACTION_CONTINUE:
-                        s = items.get(0).getId();
-                        break;
-                    }
-                }
-            } while (choice.getAction() == GameChoice.ACTION_CONTINUE);
-        }
-    }
-
-    public static GameChoice doRoute(File file, NarrativeInstance inst, String name) {
-        try {
-            inst.startRoute(name);
-        } catch (GraphElementNotFoundException e) {
-            System.err.println("IMPOSSIBLE_ERROR");
-            e.printStackTrace();
-            System.exit(1);
-        }
-        outputFile(file, name);
-        try {
-            GameChoice choice = inst.endRoute(name);
-            return choice;
-
-        } catch (GraphElementNotFoundException e) {
-            System.err.println("IMPOSSIBLE_ERROR");
-            e.printStackTrace();
-            System.exit(1);
-        }
-        return null;
-    }
-
-    public static String choose(ArrayList<Route> items) {
-        if (items.size() == 0) {
-            return null;
-        }
-        @SuppressWarnings("resource")
-        Scanner sc = new Scanner(System.in);
-        // Don't close! since this closes system.in
-        String r = null;
-        do {
-            System.out.println("Choose one of:");
-            System.out.println(items);
-            String choice = sc.nextLine();
-            for (Route route : items) {
-                if (route.getId().equals(choice)) {
-                    r = route.getId();
-                    break;
-                }
-            }
-        } while (r == null);
-        return r;
-    }
-
-    public static void outputFile(File file, String route) {
-        File[] c = file.listFiles((File dir, String name) -> {
-            return name.equals(route + ".txt");
-        });
-        if (c.length > 0) {
-            try {
-                BufferedReader r = new BufferedReader(new FileReader(c[0]));
-                String s;
-                try {
-                    while ((s = r.readLine()) != null) {
-                        System.out.println(s);
-                    }
-                } catch (IOException e) {
-                    System.err.println("Error reading file");
-                } finally {
-                    if (r != null) {
-                        try {
-                            r.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            } catch (FileNotFoundException e) {
-                System.err.println("File not found");
-            }
-        } else {
-            System.out.println("Completed " + route);
-        }
-    }
-
 }
