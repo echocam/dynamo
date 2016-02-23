@@ -120,7 +120,7 @@ class TestClass {
         return publicStaticField;
     }
 
-    package int packageInstanceMethod() {
+    int packageInstanceMethod() {
         return privateInstanceMember;
     }
 }
