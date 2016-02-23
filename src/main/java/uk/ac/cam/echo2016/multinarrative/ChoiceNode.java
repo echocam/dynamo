@@ -34,7 +34,8 @@ public class ChoiceNode extends Node { // TODO Documentation
         if (!this.getEntering().contains(completed)) {
             throw new GraphElementNotFoundException(completed.getId());
         }
-        GameChoice gameChoice = new GameChoice(true, getId(), GameChoice.ACTION_MAJOR_DECISION, getExiting());
+        GameChoice gameChoice = new GameChoice(GameChoice.ACTION_MAJOR_DECISION, getExiting(),
+                instance.getEventfulNodes());
 
         return gameChoice;
     }
