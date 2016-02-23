@@ -1,11 +1,12 @@
-# DyNaMo
+DyNaMo
+======
 *Dynamic Narrative Modelling*
 
 <a href="https://travis-ci.org/EchoCam/DynamicNarrative">
 <img src="https://travis-ci.org/EchoCam/DynamicNarrative.svg?branch=master" title="Master branch unit testing."/>
 </a>
 
-A system architecture and tools that allow developers to track the logic of player decisions and alter the state of the game based on those decisions. 
+A system architecture and tools that allow developers to track the logic of player decisions and alter the state of the game based on those decisions.
 
 This application is in development by James Riordan, Angus Hammond, Elise Xue, Robin McFarland, Tim Ringland and Tom Read-Cutting.
 
@@ -83,8 +84,11 @@ to the GUI of levels 4-1 will be logged and all errors will be logged.
 To view all the available systems that can be logged, refer to ```java uk.ac.cam.echo2016.multinarrative.dev.Debug```
 for all constants starting with ```java SYSTEM_```.
 
-Project (Java) Style Guide
---------------------------
+Project Style Guide
+===================
+
+Java
+----
 
 ### Indentation
 Indentation must be done with 4 spaces. NOT tabs.
@@ -108,7 +112,7 @@ Refer to the following example:
 class TestClass {
     public static int publicStaticField = 0;
     protected static int protectedStaticField = 0;
-    
+
     public int publicInstanceMember;
     private int privateInstanceMember;
 
@@ -131,3 +135,30 @@ Abiding by this is up to the programmer's discretion, but don't diverge from thi
 Lines must not be longer the 120 characters each.
 
 
+Commits
+-------
+These are rough guidelines to how developers should commit to the repository.
+
+### Messages
+
+Git messages should have the following format:
+
+```
+Write imperatively, write less than 50 characters
+
+The body should be separated from the title by a blank line like this.
+Each line should be a maximum of 72 characters wide. You should explain
+in detail WHY the changes you made were made, not necessarily WHAT has
+changed. You don't need this though, just a title is ok as well!
+
+Further paragraphs can appear after blank lines, and you can go into as
+much depth as you want!
+
+ - Woo bullet points!
+
+ - Seriously, bullet points are a great way of listing information.
+
+And that is how commit messages should be formatted, although this is a
+rough guideline and by no means required as we are but humble student
+developers.
+```
