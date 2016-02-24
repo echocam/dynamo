@@ -119,8 +119,12 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
                 // Kills all methods leaving the end node if they have the same
                 // type and no entering routes also
                 // have that property TODO specify in documentation
+                Debug.logInfo("Number of properties: " + route.getProperties().keySet().size(), 4, Debug.SYSTEM_GRAPH); //TODO remove
                 for (String key : route.getProperties().keySet()) {
+                    if (key.startsWith("GUI")) continue;
+                    
                     if (this.getGlobalProperties().getStringArrayList("System.Types").contains(key)) {
+                        Debug.logInfo("A property of " + route.getId() + " is: " + key, 4, Debug.SYSTEM_GRAPH); //TODO remove
                         // TODO error if no global "Types" property
                         Object type = route.getProperties().get(key);
 
