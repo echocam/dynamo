@@ -66,5 +66,18 @@ task runGui(type: JavaExec) {
       main = 'uk.ac.cam.echo2016.multinarrative.gui.FXMLGUI'
 }
 
+task runTextPreview(type: JavaExec) {
+	classpath = sourceSets.main.runtimeClasspath
+	workingDir = main_build
+    main = 'uk.ac.cam.echo2016.multinarrative.preview.TextPreview'
+
+    if(project.hasProperty('directory')) {
+        args directory
+    } else {
+        println 'Usage: ./gradlew -Pdirectory=<directory> runTextPreview'
+    }
+}
+
 runGui.dependsOn assemble
+runTextPreview.dependsOn assemble
 
