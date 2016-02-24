@@ -41,6 +41,7 @@ public class TextPreview {
 
     public void preview(PrintStream output, InputStream input) {
         ArrayList<Route> items = inst.getPlayableRoutes();
+        outputFile(inst.getStart().getId(), output, input, "Triggered");
         while (!items.isEmpty()) {
             GameChoice choice;
             String s = choose(items, output, input);
@@ -49,7 +50,7 @@ public class TextPreview {
 
                 if (choice.hasEvent()) {
                     for(Node n: choice.getEvents()){
-                        outputFile(n.getId(), output, input, "Completed");
+                        outputFile(n.getId(), output, input, "Triggered");
                     }
                     choice.completeEvents();
                 }
