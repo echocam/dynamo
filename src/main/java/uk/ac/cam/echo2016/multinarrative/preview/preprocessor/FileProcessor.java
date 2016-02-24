@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +22,7 @@ public class FileProcessor {
         this.commands = commands;
     }
 
-    public void process(File f, PrintStream output, InputStream input) {
+    public void process(File f, PrintStream files) {
         try {
             BufferedReader r = new BufferedReader(new FileReader(f));
             Debug.logInfo("Found File " + f, 4, Debug.SYSTEM_PREVIEW);
@@ -66,7 +65,7 @@ public class FileProcessor {
                             }
                         }
                         if (s != null) {
-                            output.println(s);
+                            files.println(s);
                         }
                     }
                 }
