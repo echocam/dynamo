@@ -59,7 +59,10 @@ public class FXMLController implements Initializable {
         instance = inst;
         proc = new FileProcessor(FileProcessor.getDefaultProcessor(inst));
         options = inst.getPlayableRoutes();
-
+        
+        choices.minWidthProperty().bind(scroll.widthProperty().subtract(10));
+        choices.minHeightProperty().bind(scroll.heightProperty().subtract(10));
+        
         display(inst.getStart().getId());
         inst.getStart().createProperties();
         inst.getStart().getProperties().putBoolean("System.isCompleted", true);

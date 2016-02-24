@@ -11,7 +11,7 @@
       <WebView fx:id="web" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
    <bottom>
-      <ScrollPane fx:id="scroll" prefViewportWidth="122.0" BorderPane.alignment="CENTER">
+      <ScrollPane fx:id="scroll" BorderPane.alignment="CENTER">
          <content>
             <HBox fx:id="choices" alignment="CENTER" spacing="3.0">
                <children>
