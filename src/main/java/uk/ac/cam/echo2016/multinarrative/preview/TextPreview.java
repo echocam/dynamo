@@ -134,7 +134,7 @@ public class TextPreview {
         }
     }
 
-    public static void main(String[] args) throws IOException, InvalidGraphException {
+    public static void main(String[] args){
         if (args.length != 1) {
             System.out.println("Usage java uk.ac.cam.echo2016.multinarrative.preview.TextPreview <directory>");
             return;
@@ -146,7 +146,13 @@ public class TextPreview {
         }
         System.out.println("Loading from: " + f.getPath());
 
-        TextPreview preview = new TextPreview(f);
-        preview.preview(System.out, System.out, System.in);
+        try{
+            TextPreview preview = new TextPreview(f);
+            preview.preview(System.out, System.out, System.in);
+        }catch(IOException ioe){
+            System.out.println(ioe.getMessage());
+        } catch (InvalidGraphException e) {
+            e.printStackTrace();
+        }
     }
 }
