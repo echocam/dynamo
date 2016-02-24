@@ -78,6 +78,19 @@ task runTextPreview(type: JavaExec) {
     }
 }
 
+task runHTMLPreview(type: JavaExec) {
+	classpath = sourceSets.main.runtimeClasspath
+	workingDir = main_build
+    main = 'uk.ac.cam.echo2016.multinarrative.preview.HTMLPreview'
+
+    if(project.hasProperty('directory')) {
+        args directory
+    } else {
+        println 'Usage: ./gradlew -Pdirectory=<directory> runHTMLPreview'
+    }
+}
+
 runGui.dependsOn assemble
 runTextPreview.dependsOn assemble
+runHTMLPreview.dependsOn assemble
 
