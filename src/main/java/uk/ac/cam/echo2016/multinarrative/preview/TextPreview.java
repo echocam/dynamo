@@ -141,7 +141,7 @@ public class TextPreview {
         }
         File f = new File(args[0]);
         if (!f.exists() || !f.isDirectory()) {
-            System.out.println("Usage java uk.ac.cam.echo2016.multinarrative.preview.TextPreview <directory>");
+            System.out.println("That directory doesn't seem to exist!");
             return;
         }
         System.out.println("Loading from: " + f.getPath());
