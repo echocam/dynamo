@@ -1,5 +1,7 @@
 package uk.ac.cam.echo2016.multinarrative;
 
+import java.util.ArrayList;
+
 import android.os.BaseBundle;
 
 /**
@@ -26,10 +28,18 @@ public class ChoiceNode extends Node { // TODO Documentation
         return new ChoiceNode(id);
     }
 
-    public BaseBundle startRoute(Route option) {
+    @Override
+    public BaseBundle startRoute(Route option, NarrativeInstance instance) {
+        for (Route deadRoute : new ArrayList<>(getExiting())) {
+            if (deadRoute != option) {
+                instance.kill(deadRoute);
+            }
+        }
+        instance.complete(this);
         return option.getProperties();
     };
 
+    @Override
     public GameChoice onEntry(Route completed, NarrativeInstance instance) throws GraphElementNotFoundException {
         if (!this.getEntering().contains(completed)) {
             throw new GraphElementNotFoundException(completed.getId());
