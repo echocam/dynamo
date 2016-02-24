@@ -33,7 +33,10 @@ public class SynchronizationNode extends Node { // TODO Documentation
         return new SynchronizationNode(id);
     }
 
-    public BaseBundle startRoute(Route option) {
+    public BaseBundle startRoute(Route option, NarrativeInstance instance) {
+        if (getExiting().size() == 1) {
+            instance.complete(this);
+        }
         return option.getProperties();
     }
     

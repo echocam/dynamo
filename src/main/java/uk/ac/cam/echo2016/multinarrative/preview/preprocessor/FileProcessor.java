@@ -26,17 +26,17 @@ public class FileProcessor {
     public void process(File f, PrintStream output, InputStream input) {
         try {
             BufferedReader r = new BufferedReader(new FileReader(f));
-            Debug.logInfo("Found File "+f, 4, Debug.SYSTEM_PREVIEW);
+            Debug.logInfo("Found File " + f, 4, Debug.SYSTEM_PREVIEW);
             String s;
             ArrayList<Function<String, String>> applies = new ArrayList<Function<String, String>>();
             try {
                 while ((s = r.readLine()) != null) {
-                    Debug.logInfo("Read: "+s,5,Debug.SYSTEM_PREVIEW);
+                    Debug.logInfo("Read: " + s, 5, Debug.SYSTEM_PREVIEW);
                     if (s.startsWith("%")) {// Comment
                     } else if (s.startsWith("#")) {// Command
                         for (Function<String, String> func : applies) {
                             s = func.apply(s);
-                            Debug.logInfo("> "+s,5,Debug.SYSTEM_PREVIEW);
+                            Debug.logInfo("> " + s, 5, Debug.SYSTEM_PREVIEW);
                             if (s == null) {
                                 break;
                             }
@@ -60,7 +60,7 @@ public class FileProcessor {
                     } else {
                         for (Function<String, String> func : applies) {
                             s = func.apply(s);
-                            Debug.logInfo("> "+s,5,Debug.SYSTEM_PREVIEW);
+                            Debug.logInfo("> " + s, 5, Debug.SYSTEM_PREVIEW);
                             if (s == null) {
                                 break;
                             }
@@ -71,7 +71,7 @@ public class FileProcessor {
                     }
                 }
             } catch (IOException e) {
-                Debug.logError("Error Reading File "+f, 5, Debug.SYSTEM_PREVIEW);
+                Debug.logError("Error Reading File " + f, 5, Debug.SYSTEM_PREVIEW);
             } finally {
                 if (r != null) {
                     try {
@@ -82,7 +82,7 @@ public class FileProcessor {
                 }
             }
         } catch (FileNotFoundException e) {
-            Debug.logError("File not found "+f, 5, Debug.SYSTEM_PREVIEW);
+            Debug.logError("File not found " + f, 5, Debug.SYSTEM_PREVIEW);
         }
     }
 
@@ -99,7 +99,9 @@ public class FileProcessor {
                     str += s[i];
                 }
                 boolean b = inst.getNode(str) != null || inst.getRoute(str) != null;
-                Debug.logInfo("ifx "+str+", "+b,4,Debug.SYSTEM_PREVIEW);
+                Debug.logInfo(inst.getNodes().keySet() + "//" + inst.getRoutes().keySet(), 5,
+                        Debug.SYSTEM_PREVIEW | Debug.SYSTEM_GRAPH);
+                Debug.logInfo("ifx " + str + " = " + b, 4, Debug.SYSTEM_PREVIEW);
                 return new IfProcessor(b);
             }
         });
@@ -112,13 +114,13 @@ public class FileProcessor {
                 for (int i = 1; i < s.length; i++) {
                     str += s[i];
                 }
-                
                 boolean b = inst.getNode(str) != null || inst.getRoute(str) != null;
-                Debug.logInfo("ifnx "+str+", "+!b,4,Debug.SYSTEM_PREVIEW);
+                Debug.logInfo(inst.getNodes().keySet() + "//" + inst.getRoutes().keySet(), 5,
+                        Debug.SYSTEM_PREVIEW | Debug.SYSTEM_GRAPH);
+                Debug.logInfo("ifnx " + str + " = " + !b, 4, Debug.SYSTEM_PREVIEW);
                 return new IfProcessor(!b);
             }
         });
-        r.put("endif", s -> null);
         return r;
     }
 

@@ -38,19 +38,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
         if (route == null)
             throw new GraphElementNotFoundException(id);
         Node startNode = route.getStart();
-        if (startNode instanceof ChoiceNode) {
-            activeNodes.remove(startNode);
-            for (Route deadRoute : new ArrayList<>(startNode.getExiting())) {
-                if (deadRoute != route) {
-                    kill(deadRoute);
-                }
-            }
-        } else {
-            if (startNode.getExiting().size() == 1) {
-                activeNodes.remove(startNode);
-            }
-        }
-        return startNode.startRoute(route);
+        return startNode.startRoute(route,this);
     }
 
     public GameChoice endRoute(String id) throws GraphElementNotFoundException {
@@ -224,6 +212,12 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
                     }
                 }
             }
+        }
+    }
+    
+    public void complete(Node node){
+        if(activeNodes.contains(node)){
+            activeNodes.remove(node);
         }
     }
 }

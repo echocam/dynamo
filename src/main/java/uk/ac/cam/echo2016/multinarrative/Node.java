@@ -52,7 +52,7 @@ public abstract class Node implements Serializable, Cloneable { // TODO
      */
     protected abstract Node create(String id);
 
-    public abstract BaseBundle startRoute(Route option);
+    public abstract BaseBundle startRoute(Route option, NarrativeInstance instance);
 
     public abstract GameChoice onEntry(Route played, NarrativeInstance instance) throws GraphElementNotFoundException;
 
