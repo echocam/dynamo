@@ -23,9 +23,14 @@ To build the project and/or testing open the root directory in the terminal.
 ./gradlew build
 ```
 
-To run the GUI simply use the following:
+To run the DyNaMo editor simply use the following:
 ```bash
-./gradlew runGui
+./gradlew runEditor
+```
+
+To run the Scooby Doo HTML example:
+```bash
+./gradlew runHTMLPreview -Pdirectory="../../../examples/ScoobyDooHTML"
 ```
 
 To test:

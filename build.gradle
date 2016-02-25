@@ -60,7 +60,7 @@ task copyConfig (type: Copy) {
 assemble.dependsOn copyFXMLandCSS
 assemble.dependsOn copyConfig
 
-task runGui(type: JavaExec) {
+task runEditor(type: JavaExec) {
       classpath = sourceSets.main.runtimeClasspath
       workingDir = main_build
       main = 'uk.ac.cam.echo2016.multinarrative.gui.FXMLGUI'
@@ -90,7 +90,7 @@ task runHTMLPreview(type: JavaExec) {
     }
 }
 
-runGui.dependsOn assemble
+runEditor.dependsOn assemble
 runTextPreview.dependsOn assemble
 runHTMLPreview.dependsOn assemble
 

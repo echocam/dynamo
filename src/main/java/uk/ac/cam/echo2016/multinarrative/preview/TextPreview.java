@@ -139,9 +139,16 @@ public class TextPreview {
             System.out.println("Usage java uk.ac.cam.echo2016.multinarrative.preview.TextPreview <directory>");
             return;
         }
-        File f = new File(args[0]);
-        if (!f.exists() || !f.isDirectory()) {
-            System.out.println("That directory doesn't seem to exist!");
+        runNarrative(args[0]);
+    }
+    
+    public static void runNarrative(String narrativeDirectory) {
+        File f = new File(narrativeDirectory);
+        if (!f.exists()) {
+            System.out.println("The directory " + narrativeDirectory + " doesn't seem to exist!");
+            return;
+        } else if(!f.isDirectory()) {
+            System.out.println(narrativeDirectory + " is not a directory!");
             return;
         }
         System.out.println("Loading from: " + f.getPath());
