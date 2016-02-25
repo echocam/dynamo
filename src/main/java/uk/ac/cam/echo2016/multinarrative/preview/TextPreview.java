@@ -142,7 +142,7 @@ public class TextPreview {
         runNarrative(args[0]);
     }
     
-    public static void runNarrative(String narrativeDirectory) throws IOException, InvalidGraphException {
+    public static void runNarrative(String narrativeDirectory) {
         File f = new File(narrativeDirectory);
         if (!f.exists()) {
             System.out.println("The directory " + narrativeDirectory + " doesn't seem to exist!");
