@@ -205,7 +205,7 @@ public class Debug {
      *            or them together. eg. TYPE_PUDDING | TYPE FAIRY.
      */
     public static void logError(String s, int logLevel, int type) {
-        logInfo(s, logLevel, type | SYSTEM_ERROR);
+        logInfo(s, 3, logLevel, type | SYSTEM_ERROR);
     }
 
     public static void logError(Throwable e, int logLevel, int type) {
