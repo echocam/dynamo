@@ -139,10 +139,16 @@ public class TextPreview {
             System.out.println("Usage java uk.ac.cam.echo2016.multinarrative.preview.TextPreview <directory>");
             return;
         }
-        runNarrative(args[0]);
+        try {
+            runNarrative(args[0]);
+        } catch(IOException ioe){
+            System.out.println(ioe.getMessage());
+        } catch (InvalidGraphException e) {
+            e.printStackTrace();
+        }
     }
     
-    public static void runNarrative(String narrativeDirectory) {
+    public static void runNarrative(String narrativeDirectory) throws IOException, InvalidGraphException {
         File f = new File(narrativeDirectory);
         if (!f.exists()) {
             System.out.println("The directory " + narrativeDirectory + " doesn't seem to exist!");
@@ -153,13 +159,7 @@ public class TextPreview {
         }
         System.out.println("Loading from: " + f.getPath());
 
-        try{
-            TextPreview preview = new TextPreview(f);
-            preview.preview(System.out, System.out, System.in);
-        }catch(IOException ioe){
-            System.out.println(ioe.getMessage());
-        } catch (InvalidGraphException e) {
-            e.printStackTrace();
-        }
+        TextPreview preview = new TextPreview(f);
+        preview.preview(System.out, System.out, System.in);
     }
 }
