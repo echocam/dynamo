@@ -13,6 +13,9 @@ import uk.ac.cam.echo2016.multinarrative.io.SaveReader;
 
 public class HTMLPreview extends Application {
 
+	public static String FILE_PROPERTY = "file";
+	public static String DISPLAY_PROPERTY = "display";
+	
     public static void main(String[] args) {
         Application.launch(HTMLPreview.class, args);
     }

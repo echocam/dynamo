@@ -47,9 +47,9 @@ public class FXMLController implements Initializable {
 
     private NarrativeInstance instance;
 
-    private ArrayList<String> pages = new ArrayList<>();
+    private ArrayList<Node> pages = new ArrayList<>();
     private ArrayList<Route> options = new ArrayList<>();
-    private String routePlaying;
+    private Route routePlaying;
 
     private FileProcessor proc;
 
@@ -63,7 +63,7 @@ public class FXMLController implements Initializable {
         choices.minWidthProperty().bind(scroll.widthProperty().subtract(10));
         choices.minHeightProperty().bind(scroll.heightProperty().subtract(10));
         
-        display(inst.getStart().getId());
+        display(inst.getStart());
         inst.getStart().createProperties();
         inst.getStart().getProperties().putBoolean("System.isCompleted", true);
         initChoices(options);
@@ -81,12 +81,10 @@ public class FXMLController implements Initializable {
             nextPage();
         } else if (routePlaying != null) {
             try {
-                GameChoice c = instance.endRoute(routePlaying);
+                GameChoice c = instance.endRoute(routePlaying.getId());
                 options = c.getOptions();
                 if (c.hasEvent()) {
-                    for (Node n : c.getEvents()) {
-                        pages.add(n.getId());
-                    }
+                    pages.addAll(c.getEvents());
                     c.completeEvents();
                     nextPage();
                 } else {
@@ -104,7 +102,7 @@ public class FXMLController implements Initializable {
     }
     
     public void nextPage(){
-        String s = pages.remove(0);
+        Node s = pages.remove(0);
         Debug.logInfo("Starting " + s, 2, Debug.SYSTEM_PREVIEW);
         display(s);
         if(pages.isEmpty()){
@@ -115,7 +113,7 @@ public class FXMLController implements Initializable {
     public void initChoices(ArrayList<Route> items) {
         choices.getChildren().clear();
         for (Route s : items) {
-            Button b = createOption(s.getId());
+            Button b = createOption(s);
             choices.getChildren().add(b);
         }
     }
@@ -125,10 +123,10 @@ public class FXMLController implements Initializable {
         choices.getChildren().add(next);
     }
 
-    public void choose(String item) {
+    public void choose(Route item) {
         Debug.logInfo("Choosen: " + item, 2, Debug.SYSTEM_PREVIEW);
         try {
-            instance.startRoute(item);
+            instance.startRoute(item.getId());
             routePlaying = item;
             display(item);
             initNext();
@@ -138,7 +136,24 @@ public class FXMLController implements Initializable {
         }
     }
 
-    public void display(String item) {
+    public void display(Node node) {
+    	String item = node.getId();
+    	if(node.getProperties()!=null && node.getProperties().getString(HTMLPreview.FILE_PROPERTY, null)!=null){
+    		item = node.getProperties().getString(HTMLPreview.FILE_PROPERTY);
+    	}
+        parseFrom(item);
+        try {
+            setContents(index);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void display(Route route) {
+    	String item = route.getId();
+    	if(route.getProperties()!=null && route.getProperties().getString(HTMLPreview.FILE_PROPERTY, null)!=null){
+    		item = route.getProperties().getString(HTMLPreview.FILE_PROPERTY);
+    	}
         parseFrom(item);
         try {
             setContents(index);
@@ -192,12 +207,16 @@ public class FXMLController implements Initializable {
         }
     }
 
-    public Button createOption(String text) {
+    public Button createOption(Route route) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("button.fxml"));
             Button b = loader.load();
+            String text = route.getId();
+            if(route.getProperties()!=null && route.getProperties().getString(HTMLPreview.DISPLAY_PROPERTY, null)!=null){
+        		text = route.getProperties().getString(HTMLPreview.DISPLAY_PROPERTY);
+        	}
             b.setText(text);
-            b.setOnAction(e -> choose(text));
+            b.setOnAction(e -> choose(route));
             return b;
         } catch (IOException ioe) {
             // Indicates that fxml files aren't set up properly...
