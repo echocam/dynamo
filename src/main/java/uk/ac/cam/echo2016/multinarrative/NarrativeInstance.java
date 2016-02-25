@@ -203,6 +203,7 @@ public class NarrativeInstance extends MultiNarrative { // TODO Documentation
             activeNodes.add(node);
             for (Route r : node.getExiting()) {
                 if (r.getProperties() != null && r.getProperties().getBoolean("System.Auto", false)) {
+                	Debug.logInfo("Auto Playing Route: " + r.getId(), 4, Debug.SYSTEM_GRAPH);
                     try {
                         startRoute(r.getId());
                         endRoute(r.getId());
