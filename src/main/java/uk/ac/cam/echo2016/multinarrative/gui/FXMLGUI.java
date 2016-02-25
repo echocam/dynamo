@@ -13,6 +13,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 /**
@@ -67,6 +68,8 @@ public class FXMLGUI extends Application {
     public String showSaveAs() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save As");
+        fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Dynamic Narrative Projects", "*.dnp"),
+                new ExtensionFilter("All Files", "*.*"));
         File selectedFile = fileChooser.showSaveDialog(theStage);
 
         if (selectedFile != null) {
@@ -74,15 +77,17 @@ public class FXMLGUI extends Application {
         } else
             return null;
     }
-    
+
     /**
      * Opens the Save As dialog
      */
     public String showExport() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Export");
+        fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Dynamic Narrative Models", "*.dnm"),
+                new ExtensionFilter("All Files", "*.*"));
         File selectedFile = fileChooser.showSaveDialog(theStage);
-        
+
         if (selectedFile != null) {
             return selectedFile.getAbsolutePath();
         } else
@@ -95,6 +100,8 @@ public class FXMLGUI extends Application {
     public String showOpen() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open");
+        fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Dynamic Narrative Projects", "*.dnp"),
+                new ExtensionFilter("All Files", "*.*"));
         File selectedFile = fileChooser.showOpenDialog(theStage);
 
         if (selectedFile != null) {
@@ -105,7 +112,8 @@ public class FXMLGUI extends Application {
 
     /**
      * Checks if a user wants to save before executing the next action
-     * @throws UserErrorException 
+     * 
+     * @throws UserErrorException
      */
     public boolean checkIfShouldSave() throws UserErrorException {
         Alert alert = new Alert(AlertType.WARNING);
