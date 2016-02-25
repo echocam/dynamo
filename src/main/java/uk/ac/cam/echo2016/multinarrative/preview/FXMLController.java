@@ -84,6 +84,11 @@ public class FXMLController implements Initializable {
                 GameChoice c = instance.endRoute(routePlaying.getId());
                 options = c.getOptions();
                 if (c.hasEvent()) {
+                	for(Node n: c.getEvents()){
+                		if(n.getProperties()==null || !n.getProperties().getBoolean(HTMLPreview.SKIP_PROPERTY, false)){
+                			pages.add(n);
+                		}
+                	}
                     pages.addAll(c.getEvents());
                     c.completeEvents();
                     nextPage();
