@@ -81,7 +81,7 @@ task runEditor(type: JavaExec) {
 task runTextPreview(type: JavaExec) {
 	classpath = sourceSets.main.runtimeClasspath
 	workingDir = main_build
-    main = 'uk.ac.cam.echo2016.multinarrative.preview.TextPreview'
+  main = 'uk.ac.cam.echo2016.multinarrative.preview.TextPreview'
 	standardInput = System.in
     if(project.hasProperty('directory')) {
         args directory

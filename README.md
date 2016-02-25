@@ -45,6 +45,11 @@ To run the Scooby Doo HTML example:
 ./gradlew runHTMLPreview -Pdirectory="../../../examples/ScoobyDooHTML"
 ```
 
+To run the Scooby Doo Text example:
+```bash
+./gradlew runHTMLPreview -Pdirectory="../../../examples/ScoobyDooText"
+```
+
 To test:
 ```bash
 ./gradlew check
