@@ -101,7 +101,7 @@ public abstract class Node implements Serializable, Cloneable { // TODO
     public boolean isCompleted() {
         for (Route route : getEntering()) {
             if (!route.getProperties().containsKey("System.isCompleted")) {
-                Debug.logInfo(route.getId() + " is not completed", 4, Debug.SYSTEM_GRAPH);
+                Debug.logInfo(route.getId() + " is not completed", 4, Debug.SYSTEM_GRAPH); //TODO remove
                 return false;
             }
         }

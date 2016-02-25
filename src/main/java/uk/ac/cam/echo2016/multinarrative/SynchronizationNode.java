@@ -39,7 +39,7 @@ public class SynchronizationNode extends Node { // TODO Documentation
         }
         return option.getProperties();
     }
-
+    
     public GameChoice onEntry(Route completed, NarrativeInstance instance) throws GraphElementNotFoundException {
         if (!getEntering().contains(completed)) {
             throw new GraphElementNotFoundException(completed.getId());

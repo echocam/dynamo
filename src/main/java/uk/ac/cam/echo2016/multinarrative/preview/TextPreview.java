@@ -39,18 +39,20 @@ public class TextPreview {
         proc = new FileProcessor(FileProcessor.getDefaultProcessor(inst));
     }
 
-    public void preview(PrintStream output, InputStream input) {
+    public void preview(PrintStream console, PrintStream files, InputStream input) {
         ArrayList<Route> items = inst.getPlayableRoutes();
-        outputFile(inst.getStart().getId(), output, input, "Triggered");
+        outputFile(inst.getStart().getId(), console, files, input, "Triggered");
+        inst.getStart().createProperties();
+        inst.getStart().getProperties().putBoolean("System.isCompleted", true);
         while (!items.isEmpty()) {
             GameChoice choice;
-            String s = choose(items, output, input);
+            String s = choose(items, console, input);
             do {
-                choice = doRoute(s, output, input);
+                choice = doRoute(s, console, files, input);
 
                 if (choice.hasEvent()) {
-                    for(Node n: choice.getEvents()){
-                        outputFile(n.getId(), output, input, "Triggered");
+                    for (Node n : choice.getEvents()) {
+                        outputFile(n.getId(), console, files, input, "Triggered");
                     }
                     choice.completeEvents();
                 }
@@ -58,13 +60,14 @@ public class TextPreview {
                 if (items.size() > 0) {
                     switch (choice.getAction()) {
                     case GameChoice.ACTION_CHOOSE_ROUTE:
-                        output.println("Choose another narrative to play!");
+                        console.println("Choose another narrative to play!");
                         break;
                     case GameChoice.ACTION_MAJOR_DECISION:
-                        output.println("You must make a decision!");
+                        console.println("You must make a decision!");
                         break;
                     case GameChoice.ACTION_CONTINUE:
                         s = items.get(0).getId();
+                        choose(null, console, input);
                         break;
                     }
                 }
@@ -72,7 +75,7 @@ public class TextPreview {
         }
     }
 
-    public GameChoice doRoute(String name, PrintStream output, InputStream input) {
+    public GameChoice doRoute(String name, PrintStream output, PrintStream files, InputStream input) {
         try {
             inst.startRoute(name);
         } catch (GraphElementNotFoundException e) {
@@ -80,7 +83,7 @@ public class TextPreview {
             e.printStackTrace();
             System.exit(1);
         }
-        outputFile(name, output, input, "Playing");
+        outputFile(name, output, files, input, "Playing");
         try {
             GameChoice choice = inst.endRoute(name);
             return choice;
@@ -93,11 +96,16 @@ public class TextPreview {
         return null;
     }
 
+    @SuppressWarnings("resource")
     public static String choose(ArrayList<Route> items, PrintStream output, InputStream input) {
+        if (items == null) {
+            // Read a line
+            return (new Scanner(input)).nextLine();
+            // Don't close! since this closes input
+        }
         if (items.size() == 0) {
             return null;
         }
-        @SuppressWarnings("resource")
         Scanner sc = new Scanner(input);
         // Don't close! since this closes input
         String r = null;
@@ -115,18 +123,18 @@ public class TextPreview {
         return r;
     }
 
-    public void outputFile(String route, PrintStream output, InputStream input, String prefix) {
+    public void outputFile(String route, PrintStream output, PrintStream files, InputStream input, String prefix) {
         File[] c = directory.listFiles((File dir, String name) -> {
             return name.equals(route + ".txt");
         });
         if (c.length > 0) {
-            proc.process(c[0], output, input);
+            proc.process(c[0], files);
         } else {
             output.println(prefix + " " + route);
         }
     }
 
-    public static void main(String[] args) throws IOException, InvalidGraphException {
+    public static void main(String[] args){
         if (args.length != 1) {
             System.out.println("Usage java uk.ac.cam.echo2016.multinarrative.preview.TextPreview <directory>");
             return;
@@ -145,7 +153,13 @@ public class TextPreview {
         }
         System.out.println("Loading from: " + f.getPath());
 
-        TextPreview preview = new TextPreview(f);
-        preview.preview(System.out, System.in);
+        try{
+            TextPreview preview = new TextPreview(f);
+            preview.preview(System.out, System.out, System.in);
+        }catch(IOException ioe){
+            System.out.println(ioe.getMessage());
+        } catch (InvalidGraphException e) {
+            e.printStackTrace();
+        }
     }
 }
