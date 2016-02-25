@@ -45,6 +45,18 @@ test {
   }
 }
 
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+	manifest {
+        attributes  'Implementation-Title': 'DyNaMo Jar',
+        	          //'Implementation-Version': version,
+        	          'Main-Class': 'uk.ac.cam.echo2016.multinarrative.gui.FXMLGUI'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 task copyFXMLandCSS (type: Copy) {
     from main_src
     into main_build
@@ -93,4 +105,3 @@ task runHTMLPreview(type: JavaExec) {
 runEditor.dependsOn assemble
 runTextPreview.dependsOn assemble
 runHTMLPreview.dependsOn assemble
-

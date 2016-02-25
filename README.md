@@ -18,9 +18,21 @@ You must have Java8 installed or above. The project is built using [Gradle](http
 
 Linux
 -----
-To build the project and/or testing open the root directory in the terminal.
+To run gradle tasks, open the root project directory in the terminal and do the
+follwing:
+
+Assemble and test the project:
 ```bash
 ./gradlew build
+```
+
+Assemble the project:
+```bash
+./gradlew assemble
+```
+To create assemble a jar file with all the dependencies:
+```bash
+./gradlew fatJar
 ```
 
 To run the DyNaMo editor simply use the following:
