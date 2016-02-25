@@ -14,7 +14,7 @@ This application is in development by James Riordan, Angus Hammond, Elise Xue, R
 Building, Running and Testing
 =============================
 
-You must have Java8 installed or above. The project is built using [Gradle](http://gradle.org/).
+You must have Java 1.8.0_74 or above installed. The project is built using [Gradle](http://gradle.org/).
 
 Linux
 -----

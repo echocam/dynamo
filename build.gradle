@@ -48,7 +48,7 @@ test {
 //create a single Jar with all dependencies
 task fatJar(type: Jar) {
 	manifest {
-        attributes  'Implementation-Title': 'DyNaMo Jar',
+        attributes  'Implementation-Title': 'DyNaMo Fat Jar',
         	          //'Implementation-Version': version,
         	          'Main-Class': 'uk.ac.cam.echo2016.multinarrative.gui.FXMLGUI'
     }
