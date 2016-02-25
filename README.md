@@ -28,6 +28,11 @@ To run the DyNaMo editor simply use the following:
 ./gradlew runEditor
 ```
 
+To run the Scooby Doo HTML example:
+```bash
+./gradlew runHTMLPreview -Pdirectory="../../../examples/ScoobyDooHTML"
+```
+
 To test:
 ```bash
 ./gradlew check
