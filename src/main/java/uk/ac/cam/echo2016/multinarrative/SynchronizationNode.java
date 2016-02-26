@@ -23,36 +23,37 @@ import android.os.BaseBundle;
  * @see MultiNarrative
  */
 public class SynchronizationNode extends Node { // TODO Documentation
-    private static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 1;
 
-    public SynchronizationNode(String id) {
-        super(id);
-    }
+	public SynchronizationNode(String id) {
+		super(id);
+	}
 
-    protected Node create(String id) {
-        return new SynchronizationNode(id);
-    }
+	protected Node create(String id) {
+		return new SynchronizationNode(id);
+	}
 
-    public BaseBundle startRoute(Route option, NarrativeInstance instance) {
-        if (getExiting().size() == 1) {
-            instance.complete(this);
-        }
-        return option.getProperties();
-    }
-    
-    public GameChoice onEntry(Route completed, NarrativeInstance instance) throws GraphElementNotFoundException {
-        if (!getEntering().contains(completed)) {
-            throw new GraphElementNotFoundException(completed.getId());
-        }
+	public BaseBundle startRoute(Route option, NarrativeInstance instance) {
+		if (getExiting().size() == 1) {
+			instance.complete(this);
+		}
+		return option.getProperties();
+	}
 
-        GameChoice gameChoice;
-        if (getEntering().size() == 1 && getExiting().size() == 1) {
-            gameChoice = new GameChoice(GameChoice.ACTION_CONTINUE, getExiting(), instance.getEventfulNodes());
-        } else {
-            gameChoice = new GameChoice(GameChoice.ACTION_CHOOSE_ROUTE, instance.getPlayableRoutes(),
-                    instance.getEventfulNodes());
-        }
+	public GameChoice onEntry(Route completed, NarrativeInstance instance) throws GraphElementNotFoundException {
+		if (!getEntering().contains(completed)) {
+			throw new GraphElementNotFoundException(completed.getId());
+		}
 
-        return gameChoice;
-    }
+		GameChoice gameChoice;
+		if (getEntering().size() == 1 && getExiting().size() == 1 && (getExiting().get(0).getProperties() == null
+				|| !getExiting().get(0).getProperties().getBoolean(NarrativeInstance.SYSTEM_ISCOMPLETED, false))) {
+			gameChoice = new GameChoice(GameChoice.ACTION_CONTINUE, getExiting(), instance.getEventfulNodes());
+		} else {
+			gameChoice = new GameChoice(GameChoice.ACTION_CHOOSE_ROUTE, instance.getPlayableRoutes(),
+					instance.getEventfulNodes());
+		}
+
+		return gameChoice;
+	}
 }

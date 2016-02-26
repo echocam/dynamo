@@ -28,204 +28,216 @@ import uk.ac.cam.echo2016.multinarrative.preview.preprocessor.FileProcessor;
 
 public class FXMLController implements Initializable {
 
-    @FXML
-    private HBox choices;
+	@FXML
+	private HBox choices;
 
-    @FXML
-    private Button next;
+	@FXML
+	private Button next;
 
-    @FXML
-    private WebView web;
+	@FXML
+	private WebView web;
 
-    @FXML
-    private ScrollPane scroll;
+	@FXML
+	private ScrollPane scroll;
 
-    private WebEngine engine;
+	private WebEngine engine;
 
-    private File dir;
-    private File index;
+	private File dir;
+	private File index;
 
-    private NarrativeInstance instance;
+	private NarrativeInstance instance;
 
-    private ArrayList<Node> pages = new ArrayList<>();
-    private ArrayList<Route> options = new ArrayList<>();
-    private Route routePlaying;
+	private ArrayList<Node> pages = new ArrayList<>();
+	private ArrayList<Route> options = new ArrayList<>();
+	private Route routePlaying;
 
-    private FileProcessor proc;
+	private FileProcessor proc;
 
-    public void init(File file, NarrativeInstance inst) {
-        dir = file;
-        index = new File(dir.getAbsolutePath() + File.separator + "index.html");
-        instance = inst;
-        proc = new FileProcessor(FileProcessor.getDefaultProcessor(inst));
-        options = inst.getPlayableRoutes();
-        
-        choices.minWidthProperty().bind(scroll.widthProperty().subtract(10));
-        choices.minHeightProperty().bind(scroll.heightProperty().subtract(10));
-        
-        display(inst.getStart());
-        inst.getStart().createProperties();
-        inst.getStart().getProperties().putBoolean("System.isCompleted", true);
-        initChoices(options);
-    }
+	public void init(File file, NarrativeInstance inst) {
+		dir = file;
+		index = new File(dir.getAbsolutePath() + File.separator + "index.html");
+		instance = inst;
+		proc = new FileProcessor(FileProcessor.getDefaultProcessor(inst));
+		options = inst.getPlayableRoutes();
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        engine = web.getEngine();
-    }
+		choices.minWidthProperty().bind(scroll.widthProperty().subtract(10));
+		choices.minHeightProperty().bind(scroll.heightProperty().subtract(10));
 
-    @FXML
-    public void onNext(ActionEvent event) {
-        Debug.logInfo("Next Pressed, pages=" + pages, 2, Debug.SYSTEM_PREVIEW);
-        if (!pages.isEmpty()) {
-            nextPage();
-        } else if (routePlaying != null) {
-            try {
-                GameChoice c = instance.endRoute(routePlaying.getId());
-                options = c.getOptions();
-                if (c.hasEvent()) {
-                	for(Node n: c.getEvents()){
-                		if(n.getProperties()==null || !n.getProperties().getBoolean(HTMLPreview.SKIP_PROPERTY, false)){
-                			pages.add(n);
-                		}
-                	}
-                    pages.addAll(c.getEvents());
-                    c.completeEvents();
-                    nextPage();
-                } else {
-                    initChoices(options);
-                }
-            } catch (GraphElementNotFoundException e) {
-                Debug.logError(e, 2, Debug.SYSTEM_PREVIEW);
-                throw new RuntimeException(e);
-            }
-            routePlaying = null;
-        } else {
-            initChoices(options);
-        }
+		display(inst.getStart());
+		inst.getStart().createProperties();
+		inst.getStart().getProperties().putBoolean(NarrativeInstance.SYSTEM_ISCOMPLETED, true);
+		initChoices(options);
+	}
 
-    }
-    
-    public void nextPage(){
-        Node s = pages.remove(0);
-        Debug.logInfo("Starting " + s, 2, Debug.SYSTEM_PREVIEW);
-        display(s);
-        if(pages.isEmpty()){
-            initChoices(options);
-        }
-    }
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		engine = web.getEngine();
+	}
 
-    public void initChoices(ArrayList<Route> items) {
-        choices.getChildren().clear();
-        for (Route s : items) {
-            Button b = createOption(s);
-            choices.getChildren().add(b);
-        }
-    }
+	@FXML
+	public void onNext(ActionEvent event) {
+		Debug.logInfo("Next Pressed, pages=" + pages, 2, Debug.SYSTEM_PREVIEW);
+		if (!pages.isEmpty()) {
+			nextPage();
+		} else if (routePlaying != null) {
+			try {
+				GameChoice c = instance.endRoute(routePlaying.getId());
+				options = c.getOptions();
+				if (c.hasEvent()) {
+					for (Node n : c.getEvents()) {
+						if (n.getProperties() != null
+								&& n.getProperties().getBoolean(HTMLPreview.SKIP_PROPERTY, false)) {
+							Debug.logInfo("Skipping: " + n.getId(), 2, Debug.SYSTEM_PREVIEW);
+						} else {
+							pages.add(n);
+						}
+					}
+					c.completeEvents();
+					if (!pages.isEmpty()) {
+						nextPage();
+					} else {
+						initChoices(options);
+					}
+				} else {
+					initChoices(options);
+				}
+			} catch (GraphElementNotFoundException e) {
+				Debug.logError(e, 2, Debug.SYSTEM_PREVIEW);
+				throw new RuntimeException(e);
+			}
+			routePlaying = null;
+		} else
 
-    public void initNext() {
-        choices.getChildren().clear();
-        choices.getChildren().add(next);
-    }
+		{
+			initChoices(options);
+		}
 
-    public void choose(Route item) {
-        Debug.logInfo("Choosen: " + item, 2, Debug.SYSTEM_PREVIEW);
-        try {
-            instance.startRoute(item.getId());
-            routePlaying = item;
-            display(item);
-            initNext();
-        } catch (GraphElementNotFoundException e) {
-            Debug.logError(e, 2, Debug.SYSTEM_PREVIEW);
-            throw new RuntimeException(e);
-        }
-    }
+	}
 
-    public void display(Node node) {
-    	String item = node.getId();
-    	if(node.getProperties()!=null && node.getProperties().getString(HTMLPreview.FILE_PROPERTY, null)!=null){
-    		item = node.getProperties().getString(HTMLPreview.FILE_PROPERTY);
-    	}
-        parseFrom(item);
-        try {
-            setContents(index);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public void display(Route route) {
-    	String item = route.getId();
-    	if(route.getProperties()!=null && route.getProperties().getString(HTMLPreview.FILE_PROPERTY, null)!=null){
-    		item = route.getProperties().getString(HTMLPreview.FILE_PROPERTY);
-    	}
-        parseFrom(item);
-        try {
-            setContents(index);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }
+	public void nextPage() {
+		Node s = pages.remove(0);
+		while (!pages.isEmpty() && s.getProperties() != null
+				&& s.getProperties().getBoolean(NarrativeInstance.SYSTEM_ISCOMPLETED, false))
+			s = pages.remove(0);
+		Debug.logInfo("Starting " + s, 2, Debug.SYSTEM_PREVIEW);
+		display(s);
+		if (pages.isEmpty()) {
+			initChoices(options);
+		}
+	}
 
-    public void setContents() {
-        try {
+	public void initChoices(ArrayList<Route> items) {
+		choices.getChildren().clear();
+		for (Route s : items) {
+			Button b = createOption(s);
+			choices.getChildren().add(b);
+		}
+	}
 
-            setContents(index);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }
+	public void initNext() {
+		choices.getChildren().clear();
+		choices.getChildren().add(next);
+	}
 
-    public void setContents(File file) throws MalformedURLException {
-        Debug.logInfo("Loading: " + file.getName(), 5, Debug.SYSTEM_PREVIEW);
-        if (!file.exists()) {
-            Debug.logError(file.getName() + " does not exist", 1, Debug.SYSTEM_PREVIEW);
-        }
-        String s = file.toURI().toURL().toString();
-        engine.load(s);
-    }
+	public void choose(Route item) {
+		Debug.logInfo("Choosen: " + item, 2, Debug.SYSTEM_PREVIEW);
+		try {
+			instance.startRoute(item.getId());
+			routePlaying = item;
+			display(item);
+			initNext();
+		} catch (GraphElementNotFoundException e) {
+			Debug.logError(e, 2, Debug.SYSTEM_PREVIEW);
+			throw new RuntimeException(e);
+		}
+	}
 
-    public void parseFrom(String file) {
-        PrintStream s = null;
-        try {
-            s = new PrintStream(index);
-            File[] c = dir.listFiles((File direc, String name) -> {
-                return name.equals(file + ".html");
-            });
-            if (c.length > 0) {
-                proc.process(c[0], s);
-            } else {
-                Debug.logError("Not Found: " + file, 2, Debug.SYSTEM_PREVIEW);
-                s.println("<!DOCTYPE html>");
-                s.println("<html>");
-                s.println("<body>");
-                s.println("<h1>" + file + "</h1>");
-                s.println("</body>");
-                s.println("</html>");
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            if (s != null) {
-                s.close();
-            }
-        }
-    }
+	public void display(Node node) {
+		String item = node.getId();
+		if (node.getProperties() != null && node.getProperties().getString(HTMLPreview.FILE_PROPERTY, null) != null) {
+			item = node.getProperties().getString(HTMLPreview.FILE_PROPERTY);
+		}
+		parseFrom(item);
+		try {
+			setContents(index);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+	}
 
-    public Button createOption(Route route) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("button.fxml"));
-            Button b = loader.load();
-            String text = route.getId();
-            if(route.getProperties()!=null && route.getProperties().getString(HTMLPreview.DISPLAY_PROPERTY, null)!=null){
-        		text = route.getProperties().getString(HTMLPreview.DISPLAY_PROPERTY);
-        	}
-            b.setText(text);
-            b.setOnAction(e -> choose(route));
-            return b;
-        } catch (IOException ioe) {
-            // Indicates that fxml files aren't set up properly...
-            throw new RuntimeException("FXML files not configured correctly", ioe);
-        }
-    }
+	public void display(Route route) {
+		String item = route.getId();
+		if (route.getProperties() != null && route.getProperties().getString(HTMLPreview.FILE_PROPERTY, null) != null) {
+			item = route.getProperties().getString(HTMLPreview.FILE_PROPERTY);
+		}
+		parseFrom(item);
+		try {
+			setContents(index);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void setContents() {
+		try {
+
+			setContents(index);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void setContents(File file) throws MalformedURLException {
+		Debug.logInfo("Loading: " + file.getName(), 5, Debug.SYSTEM_PREVIEW);
+		if (!file.exists()) {
+			Debug.logError(file.getName() + " does not exist", 1, Debug.SYSTEM_PREVIEW);
+		}
+		String s = file.toURI().toURL().toString();
+		engine.load(s);
+	}
+
+	public void parseFrom(String file) {
+		PrintStream s = null;
+		try {
+			s = new PrintStream(index);
+			File[] c = dir.listFiles((File direc, String name) -> {
+				return name.equals(file + ".html");
+			});
+			if (c.length > 0) {
+				proc.process(c[0], s);
+			} else {
+				Debug.logError("File Not Found: " + file, 2, Debug.SYSTEM_PREVIEW);
+				s.println("<!DOCTYPE html>");
+				s.println("<html>");
+				s.println("<body>");
+				s.println("<h1>" + file + "</h1>");
+				s.println("</body>");
+				s.println("</html>");
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (s != null) {
+				s.close();
+			}
+		}
+	}
+
+	public Button createOption(Route route) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("button.fxml"));
+			Button b = loader.load();
+			String text = route.getId();
+			if (route.getProperties() != null
+					&& route.getProperties().getString(HTMLPreview.DISPLAY_PROPERTY, null) != null) {
+				text = route.getProperties().getString(HTMLPreview.DISPLAY_PROPERTY);
+			}
+			b.setText(text);
+			b.setOnAction(e -> choose(route));
+			return b;
+		} catch (IOException ioe) {
+			// Indicates that fxml files aren't set up properly...
+			throw new RuntimeException("FXML files not configured correctly", ioe);
+		}
+	}
 }
