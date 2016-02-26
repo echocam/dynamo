@@ -59,7 +59,7 @@ public class FXMLController implements Initializable {
 		instance = inst;
 		proc = new FileProcessor(FileProcessor.getDefaultProcessor(inst));
 		options = inst.getPlayableRoutes();
-
+		
 		choices.minWidthProperty().bind(scroll.widthProperty().subtract(10));
 		choices.minHeightProperty().bind(scroll.heightProperty().subtract(10));
 
@@ -72,6 +72,7 @@ public class FXMLController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		engine = web.getEngine();
+		next.disableProperty().bind(engine.getLoadWorker().runningProperty());
 	}
 
 	@FXML
@@ -233,6 +234,7 @@ public class FXMLController implements Initializable {
 				text = route.getProperties().getString(HTMLPreview.DISPLAY_PROPERTY);
 			}
 			b.setText(text);
+			b.disableProperty().bind(engine.getLoadWorker().runningProperty());
 			b.setOnAction(e -> choose(route));
 			return b;
 		} catch (IOException ioe) {
