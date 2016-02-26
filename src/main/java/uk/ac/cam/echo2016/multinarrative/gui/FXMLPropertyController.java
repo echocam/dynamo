@@ -23,6 +23,7 @@ import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 import uk.ac.cam.echo2016.multinarrative.gui.operations.IllegalOperationException;
 
 /**
@@ -253,6 +254,8 @@ public class FXMLPropertyController implements Initializable {
     }
 
     public void setType(String s) {
+    	Debug.logInfo("Set type of "+propName+" to "+s, 3, Debug.SYSTEM_GUI);
+    	typeName=s;
         type.setValue(s);
     }
 
