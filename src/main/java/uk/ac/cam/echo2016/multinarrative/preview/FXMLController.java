@@ -234,6 +234,10 @@ public class FXMLController implements Initializable {
 				text = route.getProperties().getString(HTMLPreview.DISPLAY_PROPERTY);
 			}
 			b.setText(text);
+			if(route.getProperties() != null
+					&& route.getProperties().getString(HTMLPreview.STYLE_PROPERTY, null) != null) {
+						b.setStyle(route.getProperties().getString(HTMLPreview.STYLE_PROPERTY));
+					}
 			b.disableProperty().bind(engine.getLoadWorker().runningProperty());
 			b.setOnAction(e -> choose(route));
 			return b;

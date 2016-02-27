@@ -16,6 +16,7 @@ public class HTMLPreview extends Application {
 	public static String FILE_PROPERTY = "file";
 	public static String DISPLAY_PROPERTY = "display";
 	public static String SKIP_PROPERTY = "skip";
+	public static String STYLE_PROPERTY = "style";
 
 	public static void main(String[] args) {
 		Application.launch(HTMLPreview.class, args);
