@@ -105,3 +105,17 @@ task runHTMLPreview(type: JavaExec) {
 runEditor.dependsOn assemble
 runTextPreview.dependsOn assemble
 runHTMLPreview.dependsOn assemble
+
+task runScoobyDooText(type: JavaExec) {
+	classpath = sourceSets.main.runtimeClasspath
+	workingDir = main_build
+  main = 'uk.ac.cam.echo2016.multinarrative.preview.TextPreview'
+  args "../../../examples/ScoobyDooText"
+}
+
+task runScoobyDooHTML(type: JavaExec) {
+	classpath = sourceSets.main.runtimeClasspath
+	workingDir = main_build
+  main = 'uk.ac.cam.echo2016.multinarrative.preview.HTMLPreview'
+  args "../../../examples/ScoobyDooHTML"
+}

@@ -42,10 +42,20 @@ To run the DyNaMo editor simply use the following:
 
 To run the Scooby Doo HTML example:
 ```bash
-./gradlew runHTMLPreview -Pdirectory="../../../examples/ScoobyDooHTML"
+./gradlew runScoobyDooHTML
 ```
 
 To run the Scooby Doo Text example:
+```bash
+./gradlew runScoobyDooText
+```
+To run the Scooby Doo HTML example, using explicit directory (can look at source
+  to write your own):
+```bash
+./gradlew runHTMLPreview -Pdirectory="../../../examples/ScoobyDooHTML"
+```
+
+Similarly for text:
 ```bash
 ./gradlew runTextPreview -Pdirectory="../../../examples/ScoobyDooText"
 ```
