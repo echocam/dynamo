@@ -15,12 +15,14 @@ They leave with Shaggy stuffing haggis into his pockets...
 #ifx Swim.F
 Fred climbs from the loch, soaked, and enters the hut.
 As he warms up by the fire the mist starts to clear,
-Fred: (to himself) "I'm sure I saw a spare speed boat arround here earlier"
 #endif
 #ifx Swim.D
 Daphne climbs from the loch, drenched, and enters the hut.
 As she warms up by the fire the mist starts to clear.
 #endif
+#endif
+#ifx Swim.F
+Fred: (to himself) "I'm sure I saw a spare speed boat arround here earlier"
 #endif
 
 There must be a boat or something in the town...
