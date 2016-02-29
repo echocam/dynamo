@@ -47,7 +47,7 @@ To run the Scooby Doo HTML example:
 
 To run the Scooby Doo Text example:
 ```bash
-./gradlew runHTMLPreview -Pdirectory="../../../examples/ScoobyDooText"
+./gradlew runTextPreview -Pdirectory="../../../examples/ScoobyDooText"
 ```
 
 To test:
