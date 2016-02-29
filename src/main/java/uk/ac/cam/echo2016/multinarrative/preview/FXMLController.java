@@ -26,6 +26,11 @@ import uk.ac.cam.echo2016.multinarrative.Route;
 import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 import uk.ac.cam.echo2016.multinarrative.preview.preprocessor.FileProcessor;
 
+/**
+ * Controller for HTML previewer
+ * @author jr650
+ *
+ */
 public class FXMLController implements Initializable {
 
 	@FXML
@@ -53,6 +58,11 @@ public class FXMLController implements Initializable {
 
 	private FileProcessor proc;
 
+	/**
+	 * Initialises, called from GUI bootstrap
+	 * @param file File source directory
+	 * @param inst
+	 */
 	public void init(File file, NarrativeInstance inst) {
 		dir = file;
 		index = new File(dir.getAbsolutePath() + File.separator + "index.html");
@@ -75,6 +85,9 @@ public class FXMLController implements Initializable {
 		next.disableProperty().bind(engine.getLoadWorker().runningProperty());
 	}
 
+	/**
+	 * FXML hook. When next button pressed
+	 */
 	@FXML
 	public void onNext(ActionEvent event) {
 		Debug.logInfo("Next Pressed, pages=" + pages, 2, Debug.SYSTEM_PREVIEW);
@@ -115,6 +128,9 @@ public class FXMLController implements Initializable {
 
 	}
 
+	/**
+	 * Change to next page
+	 */
 	public void nextPage() {
 		Node s = pages.remove(0);
 		while (!pages.isEmpty() && s.getProperties() != null
@@ -127,6 +143,10 @@ public class FXMLController implements Initializable {
 		}
 	}
 
+	/**
+	 * Create options
+	 * @param items options to add
+	 */
 	public void initChoices(ArrayList<Route> items) {
 		choices.getChildren().clear();
 		for (Route s : items) {
@@ -135,11 +155,18 @@ public class FXMLController implements Initializable {
 		}
 	}
 
+	/**
+	 * Set to only have next button
+	 */
 	public void initNext() {
 		choices.getChildren().clear();
 		choices.getChildren().add(next);
 	}
 
+	/**
+	 * Choose an item
+	 * @param item the choice
+	 */
 	public void choose(Route item) {
 		Debug.logInfo("Choosen: " + item, 2, Debug.SYSTEM_PREVIEW);
 		try {
@@ -153,6 +180,10 @@ public class FXMLController implements Initializable {
 		}
 	}
 
+	/**
+	 * Display the given node
+	 * @param node node to display
+	 */
 	public void display(Node node) {
 		String item = node.getId();
 		if (node.getProperties() != null && node.getProperties().getString(HTMLPreview.FILE_PROPERTY, null) != null) {
@@ -166,6 +197,10 @@ public class FXMLController implements Initializable {
 		}
 	}
 
+	/**
+	 * Display a route
+	 * @param route route to display
+	 */
 	public void display(Route route) {
 		String item = route.getId();
 		if (route.getProperties() != null && route.getProperties().getString(HTMLPreview.FILE_PROPERTY, null) != null) {
@@ -179,6 +214,9 @@ public class FXMLController implements Initializable {
 		}
 	}
 
+	/**
+	 * Reloads contents
+	 */
 	public void setContents() {
 		try {
 
@@ -188,6 +226,11 @@ public class FXMLController implements Initializable {
 		}
 	}
 
+	/**
+	 * Sets contents to given file
+	 * @param file file to load
+	 * @throws MalformedURLException if you've mucked up
+	 */
 	public void setContents(File file) throws MalformedURLException {
 		Debug.logInfo("Loading: " + file.getName(), 5, Debug.SYSTEM_PREVIEW);
 		if (!file.exists()) {
@@ -197,6 +240,10 @@ public class FXMLController implements Initializable {
 		engine.load(s);
 	}
 
+	/**
+	 * Parses a file into index
+	 * @param file file to parse
+	 */
 	public void parseFrom(String file) {
 		PrintStream s = null;
 		try {
@@ -224,6 +271,11 @@ public class FXMLController implements Initializable {
 		}
 	}
 
+	/**
+	 * Creates an option
+	 * @param route route choice if pressed
+	 * @return button for this option
+	 */
 	public Button createOption(Route route) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("button.fxml"));

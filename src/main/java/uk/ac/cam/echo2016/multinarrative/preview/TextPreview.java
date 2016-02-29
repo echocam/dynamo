@@ -17,12 +17,23 @@ import uk.ac.cam.echo2016.multinarrative.Route;
 import uk.ac.cam.echo2016.multinarrative.io.SaveReader;
 import uk.ac.cam.echo2016.multinarrative.preview.preprocessor.FileProcessor;
 
+/**
+ * Text Previewer class
+ * @author jr650
+ *
+ */
 public class TextPreview {
 
     private File directory;
     private NarrativeInstance inst;
     private FileProcessor proc;
 
+    /**
+     * Creates from a directory
+     * @param f
+     * @throws IOException
+     * @throws InvalidGraphException
+     */
     public TextPreview(File f) throws IOException, InvalidGraphException {
         File[] children = f.listFiles((File dir, String name) -> {
             return name.endsWith(".dnm");
@@ -39,6 +50,12 @@ public class TextPreview {
         proc = new FileProcessor(FileProcessor.getDefaultProcessor(inst));
     }
 
+    /**
+     * Previews to given set of input & output streams.
+     * @param console console to display stuff to.
+     * @param files where to output contents of files.
+     * @param input where to read input from.
+     */
     public void preview(PrintStream console, PrintStream files, InputStream input) {
         ArrayList<Route> items = inst.getPlayableRoutes();
         outputFile(inst.getStart().getId(), console, files, input, "Triggered");
@@ -75,6 +92,14 @@ public class TextPreview {
         }
     }
 
+    /**
+     * Does a route
+     * @param name name of route
+     * @param output output stream
+     * @param files stream to output files
+     * @param input stream to output files to
+     * @return the result of doing route
+     */
     public GameChoice doRoute(String name, PrintStream output, PrintStream files, InputStream input) {
         try {
             inst.startRoute(name);
@@ -96,6 +121,13 @@ public class TextPreview {
         return null;
     }
 
+    /**
+     * Choose a option
+     * @param items choices
+     * @param output output stream
+     * @param input input stream
+     * @return
+     */
     @SuppressWarnings("resource")
     public static String choose(ArrayList<Route> items, PrintStream output, InputStream input) {
         if (items == null) {
@@ -123,6 +155,14 @@ public class TextPreview {
         return r;
     }
 
+    /**
+     * Parses file to a stream
+     * @param route name of route
+     * @param output console to output to 
+     * @param files here to output files
+     * @param input input from here
+     * @param prefix what to prefix message with if can't find file
+     */
     public void outputFile(String route, PrintStream output, PrintStream files, InputStream input, String prefix) {
         File[] c = directory.listFiles((File dir, String name) -> {
             return name.equals(route + ".txt");
@@ -134,6 +174,10 @@ public class TextPreview {
         }
     }
 
+    /**
+     * Entry point for Text Preview
+     * @param args
+     */
     public static void main(String[] args){
         if (args.length != 1) {
             System.out.println("Usage java uk.ac.cam.echo2016.multinarrative.preview.TextPreview <directory>");
@@ -148,6 +192,12 @@ public class TextPreview {
         }
     }
     
+    /**
+     * Runs a narrative
+     * @param narrativeDirectory directory to load from
+     * @throws IOException if io goes badly
+     * @throws InvalidGraphException if it's a bad file
+     */
     public static void runNarrative(String narrativeDirectory) throws IOException, InvalidGraphException {
         File f = new File(narrativeDirectory);
         if (!f.exists()) {

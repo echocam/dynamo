@@ -14,6 +14,10 @@ import java.util.function.Function;
 import uk.ac.cam.echo2016.multinarrative.NarrativeInstance;
 import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 
+/**
+ * Preprocessor for files
+ * @author jr650
+ */
 public class FileProcessor {
 
     Map<String, Function<String[], Function<String, String>>> commands;
@@ -22,6 +26,11 @@ public class FileProcessor {
         this.commands = commands;
     }
 
+    /**
+     * Processes a file
+     * @param f file
+     * @param files where to put the output
+     */
     public void process(File f, PrintStream files) {
         try {
             BufferedReader r = new BufferedReader(new FileReader(f));
@@ -85,6 +94,11 @@ public class FileProcessor {
         }
     }
 
+    /**
+     * Gets standard preprocess options
+     * @param inst the Narrative instance to base from
+     * @return list of standard options
+     */
     public static Map<String, Function<String[], Function<String, String>>> getDefaultProcessor(
             NarrativeInstance inst) {
         Map<String, Function<String[], Function<String, String>>> r = new HashMap<String, Function<String[], Function<String, String>>>();

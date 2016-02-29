@@ -3,14 +3,22 @@ package uk.ac.cam.echo2016.multinarrative.gui.operations;
 import java.util.ArrayList;
 
 import uk.ac.cam.echo2016.multinarrative.dev.Debug;
-
+/**
+ * Class to do and undo a bunch of things at once.
+ * @author jr650
+ *
+ */
 public class CompositeOperation implements Operation {
 
     private ArrayList<OperationGenerator> gens;
     private ArrayList<Operation> items;
 
+    /**
+     * Creates new composite operation from list of operations
+     * @param gens generators for operations
+     */
     public CompositeOperation(ArrayList<OperationGenerator> gens) {
-        this.gens = gens;
+        this.gens = gens; 
     }
 
     @Override

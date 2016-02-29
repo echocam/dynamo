@@ -17,12 +17,17 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 /**
+ * GUi main class and bootstrap, also does dialogs
  * @author jr650
  */
 public class FXMLGUI extends Application {
 
     private Stage theStage;
 
+    /**
+     * Entry point for editor
+     * @param args
+     */
     public static void main(String[] args) {
         Application.launch(FXMLGUI.class, args);
     }

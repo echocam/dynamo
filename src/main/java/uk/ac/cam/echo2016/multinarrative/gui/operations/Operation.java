@@ -2,7 +2,7 @@ package uk.ac.cam.echo2016.multinarrative.gui.operations;
 
 /**
  * 
- * The Operation class is used to implement most functions in GUIOperations. The
+ * The Operation class is used to implement most functions in OperationsManager. The
  * reason for this is that anything that affects the graph, must be 'undoable',
  * and this provides a clean interface for enabling that functionality.
  * 

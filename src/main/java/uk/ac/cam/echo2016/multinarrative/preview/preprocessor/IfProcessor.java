@@ -4,11 +4,20 @@ import java.util.function.Function;
 
 import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 
+/**
+ * Processes an if statement
+ * @author jr650
+ *
+ */
 public class IfProcessor implements Function<String, String> {
 
     private int end = 1;
     private boolean ifTrue;
 
+    /**
+     * Creates a processor
+     * @param b if evaluated to true
+     */
     public IfProcessor(boolean b) {
         ifTrue = b;
     }

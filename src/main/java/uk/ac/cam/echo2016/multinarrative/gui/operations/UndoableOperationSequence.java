@@ -6,6 +6,10 @@ import java.util.Deque;
 import uk.ac.cam.echo2016.multinarrative.dev.Debug;
 import uk.ac.cam.echo2016.multinarrative.gui.Strings;
 
+/**
+ * A sequence of operation that support undo/redo
+ * @author jr650
+ */
 public class UndoableOperationSequence {
 
     public static final int UNDO_LIMIT = 64;

@@ -11,6 +11,11 @@ import javafx.stage.Stage;
 import uk.ac.cam.echo2016.multinarrative.NarrativeTemplate;
 import uk.ac.cam.echo2016.multinarrative.io.SaveReader;
 
+/**
+ * Previewer for HTML 
+ * @author jr650
+ *
+ */
 public class HTMLPreview extends Application {
 
 	public static String FILE_PROPERTY = "file";
@@ -18,6 +23,10 @@ public class HTMLPreview extends Application {
 	public static String SKIP_PROPERTY = "skip";
 	public static String STYLE_PROPERTY = "style";
 
+	/**
+	 * Entry point ofr HTML previewer
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		Application.launch(HTMLPreview.class, args);
 	}
