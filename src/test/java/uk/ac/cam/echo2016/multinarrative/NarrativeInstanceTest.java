@@ -241,7 +241,7 @@ public class NarrativeInstanceTest {
         sampleTemplate.getNode("syncStart").getProperties().putIntArray("TestProperty", new int[] { 1, 2, 3 });
 
         // Copy the template into an instance
-        NarrativeInstance sampleInst = sampleTemplate.generateInstance2();
+        NarrativeInstance sampleInst = sampleTemplate.generateInstance();
 
         // Tests whether the copy has the correct structure
         assertEquals("Testing correct number of routes: ", 24, sampleInst.routes.size());
@@ -266,7 +266,7 @@ public class NarrativeInstanceTest {
 
     @Test
     public void SampleKillAndGetPlayableTest() throws InvalidGraphException, GraphElementNotFoundException {
-        NarrativeInstance sampleInst = sampleTemplate.generateInstance2();
+        NarrativeInstance sampleInst = sampleTemplate.generateInstance();
 
         assertEquals("Testing playable routes: ", 5, sampleInst.getPlayableRoutes().size());
         assertEquals("", 1, sampleInst.activeNodes.size());
@@ -296,7 +296,7 @@ public class NarrativeInstanceTest {
      */
     @Test
     public void makeChoicesTest() throws InvalidGraphException, GraphElementNotFoundException {
-        NarrativeInstance choiceInst = sampleTemplate.generateInstance2();
+        NarrativeInstance choiceInst = sampleTemplate.generateInstance();
 
         assertEquals("Check only one active node", 1, choiceInst.activeNodes.size());
 
@@ -341,7 +341,7 @@ public class NarrativeInstanceTest {
         loadTemplate.nodes.putAll(loadNodes);
         loadTemplate.start = (SynchronizationNode) loadTemplate.getNode("start");
 
-        NarrativeInstance loadInst = loadTemplate.generateInstance2();
+        NarrativeInstance loadInst = loadTemplate.generateInstance();
         assertTrue("Testing load test constructor: ", loadInst.routes.containsKey("route10101"));
     }
 
@@ -358,6 +358,6 @@ public class NarrativeInstanceTest {
         sampleTemplate.start = null;
 
         @SuppressWarnings("unused")
-        NarrativeInstance sampleInst = sampleTemplate.generateInstance2();
+        NarrativeInstance sampleInst = sampleTemplate.generateInstance();
     }
 }

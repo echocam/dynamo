@@ -1,6 +1,5 @@
 package uk.ac.cam.echo2016.multinarrative;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.os.BaseBundle;
@@ -43,50 +42,7 @@ public class NarrativeTemplate extends MultiNarrative {
         this.properties = properties;
     }
 
-    // TODO Documentation
-    /**
-     *
-     * @return
-     * @throws InvalidGraphException
-     */
     public NarrativeInstance generateInstance() throws InvalidGraphException {
-        HashMap<String, Node> r_nodes = new HashMap<>();
-        HashMap<String, Route> r_routes = new HashMap<>();
-
-        if (start == null) {
-            throw new InvalidGraphException("Error: Graph does not have a start node.");
-        }
-
-        for (Node node : nodes.values()) {
-            Node r_node = node.clone();
-            r_node.createProperties();
-            r_node.setExiting(new ArrayList<Route>());
-            r_node.setEntering(new ArrayList<Route>());
-            r_nodes.put(node.getId(), r_node);
-        }
-
-        for (Route route : routes.values()) {
-            Route r_route = route.clone();
-            // Find Start and end in r_nodes
-
-            r_route.setStart(r_nodes.get(route.getStart().getId()));
-            r_route.setEnd(r_nodes.get(route.getEnd().getId()));
-            r_route.getStart().getExiting().add(r_route);
-            r_route.getEnd().getEntering().add(r_route);
-
-            r_routes.put(route.getId(), r_route);
-        }
-        SynchronizationNode r_start = (SynchronizationNode) r_nodes.get(start.getId());
-
-        NarrativeInstance instance = new NarrativeInstance(r_routes, r_nodes, r_start,
-                BaseBundle.deepcopy(this.properties));
-        instance.setActive(r_start);
-        instance.properties = BaseBundle.deepcopy(this.properties); // TODO add
-                                                                    // to tests
-        return instance;
-    }
-
-    public NarrativeInstance generateInstance2() throws InvalidGraphException {
         NarrativeInstance instance = new NarrativeInstance();
 
         if (start == null)
