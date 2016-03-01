@@ -104,10 +104,10 @@ public class Debug {
 
         } catch (IOException | ClassCastException | IllegalStateException e) {
             // config.json doesn't exist, so log everything
-            consoleLogLevels[0] = SYSTEM_ALL;
-            consoleLogLevels[1] = SYSTEM_ALL;
-            consoleLogLevels[2] = SYSTEM_ALL;
-            consoleLogLevels[3] = SYSTEM_ALL;
+            consoleLogLevels[0] = SYSTEM_NONE;
+            consoleLogLevels[1] = SYSTEM_NONE;
+            consoleLogLevels[2] = SYSTEM_NONE;
+            consoleLogLevels[3] = SYSTEM_NONE;
             consoleLogLevels[4] = SYSTEM_NONE;
             System.err.println("Could not find config.json. Using default levels");
         }
