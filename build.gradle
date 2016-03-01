@@ -109,6 +109,7 @@ runHTMLPreview.dependsOn assemble
 task runScoobyDooText(type: JavaExec) {
 	classpath = sourceSets.main.runtimeClasspath
 	workingDir = main_build
+  standardInput = System.in
   main = 'uk.ac.cam.echo2016.multinarrative.preview.TextPreview'
   args "../../../examples/ScoobyDooText"
 }
@@ -116,7 +117,6 @@ task runScoobyDooText(type: JavaExec) {
 task runScoobyDooHTML(type: JavaExec) {
 	classpath = sourceSets.main.runtimeClasspath
 	workingDir = main_build
-  standardInput = System.in
   main = 'uk.ac.cam.echo2016.multinarrative.preview.HTMLPreview'
   args "../../../examples/ScoobyDooHTML"
 }
