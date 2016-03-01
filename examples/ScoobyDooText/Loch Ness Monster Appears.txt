@@ -2,7 +2,7 @@
 Fred climbs back into the boat drenched, and the Velma explain the plan. 
 #endif
 #ifx Resist.ShSc
-Scooby and Shaggy look nervous as they dirve off.
+Scooby and Shaggy look nervous as they drive off.
 #endif
 Suddenly the monster appears!
 #ifx Resist.ShSc
@@ -11,4 +11,6 @@ A huge head appears between the two boats!
 #ifx Haggis.ShSc
 A huge head appears beside the boat!
 #endif
+Large teeth protrude from the mass of dark green scales,
+and a soft whiring accompanies the creatures movements.
 Velma: "Jinkies!"

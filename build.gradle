@@ -118,4 +118,5 @@ task runScoobyDooHTML(type: JavaExec) {
 	workingDir = main_build
   main = 'uk.ac.cam.echo2016.multinarrative.preview.HTMLPreview'
   args "../../../examples/ScoobyDooHTML"
+  standardInput = System.in
 }
