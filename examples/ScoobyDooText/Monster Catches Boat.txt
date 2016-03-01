@@ -4,10 +4,10 @@ lifting the duo high into the air.
 Shaggy: "Like whatda we do now Scoobes?"
 #endif
 #ifx Haggis.ShSc
-#ifx Swim.F
+#ifx Swim.D
 Catching up with the boat the monster lifts Velma and Fred into the air.
 #endif
-#ifx Swim.D
+#ifx Swim.F
 Catching up with the boat the monster lifts Velma and Daphne into the air.
 #endif
 #endif

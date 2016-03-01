@@ -116,7 +116,7 @@ task runScoobyDooText(type: JavaExec) {
 task runScoobyDooHTML(type: JavaExec) {
 	classpath = sourceSets.main.runtimeClasspath
 	workingDir = main_build
+  standardInput = System.in
   main = 'uk.ac.cam.echo2016.multinarrative.preview.HTMLPreview'
   args "../../../examples/ScoobyDooHTML"
-  standardInput = System.in
 }
