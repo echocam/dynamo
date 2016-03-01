@@ -8,7 +8,7 @@ Suddenly the monster appears!
 #ifx Resist.ShSc
 A huge head appears between the two boats!
 #endif
-#ifx Haggis.ShSc
+#ifx Haggis.ScSh
 A huge head appears beside the boat!
 #endif
 Large teeth protrude from the mass of dark green scales,

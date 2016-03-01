@@ -3,7 +3,7 @@ Shaggy and Scooby stare the monster in the eye for a moment before it snatches t
 lifting the duo high into the air.
 Shaggy: "Like whatda we do now Scoobes?"
 #endif
-#ifx Haggis.ShSc
+#ifx Haggis.ScSh
 #ifx Swim.D
 Catching up with the boat the monster lifts Velma and Fred into the air.
 #endif

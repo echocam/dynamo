@@ -5,7 +5,7 @@ Shaggy: "Zoinks!"
 Scooby jumps into Shaggy's arms in alarm.
 Shaggy: "Scoobe! I like gotta drive this boat!"
 #endif
-#ifx Haggis.ShSc
+#ifx Haggis.ScSh
 it starts to move towards the boat.
 #ifx Swim.D
 Fred manouvers the boat out the way, gunning the engine as the boat leaps across the water.
