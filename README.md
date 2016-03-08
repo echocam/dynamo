@@ -3,18 +3,26 @@ DyNaMo
 *Dynamic Narrative Modelling*
 
 <a href="https://travis-ci.org/EchoCam/DynamicNarrative">
-<img src="https://travis-ci.org/EchoCam/DynamicNarrative.svg?branch=master" title="Master branch unit testing."/>
+<img src="https://travis-ci.org/EchoCam/DynamicNarrative.svg?branch=master"
+title="Master branch unit testing."/>
 </a>
 
-A system architecture and tools that allow developers to track the logic of player decisions and alter the state of the game based on those decisions.
+DyNaMo is a set of tools to help game developers design and create
+multinarrative stories, games where the player's descisions affect the outcome
+of the story and change how a game plays out. This is alongside a runtime
+library to let game engines hook into a designed story, so this system can
+calculate's a player's state in the story for the engine. Example include a
+bundled ['choose your own adventure'](examples) example featuring
+Scooby-Doo\* and [DyNaDeMo](https://github.com/echocam/dynademo) a more
+sophisticated 3D tech demo to show the flexibility of the tools.
 
-This application is in development by James Riordan, Angus Hammond, Elise Xue, Robin McFarland, Tim Ringland and Tom Read-Cutting.
-
+![screenchot of tools in action](screens/01.png)
 
 Building, Running and Testing
 =============================
 
-You must have Java 1.8.0_74 or above installed. The project is built using [Gradle](http://gradle.org/).
+You must have Java 1.8.0_74 or above installed. The project is built using
+[Gradle](http://gradle.org/).
 
 Linux/Unix/OS X
 ---------------
@@ -41,16 +49,17 @@ To run the DyNaMo editor simply use the following:
 ./gradlew runEditor
 ```
 
-To run the Scooby Doo HTML example:
+To run the Scooby-Doo HTML example:
 ```bash
 ./gradlew runScoobyDooHTML
 ```
 
-To run the Scooby Doo Text example:
+To run the Scooby-Doo Text example:
 ```bash
 ./gradlew runScoobyDooText
 ```
-To run the Scooby Doo HTML example, using explicit directory (can look at source
+
+To run the Scooby-Doo HTML example, using explicit directory (can look at source
   to write your own):
 ```bash
 ./gradlew runHTMLPreview -Pdirectory="../../../examples/ScoobyDooHTML"
@@ -78,7 +87,8 @@ Windows is similar to Linux, but without the "./".
 
 Specifying JDK path
 -------------------
-If you wish to specify the jdk path for gradle, add the following to a gradle.properties file in the home directory.
+If you wish to specify the jdk path for gradle, add the following to a
+gradle.properties file in the home directory.
 
 ```
 org.gradle.java.home=/path/to/jdk1.8.0_72
@@ -86,8 +96,9 @@ org.gradle.java.home=/path/to/jdk1.8.0_72
 
 Logging
 -------
-By default, every single debug message with a priority of 4 and above will be logged.
-To customise how things are logged, create a config.json file in src/main/java as follows:
+By default, every single debug message with a priority of 4 and above will be
+logged. To customise how things are logged, create a config.json file in
+src/main/java as follows:
 
 ```json
 {
@@ -110,11 +121,13 @@ To customise how things are logged, create a config.json file in src/main/java a
 }
 ```
 
-This example will log the following to the output console; everything of the highest priority will be logged,
-everything related to I/O operations of level 2 and above (so levels 1 & 2) will be logged. Everything related
-to the GUI of levels 4-1 will be logged and all errors will be logged.
+This example will log the following to the output console; everything of the
+highest priority will be logged, everything related to I/O operations of level 2
+and above (so levels 1 & 2) will be logged. Everything related to the GUI of
+levels 4-1 will be logged and all errors will be logged.
 
-To view all the available systems that can be logged, refer to ```java uk.ac.cam.echo2016.multinarrative.dev.Debug```
+To view all the available systems that can be logged, refer
+to ```java uk.ac.cam.echo2016.multinarrative.dev.Debug```
 for all constants starting with ```java SYSTEM_```.
 
 Project Style Guide
@@ -162,7 +175,8 @@ class TestClass {
     }
 }
 ```
-Abiding by this is up to the programmer's discretion, but don't diverge from this format unless you have a good reason.
+Abiding by this is up to the programmer's discretion, but don't diverge from
+this format unless you have a good reason.
 
 ### Maximum Line Length
 Lines must not be longer the 120 characters each.
@@ -195,3 +209,11 @@ And that is how commit messages should be formatted, although this is a
 rough guideline and by no means required as we are but humble student
 developers.
 ```
+
+© James Riordan, Angus Hammond, Elise Xue, Robin McFarland, Tim Ringland and
+Tom Read Cutting.
+
+\*SCOOBY-DOO and all related characters and elements are trademarks of and ©
+Hanna-Barbera. WB SHIELD: TM & © WBEI. (s16) This piece of software is not
+endorsed by or associated with the copyright and trademark holders of SCOOBY-DOO
+in any way.
